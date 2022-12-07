@@ -8,7 +8,7 @@ object Deps {
     private const val coroutinesVersion = "1.6.4"
     private const val serializationVersion = "1.4.0"
     private const val nodejsExternalsVersion = "0.0.7"
-    private const val ktorVersion = "2.1.2"
+    private const val ktorVersion = "2.0.1"
     private const val ktorOpenapiVersion = "0.2-beta.20"
     private const val exposedVersion = "0.39.2"
     private const val datetimeVersion = "0.3.0"
@@ -34,13 +34,36 @@ object Deps {
     private const val kdsVer = "1.1.0"
     private const val scriptKtVer = "0.0.5"
 
+    object Modules {
+        const val Domain = ":domain"
+        const val UseCases = ":use-cases"
+        const val Application = ":application"
+
+        object Adapters {
+            const val GoogleAuthIntegration = ":adapters:google-auth-integration"
+            const val TimeIntegration = ":adapters:time-integration"
+            const val RepositoriesIntegration = ":adapters:repositories-integration"
+            const val TokensIntegration = ":adapters:tokens-integration"
+            const val CodesIntegration = ":adapters:codes-integration"
+        }
+    }
+
     object Libs {
+        object H2 {
+            const val Database = "com.h2database:h2:2.1.214"
+        }
+
+        object JUnit {
+            const val Kotlin = "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
+            const val Jupiter = "org.junit.jupiter:junit-jupiter-engine:5.4.0"
+        }
 
         object KotlinGang {
             object KDS {
                 const val FileDataStorage = "fun.kotlingang.kds:json-files:$kdsVer"
                 const val LocalDataStorage = "fun.kotlingang.kds:json-files:$kdsVer"
                 const val BundleDataStorage = "fun.kotlingang.kds:json-bundle:$kdsVer"
+
                 object Integrations {
                     const val Androidx = "fun.kotlingang.kds:extensions-androidx:$kdsVer"
                     const val Coroutines = "fun.kotlingang.kds:extensions-coroutines:$kdsVer"
@@ -92,16 +115,26 @@ object Deps {
             const val Nodejs = "org.jetbrains.kotlinx:kotlinx-nodejs:$nodejsExternalsVersion"
         }
         object Ktor {
+            const val Json = "io.ktor:ktor-serialization-kotlinx-json:$ktorVersion"
+
             object Client {
                 const val Core = "io.ktor:ktor-client-core:$ktorVersion"
                 const val Cio = "io.ktor:ktor-client-cio:$ktorVersion"
+                const val ContentNegotiation = "io.ktor:ktor-client-content-negotiation:$ktorVersion"
                 const val Serialization = "io.ktor:ktor-client-serialization:$ktorVersion"
             }
+
             object Server {
                 const val Core = "io.ktor:ktor-server-core:$ktorVersion"
+                const val HostCommonJvm = "io.ktor:ktor-server-host-common-jvm:$ktorVersion"
+                const val StatusPages = "io.ktor:ktor-server-status-pages-jvm:$ktorVersion"
                 const val Cio = "io.ktor:ktor-server-cio:$ktorVersion"
-                const val Serialization = "io.ktor:ktor-serialization:$ktorVersion"
+                const val ContentNegotiation = "io.ktor:ktor-server-content-negotiation:$ktorVersion"
                 const val Openapi = "com.github.papsign:Ktor-OpenAPI-Generator:$ktorOpenapiVersion"
+                const val RequestValidation = "io.ktor:ktor-server-request-validation:$ktorVersion"
+                const val CORS = "io.ktor:ktor-server-cors:$ktorVersion"
+                const val WebSockets = "io.ktor:ktor-server-websockets:$ktorVersion"
+                const val CallLogging = "io.ktor:ktor-server-call-logging-jvm:$ktorVersion"
             }
         }
         object Exposed {
