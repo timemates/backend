@@ -4,6 +4,10 @@ pluginManagement {
         mavenCentral()
         google()
     }
+
+    plugins {
+        kotlin("plugin.serialization") version "1.7.20"
+    }
 }
 
 dependencyResolutionManagement {
@@ -16,9 +20,18 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "kotlin-project-template"
+rootProject.name = "tomadoro-backend"
 
 includeBuild("build-logic/dependencies")
 includeBuild("build-logic/configuration")
 includeBuild("build-logic/service-deploy")
 //includeBuild("buildUtils/library-deploy")
+
+include(":domain")
+include(":use-cases")
+include(":application")
+include(":adapters:codes-integration")
+include(":adapters:google-auth-integration")
+include(":adapters:repositories-integration")
+include(":adapters:time-integration")
+include(":adapters:tokens-integration")
