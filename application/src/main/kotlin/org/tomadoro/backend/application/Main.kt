@@ -43,7 +43,7 @@ fun main(): Unit = runBlocking {
     )
 
     startServer(port) {
-        setupRoutesWithDatabase(database, googleClient)
+        setupRoutesWithDatabase(database, googleClient, System.getenv("SERVER_FILE_UPLOADS"))
     }
 }
 
