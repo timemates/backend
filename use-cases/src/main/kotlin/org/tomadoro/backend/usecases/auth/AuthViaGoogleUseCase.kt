@@ -31,7 +31,7 @@ class AuthViaGoogleUseCase(
         )
 
         return if (linked == null) {
-            val id = users.createUser(UserName(user.name), time.provide())
+            val id = users.createUser(UserName(user.name), null, time.provide())
             val accessToken = tokensProvider.provide()
             authorizations.create(
                 id, accessToken, refreshTokens.provide(), time.provide() + Duration.ofDays(7).toMillis()

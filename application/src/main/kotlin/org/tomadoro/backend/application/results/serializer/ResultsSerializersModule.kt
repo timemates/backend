@@ -68,4 +68,16 @@ internal val ResultsSerializersModule: SerializersModule = SerializersModule {
         subclass(StopTimerResult.Success::class)
         subclass(StopTimerResult.NoAccess::class)
     }
+    polymorphic(GetMeResult::class) {
+        subclass(GetMeResult.Success::class)
+    }
+    polymorphic(GetUsersResult::class) {
+        subclass(GetUsersResult.Success::class)
+    }
+    polymorphic(EditUserResult::class) {
+        subclass(EditUserResult.Success::class)
+    }
+    polymorphic(SetAvatarResult::class) {
+        subclass(SetAvatarResult.Success::class)
+    }
 }

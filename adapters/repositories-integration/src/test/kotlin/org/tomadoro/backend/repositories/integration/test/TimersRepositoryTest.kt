@@ -25,7 +25,7 @@ class TimersRepositoryTest {
 
     @BeforeAll
     fun createUser(): Unit = runBlocking {
-        users.createUser("Test", System.currentTimeMillis())
+        users.createUser("Test", null, System.currentTimeMillis())
     }
 
     @Test
