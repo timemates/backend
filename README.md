@@ -14,6 +14,7 @@ To run this application on your own host you need to provide next env variables:
 - `DATABASE_URL` – url to postgres database
 - `DATABASE_USER` – postgres user
 - `DATABASE_PASSWORD` – postgres user's password
+- `SERVER_FILE_UPLOADS` – path to directory, where uploaded files will be stored
 
 ## 🔑 Deploy
 

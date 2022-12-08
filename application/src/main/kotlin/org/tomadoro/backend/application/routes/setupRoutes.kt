@@ -9,6 +9,7 @@ import org.jetbrains.exposed.sql.Database
 import org.tomadoro.backend.application.plugins.AuthorizationPlugin
 import org.tomadoro.backend.application.routes.auth.authRoot
 import org.tomadoro.backend.application.routes.timer.timersRoot
+import org.tomadoro.backend.application.routes.users.usersRoot
 import org.tomadoro.backend.codes.integration.SecureCodeProvider
 import org.tomadoro.backend.google.auth.GoogleClient
 import org.tomadoro.backend.providers.SecureAccessTokenProvider
@@ -28,8 +29,12 @@ import org.tomadoro.backend.usecases.timers.invites.CreateInviteUseCase
 import org.tomadoro.backend.usecases.timers.invites.GetInvitesUseCase
 import org.tomadoro.backend.usecases.timers.invites.JoinByInviteUseCase
 import org.tomadoro.backend.usecases.timers.invites.RemoveInviteUseCase
+import org.tomadoro.backend.usecases.users.EditUserUseCase
+import org.tomadoro.backend.usecases.users.GetUsersUseCase
+import org.tomadoro.backend.usecases.users.SetAvatarUseCase
 import java.time.ZoneId
 import java.util.*
+import kotlin.io.path.Path
 
 fun Routing.setupRoutes(
     authRepository: AuthorizationsRepository,
@@ -39,6 +44,7 @@ fun Routing.setupRoutes(
     usersRepository: UsersRepository,
     sessionsRepository: SessionsRepository,
     schedulesRepository: SchedulesRepository,
+    filesRepository: FilesRepository,
     googleClient: GoogleClient
 ) {
     val timeProvider =
@@ -86,12 +92,20 @@ fun Routing.setupRoutes(
         LeaveSessionUseCase(sessionsRepository, schedulesRepository),
         ConfirmStartUseCase(timersRepository, sessionsRepository, timeProvider)
     )
+
+    usersRoot(
+        GetUsersUseCase(usersRepository),
+        EditUserUseCase(usersRepository),
+        SetAvatarUseCase(filesRepository, usersRepository)
+    )
+
     ok()
 }
 
 fun Routing.setupRoutesWithDatabase(
     database: Database,
-    googleClient: GoogleClient
+    googleClient: GoogleClient,
+    rootFilesPath: String
 ) {
     val authRepository =
         AuthorizationsRepository(AuthorizationsDataSource(database))
@@ -108,6 +122,8 @@ fun Routing.setupRoutesWithDatabase(
             CoroutineScope(Dispatchers.Default + SupervisorJob())
         )
 
+    val filesRepository = FilesRepository(Path(rootFilesPath))
+
     setupRoutes(
         authRepository,
         linkedSocialsRepository,
@@ -116,6 +132,7 @@ fun Routing.setupRoutesWithDatabase(
         usersRepository,
         sessionsRepository,
         schedulesRepository,
+        filesRepository,
         googleClient
     )
 }

@@ -16,3 +16,5 @@ value class Name(val string: String) {
 
 fun UserName.serializable() = Name(string)
 fun TimerName.serializable() = Name(string)
+
+fun Name.internalAsUserName() = UserName(string)

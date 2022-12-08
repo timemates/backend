@@ -36,7 +36,7 @@ class TimerInvitesRepositoryTest {
 
     @BeforeAll
     fun createInvite(): Unit = runBlocking {
-        val userId = users.createUser("User", System.currentTimeMillis())
+        val userId = users.createUser("User", null, System.currentTimeMillis())
         val timerId = timers.createTimer(
             TimerName("Test"),
             Settings.Default,
