@@ -12,7 +12,8 @@ import org.tomadoro.backend.repositories.TimersRepository
 class Timer(
     @SerialName("timer_id") val timerId: TimerId,
     val name: Name,
-    @SerialName("owner_id") val ownerId: UserId,
+    @SerialName("owner_id")
+    val ownerId: UserId,
     val settings: TimerSettings
 )
 

@@ -1,5 +1,6 @@
 package org.tomadoro.backend.repositories
 
+import org.tomadoro.backend.domain.Count
 import org.tomadoro.backend.domain.DateTime
 import org.tomadoro.backend.domain.TimerName
 
@@ -64,7 +65,8 @@ class MockedTimersRepository : TimersRepository {
 
     override suspend fun getMembers(
         timerId: TimersRepository.TimerId,
-        boundaries: IntProgression
+        fromUser: UsersRepository.UserId?,
+        count: Count
     ): Sequence<UsersRepository.UserId> {
         return (timers.getOrNull(timerId.int)?.members ?: emptyList()).asSequence()
     }
@@ -75,7 +77,8 @@ class MockedTimersRepository : TimersRepository {
 
     override suspend fun getTimers(
         userId: UsersRepository.UserId,
-        boundaries: IntProgression
+        fromTimer: TimersRepository.TimerId?,
+        count: Count
     ): Sequence<TimersRepository.Timer> {
         return timers.asSequence().filter { it.members.contains(userId) }
             .mapIndexed { i, e -> e.toOriginal(TimersRepository.TimerId(i)) }

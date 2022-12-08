@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.platform.commons.annotation.Testable
+import org.tomadoro.backend.domain.Count
 import org.tomadoro.backend.domain.DateTime
 import org.tomadoro.backend.domain.TimerName
 import org.tomadoro.backend.repositories.UsersRepository
@@ -51,7 +52,7 @@ class TimersRepositoryTest {
 
         timers.removeTimer(id)
         assert(timers.getTimer(id) == null)
-        assert(timers.getMembers(id, 0..1).none())
+        assert(timers.getMembers(id, null, Count(1)).none())
         assert(timers.getTimerSettings(id) == null)
     }
 
@@ -72,6 +73,6 @@ class TimersRepositoryTest {
         )
 
 
-        assert(!timers.getTimers(UsersRepository.UserId(1), 0..2).none())
+        assert(!timers.getTimers(UsersRepository.UserId(1), null, Count(2)).none())
     }
 }
