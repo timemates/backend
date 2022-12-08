@@ -3,7 +3,6 @@ package org.tomadoro.backend.repositories.integration.datasource
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.tomadoro.backend.repositories.integration.internal.limit
 import org.tomadoro.backend.repositories.integration.tables.TimerParticipantsTable
 import org.tomadoro.backend.repositories.integration.tables.TimersTable
 import kotlin.sequences.Sequence
@@ -20,23 +19,23 @@ class TimersDatabaseDataSource(
 
     suspend fun getUserTimers(
         id: Int,
-        boundary: IntProgression
+        fromTimerId: Int,
+        count: Int
     ): Sequence<Timer> = newSuspendedTransaction(db = database) {
         val userTimers = TimerParticipantsTable
             .select { TimerParticipantsTable.PARTICIPANT_ID eq id }
             .map { it[TimerParticipantsTable.PARTICIPANT_ID] }
 
         val timers = TimersTable.select {
-            TimersTable.TIMER_ID inList userTimers
-        }.limit(boundary).asSequence()
+            TimersTable.TIMER_ID greater fromTimerId and
+                (TimersTable.TIMER_ID inList userTimers)
+        }.limit(count).asSequence()
 
-        val participantsCount by lazy {
-            timers.map {
-                TimerParticipantsTable
-                    .selectParticipantsOf(it[TimersTable.TIMER_ID])
-                    .count().toInt()
-            }.toList()
-        }
+        val participantsCount = timers.map {
+            TimerParticipantsTable
+                .selectParticipantsOf(it[TimersTable.TIMER_ID])
+                .count().toInt()
+        }.toList()
 
         timers.mapIndexed { index, it ->
             it.toTimer(
@@ -98,10 +97,17 @@ class TimersDatabaseDataSource(
         }
     }
 
-    suspend fun getMembersIds(timerId: Int, boundaries: IntProgression): Sequence<Int> {
+    suspend fun getMembersIds(
+        timerId: Int,
+        fromMemberId: Int,
+        count: Int
+    ): Sequence<Int> {
         return newSuspendedTransaction(db = database) {
-            TimerParticipantsTable.select { TimerParticipantsTable.TIMER_ID eq timerId }
-                .limit(boundaries)
+            TimerParticipantsTable.select {
+                TimerParticipantsTable.PARTICIPANT_ID greater fromMemberId and (
+                    TimerParticipantsTable.TIMER_ID eq timerId)
+            }
+                .limit(count)
                 .map { it[TimerParticipantsTable.PARTICIPANT_ID] }
                 .asSequence()
         }
