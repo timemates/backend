@@ -1,5 +1,6 @@
 package org.tomadoro.backend.repositories
 
+import org.tomadoro.backend.domain.Count
 import org.tomadoro.backend.domain.DateTime
 import org.tomadoro.backend.domain.Milliseconds
 import org.tomadoro.backend.domain.TimerName
@@ -18,13 +19,21 @@ interface TimersRepository {
     suspend fun getTimerSettings(timerId: TimerId): Settings?
     suspend fun setTimerSettings(timerId: TimerId, settings: NewSettings)
     suspend fun addMember(userId: UsersRepository.UserId, timerId: TimerId)
-    suspend fun getMembers(timerId: TimerId, boundaries: IntProgression): Sequence<UsersRepository.UserId>
+    suspend fun getMembers(
+        timerId: TimerId,
+        fromUser: UsersRepository.UserId?,
+        count: Count
+    ): Sequence<UsersRepository.UserId>
     suspend fun isMemberOf(userId: UsersRepository.UserId, timerId: TimerId): Boolean
 
     /**
      * Gets all timers where [userId] is participating.
      */
-    suspend fun getTimers(userId: UsersRepository.UserId, boundaries: IntProgression): Sequence<Timer>
+    suspend fun getTimers(
+        userId: UsersRepository.UserId,
+        fromTimer: TimerId?,
+        count: Count
+    ): Sequence<Timer>
 
     data class Settings(
         val workTime: Milliseconds,

@@ -1,5 +1,6 @@
 package org.tomadoro.backend.repositories.integration
 
+import org.tomadoro.backend.domain.Count
 import org.tomadoro.backend.domain.DateTime
 import org.tomadoro.backend.domain.Milliseconds
 import org.tomadoro.backend.domain.TimerName
@@ -49,9 +50,10 @@ class TimersRepository(
 
     override suspend fun getMembers(
         timerId: TimersRepository.TimerId,
-        boundaries: IntProgression
+        fromUser: UsersRepository.UserId?,
+        count: Count
     ): Sequence<UsersRepository.UserId> {
-        return datasource.getMembersIds(timerId.int, boundaries)
+        return datasource.getMembersIds(timerId.int, fromUser?.int ?: 0, count.int)
             .map { UsersRepository.UserId(it) }
     }
 
@@ -61,9 +63,10 @@ class TimersRepository(
 
     override suspend fun getTimers(
         userId: UsersRepository.UserId,
-        boundaries: IntProgression
+        fromTimer: TimersRepository.TimerId?,
+        count: Count
     ): Sequence<TimersRepository.Timer> {
-        return datasource.getUserTimers(userId.int, boundaries).map { it.toExternalTimer() }
+        return datasource.getUserTimers(userId.int, fromTimer?.int ?: 0, count.int).map { it.toExternalTimer() }
     }
 
     private fun TimersDatabaseDataSource.Timer.toExternalTimer(): TimersRepositoryContract.Timer {

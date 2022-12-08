@@ -2,6 +2,7 @@ package org.tomadoro.backend.usecases.timers
 
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
+import org.tomadoro.backend.domain.Count
 import org.tomadoro.backend.domain.TimerName
 import org.tomadoro.backend.providers.MockedCurrentTimeProvider
 import org.tomadoro.backend.repositories.MockedTimersRepository
@@ -31,7 +32,7 @@ class GetTimersUseCaseTest {
 
     @Test
     fun testSuccess() = runBlocking {
-        val result = useCase(UsersRepository.UserId(0), 0..Int.MAX_VALUE)
+        val result = useCase(UsersRepository.UserId(0), null, Count.MAX)
         assert(result is GetTimersUseCase.Result.Success)
         result as GetTimersUseCase.Result.Success
         assert(result.list.size == 1)
