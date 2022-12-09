@@ -2,6 +2,7 @@ package org.tomadoro.backend.repositories.integration.test
 
 import kotlinx.coroutines.runBlocking
 import org.jetbrains.exposed.sql.Database
+import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -74,5 +75,22 @@ class TimersRepositoryTest {
 
 
         assert(!timers.getTimers(UsersRepository.UserId(1), null, Count(2)).none())
+    }
+
+    @Test
+    fun removeParticipantTest(): Unit = runBlocking {
+        val id = timers.createTimer(
+            TimerName("Test"),
+            TimersRepositoryContract.Settings.Default,
+            UsersRepository.UserId(1),
+            DateTime(System.currentTimeMillis())
+        )
+
+        val user = UsersRepository.UserId(2)
+
+        timers.addMember(user, id)
+        timers.removeMember(user, id)
+
+        assertNotNull(timers.getMembers(id, null, Count(2)).singleOrNull())
     }
 }
