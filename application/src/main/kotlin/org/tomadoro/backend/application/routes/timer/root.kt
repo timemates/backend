@@ -22,13 +22,15 @@ fun Route.timersRoot(
     removeInviteUseCase: RemoveInviteUseCase,
     joinSessionUseCase: JoinSessionUseCase,
     leaveSessionUseCase: LeaveSessionUseCase,
-    confirmStartUseCase: ConfirmStartUseCase
+    confirmStartUseCase: ConfirmStartUseCase,
+    leaveTimerUseCase: LeaveTimerUseCase
 ) = route("timers") {
     createTimer(createTimerUseCase)
     getTimers(getTimersUseCase)
     getTimer(getTimerUseCase)
     removeTimer(removeTimerUseCase)
     setSettings(setTimerSettingsUseCase)
+    leaveTimer(leaveTimerUseCase)
 
     timerInvites(
         createInviteUseCase, getInvitesUseCase, joinByInviteUseCase, removeInviteUseCase

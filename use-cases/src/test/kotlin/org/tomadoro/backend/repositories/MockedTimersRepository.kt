@@ -63,6 +63,10 @@ class MockedTimersRepository : TimersRepository {
         timers[timerId.int].members += userId
     }
 
+    override suspend fun removeMember(userId: UsersRepository.UserId, timerId: TimersRepository.TimerId) {
+        timers[timerId.int].members.remove(userId)
+    }
+
     override suspend fun getMembers(
         timerId: TimersRepository.TimerId,
         fromUser: UsersRepository.UserId?,
