@@ -80,4 +80,7 @@ internal val ResultsSerializersModule: SerializersModule = SerializersModule {
     polymorphic(SetAvatarResult::class) {
         subclass(SetAvatarResult.Success::class)
     }
+    polymorphic(LeaveTimerResult::class) {
+        subclass(LeaveTimerResult.Success::class)
+    }
 }

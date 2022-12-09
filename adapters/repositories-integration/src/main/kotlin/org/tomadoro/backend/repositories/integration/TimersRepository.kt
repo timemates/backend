@@ -48,6 +48,10 @@ class TimersRepository(
         datasource.addMember(timerId.int, userId.int)
     }
 
+    override suspend fun removeMember(userId: UsersRepository.UserId, timerId: TimersRepository.TimerId) {
+        datasource.removeMember(userId.int, timerId.int)
+    }
+
     override suspend fun getMembers(
         timerId: TimersRepository.TimerId,
         fromUser: UsersRepository.UserId?,

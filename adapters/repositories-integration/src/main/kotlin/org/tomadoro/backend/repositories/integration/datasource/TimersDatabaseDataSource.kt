@@ -56,6 +56,14 @@ class TimersDatabaseDataSource(
         )
     }
 
+    suspend fun removeMember(userId: Int, timerId: Int) =
+        newSuspendedTransaction(db = database) {
+            TimerParticipantsTable.deleteWhere {
+                TimerParticipantsTable.PARTICIPANT_ID eq userId and
+                    (TimerParticipantsTable.TIMER_ID eq timerId)
+            }
+        }
+
     suspend fun removeTimer(timerId: Int) = newSuspendedTransaction(db = database) {
         TimersTable.deleteWhere { TimersTable.TIMER_ID eq timerId }
     }
