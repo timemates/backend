@@ -4,9 +4,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import org.tomadoro.backend.domain.TimerName
+import org.tomadoro.backend.domain.UserName
 import org.tomadoro.backend.domain.toMilliseconds
 import org.tomadoro.backend.providers.MockedCurrentTimeProvider
 import org.tomadoro.backend.repositories.*
+import kotlin.properties.Delegates
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.time.Duration.Companion.seconds
@@ -16,21 +18,29 @@ class SessionTest {
     private val sessions = MockedSessionsRepository()
     private val schedules = MockedSchedulesRepository(CoroutineScope(Dispatchers.Default))
     private val time = MockedCurrentTimeProvider
-    private val join = JoinSessionUseCase(timers, sessions, schedules, time)
-    private val leave = LeaveSessionUseCase(sessions, schedules)
+    private val usersRepository = MockedUsersRepository()
+    private val join = JoinSessionUseCase(timers, sessions, schedules, time, usersRepository)
+    private val leave = LeaveSessionUseCase(sessions, schedules, usersRepository)
     private val confirm = ConfirmStartUseCase(timers, sessions, time)
 
-    private val owner = UsersRepository.UserId(0)
-    private val user1 = UsersRepository.UserId(1)
-    private val user2 = UsersRepository.UserId(2)
+    private var owner by Delegates.notNull<UsersRepository.UserId>()
+    private var user1 by Delegates.notNull<UsersRepository.UserId>()
+    private var user2 by Delegates.notNull<UsersRepository.UserId>()
 
     // user that does not member of timer
-    private val notJoinedUser = UsersRepository.UserId(3)
+    private var notJoinedUser by Delegates.notNull<UsersRepository.UserId>()
 
     private val timerId = TimersRepository.TimerId(0)
 
     @BeforeTest
     fun init(): Unit = runBlocking {
+        owner = usersRepository.createUser(UserName("1"), creationTime = time.provide())
+        user1 = usersRepository.createUser(UserName("2"), creationTime = time.provide())
+        user2 = usersRepository.createUser(UserName("3"), creationTime = time.provide())
+        notJoinedUser = usersRepository.createUser(
+            UserName("4"), creationTime = time.provide()
+        )
+
         val timerId = timers.createTimer(
             TimerName("test"),
             TimersRepository.Settings.Default,
