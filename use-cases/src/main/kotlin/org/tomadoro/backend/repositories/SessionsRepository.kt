@@ -55,7 +55,28 @@ interface SessionsRepository {
         @JvmInline
         value class TimerStopped(val startsAt: DateTime?) : Update
 
-        object SessionFinished : Update
+        @JvmInline
+        value class UserHasJoined(val user: UsersRepository.User) : Update
+
+        @JvmInline
+        value class UserHasLeft(val user: UsersRepository.User) : Update
+
+        @JvmInline
+        value class NewNote(val note: NotesRepository.Note) : Update
+
+        sealed interface SessionFinished : Update {
+            /**
+             * Marks that client has incompatible version for
+             * enabled features.
+             */
+            object ClientIsTooOld : SessionFinished
+
+            /**
+             * Marks that request is missing some fields, or
+             * they're invalid.
+             */
+            object BadRequest : SessionFinished
+        }
     }
 }
 

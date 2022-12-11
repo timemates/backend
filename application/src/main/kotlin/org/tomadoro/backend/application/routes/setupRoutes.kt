@@ -88,12 +88,18 @@ fun Routing.setupRoutes(
         GetInvitesUseCase(timerInvitesRepository, timersRepository),
         JoinByInviteUseCase(timerInvitesRepository, timersRepository),
         RemoveInviteUseCase(timerInvitesRepository, timersRepository),
-        JoinSessionUseCase(timersRepository, sessionsRepository, schedulesRepository, timeProvider),
-        LeaveSessionUseCase(sessionsRepository, schedulesRepository),
+        JoinSessionUseCase(
+            timersRepository,
+            sessionsRepository,
+            schedulesRepository,
+            timeProvider,
+            usersRepository
+        ),
+        LeaveSessionUseCase(sessionsRepository, schedulesRepository, usersRepository),
         ConfirmStartUseCase(timersRepository, sessionsRepository, timeProvider),
         LeaveTimerUseCase(timersRepository),
         KickTimerUserUseCase(timersRepository),
-        AddNoteUseCase(notesRepository, timersRepository, timeProvider),
+        AddNoteUseCase(notesRepository, timersRepository, timeProvider, sessionsRepository),
         GetNotesUseCase(notesRepository, timersRepository)
     )
 
