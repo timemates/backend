@@ -22,6 +22,9 @@ fun Route.kickUser(kickTimerUserUseCase: KickTimerUserUseCase) =
 
             val result = kickTimerUserUseCase(authorizedId, timerId, userToKick)
 
-
+            call.respond(when(result) {
+                is KickTimerUserUseCase.Result.Success -> KickTimerUserResult.Success
+                is KickTimerUserUseCase.Result.NoAccess -> KickTimerUserResult.NoAccess
+            })
         }
     }
