@@ -23,14 +23,16 @@ fun Route.timerUpdates(
     stopTimerUseCase: StopTimerUseCase
 ) {
     webSocket("track") {
-        authorized { userId ->
+        authorized(
+            onAuthFailed = { sendSerialized(TimerUpdate.SessionFinished.Unauthorized) }
+        ) { userId ->
             val timerId = call.request.queryParameters
                 .getOrFail("timer_id")
                 .toIntOrNull()
                 ?.let { TimerId(it).internal() }
 
             if (timerId == null) {
-                sendSerialized(TimerUpdate.SessionFinished)
+                sendSerialized(TimerUpdate.SessionFinished.BadRequest)
                 close(CloseReason(CloseReason.Codes.VIOLATED_POLICY, "timer_id is invalid."))
                 return@webSocket
             }
@@ -39,7 +41,7 @@ fun Route.timerUpdates(
 
                 val joinResult = joinSessionUseCase(userId, timerId)
                 if (joinResult !is JoinSessionUseCase.Result.Success) {
-                    sendSerialized(TimerUpdate.SessionFinished)
+                    sendSerialized(TimerUpdate.SessionFinished.BadRequest)
                     close(CloseReason(CloseReason.Codes.GOING_AWAY, "Join failed."))
                     return@webSocket
                 }

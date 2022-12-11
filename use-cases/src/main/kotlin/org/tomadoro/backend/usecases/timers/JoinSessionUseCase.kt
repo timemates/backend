@@ -10,7 +10,8 @@ class JoinSessionUseCase(
     private val timers: TimersRepository,
     private val sessions: SessionsRepository,
     private val schedules: SchedulesRepository,
-    private val time: CurrentTimeProvider
+    private val time: CurrentTimeProvider,
+    private val users: UsersRepository
 ) {
     suspend operator fun invoke(
         userId: UsersRepository.UserId,
@@ -19,6 +20,10 @@ class JoinSessionUseCase(
         if (!timers.isMemberOf(userId, timerId))
             return Result.NotFound
 
+        sessions.sendUpdate(
+            timerId,
+            SessionsRepository.Update.UserHasJoined(users.getUser(userId)!!)
+        )
         sessions.addMember(timerId, userId)
 
         val updates = sessions.updatesOf(timerId)

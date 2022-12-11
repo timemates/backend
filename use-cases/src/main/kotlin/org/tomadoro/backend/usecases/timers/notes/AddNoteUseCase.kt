@@ -2,13 +2,15 @@ package org.tomadoro.backend.usecases.timers.notes
 
 import org.tomadoro.backend.providers.CurrentTimeProvider
 import org.tomadoro.backend.repositories.NotesRepository
+import org.tomadoro.backend.repositories.SessionsRepository
 import org.tomadoro.backend.repositories.TimersRepository
 import org.tomadoro.backend.repositories.UsersRepository
 
 class AddNoteUseCase(
     private val notesRepository: NotesRepository,
     private val timersRepository: TimersRepository,
-    private val timeProvider: CurrentTimeProvider
+    private val timeProvider: CurrentTimeProvider,
+    private val sessionsRepository: SessionsRepository
 ) {
     suspend operator fun invoke(
         userId: UsersRepository.UserId,
@@ -21,9 +23,22 @@ class AddNoteUseCase(
             return Result.NoAccess
         }
 
-        return Result.Success(
-            notesRepository.create(timerId, userId, message, timeProvider.provide())
+        val time = timeProvider.provide()
+
+        val noteId = notesRepository.create(timerId, userId, message, timeProvider.provide())
+        sessionsRepository.sendUpdate(
+            timerId,
+            SessionsRepository.Update.NewNote(
+                NotesRepository.Note(
+                    noteId,
+                    userId,
+                    message,
+                    time
+                )
+            )
         )
+
+        return Result.Success(noteId)
     }
 
     sealed interface Result {
