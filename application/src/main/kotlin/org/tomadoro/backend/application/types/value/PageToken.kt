@@ -5,3 +5,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 @JvmInline
 value class PageToken(val string: String)
+
+fun org.tomadoro.backend.domain.PageToken.serializable() = PageToken(string)
