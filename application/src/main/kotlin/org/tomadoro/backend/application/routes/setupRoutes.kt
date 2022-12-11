@@ -91,7 +91,8 @@ fun Routing.setupRoutes(
         JoinSessionUseCase(timersRepository, sessionsRepository, schedulesRepository, timeProvider),
         LeaveSessionUseCase(sessionsRepository, schedulesRepository),
         ConfirmStartUseCase(timersRepository, sessionsRepository, timeProvider),
-        LeaveTimerUseCase(timersRepository)
+        LeaveTimerUseCase(timersRepository),
+        KickTimerUserUseCase(timersRepository)
     )
 
     usersRoot(
