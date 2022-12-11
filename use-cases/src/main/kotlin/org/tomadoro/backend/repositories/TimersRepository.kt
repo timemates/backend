@@ -25,7 +25,7 @@ interface TimersRepository {
         timerId: TimerId,
         fromUser: UsersRepository.UserId?,
         count: Count
-    ): Sequence<UsersRepository.UserId>
+    ): List<UsersRepository.UserId>
     suspend fun isMemberOf(userId: UsersRepository.UserId, timerId: TimerId): Boolean
 
     /**
