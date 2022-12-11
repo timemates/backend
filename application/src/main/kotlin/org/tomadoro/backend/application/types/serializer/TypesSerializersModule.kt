@@ -16,7 +16,9 @@ internal val TypesSerializersModule = SerializersModule {
     polymorphic(TimerUpdate::class) {
         subclass(TimerUpdate.TimerStarted::class)
         subclass(TimerUpdate.TimerStopped::class)
-        subclass(TimerUpdate.SessionFailed::class)
+        subclass(TimerUpdate.SessionFinished.ClientIsTooOld::class)
+        subclass(TimerUpdate.SessionFinished.Unauthorized::class)
+        subclass(TimerUpdate.SessionFinished.BadRequest::class)
         subclass(TimerUpdate.SessionFinished::class)
         subclass(TimerUpdate.Settings::class)
         subclass(TimerUpdate.Confirmation::class)
