@@ -54,7 +54,8 @@ class MockedTimersRepository : TimersRepository {
                 bigRestEnabled = settings.bigRestEnabled ?: it.bigRestEnabled,
                 bigRestPer = settings.bigRestPer ?: it.bigRestPer,
                 isEveryoneCanPause = settings.isEveryoneCanPause ?: it.isEveryoneCanPause,
-                isConfirmationRequired = settings.isConfirmationRequired ?: it.isConfirmationRequired
+                isConfirmationRequired = settings.isConfirmationRequired ?: it.isConfirmationRequired,
+                isNotesEnabled = settings.isNotesEnabled ?: it.isNotesEnabled
             )
         }
     }

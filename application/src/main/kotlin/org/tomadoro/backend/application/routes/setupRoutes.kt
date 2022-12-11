@@ -16,10 +16,7 @@ import org.tomadoro.backend.providers.SecureAccessTokenProvider
 import org.tomadoro.backend.providers.SecureRefreshTokenProvider
 import org.tomadoro.backend.providers.SystemCurrentTimeProvider
 import org.tomadoro.backend.repositories.integration.*
-import org.tomadoro.backend.repositories.integration.datasource.AuthorizationsDataSource
-import org.tomadoro.backend.repositories.integration.datasource.TimerInvitesDataSource
-import org.tomadoro.backend.repositories.integration.datasource.TimersDatabaseDataSource
-import org.tomadoro.backend.repositories.integration.datasource.UsersDatabaseDataSource
+import org.tomadoro.backend.repositories.integration.datasource.*
 import org.tomadoro.backend.usecases.auth.AuthViaGoogleUseCase
 import org.tomadoro.backend.usecases.auth.GetUserIdByAccessTokenUseCase
 import org.tomadoro.backend.usecases.auth.RefreshTokenUseCase
@@ -29,6 +26,8 @@ import org.tomadoro.backend.usecases.timers.invites.CreateInviteUseCase
 import org.tomadoro.backend.usecases.timers.invites.GetInvitesUseCase
 import org.tomadoro.backend.usecases.timers.invites.JoinByInviteUseCase
 import org.tomadoro.backend.usecases.timers.invites.RemoveInviteUseCase
+import org.tomadoro.backend.usecases.timers.notes.AddNoteUseCase
+import org.tomadoro.backend.usecases.timers.notes.GetNotesUseCase
 import org.tomadoro.backend.usecases.users.EditUserUseCase
 import org.tomadoro.backend.usecases.users.GetUsersUseCase
 import org.tomadoro.backend.usecases.users.SetAvatarUseCase
@@ -45,6 +44,7 @@ fun Routing.setupRoutes(
     sessionsRepository: SessionsRepository,
     schedulesRepository: SchedulesRepository,
     filesRepository: FilesRepository,
+    notesRepository: NotesRepository,
     googleClient: GoogleClient
 ) {
     val timeProvider =
@@ -92,7 +92,9 @@ fun Routing.setupRoutes(
         LeaveSessionUseCase(sessionsRepository, schedulesRepository),
         ConfirmStartUseCase(timersRepository, sessionsRepository, timeProvider),
         LeaveTimerUseCase(timersRepository),
-        KickTimerUserUseCase(timersRepository)
+        KickTimerUserUseCase(timersRepository),
+        AddNoteUseCase(notesRepository, timersRepository, timeProvider),
+        GetNotesUseCase(notesRepository, timersRepository)
     )
 
     usersRoot(
@@ -114,7 +116,7 @@ fun Routing.setupRoutesWithDatabase(
     val linkedSocialsRepository = LinkedSocialsRepository(database)
     val timerInvitesRepository = TimerInvitesRepository(TimerInvitesDataSource(database))
     val timersRepository = TimersRepository(TimersDatabaseDataSource(database))
-    val usersRepository = UsersRepository(UsersDatabaseDataSource(database))
+    val usersRepository = UsersRepository(DbUsersDatabaseDataSource(database))
     val schedulesRepository = SchedulesRepository(
         CoroutineScope(Dispatchers.Default + SupervisorJob())
     )
@@ -126,6 +128,8 @@ fun Routing.setupRoutesWithDatabase(
 
     val filesRepository = FilesRepository(Path(rootFilesPath))
 
+    val notesRepository = NotesRepository(DbTimerNotesDatasource(database))
+
     setupRoutes(
         authRepository,
         linkedSocialsRepository,
@@ -135,6 +139,7 @@ fun Routing.setupRoutesWithDatabase(
         sessionsRepository,
         schedulesRepository,
         filesRepository,
+        notesRepository,
         googleClient
     )
 }

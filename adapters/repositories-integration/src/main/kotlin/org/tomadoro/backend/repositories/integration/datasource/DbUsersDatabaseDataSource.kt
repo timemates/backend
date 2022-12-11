@@ -5,7 +5,7 @@ import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransacti
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.tomadoro.backend.repositories.integration.tables.UsersTable
 
-class UsersDatabaseDataSource(
+class DbUsersDatabaseDataSource(
     private val database: Database
 ) {
 
