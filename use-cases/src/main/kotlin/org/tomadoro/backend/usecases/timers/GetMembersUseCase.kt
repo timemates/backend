@@ -1,6 +1,7 @@
 package org.tomadoro.backend.usecases.timers
 
 import org.tomadoro.backend.domain.Count
+import org.tomadoro.backend.domain.PageToken
 import org.tomadoro.backend.repositories.TimersRepository
 import org.tomadoro.backend.repositories.UsersRepository
 import java.util.Base64
@@ -12,13 +13,13 @@ class GetMembersUseCase(
     suspend operator fun invoke(
         userId: UsersRepository.UserId,
         timerId: TimersRepository.TimerId,
-        pageToken: String?,
+        pageToken: PageToken?,
         count: Count
     ): Result {
         val lastId = if(pageToken == null)
             null else
                 String(
-            Base64.getDecoder().decode(pageToken)
+            Base64.getDecoder().decode(pageToken.string)
         ).toIntOrNull() ?: return Result.BadPageToken
 
         if(!timersRepository.isMemberOf(userId, timerId))
@@ -33,15 +34,15 @@ class GetMembersUseCase(
 
         return Result.Success(
             membersFullInfo, Base64.getEncoder().encode(
-                (members.lastOrNull()?.int ?: lastId).toString().toByteArray()
-            ).let { String(it) }
+                (members.lastOrNull()?.int ?: lastId ?: 0).toString().toByteArray()
+            ).let { PageToken(String(it)) }
         )
     }
 
     sealed interface Result {
         class Success(
             val list: List<UsersRepository.User>,
-            val nextPageToken: String
+            val nextPageToken: PageToken
         ) : Result
 
         object BadPageToken : Result
