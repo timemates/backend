@@ -112,6 +112,7 @@ class TimersDatabaseDataSource(
                 TimerParticipantsTable.PARTICIPANT_ID greater fromMemberId and (
                     TimerParticipantsTable.TIMER_ID eq timerId)
             }
+                .orderBy(TimerParticipantsTable.PARTICIPANT_ID, SortOrder.ASC)
                 .limit(count)
                 .map { it[TimerParticipantsTable.PARTICIPANT_ID] }
                 .asSequence()

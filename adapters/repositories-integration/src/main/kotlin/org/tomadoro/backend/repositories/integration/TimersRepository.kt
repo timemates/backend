@@ -56,9 +56,10 @@ class TimersRepository(
         timerId: TimersRepository.TimerId,
         fromUser: UsersRepository.UserId?,
         count: Count
-    ): Sequence<UsersRepository.UserId> {
+    ): List<UsersRepository.UserId> {
         return datasource.getMembersIds(timerId.int, fromUser?.int ?: 0, count.int)
             .map { UsersRepository.UserId(it) }
+            .toList()
     }
 
     override suspend fun isMemberOf(userId: UsersRepository.UserId, timerId: TimersRepository.TimerId): Boolean {

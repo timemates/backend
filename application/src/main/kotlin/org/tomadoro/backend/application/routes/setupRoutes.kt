@@ -100,7 +100,8 @@ fun Routing.setupRoutes(
         LeaveTimerUseCase(timersRepository),
         KickTimerUserUseCase(timersRepository),
         AddNoteUseCase(notesRepository, timersRepository, timeProvider, sessionsRepository),
-        GetNotesUseCase(notesRepository, timersRepository)
+        GetNotesUseCase(notesRepository, timersRepository),
+        GetMembersUseCase(timersRepository, usersRepository)
     )
 
     usersRoot(
