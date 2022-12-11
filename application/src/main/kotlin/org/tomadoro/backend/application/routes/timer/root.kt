@@ -29,7 +29,8 @@ fun Route.timersRoot(
     leaveTimerUseCase: LeaveTimerUseCase,
     kickTimerUserUseCase: KickTimerUserUseCase,
     addNoteUseCase: AddNoteUseCase,
-    getNotesUseCase: GetNotesUseCase
+    getNotesUseCase: GetNotesUseCase,
+    getMembersUseCase: GetMembersUseCase
 ) = route("timers") {
     createTimer(createTimerUseCase)
     getTimers(getTimersUseCase)
@@ -38,6 +39,7 @@ fun Route.timersRoot(
     setSettings(setTimerSettingsUseCase)
     leaveTimer(leaveTimerUseCase)
     kickUser(kickTimerUserUseCase)
+    getMembers(getMembersUseCase)
 
     timerNotesRoot(addNoteUseCase, getNotesUseCase)
 

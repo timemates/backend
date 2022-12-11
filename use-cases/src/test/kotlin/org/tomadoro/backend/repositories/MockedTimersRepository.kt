@@ -72,8 +72,8 @@ class MockedTimersRepository : TimersRepository {
         timerId: TimersRepository.TimerId,
         fromUser: UsersRepository.UserId?,
         count: Count
-    ): Sequence<UsersRepository.UserId> {
-        return (timers.getOrNull(timerId.int)?.members ?: emptyList()).asSequence()
+    ): List<UsersRepository.UserId> {
+        return timers.getOrNull(timerId.int)?.members ?: emptyList()
     }
 
     override suspend fun isMemberOf(userId: UsersRepository.UserId, timerId: TimersRepository.TimerId): Boolean {
