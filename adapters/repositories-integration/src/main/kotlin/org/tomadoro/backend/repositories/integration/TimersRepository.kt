@@ -85,7 +85,7 @@ class TimersRepository(
     private fun TimersDatabaseDataSource.Timer.Settings.toExternalSettings(): TimersRepositoryContract.Settings {
         return TimersRepositoryContract.Settings(
             Milliseconds(workTime), Milliseconds(restTime), Milliseconds(bigRestTime), bigRestEnabled,
-            bigRestPer, isEveryoneCanPause, isConfirmationRequired
+            bigRestPer, isEveryoneCanPause, isConfirmationRequired, isNotesEnabled
         )
     }
 
@@ -97,7 +97,8 @@ class TimersRepository(
             bigRestEnabled,
             bigRestPer,
             isEveryoneCanPause,
-            isConfirmationRequired
+            isConfirmationRequired,
+            isNotesEnabled
         )
     }
 
@@ -109,7 +110,8 @@ class TimersRepository(
             bigRestEnabled,
             bigRestPer,
             isEveryoneCanPause,
-            isConfirmationRequired
+            isConfirmationRequired,
+            isNotesEnabled
         )
     }
 }

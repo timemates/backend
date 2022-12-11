@@ -10,7 +10,7 @@ import org.tomadoro.backend.domain.ShortBio
 import org.tomadoro.backend.domain.UserName
 import org.tomadoro.backend.repositories.integration.UsersRepository
 import org.tomadoro.backend.repositories.UsersRepository.User.Patch
-import org.tomadoro.backend.repositories.integration.datasource.UsersDatabaseDataSource
+import org.tomadoro.backend.repositories.integration.datasource.DbUsersDatabaseDataSource
 
 @Testable
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -18,7 +18,7 @@ class UsersRepositoryTest {
     private val database = Database.connect(
         "jdbc:h2:mem:regular;DB_CLOSE_DELAY=-1;", "org.h2.Driver"
     )
-    private val usersRepository = UsersRepository(UsersDatabaseDataSource(database))
+    private val usersRepository = UsersRepository(DbUsersDatabaseDataSource(database))
 
     @Test
     fun testUserCreationAndGet(): Unit = runBlocking {

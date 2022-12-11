@@ -18,7 +18,7 @@ import org.tomadoro.backend.repositories.integration.TimerInvitesRepository
 import org.tomadoro.backend.repositories.integration.TimersRepository
 import org.tomadoro.backend.repositories.integration.datasource.TimerInvitesDataSource
 import org.tomadoro.backend.repositories.integration.datasource.TimersDatabaseDataSource
-import org.tomadoro.backend.repositories.integration.datasource.UsersDatabaseDataSource
+import org.tomadoro.backend.repositories.integration.datasource.DbUsersDatabaseDataSource
 import kotlin.properties.Delegates
 
 @Testable
@@ -29,7 +29,7 @@ class TimerInvitesRepositoryTest {
     )
     private var timerId: TimerId by Delegates.notNull()
 
-    private val users = UsersDatabaseDataSource(database)
+    private val users = DbUsersDatabaseDataSource(database)
     private val timers = TimersRepository(TimersDatabaseDataSource(database))
     private val invitesDs = TimerInvitesDataSource(database)
     private val invites = TimerInvitesRepository(invitesDs)

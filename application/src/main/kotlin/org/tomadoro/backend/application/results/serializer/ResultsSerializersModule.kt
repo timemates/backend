@@ -87,4 +87,12 @@ internal val ResultsSerializersModule: SerializersModule = SerializersModule {
         subclass(KickTimerUserResult.Success::class)
         subclass(KickTimerUserResult.NoAccess::class)
     }
+    polymorphic(AddNoteResult::class) {
+        subclass(AddNoteResult.Success::class)
+        subclass(AddNoteResult.NoAccess::class)
+    }
+    polymorphic(GetNotesResult::class) {
+        subclass(GetNotesResult.Success::class)
+        subclass(GetNotesResult.NoAccess::class)
+    }
 }

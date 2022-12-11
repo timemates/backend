@@ -1,9 +1,11 @@
 package org.tomadoro.backend.application.routes.timer
 
 import io.ktor.server.application.*
+import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
 import org.tomadoro.backend.application.plugins.authorized
+import org.tomadoro.backend.application.results.KickTimerUserResult
 import org.tomadoro.backend.repositories.TimersRepository
 import org.tomadoro.backend.repositories.UsersRepository
 import org.tomadoro.backend.usecases.timers.KickTimerUserUseCase

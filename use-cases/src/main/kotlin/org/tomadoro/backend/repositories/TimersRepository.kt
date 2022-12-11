@@ -44,7 +44,8 @@ interface TimersRepository {
         val bigRestEnabled: Boolean,
         val bigRestPer: Int,
         val isEveryoneCanPause: Boolean,
-        val isConfirmationRequired: Boolean
+        val isConfirmationRequired: Boolean,
+        val isNotesEnabled: Boolean
     ) {
         companion object {
             val Default = Settings(
@@ -54,7 +55,8 @@ interface TimersRepository {
                 bigRestEnabled = true,
                 bigRestPer = 4,
                 isEveryoneCanPause = false,
-                isConfirmationRequired = false
+                isConfirmationRequired = false,
+                isNotesEnabled = true
             )
         }
     }
@@ -66,7 +68,8 @@ interface TimersRepository {
         val bigRestEnabled: Boolean? = null,
         val bigRestPer: Int? = null,
         val isEveryoneCanPause: Boolean? = null,
-        val isConfirmationRequired: Boolean? = null
+        val isConfirmationRequired: Boolean? = null,
+        val isNotesEnabled: Boolean? = null
     )
 
     data class Timer(

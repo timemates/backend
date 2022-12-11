@@ -31,29 +31,22 @@ class TimersDatabaseDataSource(
                 (TimersTable.TIMER_ID inList userTimers)
         }.limit(count).asSequence()
 
-        val participantsCount = timers.map {
-            TimerParticipantsTable
-                .selectParticipantsOf(it[TimersTable.TIMER_ID])
-                .count().toInt()
-        }.toList()
+//        val participantsCount = timers.map {
+//            TimerParticipantsTable
+//                .selectParticipantsOf(it[TimersTable.TIMER_ID])
+//                .count().toInt()
+//        }.toList()
 
-        timers.mapIndexed { index, it ->
-            it.toTimer(
-                participantsCount[index]
-            )
+        timers.map {
+            it.toTimer()
         }.toList().asSequence()
     }
 
     suspend fun getTimerById(id: Int): Timer? = newSuspendedTransaction(db = database) {
 
-        val participantsCount = TimerParticipantsTable.selectParticipantsOf(id)
-            .count().toInt()
-
         TimersTable.select {
             TimersTable.TIMER_ID eq id
-        }.singleOrNull()?.toTimer(
-            participantsCount
-        )
+        }.singleOrNull()?.toTimer()
     }
 
     suspend fun removeMember(userId: Int, timerId: Int) =
@@ -92,6 +85,10 @@ class TimersDatabaseDataSource(
                 it[REST_TIME] = patch.restTime
             if (patch.isEveryoneCanPause != null)
                 it[IS_EVERYONE_CAN_PAUSE] = patch.isEveryoneCanPause
+            if (patch.isConfirmationRequired != null)
+                it[IS_CONFIRMATION_REQUIRED] = patch.isConfirmationRequired
+            if (patch.isNotesEnabled != null)
+                it[IS_NOTES_ENABLED] = patch.isNotesEnabled
         }
     }
 
@@ -145,7 +142,8 @@ class TimersDatabaseDataSource(
             it[BIG_REST_PER] = settings.bigRestPer
             it[IS_EVERYONE_CAN_PAUSE] = settings.isEveryoneCanPause
             it[IS_CONFIRMATION_REQUIRED] = settings.isConfirmationRequired
-        }.resultedValues!!.single().toTimer(1).id
+            it[IS_NOTES_ENABLED] = settings.isNotesEnabled
+        }.resultedValues!!.single().toTimer().id
 
         TimerParticipantsTable.insert {
             it[TIMER_ID] = id
@@ -159,7 +157,6 @@ class TimersDatabaseDataSource(
         val id: Int,
         val timerName: String,
         val settings: Settings,
-        val participantsCount: Int,
         val ownerId: Int
     ) {
         class Settings(
@@ -169,7 +166,8 @@ class TimersDatabaseDataSource(
             val bigRestEnabled: Boolean,
             val bigRestPer: Int,
             val isEveryoneCanPause: Boolean,
-            val isConfirmationRequired: Boolean
+            val isConfirmationRequired: Boolean,
+            val isNotesEnabled: Boolean
         ) {
             class Patchable(
                 val workTime: Long? = null,
@@ -178,7 +176,8 @@ class TimersDatabaseDataSource(
                 val bigRestEnabled: Boolean? = null,
                 val bigRestPer: Int? = null,
                 val isEveryoneCanPause: Boolean? = null,
-                val isConfirmationRequired: Boolean? = null
+                val isConfirmationRequired: Boolean? = null,
+                val isNotesEnabled: Boolean? = null
             )
         }
     }
@@ -191,16 +190,16 @@ class TimersDatabaseDataSource(
             get(TimersTable.BIG_REST_TIME_ENABLED),
             get(TimersTable.BIG_REST_PER),
             get(TimersTable.IS_EVERYONE_CAN_PAUSE),
-            get(TimersTable.IS_CONFIRMATION_REQUIRED)
+            get(TimersTable.IS_CONFIRMATION_REQUIRED),
+            get(TimersTable.IS_NOTES_ENABLED)
         )
     }
 
-    private fun ResultRow.toTimer(participantsCount: Int): Timer {
+    private fun ResultRow.toTimer(): Timer {
         return Timer(
             get(TimersTable.TIMER_ID),
             get(TimersTable.TIMER_NAME),
             toSettings(),
-            participantsCount, /*(TimerParticipantsTable, "participants_count", IntegerColumnType()) */
             get(TimersTable.OWNER_ID)
         )
     }

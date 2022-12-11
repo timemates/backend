@@ -15,7 +15,8 @@ data class TimerSettings(
     @SerialName("big_rest_time") val bigRestTime: Milliseconds = Milliseconds(600000),
     @SerialName("is_big_rest_enabled") val isBigRestEnabled: Boolean = true,
     @SerialName("big_rest_per") val bigRestPer: Regularity = Regularity(4),
-    @SerialName("is_everyone_can_pause") val isEveryoneCanPause: Boolean = false
+    @SerialName("is_everyone_can_pause") val isEveryoneCanPause: Boolean = false,
+    @SerialName("is_notes_enabled") val isNotesEnabled: Boolean
 ) {
     @Serializable
     class Patch(
@@ -24,13 +25,14 @@ data class TimerSettings(
         @SerialName("big_rest_time") val bigRestTime: Milliseconds? = null,
         @SerialName("is_big_rest_enabled") val isBigRestEnabled: Boolean? = null,
         @SerialName("big_rest_per") val bigRestPer: Regularity? = null,
-        @SerialName("is_everyone_can_pause") val isEveryoneCanPause: Boolean? = null
+        @SerialName("is_everyone_can_pause") val isEveryoneCanPause: Boolean? = null,
+        @SerialName("is_notes_enabled") val isNotesEnabled: Boolean? = null
     )
 }
 
 fun TimersRepository.Settings.serializable() = TimerSettings(
     workTime.serializable(), restTime.serializable(), bigRestTime.serializable(),
-    bigRestEnabled, Regularity(bigRestPer), isEveryoneCanPause
+    bigRestEnabled, Regularity(bigRestPer), isEveryoneCanPause, isNotesEnabled
 )
 
 fun TimersRepository.NewSettings.serializable(): TimerSettings.Patch =
@@ -50,7 +52,8 @@ fun TimerSettings.internal() = TimersRepository.Settings(
     isBigRestEnabled,
     bigRestPer.int,
     true,
-    isEveryoneCanPause
+    isEveryoneCanPause,
+    isNotesEnabled
 )
 
 fun TimerSettings.Patch.internal() = TimersRepository.NewSettings(

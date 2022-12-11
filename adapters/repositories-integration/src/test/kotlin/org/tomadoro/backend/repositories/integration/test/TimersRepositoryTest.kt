@@ -13,7 +13,7 @@ import org.tomadoro.backend.domain.TimerName
 import org.tomadoro.backend.repositories.UsersRepository
 import org.tomadoro.backend.repositories.integration.TimersRepository
 import org.tomadoro.backend.repositories.integration.datasource.TimersDatabaseDataSource
-import org.tomadoro.backend.repositories.integration.datasource.UsersDatabaseDataSource
+import org.tomadoro.backend.repositories.integration.datasource.DbUsersDatabaseDataSource
 import org.tomadoro.backend.repositories.TimersRepository as TimersRepositoryContract
 
 @Testable
@@ -23,7 +23,7 @@ class TimersRepositoryTest {
         "jdbc:h2:mem:regular;DB_CLOSE_DELAY=-1;", "org.h2.Driver"
     )
     private val timers = TimersRepository(TimersDatabaseDataSource(database))
-    private val users = UsersDatabaseDataSource(database)
+    private val users = DbUsersDatabaseDataSource(database)
 
     @BeforeAll
     fun createUser(): Unit = runBlocking {

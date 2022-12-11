@@ -5,11 +5,11 @@ import org.tomadoro.backend.domain.ShortBio
 import org.tomadoro.backend.domain.UserName
 import org.tomadoro.backend.repositories.FilesRepository
 import org.tomadoro.backend.repositories.UsersRepository
-import org.tomadoro.backend.repositories.integration.datasource.UsersDatabaseDataSource
+import org.tomadoro.backend.repositories.integration.datasource.DbUsersDatabaseDataSource
 import org.tomadoro.backend.repositories.UsersRepository as UsersRepositoryContract
 
 class UsersRepository(
-    private val databaseDataSource: UsersDatabaseDataSource
+    private val databaseDataSource: DbUsersDatabaseDataSource
 ) : UsersRepositoryContract {
 
     override suspend fun createUser(
@@ -39,9 +39,9 @@ class UsersRepository(
     }
 
     private fun UsersRepository.User.Patch.toInternal() =
-        UsersDatabaseDataSource.User.Patch(name?.string, shortBio?.string, avatarFileId?.string)
+        DbUsersDatabaseDataSource.User.Patch(name?.string, shortBio?.string, avatarFileId?.string)
 
-    private fun UsersDatabaseDataSource.User.toExternalUser(): UsersRepositoryContract.User {
+    private fun DbUsersDatabaseDataSource.User.toExternalUser(): UsersRepositoryContract.User {
         return UsersRepositoryContract.User(
             UsersRepository.UserId(id),
             UserName(userName),
