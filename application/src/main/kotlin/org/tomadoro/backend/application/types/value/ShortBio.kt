@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 @JvmInline
 value class ShortBio(val string: String)
 
-fun org.tomadoro.backend.domain.ShortBio.serializable() = ShortBio(string)
-fun ShortBio.internal() = org.tomadoro.backend.domain.ShortBio(string)
+fun org.tomadoro.backend.domain.value.ShortBio.serializable() = ShortBio(string)
+fun ShortBio.internal() = org.tomadoro.backend.domain.value.ShortBio(string)

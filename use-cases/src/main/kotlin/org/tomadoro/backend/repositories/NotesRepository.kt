@@ -1,7 +1,7 @@
 package org.tomadoro.backend.repositories
 
-import org.tomadoro.backend.domain.Count
-import org.tomadoro.backend.domain.DateTime
+import org.tomadoro.backend.domain.value.Count
+import org.tomadoro.backend.domain.value.DateTime
 
 interface NotesRepository {
     suspend fun create(

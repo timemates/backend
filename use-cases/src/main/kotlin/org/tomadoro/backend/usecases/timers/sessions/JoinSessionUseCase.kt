@@ -1,8 +1,8 @@
-package org.tomadoro.backend.usecases.timers
+package org.tomadoro.backend.usecases.timers.sessions
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
-import org.tomadoro.backend.domain.toDuration
+import org.tomadoro.backend.domain.value.toDuration
 import org.tomadoro.backend.providers.CurrentTimeProvider
 import org.tomadoro.backend.repositories.*
 

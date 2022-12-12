@@ -14,6 +14,8 @@ import org.tomadoro.backend.application.types.serializable
 import org.tomadoro.backend.application.types.value.TimerId
 import org.tomadoro.backend.application.types.value.internal
 import org.tomadoro.backend.usecases.timers.*
+import org.tomadoro.backend.usecases.timers.sessions.JoinSessionUseCase
+import org.tomadoro.backend.usecases.timers.sessions.LeaveSessionUseCase
 
 fun Route.timerUpdates(
     joinSessionUseCase: JoinSessionUseCase,

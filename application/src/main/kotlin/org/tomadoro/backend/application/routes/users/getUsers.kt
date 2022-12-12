@@ -9,7 +9,7 @@ import org.tomadoro.backend.application.types.serializable
 import org.tomadoro.backend.repositories.UsersRepository
 import org.tomadoro.backend.usecases.users.GetUsersUseCase
 
-fun Route.getUsers(getUsersUseCase: GetUsersUseCase) = get("all") {
+fun Route.getUsers(getUsersUseCase: GetUsersUseCase) = get("getUsersBatched") {
     val ids = call.request.queryParameters.getOrFail("ids")
         .split(",")
         .map { UsersRepository.UserId(it.toInt()) }

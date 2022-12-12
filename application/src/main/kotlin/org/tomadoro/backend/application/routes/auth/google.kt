@@ -10,7 +10,7 @@ import org.tomadoro.backend.application.types.value.serializable
 import org.tomadoro.backend.usecases.auth.AuthViaGoogleUseCase
 
 fun Route.authViaGoogle(authViaGoogle: AuthViaGoogleUseCase) {
-    post("google") {
+    post("authViaGoogle") {
         val code = call.request.queryParameters.getOrFail("code")
         val response: SignWithGoogleResult =
             when (val result = authViaGoogle(code)) {

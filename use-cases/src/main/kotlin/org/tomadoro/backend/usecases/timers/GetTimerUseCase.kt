@@ -1,6 +1,5 @@
 package org.tomadoro.backend.usecases.timers
 
-import org.tomadoro.backend.domain.TimerName
 import org.tomadoro.backend.repositories.SessionsRepository
 import org.tomadoro.backend.repositories.TimersRepository
 import org.tomadoro.backend.repositories.UsersRepository

@@ -2,10 +2,11 @@ package org.tomadoro.backend.usecases.timers.invites
 
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
-import org.tomadoro.backend.domain.TimerName
+import org.tomadoro.backend.domain.value.TimerName
 import org.tomadoro.backend.providers.MockedCodeProvider
 import org.tomadoro.backend.providers.MockedCurrentTimeProvider
 import org.tomadoro.backend.repositories.*
+import org.tomadoro.backend.usecases.timers.members.invites.RemoveInviteUseCase
 
 class RemoveInviteUseCaseTest {
     private val invitesRepo = MockedTimerInvitesRepository()

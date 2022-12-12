@@ -1,6 +1,6 @@
 package org.tomadoro.backend.repositories.integration
 
-import org.tomadoro.backend.domain.DateTime
+import org.tomadoro.backend.domain.value.DateTime
 import org.tomadoro.backend.repositories.AuthorizationsRepository
 import org.tomadoro.backend.repositories.UsersRepository
 import org.tomadoro.backend.repositories.integration.datasource.AuthorizationsDataSource

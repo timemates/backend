@@ -9,7 +9,7 @@ import org.tomadoro.backend.application.results.CreateTimerResult
 import org.tomadoro.backend.application.types.TimerSettings
 import org.tomadoro.backend.application.types.internal
 import org.tomadoro.backend.application.types.value.serializable
-import org.tomadoro.backend.domain.TimerName
+import org.tomadoro.backend.domain.value.TimerName
 import org.tomadoro.backend.usecases.timers.CreateTimerUseCase
 
 @Serializable
