@@ -78,8 +78,8 @@ fun Routing.setupRoutes(
             timersRepository,
             timeProvider
         ),
-        GetTimersUseCase(timersRepository),
-        GetTimerUseCase(timersRepository),
+        GetTimersUseCase(timersRepository, sessionsRepository),
+        GetTimerUseCase(timersRepository, sessionsRepository),
         RemoveTimerUseCase(timersRepository),
         SetTimerSettingsUseCase(timersRepository, sessionsRepository),
         StartTimerUseCase(timersRepository, timeProvider, sessionsRepository),
@@ -129,10 +129,7 @@ fun Routing.setupRoutesWithDatabase(
         CoroutineScope(Dispatchers.Default + SupervisorJob())
     )
     val sessionsRepository =
-        SessionsRepository(
-            timersRepository,
-            CoroutineScope(Dispatchers.Default + SupervisorJob())
-        )
+        SessionsRepository()
 
     val filesRepository = FilesRepository(Path(rootFilesPath))
 

@@ -2,18 +2,16 @@ package org.tomadoro.backend.usecases.timers
 
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
-import org.tomadoro.backend.domain.Milliseconds
 import org.tomadoro.backend.domain.TimerName
 import org.tomadoro.backend.providers.MockedCurrentTimeProvider
-import org.tomadoro.backend.repositories.MockedSessionsRepository
 import org.tomadoro.backend.repositories.MockedTimersRepository
 import org.tomadoro.backend.repositories.TimersRepository
 import org.tomadoro.backend.repositories.UsersRepository
 import kotlin.test.BeforeTest
 
-class SetTimerSettingsUseCaseTest {
+class RemoveDetailedTimerUseCaseTest {
     private val repository = MockedTimersRepository()
-    private val useCase = SetTimerSettingsUseCase(repository, MockedSessionsRepository())
+    private val useCase = RemoveTimerUseCase(repository)
 
     @BeforeTest
     fun before() {
@@ -33,26 +31,19 @@ class SetTimerSettingsUseCaseTest {
 
     @Test
     fun testSuccess() = runBlocking {
-        val result = useCase(
-            UsersRepository.UserId(2),
-            TimersRepository.TimerId(1),
-            TimersRepository.NewSettings(workTime = Milliseconds(0))
-        )
-        assert(result is SetTimerSettingsUseCase.Result.Success)
-        assert(repository.getTimerSettings(TimersRepository.TimerId(1))!!.workTime == Milliseconds(0L))
+        val result = useCase(UsersRepository.UserId(2), TimersRepository.TimerId(1))
+        assert(result is RemoveTimerUseCase.Result.Success)
     }
 
     @Test
     fun testNoAccess() = runBlocking {
-        val result = useCase(UsersRepository.UserId(2), TimersRepository.TimerId(0), TimersRepository.NewSettings())
-        assert(result is SetTimerSettingsUseCase.Result.NoAccess)
+        val result = useCase(UsersRepository.UserId(2), TimersRepository.TimerId(0))
+        assert(result is RemoveTimerUseCase.Result.NotFound)
     }
 
     @Test
     fun testNotFound() = runBlocking {
-        val result = useCase(
-            UsersRepository.UserId(2), TimersRepository.TimerId(5), TimersRepository.NewSettings()
-        )
-        assert(result is SetTimerSettingsUseCase.Result.NoAccess)
+        val result = useCase(UsersRepository.UserId(2), TimersRepository.TimerId(5))
+        assert(result is RemoveTimerUseCase.Result.NotFound)
     }
 }

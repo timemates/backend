@@ -1,22 +1,20 @@
 package org.tomadoro.backend.repositories.integration
 
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import org.tomadoro.backend.domain.Count
+import org.tomadoro.backend.domain.DateTime
 import org.tomadoro.backend.repositories.SessionsRepository
 import org.tomadoro.backend.repositories.TimersRepository
 import org.tomadoro.backend.repositories.UsersRepository
+import org.tomadoro.backend.usecases.timers.types.DetailedTimer
 import java.util.concurrent.ConcurrentHashMap
 import org.tomadoro.backend.repositories.SessionsRepository as Contract
 
-class SessionsRepository(
-    private val timersRepository: TimersRepository,
-    private val schedulerScope: CoroutineScope
-) : Contract {
+class SessionsRepository : Contract {
     private val sessions = ConcurrentHashMap<TimersRepository.TimerId, Session>()
 
     override suspend fun addMember(
@@ -53,6 +51,26 @@ class SessionsRepository(
         return sessions[timerId]?.updates ?: emptyFlow()
     }
 
+    @Suppress("unchecked")
+    override suspend fun getActive(
+        ids: List<TimersRepository.TimerId>
+    ): Map<TimersRepository.TimerId, DetailedTimer.Active.SessionInfo> {
+        return ids.associate { timerId ->
+            val session = sessions[timerId] ?: return@associate timerId to null
+            timerId to DetailedTimer.Active.SessionInfo(
+                Count(session.members.size),
+                when (session.state) {
+                    State.CONFIRMATION -> DetailedTimer.Active.Phase.WAITING
+                    State.RUNNING -> DetailedTimer.Active.Phase.RUNNING
+                    State.WAITING -> DetailedTimer.Active.Phase.WAITING
+                    State.PAUSED -> DetailedTimer.Active.Phase.PAUSE
+                },
+                session.stateEndsAt?.let { DateTime(it) }
+            )
+        }.filterValues { it != null }
+            as Map<TimersRepository.TimerId, DetailedTimer.Active.SessionInfo>
+    }
+
     override suspend fun createConfirmation(timerId: TimersRepository.TimerId) {
         sessions[timerId]?.createConfirmation()
     }
@@ -69,7 +87,21 @@ class SessionsRepository(
         timerId: TimersRepository.TimerId,
         update: Contract.Update
     ) {
-        sessions[timerId]?.sendUpdate(update)
+        val session = sessions[timerId]
+        if (session != null) {
+            session.sendUpdate(update)
+            session.state = when (update) {
+                is Contract.Update.TimerStarted -> State.RUNNING
+                is Contract.Update.TimerStopped ->
+                    if (update.startsAt != null) State.PAUSED else State.WAITING
+
+                is SessionsRepository.Update.Confirmation ->
+                    State.WAITING
+
+                else -> session.state
+            }
+        }
+
     }
 
     private inner class Session(
@@ -78,19 +110,20 @@ class SessionsRepository(
             MutableSharedFlow(0)
     ) {
         private val mutex = Mutex()
-        private var isConfirmationState: Boolean = false
+        var state: State = State.WAITING
+        var stateEndsAt: Long? = null
         private val confirmedBy = mutableSetOf<UsersRepository.UserId>()
 
         fun createConfirmation() {
-            isConfirmationState = true
+            state = State.CONFIRMATION
         }
 
-        fun isConfirmationAvailable(): Boolean = isConfirmationState
+        fun isConfirmationAvailable(): Boolean = state == State.CONFIRMATION
 
         suspend fun confirm(userId: UsersRepository.UserId): Boolean = mutex.withLock {
             confirmedBy += userId
             return@withLock if (members.containsAll(confirmedBy)) {
-                isConfirmationState = false
+                state = State.RUNNING
                 confirmedBy.clear()
                 true
             } else false
@@ -109,6 +142,10 @@ class SessionsRepository(
         suspend fun removeMember(userId: UsersRepository.UserId) = mutex.withLock {
             members.remove(userId)
         }
+    }
+
+    private enum class State {
+        CONFIRMATION, RUNNING, PAUSED, WAITING
     }
 
 }

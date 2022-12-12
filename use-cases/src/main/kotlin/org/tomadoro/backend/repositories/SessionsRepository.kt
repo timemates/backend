@@ -3,6 +3,7 @@ package org.tomadoro.backend.repositories
 import kotlinx.coroutines.flow.Flow
 import org.tomadoro.backend.domain.Count
 import org.tomadoro.backend.domain.DateTime
+import org.tomadoro.backend.usecases.timers.types.DetailedTimer
 
 interface SessionsRepository {
     /**
@@ -33,6 +34,10 @@ interface SessionsRepository {
     suspend fun updatesOf(
         timerId: TimersRepository.TimerId
     ): Flow<Update>
+
+    suspend fun getActive(
+        ids: List<TimersRepository.TimerId>
+    ): Map<TimersRepository.TimerId, DetailedTimer.Active.SessionInfo>
 
     suspend fun createConfirmation(timerId: TimersRepository.TimerId)
     suspend fun isConfirmationAvailable(timerId: TimersRepository.TimerId): Boolean

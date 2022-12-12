@@ -5,6 +5,7 @@ import org.junit.Test
 import org.tomadoro.backend.domain.Count
 import org.tomadoro.backend.domain.TimerName
 import org.tomadoro.backend.providers.MockedCurrentTimeProvider
+import org.tomadoro.backend.repositories.MockedSessionsRepository
 import org.tomadoro.backend.repositories.MockedTimersRepository
 import org.tomadoro.backend.repositories.TimersRepository
 import org.tomadoro.backend.repositories.UsersRepository
@@ -12,7 +13,7 @@ import kotlin.test.BeforeTest
 
 class GetTimersUseCaseTest {
     private val repository = MockedTimersRepository()
-    private val useCase = GetTimersUseCase(repository)
+    private val useCase = GetTimersUseCase(repository, MockedSessionsRepository())
 
     @BeforeTest
     fun before() {

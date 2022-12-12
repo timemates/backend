@@ -5,6 +5,7 @@ import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
 import org.tomadoro.backend.application.types.TimerSessionCommand
 import org.tomadoro.backend.application.types.TimerUpdate
+import org.tomadoro.backend.application.types.Timer
 
 internal val TypesSerializersModule = SerializersModule {
     polymorphic(TimerSessionCommand::class) {
@@ -22,5 +23,9 @@ internal val TypesSerializersModule = SerializersModule {
         subclass(TimerUpdate.SessionFinished::class)
         subclass(TimerUpdate.Settings::class)
         subclass(TimerUpdate.Confirmation::class)
+    }
+    polymorphic(Timer::class) {
+        subclass(Timer.Active::class)
+        subclass(Timer.Inactive::class)
     }
 }
