@@ -8,6 +8,7 @@ import kotlinx.coroutines.SupervisorJob
 import org.jetbrains.exposed.sql.Database
 import org.tomadoro.backend.application.plugins.AuthorizationPlugin
 import org.tomadoro.backend.application.routes.auth.authRoot
+import org.tomadoro.backend.application.routes.files.filesRoot
 import org.tomadoro.backend.application.routes.timer.timersRoot
 import org.tomadoro.backend.application.routes.users.usersRoot
 import org.tomadoro.backend.codes.integration.SecureCodeProvider
@@ -21,14 +22,15 @@ import org.tomadoro.backend.usecases.auth.AuthViaGoogleUseCase
 import org.tomadoro.backend.usecases.auth.GetUserIdByAccessTokenUseCase
 import org.tomadoro.backend.usecases.auth.RefreshTokenUseCase
 import org.tomadoro.backend.usecases.auth.RemoveAccessTokenUseCase
+import org.tomadoro.backend.usecases.files.GetFileUseCase
 import org.tomadoro.backend.usecases.timers.*
+import org.tomadoro.backend.usecases.timers.members.GetMembersInSessionUseCase
+import org.tomadoro.backend.usecases.timers.members.GetMembersUseCase
+import org.tomadoro.backend.usecases.timers.members.KickTimerUserUseCase
 import org.tomadoro.backend.usecases.timers.members.invites.CreateInviteUseCase
 import org.tomadoro.backend.usecases.timers.members.invites.GetInvitesUseCase
 import org.tomadoro.backend.usecases.timers.members.invites.JoinByInviteUseCase
 import org.tomadoro.backend.usecases.timers.members.invites.RemoveInviteUseCase
-import org.tomadoro.backend.usecases.timers.members.GetMembersInSessionUseCase
-import org.tomadoro.backend.usecases.timers.members.GetMembersUseCase
-import org.tomadoro.backend.usecases.timers.members.KickTimerUserUseCase
 import org.tomadoro.backend.usecases.timers.notes.AddNoteUseCase
 import org.tomadoro.backend.usecases.timers.notes.GetNotesUseCase
 import org.tomadoro.backend.usecases.timers.sessions.JoinSessionUseCase
@@ -115,6 +117,8 @@ fun Routing.setupRoutes(
         EditUserUseCase(usersRepository),
         SetAvatarUseCase(filesRepository, usersRepository)
     )
+
+    filesRoot(GetFileUseCase(filesRepository))
 
     ok()
 }
