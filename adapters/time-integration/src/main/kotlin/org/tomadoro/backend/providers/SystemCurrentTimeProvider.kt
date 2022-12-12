@@ -1,6 +1,6 @@
 package org.tomadoro.backend.providers
 
-import org.tomadoro.backend.domain.DateTime
+import org.tomadoro.backend.domain.value.DateTime
 import java.util.*
 
 class SystemCurrentTimeProvider(private val timeZone: TimeZone) : CurrentTimeProvider {

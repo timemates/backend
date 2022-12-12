@@ -1,4 +1,4 @@
-package org.tomadoro.backend.application.routes.timer.invites
+package org.tomadoro.backend.application.routes.timer.members.invites
 
 import io.ktor.server.application.*
 import io.ktor.server.response.*
@@ -7,7 +7,7 @@ import io.ktor.server.util.*
 import org.tomadoro.backend.application.plugins.authorized
 import org.tomadoro.backend.application.results.RemoveInviteResult
 import org.tomadoro.backend.repositories.TimerInvitesRepository
-import org.tomadoro.backend.usecases.timers.invites.RemoveInviteUseCase
+import org.tomadoro.backend.usecases.timers.members.invites.RemoveInviteUseCase
 
 fun Route.removeInvite(removeInvite: RemoveInviteUseCase) {
     delete {

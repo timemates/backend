@@ -12,7 +12,7 @@ import org.tomadoro.backend.application.results.SetAvatarResult
 import org.tomadoro.backend.application.types.value.serializable
 import org.tomadoro.backend.usecases.users.SetAvatarUseCase
 
-fun Route.setAvatar(setAvatarUseCase: SetAvatarUseCase) = post("avatar") {
+fun Route.setAvatar(setAvatarUseCase: SetAvatarUseCase) = post("setAvatar") {
     authorized { userId ->
         val multipart = call.receiveMultipart()
 

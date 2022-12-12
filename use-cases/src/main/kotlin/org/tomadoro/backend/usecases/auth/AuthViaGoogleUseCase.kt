@@ -1,6 +1,6 @@
 package org.tomadoro.backend.usecases.auth
 
-import org.tomadoro.backend.domain.UserName
+import org.tomadoro.backend.domain.value.UserName
 import org.tomadoro.backend.google.auth.GoogleClient
 import org.tomadoro.backend.providers.AccessTokenProvider
 import org.tomadoro.backend.providers.CurrentTimeProvider

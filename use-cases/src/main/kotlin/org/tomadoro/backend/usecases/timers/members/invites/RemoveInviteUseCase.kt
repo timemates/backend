@@ -1,4 +1,4 @@
-package org.tomadoro.backend.usecases.timers.invites
+package org.tomadoro.backend.usecases.timers.members.invites
 
 import org.tomadoro.backend.repositories.TimerInvitesRepository
 import org.tomadoro.backend.repositories.TimersRepository

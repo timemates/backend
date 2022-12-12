@@ -2,8 +2,8 @@ package org.tomadoro.backend.usecases.timers
 
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
-import org.tomadoro.backend.domain.Count
-import org.tomadoro.backend.domain.TimerName
+import org.tomadoro.backend.domain.value.Count
+import org.tomadoro.backend.domain.value.TimerName
 import org.tomadoro.backend.providers.MockedCurrentTimeProvider
 import org.tomadoro.backend.repositories.MockedSessionsRepository
 import org.tomadoro.backend.repositories.MockedTimersRepository

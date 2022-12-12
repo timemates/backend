@@ -7,7 +7,7 @@ import org.tomadoro.backend.application.plugins.authorized
 import org.tomadoro.backend.application.results.GetUserIdResult
 import org.tomadoro.backend.application.types.value.serializable
 
-fun Route.getUserId() = get("user-id") {
+fun Route.getUserId() = get("getUserId") {
     authorized {
         call.respond<GetUserIdResult>(
             GetUserIdResult.Success(it.serializable())

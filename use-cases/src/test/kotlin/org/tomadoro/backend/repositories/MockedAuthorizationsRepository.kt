@@ -1,6 +1,6 @@
 package org.tomadoro.backend.repositories
 
-import org.tomadoro.backend.domain.DateTime
+import org.tomadoro.backend.domain.value.DateTime
 
 class MockedAuthorizationsRepository : AuthorizationsRepository {
     private val authorizations: MutableList<AuthorizationsRepository.Authorization> =

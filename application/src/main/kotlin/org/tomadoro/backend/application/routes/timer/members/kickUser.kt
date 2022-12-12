@@ -1,4 +1,4 @@
-package org.tomadoro.backend.application.routes.timer
+package org.tomadoro.backend.application.routes.timer.members
 
 import io.ktor.server.application.*
 import io.ktor.server.response.*
@@ -8,7 +8,7 @@ import org.tomadoro.backend.application.plugins.authorized
 import org.tomadoro.backend.application.results.KickTimerUserResult
 import org.tomadoro.backend.repositories.TimersRepository
 import org.tomadoro.backend.repositories.UsersRepository
-import org.tomadoro.backend.usecases.timers.KickTimerUserUseCase
+import org.tomadoro.backend.usecases.timers.members.KickTimerUserUseCase
 
 fun Route.kickUser(kickTimerUserUseCase: KickTimerUserUseCase) =
     post("members/kick") {

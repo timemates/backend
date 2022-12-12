@@ -1,4 +1,4 @@
-package org.tomadoro.backend.application.routes.timer.invites
+package org.tomadoro.backend.application.routes.timer.members.invites
 
 import io.ktor.server.application.*
 import io.ktor.server.response.*
@@ -9,7 +9,7 @@ import org.tomadoro.backend.application.results.CreateInviteResult
 import org.tomadoro.backend.application.types.value.serializable
 import org.tomadoro.backend.repositories.TimerInvitesRepository
 import org.tomadoro.backend.repositories.TimersRepository
-import org.tomadoro.backend.usecases.timers.invites.CreateInviteUseCase
+import org.tomadoro.backend.usecases.timers.members.invites.CreateInviteUseCase
 
 fun Route.createInvite(createInvite: CreateInviteUseCase) {
     post {

@@ -1,4 +1,4 @@
-package org.tomadoro.backend.usecases.timers
+package org.tomadoro.backend.usecases.timers.sessions
 
 import org.tomadoro.backend.repositories.*
 

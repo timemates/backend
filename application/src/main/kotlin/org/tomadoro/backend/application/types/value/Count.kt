@@ -12,4 +12,4 @@ value class Count(val int: Int) {
 }
 
 fun TimerInvitesRepository.Count.serializable(): Count = Count(int)
-fun org.tomadoro.backend.domain.Count.serializable(): Count = Count(int)
+fun org.tomadoro.backend.domain.value.Count.serializable(): Count = Count(int)

@@ -1,8 +1,8 @@
 package org.tomadoro.backend.repositories.integration
 
-import org.tomadoro.backend.domain.DateTime
-import org.tomadoro.backend.domain.ShortBio
-import org.tomadoro.backend.domain.UserName
+import org.tomadoro.backend.domain.value.DateTime
+import org.tomadoro.backend.domain.value.ShortBio
+import org.tomadoro.backend.domain.value.UserName
 import org.tomadoro.backend.repositories.FilesRepository
 import org.tomadoro.backend.repositories.UsersRepository
 import org.tomadoro.backend.repositories.integration.datasource.DbUsersDatabaseDataSource

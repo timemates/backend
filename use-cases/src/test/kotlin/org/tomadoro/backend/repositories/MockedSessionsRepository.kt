@@ -5,8 +5,8 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import org.tomadoro.backend.domain.Count
-import org.tomadoro.backend.domain.DateTime
+import org.tomadoro.backend.domain.value.Count
+import org.tomadoro.backend.domain.value.DateTime
 import org.tomadoro.backend.usecases.timers.types.DetailedTimer
 import java.util.concurrent.ConcurrentHashMap
 
