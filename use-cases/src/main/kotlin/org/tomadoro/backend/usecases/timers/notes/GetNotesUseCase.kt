@@ -22,12 +22,17 @@ class GetNotesUseCase(
         afterNoteId: NotesRepository.NoteId?,
         count: Count
     ): Result {
-        if(!timersRepository.isMemberOf(authorizedId, timerId)
-            && timersRepository.getTimerSettings(timerId)?.isNotesEnabled != true)
+        if (!timersRepository.isMemberOf(authorizedId, timerId)
+            && timersRepository.getTimerSettings(timerId)?.isNotesEnabled != true
+        )
             return Result.NoAccess
 
-        return Result.Success(notesRepository.getNotes(
-            timerId, afterNoteId ?: NotesRepository.NoteId(0), ofUser, count)
+        return Result.Success(
+            notesRepository.getNotes(
+                timerId,
+                authorizedId,
+                afterNoteId ?: NotesRepository.NoteId(0), ofUser, count
+            )
         )
     }
 

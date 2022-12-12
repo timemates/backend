@@ -100,4 +100,8 @@ internal val ResultsSerializersModule: SerializersModule = SerializersModule {
         subclass(GetMembersResult.BadPageToken::class)
         subclass(GetMembersResult.NoAccess::class)
     }
+    polymorphic(ViewAllUserNotesResult::class) {
+        subclass(ViewAllUserNotesResult.Success::class)
+        subclass(ViewAllUserNotesResult.NoAccess::class)
+    }
 }
