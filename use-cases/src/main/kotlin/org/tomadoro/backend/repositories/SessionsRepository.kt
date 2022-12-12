@@ -1,8 +1,8 @@
 package org.tomadoro.backend.repositories
 
 import kotlinx.coroutines.flow.Flow
-import org.tomadoro.backend.domain.Count
-import org.tomadoro.backend.domain.DateTime
+import org.tomadoro.backend.domain.value.Count
+import org.tomadoro.backend.domain.value.DateTime
 import org.tomadoro.backend.usecases.timers.types.DetailedTimer
 
 interface SessionsRepository {

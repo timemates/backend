@@ -6,8 +6,8 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.platform.commons.annotation.Testable
-import org.tomadoro.backend.domain.DateTime
-import org.tomadoro.backend.domain.TimerName
+import org.tomadoro.backend.domain.value.DateTime
+import org.tomadoro.backend.domain.value.TimerName
 import org.tomadoro.backend.repositories.*
 import org.tomadoro.backend.repositories.TimerInvitesRepository.*
 import org.tomadoro.backend.repositories.TimersRepository.Settings

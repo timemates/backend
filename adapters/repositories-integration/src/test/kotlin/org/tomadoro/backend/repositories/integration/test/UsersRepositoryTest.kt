@@ -5,9 +5,9 @@ import org.jetbrains.exposed.sql.Database
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.platform.commons.annotation.Testable
-import org.tomadoro.backend.domain.DateTime
-import org.tomadoro.backend.domain.ShortBio
-import org.tomadoro.backend.domain.UserName
+import org.tomadoro.backend.domain.value.DateTime
+import org.tomadoro.backend.domain.value.ShortBio
+import org.tomadoro.backend.domain.value.UserName
 import org.tomadoro.backend.repositories.integration.UsersRepository
 import org.tomadoro.backend.repositories.UsersRepository.User.Patch
 import org.tomadoro.backend.repositories.integration.datasource.DbUsersDatabaseDataSource

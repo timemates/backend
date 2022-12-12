@@ -1,8 +1,8 @@
 package org.tomadoro.backend.repositories
 
-import org.tomadoro.backend.domain.DateTime
-import org.tomadoro.backend.domain.ShortBio
-import org.tomadoro.backend.domain.UserName
+import org.tomadoro.backend.domain.value.DateTime
+import org.tomadoro.backend.domain.value.ShortBio
+import org.tomadoro.backend.domain.value.UserName
 
 class MockedUsersRepository : UsersRepository {
     private val users: MutableList<UsersRepository.User> = mutableListOf()

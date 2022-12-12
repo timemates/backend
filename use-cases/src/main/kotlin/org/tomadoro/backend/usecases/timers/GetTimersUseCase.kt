@@ -1,7 +1,7 @@
 package org.tomadoro.backend.usecases.timers
 
-import org.tomadoro.backend.domain.Count
-import org.tomadoro.backend.domain.PageToken
+import org.tomadoro.backend.domain.value.Count
+import org.tomadoro.backend.domain.value.PageToken
 import org.tomadoro.backend.repositories.SessionsRepository
 import org.tomadoro.backend.repositories.TimersRepository
 import org.tomadoro.backend.repositories.UsersRepository

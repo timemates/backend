@@ -1,7 +1,7 @@
 package org.tomadoro.backend.repositories.integration.tables
 
 import org.jetbrains.exposed.sql.*
-import org.tomadoro.backend.domain.DateTime
+import org.tomadoro.backend.domain.value.DateTime
 import org.tomadoro.backend.repositories.UsersRepository
 
 object AuthorizationsTable : Table() {

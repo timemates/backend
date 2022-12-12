@@ -7,7 +7,7 @@ import io.ktor.server.util.*
 import org.tomadoro.backend.application.plugins.authorized
 import org.tomadoro.backend.application.results.GetNotesResult
 import org.tomadoro.backend.application.types.serializable
-import org.tomadoro.backend.domain.Count
+import org.tomadoro.backend.domain.value.Count
 import org.tomadoro.backend.repositories.NotesRepository
 import org.tomadoro.backend.repositories.TimersRepository
 import org.tomadoro.backend.repositories.UsersRepository

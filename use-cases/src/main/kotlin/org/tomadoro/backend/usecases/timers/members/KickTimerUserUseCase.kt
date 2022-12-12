@@ -1,4 +1,4 @@
-package org.tomadoro.backend.usecases.timers
+package org.tomadoro.backend.usecases.timers.members
 
 import org.tomadoro.backend.repositories.TimersRepository
 import org.tomadoro.backend.repositories.UsersRepository

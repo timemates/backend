@@ -1,6 +1,6 @@
 package org.tomadoro.backend.usecases.timers.notes
 
-import org.tomadoro.backend.domain.Count
+import org.tomadoro.backend.domain.value.Count
 import org.tomadoro.backend.repositories.NotesRepository
 import org.tomadoro.backend.repositories.TimersRepository
 import org.tomadoro.backend.repositories.UsersRepository

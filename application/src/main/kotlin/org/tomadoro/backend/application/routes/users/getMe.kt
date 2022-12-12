@@ -8,7 +8,7 @@ import org.tomadoro.backend.application.results.GetMeResult
 import org.tomadoro.backend.application.types.serializable
 import org.tomadoro.backend.usecases.users.GetUsersUseCase
 
-fun Route.getMe(getUsersUseCase: GetUsersUseCase) = get("me") {
+fun Route.getMe(getUsersUseCase: GetUsersUseCase) = get("getMe") {
     authorized {
         when(val result = getUsersUseCase(listOf(it))) {
             is GetUsersUseCase.Result.Success ->

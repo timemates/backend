@@ -7,13 +7,12 @@ import io.ktor.server.util.*
 import org.tomadoro.backend.application.plugins.authorized
 import org.tomadoro.backend.application.results.GetTimersResult
 import org.tomadoro.backend.application.types.serializable
-import org.tomadoro.backend.domain.Count
-import org.tomadoro.backend.domain.PageToken
-import org.tomadoro.backend.repositories.TimersRepository
+import org.tomadoro.backend.domain.value.Count
+import org.tomadoro.backend.domain.value.PageToken
 import org.tomadoro.backend.usecases.timers.GetTimersUseCase
 
 fun Route.getTimers(getTimers: GetTimersUseCase) {
-    get("all") {
+    get("getTimers") {
         authorized { userId ->
             val count = call.request.queryParameters.getOrFail("count").toInt()
             val pageToken = call.request.queryParameters["from_id"]

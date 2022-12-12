@@ -1,4 +1,4 @@
-package org.tomadoro.backend.application.routes.timer.invites
+package org.tomadoro.backend.application.routes.timer.members.invites
 
 import io.ktor.server.application.*
 import io.ktor.server.response.*
@@ -8,7 +8,7 @@ import org.tomadoro.backend.application.plugins.authorized
 import org.tomadoro.backend.application.results.GetInvitesResult
 import org.tomadoro.backend.application.types.serializable
 import org.tomadoro.backend.repositories.TimersRepository
-import org.tomadoro.backend.usecases.timers.invites.GetInvitesUseCase
+import org.tomadoro.backend.usecases.timers.members.invites.GetInvitesUseCase
 
 fun Route.getInvites(getInvites: GetInvitesUseCase) {
     get("/all") {

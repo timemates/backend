@@ -1,4 +1,4 @@
-package org.tomadoro.backend.domain
+package org.tomadoro.backend.domain.value
 
 @JvmInline
 value class Count(val int: Int) {
