@@ -9,6 +9,7 @@ class Note(
     val noteId: NoteId,
     val userId: UserId,
     val message: NoteMessage,
+    val isViewed: Boolean,
     val creationTime: Milliseconds
 )
 
@@ -17,6 +18,7 @@ internal fun NotesRepository.Note.serializable(): Note {
         noteId.serializable(),
         userId.serializable(),
         message.serializable(),
+        isViewed,
         creationTime.serializable()
     )
 }

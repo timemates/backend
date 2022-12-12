@@ -1,20 +1,21 @@
 package org.tomadoro.backend.repositories.integration.datasource
 
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.ResultRow
-import org.jetbrains.exposed.sql.SchemaUtils
-import org.jetbrains.exposed.sql.SortOrder
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
+import org.jetbrains.exposed.sql.transactions.transaction
 import org.tomadoro.backend.repositories.integration.tables.TimerNotesTable
 import org.tomadoro.backend.repositories.integration.tables.TimerNotesTable.NOTE_ID
 import org.tomadoro.backend.repositories.integration.tables.TimerNotesTable.TEXT
 import org.tomadoro.backend.repositories.integration.tables.TimerNotesTable.TIME
 import org.tomadoro.backend.repositories.integration.tables.TimerNotesTable.TIMER_ID
 import org.tomadoro.backend.repositories.integration.tables.TimerNotesTable.USER_ID
+import org.tomadoro.backend.repositories.integration.tables.TimerNotesViewsTable
 
 class DbTimerNotesDatasource(private val database: Database) {
     init {
-        SchemaUtils.create(TimerNotesTable)
+        transaction(database) {
+            SchemaUtils.create(TimerNotesTable)
+        }
     }
 
     // returns id of a note
@@ -32,6 +33,23 @@ class DbTimerNotesDatasource(private val database: Database) {
         TimerNotesTable.selectFromTimer(timerId, ofUser, fromId, count)
             .map { it.toNote() }
     }
+
+    suspend fun setAllNotesViewed(userId: Int, timerId: Int) =
+        newSuspendedTransaction(db = database) {
+            val requests = TimerNotesTable.slice(NOTE_ID).select {
+                TIMER_ID eq timerId and (notExists(TimerNotesViewsTable.select {
+                    TimerNotesViewsTable.NOTE_ID eq NOTE_ID and
+                        (TimerNotesViewsTable.VIEWED_BY eq userId)
+                }))
+            }
+
+            TimerNotesViewsTable.batchInsert(
+                requests
+            ) { result ->
+                this[TimerNotesViewsTable.NOTE_ID] = result[NOTE_ID]
+                this[TimerNotesViewsTable.VIEWED_BY] = userId
+            }
+        }
 
     private fun ResultRow.toNote() = Note(
         get(NOTE_ID),
