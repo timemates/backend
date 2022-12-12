@@ -23,7 +23,7 @@ import kotlin.properties.Delegates
 
 @Testable
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class TimerInvitesRepositoryTest {
+class DetailedTimerInvitesRepositoryTest {
     private val database = Database.connect(
         "jdbc:h2:mem:regular;DB_CLOSE_DELAY=-1;", "org.h2.Driver"
     )
@@ -55,7 +55,7 @@ class TimerInvitesRepositoryTest {
             Code("ABCDF12345"),
             Count(20)
         )
-        this@TimerInvitesRepositoryTest.timerId = timerId
+        this@DetailedTimerInvitesRepositoryTest.timerId = timerId
     }
 
     @Test

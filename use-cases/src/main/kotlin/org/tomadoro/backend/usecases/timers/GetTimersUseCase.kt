@@ -2,12 +2,16 @@ package org.tomadoro.backend.usecases.timers
 
 import org.tomadoro.backend.domain.Count
 import org.tomadoro.backend.domain.PageToken
+import org.tomadoro.backend.repositories.SessionsRepository
 import org.tomadoro.backend.repositories.TimersRepository
 import org.tomadoro.backend.repositories.UsersRepository
+import org.tomadoro.backend.usecases.timers.types.DetailedTimer
+import org.tomadoro.backend.usecases.timers.types.toDetailed
 import java.util.*
 
 class GetTimersUseCase(
-    private val timers: TimersRepository
+    private val timers: TimersRepository,
+    private val sessionsRepository: SessionsRepository
 ) {
     suspend operator fun invoke(
         userId: UsersRepository.UserId,
@@ -24,8 +28,14 @@ class GetTimersUseCase(
             userId, lastId?.let { TimersRepository.TimerId(it) }, count
         ).toList()
 
+        val active = sessionsRepository.getActive(
+            list.map(TimersRepository.Timer::timerId)
+        )
+
         return Result.Success(
-            list,
+            list.map {
+                it.toDetailed(active[it.timerId])
+            },
             Base64.getEncoder().encode(
                 (list.lastOrNull()?.timerId?.int ?: lastId ?: 0).toString().toByteArray()
             ).let { PageToken(String(it)) }
@@ -34,7 +44,7 @@ class GetTimersUseCase(
 
     sealed interface Result {
         class Success(
-            val list: List<TimersRepository.Timer>,
+            val list: List<DetailedTimer>,
             val pageToken: PageToken
         ) : Result
 

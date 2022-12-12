@@ -10,9 +10,9 @@ import org.tomadoro.backend.repositories.TimersRepository
 import org.tomadoro.backend.repositories.UsersRepository
 import kotlin.test.BeforeTest
 
-class StopTimerUseCaseTest {
+class StartDetailedTimerUseCaseTest {
     private val repository = MockedTimersRepository()
-    private val useCase = StopTimerUseCase(repository, MockedSessionsRepository())
+    private val useCase = StartTimerUseCase(repository, MockedCurrentTimeProvider, MockedSessionsRepository())
 
     @BeforeTest
     fun before() {
@@ -32,13 +32,13 @@ class StopTimerUseCaseTest {
             UsersRepository.UserId(0),
             timerId
         )
-        assert(result is StopTimerUseCase.Result.Success)
+        assert(result is StartTimerUseCase.Result.Success)
     }
 
     @Test
     fun testNoAccess() = runBlocking {
         val result = useCase(UsersRepository.UserId(2), TimersRepository.TimerId(0))
-        assert(result is StopTimerUseCase.Result.NoAccess)
+        assert(result is StartTimerUseCase.Result.NoAccess)
     }
 
     @Test
@@ -46,6 +46,6 @@ class StopTimerUseCaseTest {
         val result = useCase(
             UsersRepository.UserId(2), TimersRepository.TimerId(5)
         )
-        assert(result is StopTimerUseCase.Result.NoAccess)
+        assert(result is StartTimerUseCase.Result.NoAccess)
     }
 }
