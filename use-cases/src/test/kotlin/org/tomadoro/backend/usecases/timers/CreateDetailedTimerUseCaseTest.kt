@@ -9,7 +9,7 @@ import org.tomadoro.backend.repositories.TimersRepository
 import org.tomadoro.backend.repositories.UsersRepository
 import kotlin.test.assertNotNull
 
-class CreateTimerUseCaseTest {
+class CreateDetailedTimerUseCaseTest {
     private val repository = MockedTimersRepository()
     private val useCase = CreateTimerUseCase(repository, MockedCurrentTimeProvider)
 
