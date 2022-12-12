@@ -3,6 +3,7 @@ package org.tomadoro.backend.usecases.timers
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import org.tomadoro.backend.domain.Count
 import org.tomadoro.backend.domain.TimerName
 import org.tomadoro.backend.domain.UserName
 import org.tomadoro.backend.domain.toMilliseconds
@@ -65,21 +66,21 @@ class SessionTest {
     fun testSuccessJoin(): Unit = runBlocking {
         val result = join(user1, timerId)
         assert(result is JoinSessionUseCase.Result.Success)
-        assert(sessions.getMembers(timerId).contains(user1))
+        assert(sessions.getMembers(timerId, null, Count.MAX).contains(user1))
     }
 
     @Test
     fun testFailureJoin(): Unit = runBlocking {
         val result = join(notJoinedUser, timerId)
         assert(result is JoinSessionUseCase.Result.NotFound)
-        assert(!sessions.getMembers(timerId).contains(notJoinedUser))
+        assert(!sessions.getMembers(timerId, null, Count.MAX).contains(notJoinedUser))
     }
 
     @Test
     fun testSuccessLeave(): Unit = runBlocking {
         val result = leave(user1, timerId)
         assert(result is LeaveSessionUseCase.Result.Success)
-        assert(!sessions.getMembers(timerId).contains(user1))
+        assert(!sessions.getMembers(timerId, null, Count.MAX).contains(user1))
     }
 
 
