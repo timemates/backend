@@ -1,6 +1,7 @@
 package org.tomadoro.backend.repositories
 
 import kotlinx.coroutines.flow.Flow
+import org.tomadoro.backend.domain.Count
 import org.tomadoro.backend.domain.DateTime
 
 interface SessionsRepository {
@@ -23,7 +24,11 @@ interface SessionsRepository {
         userId: UsersRepository.UserId
     )
 
-    suspend fun getMembers(timerId: TimersRepository.TimerId): List<UsersRepository.UserId>
+    suspend fun getMembers(
+        timerId: TimersRepository.TimerId,
+        afterUserId: UsersRepository.UserId?,
+        count: Count
+    ): List<UsersRepository.UserId>
 
     suspend fun updatesOf(
         timerId: TimersRepository.TimerId
@@ -81,5 +86,5 @@ interface SessionsRepository {
 }
 
 suspend fun SessionsRepository.count(timerId: TimersRepository.TimerId): Int {
-    return getMembers(timerId).count()
+    return getMembers(timerId, null, Count.MAX).count()
 }

@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import org.tomadoro.backend.domain.Count
 import org.tomadoro.backend.repositories.SessionsRepository
 import org.tomadoro.backend.repositories.TimersRepository
 import org.tomadoro.backend.repositories.UsersRepository
@@ -37,8 +38,15 @@ class SessionsRepository(
             sessions.remove(timerId)
     }
 
-    override suspend fun getMembers(timerId: TimersRepository.TimerId): List<UsersRepository.UserId> {
-        return sessions[timerId]?.getMembers() ?: emptyList()
+    override suspend fun getMembers(
+        timerId: TimersRepository.TimerId,
+        afterUserId: UsersRepository.UserId?,
+        count: Count
+    ): List<UsersRepository.UserId> {
+        return sessions[timerId]?.getMembers()
+            ?.sortedBy(UsersRepository.UserId::int)
+            ?.take(count.int)
+            ?: emptyList()
     }
 
     override suspend fun updatesOf(timerId: TimersRepository.TimerId): Flow<Contract.Update> {
