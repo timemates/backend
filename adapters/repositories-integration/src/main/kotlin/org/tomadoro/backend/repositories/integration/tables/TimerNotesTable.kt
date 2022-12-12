@@ -21,4 +21,6 @@ internal object TimerNotesTable : Table() {
         it[TEXT] = text
         it[TIME] = time
     }[NOTE_ID]
+
+    override val primaryKey = PrimaryKey(NOTE_ID)
 }

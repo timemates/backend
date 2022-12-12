@@ -33,6 +33,7 @@ class AddNoteUseCase(
                     noteId,
                     userId,
                     message,
+                    false,
                     time
                 )
             )

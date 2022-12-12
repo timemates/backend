@@ -135,7 +135,7 @@ fun Routing.setupRoutesWithDatabase(
 
     val filesRepository = FilesRepository(Path(rootFilesPath))
 
-    val notesRepository = NotesRepository(DbTimerNotesDatasource(database))
+    val notesRepository = NotesRepository(DbTimerNotesDatasource(database), DbTimerNotesViewsDataSource(database))
 
     setupRoutes(
         authRepository,
