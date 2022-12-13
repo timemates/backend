@@ -10,6 +10,7 @@ import org.tomadoro.backend.repositories.integration.tables.TimerNotesTable.TIME
 import org.tomadoro.backend.repositories.integration.tables.TimerNotesTable.TIMER_ID
 import org.tomadoro.backend.repositories.integration.tables.TimerNotesTable.USER_ID
 import org.tomadoro.backend.repositories.integration.tables.TimerNotesViewsTable
+import org.tomadoro.backend.repositories.integration.tables.internal.distinct
 
 class DbTimerNotesDatasource(private val database: Database) {
     init {
@@ -22,6 +23,17 @@ class DbTimerNotesDatasource(private val database: Database) {
     suspend fun createNote(timerId: Int, userInt: Int, message: String, time: Long) =
         newSuspendedTransaction(db = database) {
             TimerNotesTable.insert(userInt, timerId, message, time)
+        }
+
+    suspend fun getLastNotesOfUsers(timerId: Int, beforeNote: Long, n: Int) =
+        newSuspendedTransaction {
+            TimerNotesTable.slice(distinct(USER_ID))
+                .select {
+                    TIMER_ID eq timerId and (NOTE_ID less beforeNote)
+                }
+                .orderBy(NOTE_ID, SortOrder.DESC)
+                .limit(n)
+                .map { it.toNote() }
         }
 
     suspend fun getNotes(
