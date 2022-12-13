@@ -1,12 +1,12 @@
-# ⚙️ Tomadoro Backend
+# Tomadoro Backend
 
 The repository with source code of tomadoro backend.
 
-## 🔭 Setup
+## Setup
 
 If you want to host it by yourself, follow next instructions.
 
-### 🦄 Environment
+### Environment
 
 To run this application on your own host you need to provide next env variables:
 
@@ -16,20 +16,23 @@ To run this application on your own host you need to provide next env variables:
 - `DATABASE_PASSWORD` – postgres user's password
 - `SERVER_FILE_UPLOADS` – path to directory, where uploaded files will be stored
 
-### 🔑 Deploy
+### Deploy
 
 To publish .jar to your own server use [:application:deploy](application/build.gradle.kts#L42) tasks.
 It will appear if you have `tomadoro.host` env variable. Also, you should have next variables:
 
+#### Required
 - `tomadoro.host`: server address
 - `tomadoro.user`: ssh user
 - `tomadoro.password`: ssh user's password
 - `tomadoro.prod.destination`: path where jar will be uploaded.
 - `tomadoro.prod.serviceName`: service name (systemd) to reload.
 - `tomadoro.archiveName`: name of the jar file.
+
+#### Optional
 - `tomadoro.knownHostsFilePath`: path to file with known hosts.
 
-### 📦 Database
+### Database
 
-Backend creates and migrating database by itself (if it's release version), 
+Backend creates and migrates database by itself (if it's release version), 
 so that no need in your own setuping or migrating.
