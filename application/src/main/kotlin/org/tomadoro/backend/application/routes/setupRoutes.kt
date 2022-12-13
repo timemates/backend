@@ -32,6 +32,7 @@ import org.tomadoro.backend.usecases.timers.members.invites.GetInvitesUseCase
 import org.tomadoro.backend.usecases.timers.members.invites.JoinByInviteUseCase
 import org.tomadoro.backend.usecases.timers.members.invites.RemoveInviteUseCase
 import org.tomadoro.backend.usecases.timers.notes.AddNoteUseCase
+import org.tomadoro.backend.usecases.timers.notes.GetLatestUserNotesUseCase
 import org.tomadoro.backend.usecases.timers.notes.GetNotesUseCase
 import org.tomadoro.backend.usecases.timers.sessions.JoinSessionUseCase
 import org.tomadoro.backend.usecases.timers.sessions.LeaveSessionUseCase
@@ -109,7 +110,8 @@ fun Routing.setupRoutes(
         AddNoteUseCase(notesRepository, timersRepository, timeProvider, sessionsRepository),
         GetNotesUseCase(notesRepository, timersRepository),
         GetMembersUseCase(timersRepository, usersRepository),
-        GetMembersInSessionUseCase(timersRepository, sessionsRepository, usersRepository)
+        GetMembersInSessionUseCase(timersRepository, sessionsRepository, usersRepository),
+        GetLatestUserNotesUseCase(timersRepository, notesRepository)
     )
 
     usersRoot(

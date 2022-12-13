@@ -104,4 +104,8 @@ internal val ResultsSerializersModule: SerializersModule = SerializersModule {
         subclass(ViewAllUserNotesResult.Success::class)
         subclass(ViewAllUserNotesResult.NoAccess::class)
     }
+    polymorphic(GetLatestUserNotesResult::class) {
+        subclass(GetLatestUserNotesResult.Success::class)
+        subclass(GetLatestUserNotesResult.NoAccess::class)
+    }
 }

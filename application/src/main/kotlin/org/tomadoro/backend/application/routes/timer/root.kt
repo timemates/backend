@@ -15,6 +15,7 @@ import org.tomadoro.backend.usecases.timers.members.GetMembersInSessionUseCase
 import org.tomadoro.backend.usecases.timers.members.GetMembersUseCase
 import org.tomadoro.backend.usecases.timers.members.KickTimerUserUseCase
 import org.tomadoro.backend.usecases.timers.notes.AddNoteUseCase
+import org.tomadoro.backend.usecases.timers.notes.GetLatestUserNotesUseCase
 import org.tomadoro.backend.usecases.timers.notes.GetNotesUseCase
 import org.tomadoro.backend.usecases.timers.sessions.JoinSessionUseCase
 import org.tomadoro.backend.usecases.timers.sessions.LeaveSessionUseCase
@@ -39,7 +40,8 @@ fun Route.timersRoot(
     addNoteUseCase: AddNoteUseCase,
     getNotesUseCase: GetNotesUseCase,
     getMembersUseCase: GetMembersUseCase,
-    getMembersInSessionUseCase: GetMembersInSessionUseCase
+    getMembersInSessionUseCase: GetMembersInSessionUseCase,
+    getLatestUserNotesUseCase: GetLatestUserNotesUseCase
 ) = route("timers") {
     createTimer(createTimerUseCase)
     getTimers(getTimersUseCase)
@@ -51,7 +53,7 @@ fun Route.timersRoot(
     getMembers(getMembersUseCase)
     getMembersInSession(getMembersInSessionUseCase)
 
-    timerNotesRoot(addNoteUseCase, getNotesUseCase)
+    timerNotesRoot(addNoteUseCase, getNotesUseCase, getLatestUserNotesUseCase)
 
     timerInvites(
         createInviteUseCase, getInvitesUseCase, joinByInviteUseCase, removeInviteUseCase
