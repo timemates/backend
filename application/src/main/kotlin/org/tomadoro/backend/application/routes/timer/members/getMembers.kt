@@ -1,5 +1,6 @@
 package org.tomadoro.backend.application.routes.timer.members
 
+import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -38,7 +39,7 @@ fun Route.getMembers(getMembersUseCase: GetMembersUseCase) =
                 is GetMembersUseCase.Result.NoAccess ->
                     GetMembersResult.NoAccess
                 is GetMembersUseCase.Result.BadPageToken ->
-                    GetMembersResult.BadPageToken
+                    return@get call.respond(HttpStatusCode.BadRequest, "Page token is invalid")
             })
         }
     }
