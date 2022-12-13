@@ -39,14 +39,37 @@ class NotesRepository(
 
         // fast-path: if getting user is user itself,
         // it means that he already viewed, because he sent these notes
-        return if(byUser == ofUser) {
+        return if (byUser == ofUser) {
             notes.map { it.toExternal(true) }
         } else {
             val viewed = dbTimerNotesViewsDataSource.filterViewed(
                 byUser.int, notes.map(DbTimerNotesDatasource.Note::noteId)
-            ).also { println(it) }
+            )
 
             notes.map { it.toExternal(viewed.any { id -> it.noteId == id }) }
+        }
+    }
+
+    override suspend fun getLatestPostedNotes(
+        timerId: TimersRepository.TimerId,
+        byUser: UsersRepository.UserId,
+        beforeNoteId: NotesRepository.NoteId,
+        count: Count
+    ): List<NotesRepository.Note> {
+        val notes = dbTimerNotesDatasource.getLastNotesOfUsers(
+            timerId.int, beforeNoteId.long, count.int
+        )
+        val viewed = dbTimerNotesViewsDataSource.filterViewed(
+            byUser.int, notes.map(DbTimerNotesDatasource.Note::noteId)
+        )
+
+        return notes.map {
+            it.toExternal(
+                // if user that requested posted, then he obviously
+                // shouldn't reread it.
+                if (byUser.int == it.userId) true
+                else viewed.any { id -> it.noteId == id }
+            )
         }
     }
 

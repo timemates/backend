@@ -20,6 +20,16 @@ interface NotesRepository {
     ): List<Note>
 
     /**
+     * Gets last posted notes of all users that have posted something.
+     */
+    suspend fun getLatestPostedNotes(
+        timerId: TimersRepository.TimerId,
+        byUser: UsersRepository.UserId,
+        beforeNoteId: NoteId,
+        count: Count
+    ): List<Note>
+
+    /**
      * Marks all notes as viewed by [byUser].
      */
     suspend fun markViewed(
