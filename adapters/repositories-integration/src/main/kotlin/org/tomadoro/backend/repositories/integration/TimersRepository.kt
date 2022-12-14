@@ -44,8 +44,8 @@ class TimersRepository(
         datasource.setNewSettings(timerId.int, settings.toInternalPatchable())
     }
 
-    override suspend fun addMember(userId: UsersRepository.UserId, timerId: TimersRepository.TimerId) {
-        datasource.addMember(timerId.int, userId.int)
+    override suspend fun addMember(userId: UsersRepository.UserId, timerId: TimersRepository.TimerId, joinTime: DateTime) {
+        datasource.addMember(timerId.int, userId.int, joinTime.long)
     }
 
     override suspend fun removeMember(userId: UsersRepository.UserId, timerId: TimersRepository.TimerId) {
@@ -71,7 +71,7 @@ class TimersRepository(
         fromTimer: TimersRepository.TimerId?,
         count: Count
     ): Sequence<TimersRepository.Timer> {
-        return datasource.getUserTimers(userId.int, fromTimer?.int ?: 0, count.int).map { it.toExternalTimer() }
+        return datasource.getUserTimers(userId.int, fromTimer?.int ?: Int.MAX_VALUE, count.int).map { it.toExternalTimer() }
     }
 
     private fun TimersDatabaseDataSource.Timer.toExternalTimer(): TimersRepositoryContract.Timer {

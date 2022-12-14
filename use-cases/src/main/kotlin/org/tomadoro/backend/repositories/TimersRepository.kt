@@ -18,7 +18,11 @@ interface TimersRepository {
 
     suspend fun getTimerSettings(timerId: TimerId): Settings?
     suspend fun setTimerSettings(timerId: TimerId, settings: NewSettings)
-    suspend fun addMember(userId: UsersRepository.UserId, timerId: TimerId)
+    suspend fun addMember(
+        userId: UsersRepository.UserId,
+        timerId: TimerId,
+        joinTime: DateTime
+    )
     suspend fun removeMember(userId: UsersRepository.UserId, timerId: TimerId)
 
     suspend fun getMembers(

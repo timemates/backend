@@ -4,15 +4,12 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import org.tomadoro.backend.domain.value.TimerName
 import org.tomadoro.backend.providers.MockedCurrentTimeProvider
-import org.tomadoro.backend.repositories.MockedSessionsRepository
-import org.tomadoro.backend.repositories.MockedTimersRepository
-import org.tomadoro.backend.repositories.TimersRepository
-import org.tomadoro.backend.repositories.UsersRepository
+import org.tomadoro.backend.repositories.*
 import kotlin.test.BeforeTest
 
 class StartDetailedTimerUseCaseTest {
     private val repository = MockedTimersRepository()
-    private val useCase = StartTimerUseCase(repository, MockedCurrentTimeProvider, MockedSessionsRepository())
+    private val useCase = StartTimerUseCase(repository, MockedCurrentTimeProvider, MockedSessionsRepository(), MockedTimerActivityRepository())
 
     @BeforeTest
     fun before() {
