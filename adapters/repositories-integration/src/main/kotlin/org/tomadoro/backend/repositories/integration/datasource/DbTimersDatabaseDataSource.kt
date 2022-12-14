@@ -3,6 +3,7 @@ package org.tomadoro.backend.repositories.integration.datasource
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.tomadoro.backend.repositories.integration.tables.TimerActivityTable
 import org.tomadoro.backend.repositories.integration.tables.TimerParticipantsTable
 import org.tomadoro.backend.repositories.integration.tables.TimersTable
 import kotlin.sequences.Sequence
@@ -13,37 +14,46 @@ class TimersDatabaseDataSource(
 
     init {
         transaction(database) {
-            SchemaUtils.create(TimerParticipantsTable, TimersTable)
+            SchemaUtils.create(TimerParticipantsTable, TimersTable, TimerActivityTable)
         }
     }
 
     suspend fun getUserTimers(
         id: Int,
-        fromTimerId: Int,
+        beforeTimerId: Int,
         count: Int
     ): Sequence<Timer> = newSuspendedTransaction(db = database) {
         val userTimers = TimerParticipantsTable
+            .slice(TimerParticipantsTable.TIMER_ID)
             .select { TimerParticipantsTable.PARTICIPANT_ID eq id }
-            .map { it[TimerParticipantsTable.PARTICIPANT_ID] }
 
-        val timers = TimersTable.select {
-            TimersTable.TIMER_ID greater fromTimerId and
-                (TimersTable.TIMER_ID inList userTimers)
-        }.limit(count).asSequence()
-
-//        val participantsCount = timers.map {
-//            TimerParticipantsTable
-//                .selectParticipantsOf(it[TimersTable.TIMER_ID])
-//                .count().toInt()
-//        }.toList()
+        val timers = TimersTable.join(
+            TimerParticipantsTable,
+            JoinType.INNER,
+            additionalConstraint = { TimerParticipantsTable.PARTICIPANT_ID eq id }
+        ).join(
+            TimerActivityTable,
+            JoinType.INNER,
+            additionalConstraint = {
+                TimerActivityTable.TIME inSubQuery TimerActivityTable
+                    .slice(TimerActivityTable.TIME).select {
+                        TimerActivityTable.TIMER_ID eq TimersTable.TIMER_ID
+                    }.orderBy(TimerActivityTable.TIME, SortOrder.DESC).limit(1)
+            }
+        ).select {
+            TimersTable.TIMER_ID less beforeTimerId and
+                (TimersTable.TIMER_ID inSubQuery userTimers)
+        }.orderBy(
+            TimerActivityTable.TIME to SortOrder.DESC,
+            TimerParticipantsTable.JOIN_TIME to SortOrder.DESC
+        ).limit(count)
 
         timers.map {
             it.toTimer()
-        }.toList().asSequence()
+        }.asSequence()
     }
 
     suspend fun getTimerById(id: Int): Timer? = newSuspendedTransaction(db = database) {
-
         TimersTable.select {
             TimersTable.TIMER_ID eq id
         }.singleOrNull()?.toTimer()
@@ -94,11 +104,13 @@ class TimersDatabaseDataSource(
 
     suspend fun addMember(
         timerId: Int,
-        participantId: Int
+        participantId: Int,
+        joinTime: Long
     ): Unit = newSuspendedTransaction(db = database) {
         TimerParticipantsTable.insert {
             it[TIMER_ID] = timerId
             it[PARTICIPANT_ID] = participantId
+            it[JOIN_TIME] = joinTime
         }
     }
 
@@ -149,6 +161,13 @@ class TimersDatabaseDataSource(
         TimerParticipantsTable.insert {
             it[TIMER_ID] = id
             it[PARTICIPANT_ID] = ownerId
+            it[JOIN_TIME] = creationTime
+        }
+
+        TimerActivityTable.insert {
+            it[TIMER_ID] = id
+            it[TYPE] = TimerActivityTable.Type.PAUSED
+            it[TIME] = creationTime
         }
 
         return@newSuspendedTransaction id

@@ -60,7 +60,11 @@ class MockedTimersRepository : TimersRepository {
         }
     }
 
-    override suspend fun addMember(userId: UsersRepository.UserId, timerId: TimersRepository.TimerId) {
+    override suspend fun addMember(
+        userId: UsersRepository.UserId,
+        timerId: TimersRepository.TimerId,
+        joinTime: DateTime
+    ) {
         timers[timerId.int].members += userId
     }
 

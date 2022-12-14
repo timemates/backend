@@ -11,8 +11,9 @@ import org.tomadoro.backend.usecases.timers.members.invites.JoinByInviteUseCase
 class JoinByInviteUseCaseTest {
     private val invitesRepo = MockedTimerInvitesRepository()
     private val timersRepo = MockedTimersRepository()
+    private val timeProvider = MockedCurrentTimeProvider
     private val useCase = JoinByInviteUseCase(
-        invitesRepo, timersRepo
+        invitesRepo, timersRepo, timeProvider
     )
 
     @Test

@@ -9,6 +9,7 @@ object TimerParticipantsTable : Table() {
         .references(TimersTable.TIMER_ID, onDelete = ReferenceOption.CASCADE)
     val PARTICIPANT_ID = integer("participants_id")
         .references(UsersTable.USER_ID, onDelete = ReferenceOption.CASCADE)
+    val JOIN_TIME = long("join_time")
 
     private val uniqueKey = uniqueIndex(TIMER_ID, PARTICIPANT_ID)
 

@@ -10,10 +10,12 @@ import org.junit.platform.commons.annotation.Testable
 import org.tomadoro.backend.domain.value.Count
 import org.tomadoro.backend.domain.value.DateTime
 import org.tomadoro.backend.domain.value.TimerName
+import org.tomadoro.backend.domain.value.UserName
 import org.tomadoro.backend.repositories.UsersRepository
 import org.tomadoro.backend.repositories.integration.TimersRepository
 import org.tomadoro.backend.repositories.integration.datasource.TimersDatabaseDataSource
 import org.tomadoro.backend.repositories.integration.datasource.DbUsersDatabaseDataSource
+import kotlin.properties.Delegates
 import org.tomadoro.backend.repositories.TimersRepository as TimersRepositoryContract
 
 @Testable
@@ -24,10 +26,12 @@ class TimersRepositoryTest {
     )
     private val timers = TimersRepository(TimersDatabaseDataSource(database))
     private val users = DbUsersDatabaseDataSource(database)
+    private var userId by Delegates.notNull<UsersRepository.UserId>()
 
     @BeforeAll
     fun createUser(): Unit = runBlocking {
-        users.createUser("Test", null, System.currentTimeMillis())
+        userId = users.createUser("Test", null, System.currentTimeMillis())
+            .let { UsersRepository.UserId(it) }
     }
 
     @Test
@@ -35,7 +39,7 @@ class TimersRepositoryTest {
         val id = timers.createTimer(
             TimerName("Test"),
             TimersRepositoryContract.Settings.Default,
-            UsersRepository.UserId(1),
+            userId,
             DateTime(System.currentTimeMillis())
         )
 
@@ -47,7 +51,7 @@ class TimersRepositoryTest {
         val id = timers.createTimer(
             TimerName("Test"),
             TimersRepositoryContract.Settings.Default,
-            UsersRepository.UserId(1),
+            userId,
             DateTime(System.currentTimeMillis())
         )
 
@@ -62,19 +66,19 @@ class TimersRepositoryTest {
         timers.createTimer(
             TimerName("Test"),
             TimersRepositoryContract.Settings.Default,
-            UsersRepository.UserId(1),
+            userId,
             DateTime(System.currentTimeMillis())
         )
 
         timers.createTimer(
             TimerName("Test 2"),
             TimersRepositoryContract.Settings.Default,
-            UsersRepository.UserId(1),
+            userId,
             DateTime(System.currentTimeMillis())
         )
 
 
-        assert(!timers.getTimers(UsersRepository.UserId(1), null, Count(2)).none())
+        assert(timers.getTimers(userId, null, Count.MAX).any())
     }
 
     @Test
@@ -86,9 +90,11 @@ class TimersRepositoryTest {
             DateTime(System.currentTimeMillis())
         )
 
-        val user = UsersRepository.UserId(2)
+        val user = users.createUser(
+            "", "", System.currentTimeMillis()
+        ).let { UsersRepository.UserId(it) }
 
-        timers.addMember(user, id)
+        timers.addMember(user, id, DateTime(System.currentTimeMillis()))
         timers.removeMember(user, id)
 
         assertNotNull(timers.getMembers(id, null, Count(2)).singleOrNull())
