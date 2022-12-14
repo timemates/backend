@@ -1,16 +1,14 @@
 package org.tomadoro.backend.usecases.timers.notes
 
 import org.tomadoro.backend.providers.CurrentTimeProvider
-import org.tomadoro.backend.repositories.NotesRepository
-import org.tomadoro.backend.repositories.SessionsRepository
-import org.tomadoro.backend.repositories.TimersRepository
-import org.tomadoro.backend.repositories.UsersRepository
+import org.tomadoro.backend.repositories.*
 
 class AddNoteUseCase(
     private val notesRepository: NotesRepository,
     private val timersRepository: TimersRepository,
     private val timeProvider: CurrentTimeProvider,
-    private val sessionsRepository: SessionsRepository
+    private val sessionsRepository: SessionsRepository,
+    private val activityRepository: TimerActivityRepository
 ) {
     suspend operator fun invoke(
         userId: UsersRepository.UserId,
@@ -37,6 +35,12 @@ class AddNoteUseCase(
                     time
                 )
             )
+        )
+
+        activityRepository.addActivity(
+            timerId,
+            TimerActivityRepository.ActivityType.START,
+            time
         )
 
         return Result.Success(noteId)

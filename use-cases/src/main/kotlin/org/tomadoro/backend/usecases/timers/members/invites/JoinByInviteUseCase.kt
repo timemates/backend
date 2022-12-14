@@ -1,19 +1,21 @@
 package org.tomadoro.backend.usecases.timers.members.invites
 
+import org.tomadoro.backend.providers.CurrentTimeProvider
 import org.tomadoro.backend.repositories.TimerInvitesRepository
 import org.tomadoro.backend.repositories.TimersRepository
 import org.tomadoro.backend.repositories.UsersRepository
 
 class JoinByInviteUseCase(
     private val invites: TimerInvitesRepository,
-    private val timers: TimersRepository
+    private val timers: TimersRepository,
+    private val time: CurrentTimeProvider
 ) {
     suspend operator fun invoke(
         userId: UsersRepository.UserId,
         code: TimerInvitesRepository.Code
     ): Result {
         val invite = invites.getInvite(code) ?: return Result.NotFound
-        timers.addMember(userId, invite.timerId)
+        timers.addMember(userId, invite.timerId, time.provide())
 
         if (invite.limit.int <= 1)
             invites.removeInvite(invite.code)

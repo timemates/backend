@@ -2,13 +2,15 @@ package org.tomadoro.backend.usecases.timers
 
 import org.tomadoro.backend.providers.CurrentTimeProvider
 import org.tomadoro.backend.repositories.SessionsRepository
+import org.tomadoro.backend.repositories.TimerActivityRepository
 import org.tomadoro.backend.repositories.TimersRepository
 import org.tomadoro.backend.repositories.UsersRepository
 
 class StartTimerUseCase(
     private val timers: TimersRepository,
     private val time: CurrentTimeProvider,
-    private val sessions: SessionsRepository
+    private val sessions: SessionsRepository,
+    private val activityRepository: TimerActivityRepository
 ) {
     suspend operator fun invoke(userId: UsersRepository.UserId, timerId: TimersRepository.TimerId): Result {
         val timer = timers.getTimer(timerId) ?: return Result.NoAccess
@@ -22,6 +24,12 @@ class StartTimerUseCase(
                 SessionsRepository.Update.TimerStarted(
                     time.provide() + settings.workTime
                 )
+            )
+
+            activityRepository.addActivity(
+                timerId,
+                TimerActivityRepository.ActivityType.START,
+                time.provide()
             )
 
             Result.Success

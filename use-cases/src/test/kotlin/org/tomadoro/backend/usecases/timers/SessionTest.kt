@@ -60,8 +60,8 @@ class SessionTest {
             )
         )
 
-        timers.addMember(user1, timerId)
-        timers.addMember(user2, timerId)
+        timers.addMember(user1, timerId, time.provide())
+        timers.addMember(user2, timerId, time.provide())
     }
 
     @Test
