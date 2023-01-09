@@ -18,11 +18,11 @@ jobs:
           cache: 'gradle'
       - name: Deploy
         env:
-          tomadoro.host: ${{ secrets.host }}
-          tomadoro.user: ${{ secrets.user }}
-          tomadoro.password: ${{ secrets.password }}
-          tomadoro.archiveName: ${{ secrets.archiveName }}
-          tomadoro.prod.destination: ${{ secrets.prod_destination }}
-          tomadoro.prod.serviceName: ${{ secrets.prod_serviceName }}
+          timemates.host: ${{ secrets.host }}
+          timemates.user: ${{ secrets.user }}
+          timemates.password: ${{ secrets.password }}
+          timemates.archiveName: ${{ secrets.archiveName }}
+          timemates.prod.destination: ${{ secrets.prod_destination }}
+          timemates.prod.serviceName: ${{ secrets.prod_serviceName }}
         run: ./gradlew :application:productionDeploy
         
