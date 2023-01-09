@@ -10,6 +10,7 @@ object TimerInvitesTable : Table("timer_invites") {
     private val TIMER_ID = integer("timer_id").references(TimersTable.TIMER_ID)
     private val INVITE_CODE = varchar("invite_code", 64)
     private val LIMIT = integer("limit")
+    private val CREATION_TIME = long("creation_time")
 
     fun selectAllOf(timerId: Int) = select {
         TIMER_ID eq timerId
@@ -24,9 +25,10 @@ object TimerInvitesTable : Table("timer_invites") {
     }.singleOrNull()?.toInvite()
 
     fun insert(invite: Invite) = insert {
-        it[TIMER_ID] = invite.timerId.int
-        it[INVITE_CODE] = invite.inviteCode.string
-        it[LIMIT] = invite.limit.int
+        it[TIMER_ID] = invite.timerId
+        it[INVITE_CODE] = invite.inviteCode
+        it[CREATION_TIME] = invite.creationTime
+        it[LIMIT] = invite.limit
     }
 
     fun setLimitCount(code: String, limit: Int) {
@@ -35,17 +37,23 @@ object TimerInvitesTable : Table("timer_invites") {
         }
     }
 
+    fun selectCount(timerId: Int, after: Long) = select {
+        TIMER_ID eq timerId and (CREATION_TIME greater after)
+    }.count()
+
     class Invite(
-        val timerId: TimersRepository.TimerId,
-        val inviteCode: TimerInvitesRepository.Code,
-        val limit: Count
+        val timerId: Int,
+        val inviteCode: String,
+        val creationTime: Long,
+        val limit: Int
     )
 
     private fun ResultRow.toInvite(): Invite {
         return Invite(
-            TimersRepository.TimerId(get(TIMER_ID)),
-            TimerInvitesRepository.Code(get(INVITE_CODE)),
-            Count(get(LIMIT))
+            get(TIMER_ID),
+            get(INVITE_CODE),
+            get(CREATION_TIME),
+            get(LIMIT)
         )
     }
 }

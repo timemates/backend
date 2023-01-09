@@ -1,15 +1,16 @@
 package io.timemates.backend.tests.usecases.timers.invites
 
-import kotlinx.coroutines.runBlocking
-import org.junit.Test
-import io.timemates.backend.types.value.TimerName
-import io.timemates.backend.providers.SystemCurrentTimeProvider
-import io.timemates.backend.providers.SecureRandomStringProvider
-import io.timemates.backend.repositories.*
 import io.timemates.backend.integrations.inmemory.repositories.InMemoryTimerInvitesRepository
 import io.timemates.backend.integrations.inmemory.repositories.InMemoryTimersRepository
+import io.timemates.backend.providers.SecureRandomStringProvider
+import io.timemates.backend.providers.SystemCurrentTimeProvider
+import io.timemates.backend.repositories.TimersRepository
+import io.timemates.backend.repositories.UsersRepository
 import io.timemates.backend.types.value.Count
+import io.timemates.backend.types.value.TimerName
 import io.timemates.backend.usecases.timers.members.invites.CreateInviteUseCase
+import kotlinx.coroutines.runBlocking
+import org.junit.Test
 import java.util.*
 
 class CreateInviteUseCaseTest {
@@ -17,7 +18,9 @@ class CreateInviteUseCaseTest {
     private val timersRepo = InMemoryTimersRepository()
     private val timeProvider = SystemCurrentTimeProvider(TimeZone.getDefault())
     private val useCase = CreateInviteUseCase(
-        invitesRepo, timersRepo, SecureRandomStringProvider
+        invitesRepo, timersRepo, SecureRandomStringProvider, SystemCurrentTimeProvider(
+            TimeZone.getDefault()
+        )
     )
 
     @Test

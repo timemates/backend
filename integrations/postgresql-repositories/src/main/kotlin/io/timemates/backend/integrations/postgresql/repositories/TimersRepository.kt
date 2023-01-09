@@ -36,6 +36,10 @@ class TimersRepository(
         datasource.removeTimer(timerId.int)
     }
 
+    override suspend fun getOwnedTimersCount(ownerId: UsersRepository.UserId, after: UnixTime): Int {
+        return datasource.getCountOfTimers(ownerId.int, after.long).toInt()
+    }
+
     override suspend fun getTimerSettings(timerId: TimersRepository.TimerId): TimersRepository.Settings? {
         return datasource.getSettings(timerId.int)?.toExternalSettings()
     }

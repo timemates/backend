@@ -1,14 +1,13 @@
 package io.timemates.backend.usecases.auth
 
-import io.timemates.backend.types.value.Count
-import io.timemates.backend.types.value.UnixTime
 import io.timemates.backend.providers.CurrentTimeProvider
 import io.timemates.backend.providers.RandomStringProvider
 import io.timemates.backend.providers.provideVerificationCode
 import io.timemates.backend.providers.provideVerificationToken
 import io.timemates.backend.repositories.EmailsRepository
 import io.timemates.backend.repositories.VerificationsRepository
-import io.timemates.backend.types.sideffects.ValidationFailureHandler
+import io.timemates.backend.types.value.Count
+import io.timemates.backend.types.value.UnixTime
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
 

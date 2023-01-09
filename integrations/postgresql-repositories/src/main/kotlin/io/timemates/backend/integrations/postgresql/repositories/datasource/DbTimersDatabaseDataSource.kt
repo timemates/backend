@@ -60,6 +60,13 @@ class TimersDatabaseDataSource(
         }.singleOrNull()?.toTimer()
     }
 
+    suspend fun getCountOfTimers(byUser: Int, afterTime: Long) =
+        newSuspendedTransaction(db = database) {
+            TimersTable.select {
+                TimersTable.OWNER_ID eq byUser and (TimersTable.CREATION_TIME greater afterTime)
+            }.count()
+        }
+
     suspend fun removeMember(userId: Int, timerId: Int) =
         newSuspendedTransaction(db = database) {
             TimerParticipantsTable.deleteWhere {

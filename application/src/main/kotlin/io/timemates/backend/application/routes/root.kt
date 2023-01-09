@@ -2,10 +2,6 @@ package io.timemates.backend.application.routes
 
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import org.jetbrains.exposed.sql.Database
 import io.timemates.backend.application.plugins.AuthorizationPlugin
 import io.timemates.backend.application.routes.auth.authRoot
 import io.timemates.backend.application.routes.files.filesRoot
@@ -13,13 +9,13 @@ import io.timemates.backend.application.routes.timer.timersRoot
 import io.timemates.backend.application.routes.users.usersRoot
 import io.timemates.backend.application.types.value.internal
 import io.timemates.backend.application.types.value.serializable
+import io.timemates.backend.integrations.postgresql.repositories.*
+import io.timemates.backend.integrations.postgresql.repositories.datasource.*
 import io.timemates.backend.providers.SecureRandomStringProvider
 import io.timemates.backend.providers.SystemCurrentTimeProvider
 import io.timemates.backend.repositories.AuthorizationsRepository
 import io.timemates.backend.repositories.FilesRepository
 import io.timemates.backend.repositories.TimerActivityRepository
-import io.timemates.backend.integrations.postgresql.repositories.*
-import io.timemates.backend.integrations.postgresql.repositories.datasource.*
 import io.timemates.backend.usecases.auth.GetUserIdByAccessTokenUseCase
 import io.timemates.backend.usecases.auth.RefreshTokenUseCase
 import io.timemates.backend.usecases.auth.RemoveAccessTokenUseCase
@@ -37,6 +33,10 @@ import io.timemates.backend.usecases.timers.sessions.LeaveSessionUseCase
 import io.timemates.backend.usecases.users.EditUserUseCase
 import io.timemates.backend.usecases.users.GetUsersUseCase
 import io.timemates.backend.usecases.users.SetAvatarUseCase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import org.jetbrains.exposed.sql.Database
 import java.security.SecureRandom
 import java.time.ZoneId
 import java.util.*
@@ -83,7 +83,7 @@ fun Routing.setupRoutes(
         SetTimerSettingsUseCase(timersRepository, sessionsRepository),
         StartTimerUseCase(timersRepository, timeProvider, sessionsRepository, timerActivityRepository),
         StopTimerUseCase(timersRepository, sessionsRepository, timerActivityRepository, timeProvider),
-        CreateInviteUseCase(timerInvitesRepository, timersRepository, randomStringProvider),
+        CreateInviteUseCase(timerInvitesRepository, timersRepository, randomStringProvider, timeProvider),
         GetInvitesUseCase(timerInvitesRepository, timersRepository),
         JoinByInviteUseCase(timerInvitesRepository, timersRepository, timeProvider),
         RemoveInviteUseCase(timerInvitesRepository, timersRepository),
@@ -116,7 +116,7 @@ fun Routing.setupRoutesWithDatabase(
     rootFilesPath: String
 ) {
     val authRepository =
-        io.timemates.backend.integrations.postgresql.repositories.DbAuthorizationsRepository(
+        DbAuthorizationsRepository(
             AuthorizationsDataSource(
                 database
             )

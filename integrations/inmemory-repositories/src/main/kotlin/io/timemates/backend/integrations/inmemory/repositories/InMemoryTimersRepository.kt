@@ -11,7 +11,8 @@ class InMemoryTimersRepository : TimersRepository {
         var settings: TimersRepository.Settings,
         val ownerId: UsersRepository.UserId,
         val members: MutableList<UsersRepository.UserId>,
-        val name: TimerName
+        val name: TimerName,
+        val creationTime: UnixTime
     )
 
     private val timers: MutableList<Timer> = mutableListOf()
@@ -27,7 +28,8 @@ class InMemoryTimersRepository : TimersRepository {
                 TimersRepository.Settings.Default,
                 ownerId,
                 mutableListOf(ownerId),
-                name
+                name,
+                creationTime
             )
         )
         return TimersRepository.TimerId(timers.lastIndex)
@@ -41,6 +43,10 @@ class InMemoryTimersRepository : TimersRepository {
 
     override suspend fun removeTimer(timerId: TimersRepository.TimerId) {
         timers.removeAt(timerId.int)
+    }
+
+    override suspend fun getOwnedTimersCount(ownerId: UsersRepository.UserId, after: UnixTime): Int {
+        return timers.count { it.ownerId == ownerId && it.creationTime.long > after.long }
     }
 
     override suspend fun getTimerSettings(timerId: TimersRepository.TimerId): TimersRepository.Settings? {

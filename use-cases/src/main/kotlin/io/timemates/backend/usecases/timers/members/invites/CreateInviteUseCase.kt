@@ -1,16 +1,19 @@
 package io.timemates.backend.usecases.timers.members.invites
 
+import io.timemates.backend.providers.CurrentTimeProvider
 import io.timemates.backend.providers.RandomStringProvider
 import io.timemates.backend.providers.provideInviteCode
 import io.timemates.backend.repositories.TimerInvitesRepository
 import io.timemates.backend.repositories.TimersRepository
 import io.timemates.backend.repositories.UsersRepository
 import io.timemates.backend.types.value.Count
+import kotlin.time.Duration.Companion.minutes
 
 class CreateInviteUseCase(
     private val invites: TimerInvitesRepository,
     private val timers: TimersRepository,
-    private val randomStringProvider: RandomStringProvider
+    private val randomStringProvider: RandomStringProvider,
+    private val timeProvider: CurrentTimeProvider
 ) {
     suspend operator fun invoke(
         userId: UsersRepository.UserId,
@@ -20,8 +23,11 @@ class CreateInviteUseCase(
         if (timers.getTimer(timerId)?.ownerId != userId)
             return Result.NoAccess
 
+        if(invites.getInvitesCount(timerId, timeProvider.provide() + 30.minutes) > 10)
+            return Result.TooManyCreation
+
         val code = randomStringProvider.provideInviteCode()
-        invites.createInvite(timerId, code, limit)
+        invites.createInvite(timerId, code, timeProvider.provide(), limit)
         return Result.Success(code)
     }
 
@@ -29,5 +35,6 @@ class CreateInviteUseCase(
         @JvmInline
         value class Success(val code: TimerInvitesRepository.Code) : Result
         object NoAccess : Result
+        object TooManyCreation : Result
     }
 }

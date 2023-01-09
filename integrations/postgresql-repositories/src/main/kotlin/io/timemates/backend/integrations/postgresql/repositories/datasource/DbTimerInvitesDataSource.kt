@@ -1,9 +1,6 @@
 package io.timemates.backend.integrations.postgresql.repositories.datasource
 
-import io.timemates.backend.repositories.TimerInvitesRepository
-import io.timemates.backend.repositories.TimersRepository
 import io.timemates.backend.integrations.postgresql.repositories.tables.TimerInvitesTable
-import io.timemates.backend.types.value.Count
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
@@ -37,17 +34,20 @@ class TimerInvitesDataSource(
     }
 
     suspend fun setInviteLimit(
-        code: String,
-        limit: Int
+        code: String, limit: Int
     ): Unit = newSuspendedTransaction(db = database) {
         TimerInvitesTable.setLimitCount(code, limit)
     }
 
+    suspend fun countOfInvites(
+        timerId: Int, after: Long
+    ): Long = newSuspendedTransaction(db = database) {
+        TimerInvitesTable.selectCount(timerId, after)
+    }
+
     suspend fun createInvite(
-        timerId: TimersRepository.TimerId,
-        code: TimerInvitesRepository.Code,
-        limit: Count
+        timerId: Int, code: String, creationTime: Long, limit: Int
     ): Unit = newSuspendedTransaction(db = database) {
-        TimerInvitesTable.insert(TimerInvitesTable.Invite(timerId, code, limit))
+        TimerInvitesTable.insert(TimerInvitesTable.Invite(timerId, code, creationTime, limit))
     }
 }

@@ -1,5 +1,6 @@
 package io.timemates.backend.application.routes.timer
 
+import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -28,6 +29,8 @@ fun Route.createTimer(createTimer: CreateTimerUseCase) {
                 )) {
                     is CreateTimerUseCase.Result.Success ->
                         CreateTimerResponse.Success(result.timerId.serializable())
+                    is CreateTimerUseCase.Result.TooManyCreations ->
+                        return@post call.respond(HttpStatusCode.TooManyRequests)
                 }
 
             call.respond(result)

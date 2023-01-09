@@ -16,6 +16,11 @@ interface TimersRepository {
     suspend fun getTimer(timerId: TimerId): Timer?
     suspend fun removeTimer(timerId: TimerId)
 
+    suspend fun getOwnedTimersCount(
+        ownerId: UsersRepository.UserId,
+        after: UnixTime
+    ): Int
+
     suspend fun getTimerSettings(timerId: TimerId): Settings?
     suspend fun setTimerSettings(timerId: TimerId, settings: NewSettings)
     suspend fun addMember(

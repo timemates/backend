@@ -1,5 +1,6 @@
 package io.timemates.backend.application.routes.timer.members.invites
 
+import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -32,6 +33,9 @@ fun Route.createInvite(createInvite: CreateInviteUseCase) {
 
                 is CreateInviteUseCase.Result.NoAccess ->
                     CreateInviteResponse.NoAccess
+
+                CreateInviteUseCase.Result.TooManyCreation ->
+                    return@post call.respond(HttpStatusCode.TooManyRequests)
             }
 
             call.respond(response)

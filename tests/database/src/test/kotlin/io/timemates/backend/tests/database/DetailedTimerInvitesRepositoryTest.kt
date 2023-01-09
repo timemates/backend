@@ -11,11 +11,13 @@ import io.timemates.backend.integrations.postgresql.repositories.TimersRepositor
 import io.timemates.backend.integrations.postgresql.repositories.datasource.DbUsersDatabaseDataSource
 import io.timemates.backend.integrations.postgresql.repositories.datasource.TimerInvitesDataSource
 import io.timemates.backend.integrations.postgresql.repositories.datasource.TimersDatabaseDataSource
+import io.timemates.backend.providers.SystemCurrentTimeProvider
 import io.timemates.backend.types.value.Count
 import io.timemates.backend.types.value.TimerName
 import io.timemates.backend.types.value.UnixTime
 import kotlinx.coroutines.runBlocking
 import org.jetbrains.exposed.sql.Database
+import java.util.*
 import kotlin.properties.Delegates
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -32,6 +34,7 @@ class DetailedTimerInvitesRepositoryTest {
     private val invites = TimerInvitesRepository(invitesDs)
 
     private val secureRandomStringProvider = SecureRandomStringProvider()
+    private val timeProvider = SystemCurrentTimeProvider(TimeZone.getDefault())
 
     private var inviteCode1: Code by Delegates.notNull()
     private var inviteCode2: Code by Delegates.notNull()
@@ -53,12 +56,14 @@ class DetailedTimerInvitesRepositoryTest {
         invites.createInvite(
             timerId,
             inviteCode1,
+            timeProvider.provide(),
             Count(2)
         )
 
         invites.createInvite(
             timerId,
             inviteCode2,
+            timeProvider.provide(),
             Count(20)
         )
         this@DetailedTimerInvitesRepositoryTest.timerId = timerId

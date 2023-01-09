@@ -5,6 +5,7 @@ import io.timemates.backend.repositories.TimersRepository
 import io.timemates.backend.integrations.postgresql.repositories.datasource.TimerInvitesDataSource
 import io.timemates.backend.integrations.postgresql.repositories.tables.TimerInvitesTable
 import io.timemates.backend.types.value.Count
+import io.timemates.backend.types.value.UnixTime
 import io.timemates.backend.repositories.TimerInvitesRepository as Contract
 
 class TimerInvitesRepository(
@@ -12,7 +13,12 @@ class TimerInvitesRepository(
 ) : Contract {
 
     private fun TimerInvitesTable.Invite.toExternal(): TimerInvitesRepository.Invite {
-        return TimerInvitesRepository.Invite(timerId, inviteCode, limit)
+        return TimerInvitesRepository.Invite(
+            TimersRepository.TimerId(timerId),
+            TimerInvitesRepository.Code(inviteCode),
+            UnixTime(creationTime),
+            Count(limit)
+        )
     }
 
     override suspend fun getInvites(
@@ -33,12 +39,21 @@ class TimerInvitesRepository(
         return datasource.setInviteLimit(code.string, limit.int)
     }
 
+    override suspend fun getInvitesCount(timerId: TimersRepository.TimerId, after: UnixTime): Int {
+        return datasource.countOfInvites(
+            timerId.int, after.long
+        ).toInt()
+    }
+
     override suspend fun createInvite(
         timerId: TimersRepository.TimerId,
         code: TimerInvitesRepository.Code,
+        creationTime: UnixTime,
         limit: Count
     ) {
-        return datasource.createInvite(timerId, code, limit)
+        return datasource.createInvite(
+            timerId.int, code.string, creationTime.long, limit.int
+        )
     }
 
 }

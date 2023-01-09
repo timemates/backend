@@ -32,7 +32,7 @@ class JoinByInviteUseCaseTest {
             )
 
             val code = SecureRandomStringProvider.provideInviteCode()
-            invitesRepo.createInvite(id, code, Count(5))
+            invitesRepo.createInvite(id, code, timeProvider.provide(), Count(5))
 
             val result = useCase.invoke(
                 UsersRepository.UserId(1),
@@ -72,7 +72,7 @@ class JoinByInviteUseCaseTest {
             )
 
             val code = SecureRandomStringProvider.provideInviteCode()
-            invitesRepo.createInvite(id, code, Count(1))
+            invitesRepo.createInvite(id, code, timeProvider.provide(), Count(1))
 
             val result = useCase.invoke(
                 UsersRepository.UserId(1),

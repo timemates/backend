@@ -8,6 +8,7 @@ dependencies {
 
     testImplementation(projects.integrations.postgresqlRepositories)
     testImplementation(projects.integrations.secureRandomString)
+    testImplementation(projects.integrations.localizedTime)
     testImplementation(projects.useCases)
 
     testImplementation(libs.h2.database)

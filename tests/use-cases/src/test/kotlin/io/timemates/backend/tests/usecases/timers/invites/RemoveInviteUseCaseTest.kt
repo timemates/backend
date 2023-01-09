@@ -32,7 +32,7 @@ class RemoveInviteUseCaseTest {
             )
 
             val code = SecureRandomStringProvider.provideInviteCode()
-            invitesRepo.createInvite(id, code, Count(10))
+            invitesRepo.createInvite(id, code, timeProvider.provide(), Count(10))
 
             val result = useCase.invoke(
                 UsersRepository.UserId(1),
@@ -55,7 +55,7 @@ class RemoveInviteUseCaseTest {
             )
 
             val code = SecureRandomStringProvider.provideInviteCode()
-            invitesRepo.createInvite(id, code, Count(10))
+            invitesRepo.createInvite(id, code, timeProvider.provide(), Count(10))
 
             val result = useCase.invoke(
                 UsersRepository.UserId(2),

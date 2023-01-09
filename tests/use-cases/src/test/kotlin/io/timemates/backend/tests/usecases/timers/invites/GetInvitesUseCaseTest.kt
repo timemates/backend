@@ -33,6 +33,7 @@ class GetInvitesUseCaseTest {
             invitesRepo.createInvite(
                 id,
                 SecureRandomStringProvider.provideInviteCode(),
+                timeProvider.provide(),
                 Count(5)
             )
 
