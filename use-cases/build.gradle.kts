@@ -1,14 +1,19 @@
 plugins {
-    id(Deps.Plugins.Configuration.Kotlin.Jvm)
+    alias(libs.plugins.kotlin.jvm)
 }
 
 dependencies {
-    implementation(project(Deps.Modules.Domain))
-    implementation(Deps.Libs.Kotlinx.Coroutines)
-    implementation(project(Deps.Modules.Adapters.GoogleAuthIntegration))
-    testImplementation(Deps.Libs.JUnit.Kotlin)
+
+    implementation(libs.kotlinx.coroutines)
+    testImplementation(libs.junit.kotlin)
 }
 
 tasks.withType<Test> {
     useJUnit()
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions {
+        freeCompilerArgs = listOf("-Xcontext-receivers")
+    }
 }
