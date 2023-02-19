@@ -1,14 +1,5 @@
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        mavenCentral()
-        google()
-    }
-
-    plugins {
-        kotlin("plugin.serialization") version "1.7.20"
-    }
-}
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+enableFeaturePreview("VERSION_CATALOGS")
 
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
@@ -20,18 +11,32 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "tomadoro-backend"
+rootProject.name = "timemates-backend"
 
-includeBuild("build-logic/dependencies")
-includeBuild("build-logic/configuration")
-includeBuild("build-logic/service-deploy")
-//includeBuild("buildUtils/library-deploy")
+//include(":application")
+//include(":endpoints")
 
-include(":domain")
-include(":use-cases")
-include(":application")
-include(":adapters:codes-integration")
-include(":adapters:google-auth-integration")
-include(":adapters:repositories-integration")
-include(":adapters:time-integration")
-include(":adapters:tokens-integration")
+//include(":integrations:postgresql-storage")
+//include(":integrations:localized-time")
+//include(":integrations:secure-random-string")
+//include(":integrations:smtp-emails")
+//include(":integrations:inmemory-repositories")
+//include(":integrations:local-files")
+//include(":integrations:cache-storage")
+
+//include(":tests:database")
+//include(":tests:use-cases")
+//
+//include("integrations:mongodb-updates")
+
+include(
+    ":features:validation",
+    ":features:random",
+    ":features:authorization",
+    ":features:time",
+    ":features:page-tokens",
+    ":features:scheduler",
+)
+
+include(":domain", ":data")
+
