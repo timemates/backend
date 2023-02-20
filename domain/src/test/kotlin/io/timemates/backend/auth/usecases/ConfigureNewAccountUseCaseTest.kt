@@ -5,7 +5,6 @@ import com.timemates.backend.time.TimeProvider
 import com.timemates.backend.validation.createOrThrow
 import com.timemates.random.SecureRandomProvider
 import io.mockk.coEvery
-import io.mockk.coJustRun
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
@@ -26,7 +25,6 @@ import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.extension.ExtendWith
 import java.util.*
 import kotlin.test.Test
-import kotlin.test.assertEquals
 import kotlin.test.assertIs
 
 @MockKExtension.CheckUnnecessaryStub
