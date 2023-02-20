@@ -1,0 +1,5 @@
+syntax = "proto3";
+
+message GetUsersRequest {
+  repeated int64 userId = 1;
+}

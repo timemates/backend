@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+import "requests/GetUsersRequest.proto";
+import "requests/EditUserRequest.proto";
+import "requests/EditEmailRequest.proto";
+import "io/timemates/api/common/types/Status.proto";
+import "types/User.proto";
+
+service UsersService {
+  /**
+   * Gets users by given identifiers.
+   *
+   * Returns [User] or null
+   */
+  rpc getUsers(GetUsersRequest) returns (Users);
+
+  /**
+   * Sets user information (name / description / avatar file id).
+   *
+   * Returns [Status]
+   */
+  rpc setUser(EditUserRequest) returns (Status);
+
+  /**
+   * Sets new email for current user.
+   *
+   * Returns [Status]
+   */
+  rpc setEmail(EditEmailRequest) returns (Status);
+}

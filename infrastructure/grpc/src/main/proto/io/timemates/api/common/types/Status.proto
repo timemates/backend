@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+message Status {
+  bool isSuccess = 1;
+
+  /**
+   * Contains human-readable variant of the message.
+   * Always in English.
+   */
+  string errorMessage = 2;
+}

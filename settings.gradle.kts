@@ -11,23 +11,15 @@ dependencyResolutionManagement {
     }
 }
 
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+        google()
+    }
+}
+
 rootProject.name = "timemates-backend"
-
-//include(":application")
-//include(":endpoints")
-
-//include(":integrations:postgresql-storage")
-//include(":integrations:localized-time")
-//include(":integrations:secure-random-string")
-//include(":integrations:smtp-emails")
-//include(":integrations:inmemory-repositories")
-//include(":integrations:local-files")
-//include(":integrations:cache-storage")
-
-//include(":tests:database")
-//include(":tests:use-cases")
-//
-//include("integrations:mongodb-updates")
 
 include(
     ":features:validation",
@@ -39,4 +31,6 @@ include(
 )
 
 include(":domain", ":data")
+
+include(":infrastructure:grpc")
 
