@@ -7,11 +7,7 @@ import io.timemates.backend.files.repositories.FilesRepository
 import io.timemates.backend.files.types.value.FileId
 import io.timemates.backend.users.repositories.ImageCompressorRepository
 import io.timemates.backend.users.repositories.UsersRepository
-import io.timemates.backend.users.repositories.compress
-import io.timemates.backend.users.repositories.compressOrThrow
 import io.timemates.backend.users.types.UserScope
-import io.timemates.backend.users.types.value.ImageVariant
-import io.timemates.backend.users.types.value.asUserId
 import io.timemates.backend.users.types.value.userId
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
