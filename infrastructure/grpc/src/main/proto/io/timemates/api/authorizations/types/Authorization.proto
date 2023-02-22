@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+import "io/timemates/api/common/types/Timestamp.proto";
+
+message Authorization {
+  /**
+   * Authorization id of the user. Unique only
+   * per user.
+   */
+  int32 authorizationId = 1;
+
+  /**
+   * Hash that used to identify user.
+   *
+   * Has null if it's not new authorization.
+   */
+  optional Hash accessHash = 2;
+
+  /**
+   * Hash that used to identify user.
+   *
+   * Has null if it's not new authorization.
+   */
+  optional Hash refreshHash = 3;
+
+  /**
+   * Denotes when authorization was generated.
+   */
+  Timestamp generationTime = 4;
+
+  /**
+   * Additional information about authorization.
+   */
+  Metadata metadata = 5;
+
+  message Hash {
+    string value = 1;
+    Timestamp expiresAt = 2;
+  }
+
+  message Metadata {
+    string clientName = 1;
+    string clientVersion = 2;
+    string clientIpAddress = 3;
+  }
+}
