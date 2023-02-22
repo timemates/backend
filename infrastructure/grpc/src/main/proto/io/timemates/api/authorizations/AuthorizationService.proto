@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+import "requests/StartAuthorizationRequest.proto";
+import "requests/ConfirmAuthorizationRequest.proto";
+import "Status.proto";
+import "TerminateAuthorizationRequest.proto";
+import "GetAuthorizationsRequest.proto";
+
+service AuthorizationService {
+  /**
+   * Starts authorization by sending corresponding email to email address.
+   *
+   * Has next restrictions:
+   * – 3 requests per email is max.
+   */
+  rpc startAuthorization(StartAuthorizationRequest) returns (StartAuthorizationRequest.Response);
+
+  /**
+   * Confirms authorization by sending authorization verification code.
+   *
+   * Has next restrictions:
+   * – 3 attempts per verification code.
+   */
+  rpc confirmAuthorization(ConfirmAuthorizationRequest) returns (ConfirmAuthorizationRequest.Response);
+
+  /**
+   * Gets all active authorizations.
+   */
+  rpc getAuthorizations(GetAuthorizationsRequest) returns (GetAuthorizationsRequest.Response);
+
+  /**
+   * Terminates authorization by given identifier.
+   *
+   * Returns [Status]
+   */
+  rpc terminateAuthorization(TerminateAuthorizationRequest) returns (Status);
+}
