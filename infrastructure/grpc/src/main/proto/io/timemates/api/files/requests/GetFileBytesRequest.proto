@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+message GetFileBytesRequest {
+  string fileId = 1;
+
+  message Response {
+    /**
+     * Chunked file content bytes.
+     */
+    bytes chunk = 1;
+  }
+}
