@@ -1,11 +1,20 @@
 syntax = "proto3";
 
 message Status {
+  /**
+   * Denotes whether status is success or null.
+   */
   bool isSuccess = 1;
+
+  /**
+   * Identifier of the status.
+   * - If 0, it means that request was success.
+   */
+  int32 statusCode = 2;
 
   /**
    * Contains human-readable variant of the message.
    * Always in English.
    */
-  string errorMessage = 2;
+  string errorMessage = 3;
 }
