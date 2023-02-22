@@ -1,0 +1,10 @@
+syntax = "proto3";
+import "User.proto";
+
+message GetMembersRequest {
+  optional string nextPageToken = 1;
+
+  message Response {
+    repeated User users = 1;
+  }
+}

@@ -1,0 +1,80 @@
+syntax = "proto3";
+
+import "CreateTimerRequest.proto";
+import "EditTimerInfoRequest.proto";
+import "EditTimerSettingsRequest.proto";
+import "RemoveTimerRequest.proto";
+import "GetTimerRequest.proto";
+import "GetTimersRequest.proto";
+import "KickMemberRequest.proto";
+import "GetMembersRequest.proto";
+import "CreateInviteRequest.proto";
+import "GetInvitesRequest.proto";
+import "RemoveInviteRequest.proto";
+import "Status.proto";
+import "Timer.proto";
+
+service TimersService {
+  /**
+   * Creates timer.
+   *
+   * Returns [Status].
+   */
+  rpc createTimer(CreateTimerRequest) returns (Status);
+
+  /**
+   * Gets timer by id.
+   */
+  rpc getTimer(GetTimerRequest) returns (Timer);
+
+  /*
+   * Gets timers by page token.
+   */
+  rpc getTimers(GetTimersRequest) returns (GetTimersRequest);
+
+  /**
+   * Edits timer information (name, description).
+   *
+   * Returns [Status].
+   */
+  rpc setTimerInfo(EditTimerInfoRequest) returns (Status);
+
+  /**
+   * Edits timer information (name, description).
+   *
+   * Returns [Status].
+   */
+  rpc setTimerSettings(EditTimerSettingsRequest) returns (Status);
+
+  /**
+   * Kicks member out of timer.
+   */
+  rpc kickMember(KickMemberRequest) returns (Status);
+
+  /*
+   * Gets members of a timer.
+   */
+  rpc getMembers(GetMembersRequest) returns (GetMembersRequest.Response);
+
+  /*
+   * Creates invite for joining a timer.
+   */
+  rpc createInvite(InviteMemberRequest) returns (InviteMemberRequest.Response);
+
+  /**
+   * Gets invites of a timer.
+   */
+  rpc getInvites(GetInvitesRequest) returns (GetInvitesRequest.Response);
+
+  /**
+   * Gets invites of a timer.
+   */
+  rpc removeInvite(RemoveInviteRequest) returns (Status);
+
+  /**
+   * Removes timer.
+   *
+   * Returns [Status].
+   */
+  rpc removeTimer(RemoveTimerRequest) returns (Status);
+}

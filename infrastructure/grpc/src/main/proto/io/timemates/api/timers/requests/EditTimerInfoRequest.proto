@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+import "Timer.proto";
+
+message EditTimerInfoRequest {
+  /**
+   * Timer's name. Up to 50 symbols.
+   */
+  string name = 1;
+
+  /**
+   * Timer's name. Up to 500 symbols.
+   */
+  optional string description = 2;
+}
