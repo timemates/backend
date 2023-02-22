@@ -1,0 +1,10 @@
+syntax = "proto3";
+import "User.proto";
+
+message InviteMemberRequest {
+  int64 timerId = 1;
+
+  message Response {
+    string inviteCode = 1;
+  }
+}

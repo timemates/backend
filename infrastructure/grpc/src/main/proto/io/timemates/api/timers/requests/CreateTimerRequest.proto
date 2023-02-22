@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+import "Timer.proto";
+
+message CreateTimerRequest {
+  /**
+   * Timer's name. Up to 50 symbols.
+   */
+  string name = 1;
+
+  /**
+   * Timer's name. Up to 500 symbols.
+   */
+  optional string description = 2;
+
+  optional Timer.Settings settings = 3;
+}

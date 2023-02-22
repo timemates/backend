@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+import "Timer.proto";
+
+message RemoveTimerRequest {
+  int64 timerId = 1;
+}
