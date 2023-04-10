@@ -48,9 +48,10 @@ cache4k = { module = "io.github.reactivecircus.cache4k:cache4k", version.require
 
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 
+grpc-protobuf = { module = "io.grpc:grpc-protobuf", version.require="1.54.0" }
 grpc-kotlin-stub = { module = "io.grpc:grpc-kotlin-stub", version.ref = "grpc" }
-grpc-protobuf = { module = "com.google.protobuf:protobuf-kotlin", version.ref = "grpc" }
-google-protobuf = { module = "com.google.protobuf:protobuf-kotlin", version.ref = "protobuf" }
+protobuf-kotlin = { module = "com.google.protobuf:protobuf-kotlin", version.ref = "protobuf" }
+protobuf-java = { module = "com.google.protobuf:protobuf-java", version.ref = "protobuf" }
 
 [plugins]
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
