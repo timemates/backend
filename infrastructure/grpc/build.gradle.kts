@@ -8,7 +8,9 @@ plugins {
 dependencies {
     implementation(libs.grpc.kotlin.stub)
     implementation(libs.grpc.protobuf)
-    implementation(libs.google.protobuf)
+    implementation(libs.protobuf.kotlin)
+    implementation(libs.protobuf.java)
+    implementation(libs.kotlinx.coroutines)
 }
 
 protobuf {
