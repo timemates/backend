@@ -1,8 +1,13 @@
-# TimeMates
+<p align="center">
+  <img width="200px" src="docs/images/app_icon_animated.gif" />
+  <h1 align="center">TimeMates Backend</h1>
+</p>
 
-The repository with source code of TimeMates backend.
+<div align="center">
+The repository with source code of TimeMates server on Kotlin.
+</div>
 
-## Setup
+## <div align="center">Setup</div>
 
 If you want to host it by yourself, follow next instructions:
 - Get latest release by building artifact with shadowjar or by getting it from [releases](https://github.com/timemates/backend/releases).
@@ -10,7 +15,7 @@ If you want to host it by yourself, follow next instructions:
 - Setup [environment](#Environment) (optional)
 - Run application with `java -jar ..`
 
-### Environment
+### <div align="center">Environment</div>
 
 To run this application on your own host you need to provide next env variables:
 
@@ -26,15 +31,15 @@ To run this application on your own host you need to provide next env variables:
 - `timemates.smtp.sender` – email of SMTP mailer
 
 > **Note**
-> 
+>
 > You can also use java arguments to set it [it](application/src/main/kotlin/io/timemates/backend/application/Application.kt) up.
 
-## Deploy
+## <div align="center">Deploy</div>
 
-To publish .jar to your own server use [:application:deploy](application/build.gradle.kts#L42) tasks.
+To publish .jar to your own server use `gradle application:deploy` task.
 It will appear if you have `timemates.host` env variable. Also, you should have next variables:
 
-#### Required
+#### <div align="center">Required</div>
 - `timemates.host`: server address
 - `timemates.user`: ssh user
 - `timemates.password`: ssh user's password
@@ -42,10 +47,10 @@ It will appear if you have `timemates.host` env variable. Also, you should have 
 - `timemates.prod.serviceName`: service name (systemd) to reload.
 - `timemates.archiveName`: name of the jar file.
 
-#### Optional
+#### <div align="center">Optional</div>
 - `timemates.knownHostsFilePath`: path to file with known hosts.
 
-### Database
+### <div align="center">Database</div>
 
-Backend creates and migrates database by itself (if it's release version), 
+Backend creates and migrates database by itself (if it's release version),
 so that no need in your own setup or migration.
