@@ -126,7 +126,7 @@ class UsersRepositoryTest {
         )
 
         coEvery { cachedUsers.getUsers(any()) } returns cachedUsersMap
-        coEvery { postgresqlUsers.getUsers(listOf(userId4.long)) } returns listOf(postgresqlUser)
+        coEvery { postgresqlUsers.getUsers(listOf(userId4.long)) } returns mapOf(postgresqlUser.id to postgresqlUser)
         justRun { cachedUsers.putUser(any(), any()) }
         every { mapper.toDomainUser(any(), any()) } returns mockk()
 

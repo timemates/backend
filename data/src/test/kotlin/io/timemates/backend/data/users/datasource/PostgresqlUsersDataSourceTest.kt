@@ -81,15 +81,15 @@ class PostgresqlUsersDataSourceTest {
     fun `getUsers should return list of users for existing ids`() = runBlocking {
         val userId1 = datasource.createUser(email, "Test User 1", "Test Bio 1", currentTimeMillis)
         val userId2 = datasource.createUser("user5@example.com", "Test User 2", "Test Bio 2", currentTimeMillis)
-        val expectedUsers = listOf(
-            PostgresqlUsersDataSource.User(
+        val expectedUsers = mapOf(
+            userId1 to PostgresqlUsersDataSource.User(
                 id = userId1,
                 userName = "Test User 1",
                 userEmail = email,
                 userShortDesc = "Test Bio 1",
                 userAvatarFileId = null
             ),
-            PostgresqlUsersDataSource.User(
+            userId2 to PostgresqlUsersDataSource.User(
                 id = userId2,
                 userName = "Test User 2",
                 userEmail = "user5@example.com",
