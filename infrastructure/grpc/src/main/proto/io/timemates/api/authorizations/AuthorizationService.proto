@@ -1,10 +1,10 @@
 syntax = "proto3";
 
-import "requests/StartAuthorizationRequest.proto";
-import "requests/ConfirmAuthorizationRequest.proto";
-import "Status.proto";
-import "TerminateAuthorizationRequest.proto";
-import "GetAuthorizationsRequest.proto";
+import "io/timemates/api/authorizations/requests/StartAuthorizationRequest.proto";
+import "io/timemates/api/authorizations/requests/ConfirmAuthorizationRequest.proto";
+import "io/timemates/api/common/types/Status.proto";
+import "io/timemates/api/authorizations/requests/TerminateAuthorizationRequest.proto";
+import "io/timemates/api/authorizations/requests/GetAuthorizationsRequest.proto";
 
 service AuthorizationService {
   /**

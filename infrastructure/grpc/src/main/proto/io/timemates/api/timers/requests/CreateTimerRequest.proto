@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-import "Timer.proto";
+import "io/timemates/api/timers/types/Timer.proto";
 
 message CreateTimerRequest {
   /**

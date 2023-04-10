@@ -1,5 +1,5 @@
 syntax = "proto3";
-import "Authorization.proto";
+import "io/timemates/api/authorizations/types/Authorization.proto";
 
 message ConfirmAuthorizationRequest {
   string code = 1;

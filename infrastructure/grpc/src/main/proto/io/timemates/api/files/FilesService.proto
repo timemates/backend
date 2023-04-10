@@ -1,8 +1,8 @@
 syntax = "proto3";
 
 import "io/timemates/api/common/types/Status.proto";
-import "GetFileBytesRequest.proto";
-import "UploadFileRequest.proto";
+import "io/timemates/api/files/requests/GetFileBytesRequest.proto";
+import "io/timemates/api/files/requests/UploadFileRequest.proto";
 
 service FilesService {
   /**

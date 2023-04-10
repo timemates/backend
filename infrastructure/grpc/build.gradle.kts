@@ -13,14 +13,14 @@ dependencies {
 
 protobuf {
     protoc {
-        artifact = "com.google.protobuf:protoc:${libs.versions.protobuf}"
+        artifact = "com.google.protobuf:protoc:3.22.2"
     }
     plugins {
         id("grpc") {
-            artifact = "io.grpc:protoc-gen-grpc-java:${libs.grpc}"
+            artifact = "io.grpc:protoc-gen-grpc-java:1.54.0"
         }
         id("grpckt") {
-            artifact = "io.grpc:protoc-gen-grpc-kotlin:${libs.grpc}:jdk8@jar"
+            artifact = "io.grpc:protoc-gen-grpc-kotlin:1.3.0:jdk8@jar"
         }
     }
     generateProtoTasks {
