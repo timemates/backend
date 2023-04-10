@@ -118,7 +118,11 @@ class UsersRepositoryTest {
         )
 
         val postgresqlUser = PostgresqlUsersDataSource.User(
-            userId4.long, "User 4", "user4@example.com", "4", null
+            id = userId4.long,
+            userName = "User 4",
+            userEmail = "user4@example.com",
+            userShortDesc = "4",
+            userAvatarFileId = null,
         )
 
         coEvery { cachedUsers.getUsers(any()) } returns cachedUsersMap
@@ -133,8 +137,8 @@ class UsersRepositoryTest {
         coVerify { postgresqlUsers.getUsers(listOf(userId4.long)) }
         verify(exactly = 1) {
             cachedUsers.putUser(
-                userId4.long,
-                any()
+                any(),
+                any(),
             )
         }
     }
