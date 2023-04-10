@@ -9,6 +9,7 @@ dependencies {
     implementation(libs.grpc.kotlin.stub)
     implementation(libs.grpc.protobuf)
     implementation(libs.google.protobuf)
+    implementation(libs.kotlinx.coroutines)
 }
 
 protobuf {
