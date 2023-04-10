@@ -1,10 +1,10 @@
 syntax = "proto3";
 
-import "requests/GetUsersRequest.proto";
-import "requests/EditUserRequest.proto";
-import "requests/EditEmailRequest.proto";
+import "io/timemates/api/users/requests/GetUsersRequest.proto";
+import "io/timemates/api/users/requests/EditUserRequest.proto";
+import "io/timemates/api/users/requests/EditEmailRequest.proto";
 import "io/timemates/api/common/types/Status.proto";
-import "types/User.proto";
+import "io/timemates/api/users/types/User.proto";
 
 service UsersService {
   /**

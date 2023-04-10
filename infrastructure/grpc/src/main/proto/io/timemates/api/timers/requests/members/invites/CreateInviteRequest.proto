@@ -1,5 +1,5 @@
 syntax = "proto3";
-import "User.proto";
+import "io/timemates/api/users/types/User.proto";
 
 message InviteMemberRequest {
   int64 timerId = 1;

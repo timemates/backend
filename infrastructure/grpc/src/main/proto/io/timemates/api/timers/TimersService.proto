@@ -1,18 +1,18 @@
 syntax = "proto3";
 
-import "CreateTimerRequest.proto";
-import "EditTimerInfoRequest.proto";
-import "EditTimerSettingsRequest.proto";
-import "RemoveTimerRequest.proto";
-import "GetTimerRequest.proto";
-import "GetTimersRequest.proto";
-import "KickMemberRequest.proto";
-import "GetMembersRequest.proto";
-import "CreateInviteRequest.proto";
-import "GetInvitesRequest.proto";
-import "RemoveInviteRequest.proto";
-import "Status.proto";
-import "Timer.proto";
+import "io/timemates/api/timers/requests/CreateTimerRequest.proto";
+import "io/timemates/api/timers/requests/EditTimerInfoRequest.proto";
+import "io/timemates/api/timers/requests/EditTimerSettingsRequest.proto";
+import "io/timemates/api/timers/requests/RemoveTimerRequest.proto";
+import "io/timemates/api/timers/requests/GetTimerRequest.proto";
+import "io/timemates/api/timers/requests/GetTimersRequest.proto";
+import "io/timemates/api/timers/requests/members/KickMemberRequest.proto";
+import "io/timemates/api/timers/requests/members/GetMembersRequest.proto";
+import "io/timemates/api/timers/requests/members/invites/CreateInviteRequest.proto";
+import "io/timemates/api/timers/requests/members/invites/GetInvitesRequest.proto";
+import "io/timemates/api/timers/requests/members/invites/RemoveInviteRequest.proto";
+import "io/timemates/api/common/types/Status.proto";
+import "io/timemates/api/timers/types/Timer.proto";
 
 service TimersService {
   /**
