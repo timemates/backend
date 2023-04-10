@@ -31,7 +31,7 @@ class UsersRepository(
     }
 
     override suspend fun isUserExists(userId: UserId): Boolean {
-        if(cachedUsers.getUser(userId.long) != null)
+        if (cachedUsers.getUser(userId.long) != null)
             return true
 
         return postgresqlUsers.isUserExists(userId.long)
@@ -58,18 +58,22 @@ class UsersRepository(
 
         val realtime = postgresqlUsers.getUsers(
             fromCache.filter { it.value == null }.map { it.key }
-        ).map { mapper.toDomainUser(it) }
+        )
 
         realtime.forEach {
             cachedUsers.putUser(
-                it.id.long,
-                mapper.toCachedUser(it)
+                it.key,
+                mapper.toCachedUser(it.value)
             )
         }
 
-        return fromCache.mapNotNull { (id, cached) ->
-            cached?.let { mapper.toDomainUser(id, it) }
-        } + realtime
+        return userIds.map { userId ->
+            fromCache[userId.long]?.let { user ->
+                mapper.toDomainUser(userId.long, user)
+            } ?: realtime[userId.long]?.let {
+                mapper.toDomainUser(it)
+            } ?: error("No User found!")
+        }
     }
 
     override suspend fun edit(userId: UserId, patch: User.Patch): Boolean {

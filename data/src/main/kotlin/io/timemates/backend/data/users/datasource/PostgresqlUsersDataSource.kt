@@ -36,10 +36,10 @@ class PostgresqlUsersDataSource(private val database: Database) {
             UsersTable.select { UsersTable.USER_ID eq id }.singleOrNull()?.toUser()
         }
 
-    suspend fun getUsers(collection: List<Long>): Collection<User> =
+    suspend fun getUsers(collection: List<Long>): Map<Long, User> =
         newSuspendedTransaction(db = database) {
-            UsersTable.select { UsersTable.USER_ID inList (collection) }
-                .map { it.toUser() }
+            UsersTable.select { UsersTable.USER_ID inList (collection) }.asSequence()
+                .map { it.toUser() }.associateBy { it.id }
         }
 
     suspend fun edit(id: Long, patch: User.Patch): Unit =
