@@ -1,0 +1,82 @@
+syntax = "proto3";
+
+import "io/timemates/api/timers/requests/CreateTimerRequest.proto";
+import "io/timemates/api/timers/requests/EditTimerInfoRequest.proto";
+import "io/timemates/api/timers/requests/EditTimerSettingsRequest.proto";
+import "io/timemates/api/timers/requests/RemoveTimerRequest.proto";
+import "io/timemates/api/timers/requests/GetTimerRequest.proto";
+import "io/timemates/api/timers/requests/GetTimersRequest.proto";
+import "io/timemates/api/timers/requests/members/KickMemberRequest.proto";
+import "io/timemates/api/timers/requests/members/GetMembersRequest.proto";
+import "io/timemates/api/timers/requests/members/invites/CreateInviteRequest.proto";
+import "io/timemates/api/timers/requests/members/invites/GetInvitesRequest.proto";
+import "io/timemates/api/timers/requests/members/invites/RemoveInviteRequest.proto";
+import "io/timemates/api/common/types/Status.proto";
+import "io/timemates/api/timers/types/Timer.proto";
+
+option java_package = "io.timemates.api.timers";
+
+service TimersService {
+  /**
+   * Creates timer.
+   *
+   * Returns [Status].
+   */
+  rpc createTimer(CreateTimerRequest) returns (Status);
+
+  /**
+   * Gets timer by id.
+   */
+  rpc getTimer(GetTimerRequest) returns (Timer);
+
+  /*
+   * Gets timers by page token.
+   */
+  rpc getTimers(GetTimersRequest) returns (GetTimersRequest);
+
+  /**
+   * Edits timer information (name, description).
+   *
+   * Returns [Status].
+   */
+  rpc setTimerInfo(EditTimerInfoRequest) returns (Status);
+
+  /**
+   * Edits timer information (name, description).
+   *
+   * Returns [Status].
+   */
+  rpc setTimerSettings(EditTimerSettingsRequest) returns (Status);
+
+  /**
+   * Kicks member out of timer.
+   */
+  rpc kickMember(KickMemberRequest) returns (Status);
+
+  /*
+   * Gets members of a timer.
+   */
+  rpc getMembers(GetMembersRequest) returns (GetMembersRequest.Response);
+
+  /*
+   * Creates invite for joining a timer.
+   */
+  rpc createInvite(InviteMemberRequest) returns (InviteMemberRequest.Response);
+
+  /**
+   * Gets invites of a timer.
+   */
+  rpc getInvites(GetInvitesRequest) returns (GetInvitesRequest.Response);
+
+  /**
+   * Gets invites of a timer.
+   */
+  rpc removeInvite(RemoveInviteRequest) returns (Status);
+
+  /**
+   * Removes timer.
+   *
+   * Returns [Status].
+   */
+  rpc removeTimer(RemoveTimerRequest) returns (Status);
+}

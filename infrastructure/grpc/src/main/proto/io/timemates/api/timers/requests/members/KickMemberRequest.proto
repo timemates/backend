@@ -1,5 +1,0 @@
-syntax = "proto3";
-
-message KickMemberRequest {
-  int64 userId = 1;
-}

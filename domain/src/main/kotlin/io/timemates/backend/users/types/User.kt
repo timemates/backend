@@ -10,7 +10,7 @@ import java.io.File
 data class User(
     val id: UserId,
     val name: UserName,
-    val emailAddress: EmailAddress,
+    val emailAddress: EmailAddress?,
     val description: UserDescription?,
     val avatarId: FileId?,
 ) {

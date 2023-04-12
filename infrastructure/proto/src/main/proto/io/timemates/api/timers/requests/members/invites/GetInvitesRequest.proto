@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+option java_package = "io.timemates.api.timers.requests.members.invites";
+
+message GetInvitesRequest {
+  int64 timerId = 1;
+  optional string nextPageToken = 2;
+
+  message Response {
+    string inviteCode = 1;
+    string nextPageToken = 3;
+  }
+}

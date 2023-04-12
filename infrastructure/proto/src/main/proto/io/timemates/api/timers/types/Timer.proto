@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+option java_package = "io.timemates.api.timers.types";
+
+message Timer {
+  int64 id = 1;
+
+
+  /**
+   * Timer's name. Up to 50 symbols.
+   */
+  string name = 2;
+
+  /**
+   * Timer's name. Up to 500 symbols.
+   */
+  optional string description = 3;
+
+  int64 ownerId = 4;
+
+  Settings settings = 5;
+
+  int32 membersCount = 6;
+
+  State currentState = 7;
+
+  message State {
+    // can be null, if timer paused by force
+    optional int64 endsAt = 1;
+
+    oneof phase {
+      Rest rest = 2;
+      Paused paused = 3;
+      Running running = 4;
+      ConfirmationWaiting confirmationWaiting = 5;
+    }
+
+    message Rest {}
+    message Paused {}
+    message Running {}
+    message ConfirmationWaiting {
+      int32 nonConfirmedCount = 1;
+    }
+  }
+
+  message Settings {
+    int32 workTimeMillis = 1;
+    int32 restTime = 2;
+    int32 bigRestTime = 3;
+    bool bigRestEnabled = 4;
+    int32 bigRestPer = 5;
+    bool isEveryoneCanPause = 6;
+    bool isConfirmationRequired = 7;
+  }
+}

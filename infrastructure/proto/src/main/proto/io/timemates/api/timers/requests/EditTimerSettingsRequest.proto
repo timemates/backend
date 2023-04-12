@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+option java_package = "io.timemates.api.timers.requests";
+
+message EditTimerSettingsRequest {
+  int32 workTimeMillis = 1;
+  int32 restTime = 2;
+  int32 bigRestTime = 3;
+  bool bigRestEnabled = 4;
+  int32 bigRestPer = 5;
+  bool isEveryoneCanPause = 6;
+  bool isConfirmationRequired = 7;
+}

@@ -1,5 +1,0 @@
-syntax = "proto3";
-
-message GetTimerRequest {
-  int64 timerId = 1;
-}
