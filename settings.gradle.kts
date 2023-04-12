@@ -32,5 +32,6 @@ include(
 
 include(":domain", ":data")
 
-include(":infrastructure:grpc")
+include(":infrastructure:proto", ":infrastructure:services")
+
 

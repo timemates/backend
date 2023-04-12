@@ -1,7 +1,0 @@
-syntax = "proto3";
-
-import "io/timemates/api/timers/types/Timer.proto";
-
-message RemoveTimerRequest {
-  int64 timerId = 1;
-}

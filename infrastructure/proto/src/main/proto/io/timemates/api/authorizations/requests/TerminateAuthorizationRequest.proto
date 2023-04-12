@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+option java_package = "io.timemates.api.authorizations.requests";
+
+message TerminateAuthorizationRequest {
+  int32 authorizationId = 1;
+}
