@@ -21,6 +21,6 @@ class CachedUsersDataSource(
         val name: String,
         val shortBio: String?,
         val avatarFileId: String?,
-        val email: String
+        val email: String?
     )
 }

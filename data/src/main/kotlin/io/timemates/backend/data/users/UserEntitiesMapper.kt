@@ -15,7 +15,7 @@ class UserEntitiesMapper {
         return User(
             UserId.createOrThrow(id),
             UserName.createOrThrow(name),
-            EmailAddress.createOrThrow(email),
+            email?.let { EmailAddress.createOrThrow(it) },
             shortBio?.let { UserDescription.createOrThrow(it) },
             avatarFileId?.let { FileId.createOrThrow(it) }
         )
@@ -31,7 +31,7 @@ class UserEntitiesMapper {
 
     fun toCachedUser(user: User) = with(user) {
         CachedUsersDataSource.User(
-            name.string, description?.string, avatarId?.string, emailAddress.string
+            name.string, description?.string, avatarId?.string, emailAddress?.string
         )
     }
 
