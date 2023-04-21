@@ -29,7 +29,7 @@ class UserEntitiesMapperTest {
         val expectedUser = User(
             UserId.createOrThrow(userId),
             UserName.createOrThrow(cachedUser.name),
-            EmailAddress.createOrThrow(cachedUser.email),
+            cachedUser.email?.let { EmailAddress.createOrThrow(it) },
             cachedUser.shortBio?.let { UserDescription.createOrThrow(it) },
             cachedUser.avatarFileId?.let { FileId.createOrThrow(it) }
         )
@@ -99,7 +99,7 @@ class UserEntitiesMapperTest {
             user.name.string,
             user.description?.string,
             user.avatarId?.string,
-            user.emailAddress.string
+            user.emailAddress?.string
         )
         val actual = mapper.toCachedUser(user)
 
