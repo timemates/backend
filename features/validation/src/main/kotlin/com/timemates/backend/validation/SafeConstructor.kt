@@ -1,5 +1,7 @@
 package com.timemates.backend.validation
 
+import com.timemates.backend.validation.exceptions.ValidationFailure
+
 /**
  * Abstraction for factories that construct value objects.
  * Next pattern should be applied to the factories:
@@ -40,16 +42,25 @@ public abstract class SafeConstructor<Type, WrappedType> {
  *
  * @see [ValidationScope]
  * @see [SafeConstructor.create]
- * @throws [IllegalStateException] if validation failed.
+ * @throws [com.timemates.backend.validation.exceptions.ValidationFailure] if validation failed.
  */
 @Throws(IllegalStateException::class)
 public fun <T, W> SafeConstructor<T, W>.createOrThrow(value: W): T {
-    return with(throwingValidationScope) {
+    return with(ValidationScope.ALWAYS_THROWS) {
         create(value)
     }
 }
 
-// scope to reuse
-private val throwingValidationScope = ValidationScope {
-    throw IllegalStateException("Validation failed. ${it.string}")
+/**
+ * Instantiates [Result] from [createOrThrow]. Catches only
+ * [ValidationFailure].
+ *
+ * @see createOrThrow
+ */
+public fun <T, W> SafeConstructor<T, W>.createAsResult(value: W): Result<T> {
+    return try {
+        Result.success(createOrThrow(value))
+    } catch (failure: ValidationFailure) {
+        Result.failure(failure)
+    }
 }
