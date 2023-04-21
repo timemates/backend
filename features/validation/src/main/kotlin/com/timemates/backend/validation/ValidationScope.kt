@@ -1,5 +1,7 @@
 package com.timemates.backend.validation
 
+import com.timemates.backend.validation.exceptions.ValidationFailure
+
 /**
  * Scope that handles validation failures and propagates
  * it to the top of the hierarchy.
@@ -26,9 +28,20 @@ public fun interface ValidationScope {
     /**
      * Stops the execution and propagates failure to the top of the hierarchy.
      *
-     * @param readableMessage – readable message for request output.
+     * @param message – readable message for request output.
      */
-    public fun fail(readableMessage: ReadableMessage): Nothing
+    public fun fail(message: ReadableMessage): Nothing
+
+    public companion object {
+        /**
+         * Scope that should be used if validation should always throw exception.
+         *
+         * @throws [ValidationFailure] if validation failed.
+         */
+        public val ALWAYS_THROWS: ValidationScope = ValidationScope {
+            throw ValidationFailure(it.string)
+        }
+    }
 }
 
 /**
