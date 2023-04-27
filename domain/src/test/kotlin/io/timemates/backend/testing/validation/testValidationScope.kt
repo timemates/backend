@@ -1,7 +1,8 @@
-package io.timemates.backend.validation
+package io.timemates.backend.testing.validation
 
 import com.timemates.backend.validation.ValidationScope
 import com.timemates.backend.validation.withValidation
+import org.jetbrains.annotations.TestOnly
 
 /**
  * A function for testing to pass / fail test where [ValidationScope]
@@ -11,6 +12,7 @@ import com.timemates.backend.validation.withValidation
  *
  * @throws AssertionError if the validation fails.
  */
+@TestOnly
 @Throws(AssertionError::class)
 fun testValidationScope(block: context(ValidationScope) () -> Unit) {
     withValidation(
