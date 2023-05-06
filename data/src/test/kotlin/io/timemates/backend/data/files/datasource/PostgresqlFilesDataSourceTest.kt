@@ -23,7 +23,8 @@ class PostgresqlFilesDataSourceTest {
     private val fileType = PostgresqlFilesDataSource.FileType.IMAGE
 
     private val database = Database.connect(databaseUrl, databaseDriver)
-    private val datasource = PostgresqlFilesDataSource(database)
+    private val mapper = FileEntityMapper()
+    private val datasource = PostgresqlFilesDataSource(database, mapper)
 
     @BeforeTest
     fun beforeEach(): Unit = runBlocking {

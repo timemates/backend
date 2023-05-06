@@ -6,7 +6,7 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class PostgresqlFilesDataSource(private val database: Database) {
+class PostgresqlFilesDataSource(private val database: Database, private val mapper: FileEntityMapper) {
     internal object FilesTable : Table("files") {
         val FILE_ID = text("file_id")
         val FILE_NAME = text("file_name")
@@ -28,7 +28,7 @@ class PostgresqlFilesDataSource(private val database: Database) {
     }
 
     suspend fun getFile(id: String): File? = newSuspendedTransaction(db = database) {
-        FilesTable.select { FilesTable.FILE_ID eq id }.singleOrNull()?.toFile()
+        FilesTable.select { FilesTable.FILE_ID eq id }.singleOrNull()?.let(mapper::resultRowToPSqlFile)
     }
 
     suspend fun createFile(fileId: String, fileName: String, fileType: FileType, filePath: String, creationTime: Long) =
@@ -39,7 +39,7 @@ class PostgresqlFilesDataSource(private val database: Database) {
                 it[CREATION_TIME] = creationTime
                 it[FILE_TYPE] = fileType
                 it[FILE_PATH] = filePath
-            }.resultedValues!!.single().toFile().fileId
+            }.resultedValues!!.single().let(mapper::resultRowToPSqlFile).fileId
         }
 
     suspend fun deleteFile(fileId: String) =
@@ -57,18 +57,8 @@ class PostgresqlFilesDataSource(private val database: Database) {
         val fileCreationTime: Long,
     )
 
-    private fun ResultRow.toFile(): File {
-        return File(
-            get(FilesTable.FILE_ID),
-            get(FilesTable.FILE_NAME),
-            get(FilesTable.FILE_TYPE),
-            get(FilesTable.FILE_PATH),
-            get(FilesTable.CREATION_TIME),
-        )
-    }
-
     enum class FileType {
-        IMAGE
+        IMAGE,
     }
 
     @TestOnly
