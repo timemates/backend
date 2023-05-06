@@ -1,6 +1,7 @@
 package io.timemates.backend.data.files
 
 import com.timemates.backend.validation.createOrThrow
+import com.timemates.random.SecureRandomProvider
 import io.timemates.backend.data.files.datasource.FileEntityMapper
 import io.timemates.backend.data.files.datasource.PostgresqlFilesDataSource
 import io.timemates.backend.files.types.File
@@ -9,11 +10,12 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class FileEntityMapperTest {
+    private val random = SecureRandomProvider()
     private val mapper = FileEntityMapper()
 
     @Test
     fun `toDomainMapper should map to domain file correctly`() {
-        val fileId = "123"
+        val fileId = random.randomHash(64)
         val fileName = "Default Name"
         val fileType = PostgresqlFilesDataSource.FileType.IMAGE
         val filePath = "C\\123"
