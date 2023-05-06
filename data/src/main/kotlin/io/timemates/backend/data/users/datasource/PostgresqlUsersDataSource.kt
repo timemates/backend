@@ -86,7 +86,7 @@ class PostgresqlUsersDataSource(private val database: Database) {
     }
 
     @TestOnly
-    suspend fun clear(): Unit = newSuspendedTransaction {
+    suspend fun clear(): Unit = newSuspendedTransaction(db = database) {
         UsersTable.deleteAll()
     }
 

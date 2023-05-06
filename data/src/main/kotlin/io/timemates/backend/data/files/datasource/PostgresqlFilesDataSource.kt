@@ -1,11 +1,13 @@
 package io.timemates.backend.data.files.datasource
 
+import io.timemates.backend.data.files.datasource.PostgresqlFilesDataSource.FilesTable.FILE_ID
+import org.jetbrains.annotations.TestOnly
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class PostgresqlFilesDataSource(private val database: Database) {
+class PostgresqlFilesDataSource(private val database: Database, private val mapper: FileEntityMapper) {
     internal object FilesTable : Table("files") {
         val FILE_ID = text("file_id")
         val FILE_NAME = text("file_name")
@@ -23,11 +25,11 @@ class PostgresqlFilesDataSource(private val database: Database) {
     }
 
     suspend fun isFileExists(id: String): Boolean = newSuspendedTransaction(db = database) {
-        FilesTable.select { FilesTable.FILE_ID eq id }.any()
+        FilesTable.select { FILE_ID eq id }.any()
     }
 
     suspend fun getFile(id: String): File? = newSuspendedTransaction(db = database) {
-        FilesTable.select { FilesTable.FILE_ID eq id }.singleOrNull()?.toFile()
+        FilesTable.select { FILE_ID eq id }.singleOrNull()?.let(mapper::resultRowToPSqlFile)
     }
 
     suspend fun createFile(fileId: String, fileName: String, fileType: FileType, filePath: String, creationTime: Long) =
@@ -38,7 +40,7 @@ class PostgresqlFilesDataSource(private val database: Database) {
                 it[CREATION_TIME] = creationTime
                 it[FILE_TYPE] = fileType
                 it[FILE_PATH] = filePath
-            }.resultedValues!!.single().toFile().fileId
+            }[FILE_ID]
         }
 
     suspend fun deleteFile(fileId: String) =
@@ -52,19 +54,16 @@ class PostgresqlFilesDataSource(private val database: Database) {
         val fileId: String,
         val fileName: String,
         val fileType: FileType,
-        val filePath: String
+        val filePath: String,
+        val fileCreationTime: Long,
     )
 
-    private fun ResultRow.toFile(): File {
-        return File(
-            get(FilesTable.FILE_ID),
-            get(FilesTable.FILE_NAME),
-            get(FilesTable.FILE_TYPE),
-            get(FilesTable.FILE_PATH)
-        )
+    enum class FileType {
+        IMAGE,
     }
 
-    enum class FileType {
-        IMAGE
+    @TestOnly
+    suspend fun clear() = newSuspendedTransaction(db = database) {
+        FilesTable.deleteAll()
     }
 }
