@@ -1,22 +1,22 @@
 package io.timemates.backend.files.types.value
 
-import com.timemates.backend.validation.ReadableMessage
+import com.timemates.backend.validation.FailureMessage
 import com.timemates.backend.validation.SafeConstructor
-import com.timemates.backend.validation.ValidationScope
+import com.timemates.backend.validation.ValidationFailureHandler
 
 @JvmInline
 value class ImageSize private constructor(val size: Int) {
     companion object : SafeConstructor<ImageSize, Int>() {
 
-        context(ValidationScope)
+        context(ValidationFailureHandler)
         override fun create(value: Int): ImageSize {
             return when {
                 value <= 0 -> ImageSize(value)
-                else -> fail(VALUE_SHOULD_BE_POSITIVE)
+                else -> onFail(VALUE_SHOULD_BE_POSITIVE)
             }
         }
 
         private val VALUE_SHOULD_BE_POSITIVE =
-            ReadableMessage("Image size cannot be negative or zero.")
+            FailureMessage("Image size cannot be negative or zero.")
     }
 }

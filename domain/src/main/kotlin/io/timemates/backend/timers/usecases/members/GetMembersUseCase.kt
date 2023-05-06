@@ -33,7 +33,7 @@ class GetMembersUseCase(
     }
 
     sealed interface Result {
-        class Success(
+        data class Success(
             val list: List<User>,
             val lastId: UserId,
         ) : Result

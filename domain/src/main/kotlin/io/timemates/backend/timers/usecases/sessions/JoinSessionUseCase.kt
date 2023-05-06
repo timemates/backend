@@ -10,6 +10,7 @@ import io.timemates.backend.timers.types.value.TimerId
 import io.timemates.backend.users.repositories.UsersRepository
 import io.timemates.backend.users.types.value.userId
 import kotlinx.coroutines.flow.StateFlow
+import kotlin.time.Duration.Companion.minutes
 
 class JoinSessionUseCase(
     private val timers: TimersRepository,
@@ -24,10 +25,14 @@ class JoinSessionUseCase(
         if (!timers.isMemberOf(userId, timerId))
             return Result.NotFound
 
+        val currentTime = time.provide()
+
         sessions.initializeSession(
-            timerId,
-            userId,
-            onNew = { sessions.setTimerState(timerId, TimerState.Active.Paused) }
+            timerId = timerId,
+            userId = userId,
+            onNew = { sessions.setTimerState(timerId, TimerState.Active.Paused) },
+            atLeastTime = currentTime - 15.minutes,
+            currentTime = currentTime,
         )
 
         return Result.Success

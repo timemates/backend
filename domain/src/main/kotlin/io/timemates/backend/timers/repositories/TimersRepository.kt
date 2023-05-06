@@ -3,6 +3,7 @@ package io.timemates.backend.timers.repositories
 import com.timemates.backend.time.UnixTime
 import io.timemates.backend.timers.types.TimerSettings
 import io.timemates.backend.common.types.value.Count
+import io.timemates.backend.timers.types.value.InviteCode
 import io.timemates.backend.timers.types.value.TimerDescription
 import io.timemates.backend.timers.types.value.TimerId
 import io.timemates.backend.timers.types.value.TimerName
@@ -30,6 +31,7 @@ interface TimersRepository {
         userId: UserId,
         timerId: TimerId,
         joinTime: UnixTime,
+        inviteCode: InviteCode,
     )
 
     suspend fun removeMember(userId: UserId, timerId: TimerId)

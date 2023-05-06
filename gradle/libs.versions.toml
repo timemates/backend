@@ -11,6 +11,7 @@ mockk = "1.13.4"
 grpc = "1.3.0"
 protobuf = "3.22.0"
 protobuf-plugin = "0.9.2"
+sqldelight = "2.0.0-alpha05"
 
 [libraries]
 kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
@@ -57,3 +58,4 @@ protobuf-java = { module = "com.google.protobuf:protobuf-java", version.ref = "p
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 google-protobuf = { id = "com.google.protobuf", version.ref = "protobuf-plugin" }
+cashapp-sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }

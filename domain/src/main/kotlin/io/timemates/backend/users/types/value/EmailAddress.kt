@@ -1,8 +1,8 @@
 package io.timemates.backend.users.types.value
 
-import com.timemates.backend.validation.ReadableMessage
+import com.timemates.backend.validation.FailureMessage
 import com.timemates.backend.validation.SafeConstructor
-import com.timemates.backend.validation.ValidationScope
+import com.timemates.backend.validation.ValidationFailureHandler
 
 @JvmInline
 value class EmailAddress private constructor(val string: String) {
@@ -17,15 +17,15 @@ value class EmailAddress private constructor(val string: String) {
                 ")+"
         )
 
-        context(ValidationScope)
+        context(ValidationFailureHandler)
         override fun create(value: String): EmailAddress {
             return when {
                 emailPattern.matches(value) -> EmailAddress(value)
-                else -> fail(EMAIL_DOES_NOT_MATCH)
+                else -> onFail(EMAIL_DOES_NOT_MATCH)
             }
         }
 
         private val EMAIL_DOES_NOT_MATCH =
-            ReadableMessage("Email does not match pattern.")
+            FailureMessage("Email does not match pattern.")
     }
 }

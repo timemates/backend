@@ -1,13 +1,18 @@
 package com.timemates.backend.time
 
 import com.timemates.backend.validation.createOrThrow
+import java.time.Clock
+import java.time.Instant
+import java.time.ZoneId
 import java.util.*
 
 public class SystemTimeProvider(
-    private val timeZone: TimeZone = TimeZone.getDefault()
+    private val timeZone: ZoneId = ZoneId.systemDefault()
 ) : TimeProvider {
-    override fun provide(): UnixTime {
-        return UnixTime.createOrThrow(Calendar.getInstance(timeZone).timeInMillis)
-    }
+    private val clock = Clock.system(timeZone)
 
+    override fun provide(): UnixTime {
+        val instant = Instant.now(clock)
+        return UnixTime.createOrThrow(instant.toEpochMilli())
+    }
 }

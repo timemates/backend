@@ -4,12 +4,11 @@ plugins {
 
 dependencies {
     implementation(projects.domain)
+    implementation(projects.features.scheduler)
+    implementation(projects.features.exposedUtils)
 
     implementation(libs.exposed.core)
     implementation(libs.exposed.jdbc)
-
-    implementation(libs.litote.kmongo.async)
-    implementation(libs.litote.kmongo.coroutines)
 
     implementation(libs.cache4k)
 

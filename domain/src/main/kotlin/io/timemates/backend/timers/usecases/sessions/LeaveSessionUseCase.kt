@@ -14,7 +14,6 @@ class LeaveSessionUseCase(
         sessions.removeUser(
             timerId,
             userId,
-            onEmpty = { sessions.removeSession(timerId) }
         )
 
         return Result.Success

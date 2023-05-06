@@ -1,21 +1,21 @@
 package io.timemates.backend.authorization.types.value
 
-import com.timemates.backend.validation.ReadableMessage
+import com.timemates.backend.validation.FailureMessage
 import com.timemates.backend.validation.SafeConstructor
-import com.timemates.backend.validation.ValidationScope
+import com.timemates.backend.validation.ValidationFailureHandler
 
 @JvmInline
 value class VerificationHash private constructor(val string: String) {
     companion object : SafeConstructor<VerificationHash, String>() {
         const val SIZE = 128
-        context(ValidationScope)
+        context(ValidationFailureHandler)
         override fun create(value: String): VerificationHash {
             return when (value.length) {
                 SIZE -> VerificationHash(value)
-                else -> fail(HASH_SIZE_INVALID_MESSAGE)
+                else -> onFail(HASH_SIZE_INVALID_MESSAGE)
             }
         }
 
-        private val HASH_SIZE_INVALID_MESSAGE = ReadableMessage("Verification hash size should be $SIZE")
+        private val HASH_SIZE_INVALID_MESSAGE = FailureMessage("Verification hash size should be $SIZE")
     }
 }

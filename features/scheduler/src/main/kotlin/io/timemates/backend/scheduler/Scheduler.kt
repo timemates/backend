@@ -10,7 +10,11 @@ public interface Scheduler {
      * @param duration time to wait
      * @param operation to be invoked after delay
      */
-    public fun <Key : Any> executeLaterWithDelay(key: Key, duration: Duration, operation: suspend () -> Unit)
+    public fun <Key : Any> withDelay(
+        key: Key,
+        duration: Duration,
+        operation: suspend () -> Unit
+    )
 
     /**
      * Cancels operation with given [key]

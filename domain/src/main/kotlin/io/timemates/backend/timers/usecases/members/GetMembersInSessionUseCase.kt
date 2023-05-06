@@ -1,5 +1,6 @@
 package io.timemates.backend.timers.usecases.members
 
+import com.timemates.backend.time.SystemTimeProvider
 import com.timemates.backend.validation.createOrThrow
 import io.timemates.backend.features.authorization.AuthorizedContext
 import io.timemates.backend.timers.repositories.TimerSessionRepository
@@ -16,6 +17,7 @@ class GetMembersInSessionUseCase(
     private val timersRepository: TimersRepository,
     private val sessionsRepository: TimerSessionRepository,
     private val usersRepository: UsersRepository,
+    private val timeProvider: SystemTimeProvider,
 ) {
     context(AuthorizedContext<TimerAuthScope.Read>)
     suspend fun execute(
@@ -32,7 +34,7 @@ class GetMembersInSessionUseCase(
             count
         )
         val users = usersRepository.getUsers(userIds)
-        return Result.Success(users.sortedBy { it.id.long })
+        return Result.Success(users)
     }
 
     sealed interface Result {
