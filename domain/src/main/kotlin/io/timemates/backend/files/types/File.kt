@@ -8,8 +8,6 @@ sealed class File {
 
     /**
      * File with image.
-     *
-     * @param size – variant of the size of image that was uploaded to server.
      */
-    data class Image(override val fileId: FileId, val size: ImageSize) : File()
+    data class Image(override val fileId: FileId) : File()
 }

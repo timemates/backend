@@ -54,7 +54,7 @@ class PostgresqlFilesDataSource(private val database: Database) {
         val fileName: String,
         val fileType: FileType,
         val filePath: String,
-        val fileCreationTime: Long
+        val fileCreationTime: Long,
     )
 
     private fun ResultRow.toFile(): File {
@@ -63,7 +63,7 @@ class PostgresqlFilesDataSource(private val database: Database) {
             get(FilesTable.FILE_NAME),
             get(FilesTable.FILE_TYPE),
             get(FilesTable.FILE_PATH),
-            get(FilesTable.CREATION_TIME)
+            get(FilesTable.CREATION_TIME),
         )
     }
 
