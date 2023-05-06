@@ -51,7 +51,7 @@ class PostgresqlFilesDataSourceTest {
             fileName = fileName,
             fileType = fileType,
             filePath = filePath,
-            fileCreationTime = fileCreationTime
+            fileCreationTime = fileCreationTime,
         )
 
         val result = datasource.getFile(fileId)
