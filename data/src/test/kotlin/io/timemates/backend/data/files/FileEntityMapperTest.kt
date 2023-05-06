@@ -15,7 +15,7 @@ class FileEntityMapperTest {
 
     @Test
     fun `toDomainMapper should map to domain file correctly`() {
-        //GIVEN
+        // GIVEN
         val fileId = random.randomHash(64)
         val fileName = "Default Name"
         val fileType = PostgresqlFilesDataSource.FileType.IMAGE
@@ -26,7 +26,7 @@ class FileEntityMapperTest {
             FileId.createOrThrow(fileId)
         )
 
-        //WHEN
+        // WHEN
         val actualFile = mapper.toDomainFile(
             PostgresqlFilesDataSource.File(
                 fileId,
@@ -36,7 +36,7 @@ class FileEntityMapperTest {
             )
         )
 
-        //THEN
+        // THEN
         assertEquals(
             expected = expectedFile,
             actual = actualFile
