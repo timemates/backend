@@ -11,12 +11,12 @@ class FileEntityMapper {
     fun toDomainFile(
         fileId: String,
         fileType: FileType,
-        imageSize: Int?
+        imageSize: Int
     ): DomainFile {
         return when(fileType) {
             FileType.IMAGE -> DomainFile.Image(
                 FileId.createOrThrow(fileId),
-                ImageSize.createOrThrow(imageSize!!)
+                ImageSize.createOrThrow(imageSize)
             )
         }
     }

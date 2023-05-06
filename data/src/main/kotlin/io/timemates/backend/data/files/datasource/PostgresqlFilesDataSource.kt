@@ -1,5 +1,6 @@
 package io.timemates.backend.data.files.datasource
 
+import org.jetbrains.annotations.TestOnly
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
@@ -52,7 +53,8 @@ class PostgresqlFilesDataSource(private val database: Database) {
         val fileId: String,
         val fileName: String,
         val fileType: FileType,
-        val filePath: String
+        val filePath: String,
+        val fileCreationTime: Long
     )
 
     private fun ResultRow.toFile(): File {
@@ -60,11 +62,17 @@ class PostgresqlFilesDataSource(private val database: Database) {
             get(FilesTable.FILE_ID),
             get(FilesTable.FILE_NAME),
             get(FilesTable.FILE_TYPE),
-            get(FilesTable.FILE_PATH)
+            get(FilesTable.FILE_PATH),
+            get(FilesTable.CREATION_TIME)
         )
     }
 
     enum class FileType {
         IMAGE
+    }
+
+    @TestOnly
+    suspend fun clear() = newSuspendedTransaction(db = database) {
+        FilesTable.deleteAll()
     }
 }
