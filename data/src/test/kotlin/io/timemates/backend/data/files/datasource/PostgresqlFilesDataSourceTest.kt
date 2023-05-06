@@ -32,6 +32,7 @@ class PostgresqlFilesDataSourceTest {
 
     @Test
     fun `isFileExists should return true if file exists`(): Unit = runBlocking {
+        //WHEN
         val fileId = datasource.createFile(fileId, fileName, fileType, filePath, fileCreationTime)
         val result = datasource.isFileExists(fileId)
         assertTrue(result)
