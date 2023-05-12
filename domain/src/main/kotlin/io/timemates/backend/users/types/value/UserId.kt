@@ -6,6 +6,7 @@ import com.timemates.backend.validation.ValidationFailureHandler
 import com.timemates.backend.validation.createOrThrow
 import io.timemates.backend.features.authorization.AuthorizedContext
 import io.timemates.backend.features.authorization.types.AuthorizedId
+import io.timemates.backend.users.types.value.UserId.Companion.asUserId
 
 @JvmInline
 value class UserId private constructor(val long: Long) {
@@ -18,13 +19,14 @@ value class UserId private constructor(val long: Long) {
             }
         }
 
+        // optimized way to avoid double-checks
+        fun AuthorizedId.asUserId() = UserId(long)
+
         private val ID_IS_NEGATIVE = FailureMessage(
             "User's ID cannot be negative"
         )
     }
 }
-
-fun AuthorizedId.asUserId() = UserId.createOrThrow(long)
 
 context(AuthorizedContext<*>)
 val userId: UserId

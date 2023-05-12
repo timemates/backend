@@ -22,9 +22,7 @@ class PostgresqlTimersRepository(
     private val cachedTimers: CacheTimersDataSource,
     private val tableTimersState: TableTimersStateDataSource,
     private val tableTimerParticipants: TableTimerParticipantsDataSource,
-    private val tableTimerInvites: TableTimerInvitesDataSource,
     private val timersMapper: TimersMapper,
-    private val timerInvitesMapper: TimerInvitesMapper,
 ) : TimersRepository {
     override suspend fun createTimer(
         name: TimerName,
@@ -94,6 +92,11 @@ class PostgresqlTimersRepository(
         return tableTimerParticipants.getParticipants(
             timerId.long, count.int, fromUser?.long
         ).map { id -> UserId.createOrThrow(id) }
+    }
+
+    override suspend fun getMembersCountOfInvite(timerId: TimerId, inviteCode: InviteCode): Count {
+        return tableTimerParticipants.getParticipantsCountOfInvite(timerId.long, inviteCode.string)
+            .let(Count::createOrThrow)
     }
 
     override suspend fun isMemberOf(userId: UserId, timerId: TimerId): Boolean {

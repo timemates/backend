@@ -42,6 +42,8 @@ interface TimersRepository {
         count: Count,
     ): List<UserId>
 
+    suspend fun getMembersCountOfInvite(timerId: TimerId, inviteCode: InviteCode): Count
+
     suspend fun isMemberOf(userId: UserId, timerId: TimerId): Boolean
 
     /**

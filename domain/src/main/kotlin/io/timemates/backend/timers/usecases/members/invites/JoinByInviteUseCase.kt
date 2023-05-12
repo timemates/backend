@@ -24,9 +24,8 @@ class JoinByInviteUseCase(
         val invite = invites.getInvite(code) ?: return Result.NotFound
         timers.addMember(userId, invite.timerId, time.provide(), code)
 
-        if (invite.limit.int <= 1)
+        if (invite.limit.int >= timers.getMembersCountOfInvite(timerId, invite.code).int)
             invites.removeInvite(timerId, invite.code)
-        else invites.setInviteLimit(code, Count.createOrThrow(invite.limit.int - 1))
 
         return Result.Success(invite.timerId)
     }

@@ -40,11 +40,11 @@ class TableTimerParticipantsDataSource(private val database: Database) {
     suspend fun getParticipantsCountOfInvite(
         timerId: Long,
         inviteCode: String,
-    ): Long = suspendedTransaction(database) {
+    ): Int = suspendedTransaction(database) {
         TimersParticipantsTable.select {
             TimersParticipantsTable.TIMER_ID eq timerId and
                 (TimersParticipantsTable.INVITE_CODE eq inviteCode)
-        }.count()
+        }.count().toInt()
     }
 
     suspend fun addParticipant(
