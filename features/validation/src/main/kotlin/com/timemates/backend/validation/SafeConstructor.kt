@@ -27,10 +27,10 @@ public abstract class SafeConstructor<Type, WrappedType> {
      * make something really different on user input to avoid misunderstanding
      * from user).
      *
-     * @see ValidationScope
-     * @return [Type] or fails in [ValidationScope].
+     * @see ValidationFailureHandler
+     * @return [Type] or fails in [ValidationFailureHandler].
      */
-    context(ValidationScope)
+    context(ValidationFailureHandler)
     public abstract fun create(
         value: WrappedType
     ): Type
@@ -40,13 +40,13 @@ public abstract class SafeConstructor<Type, WrappedType> {
  * Constructs a [T] from [W] with validation check in unsafe way. You should
  * use it only if it comes from trusted source (like database or from generator)
  *
- * @see [ValidationScope]
+ * @see [ValidationFailureHandler]
  * @see [SafeConstructor.create]
  * @throws [com.timemates.backend.validation.exceptions.ValidationFailure] if validation failed.
  */
-@Throws(IllegalStateException::class)
+@Throws(ValidationFailure::class)
 public fun <T, W> SafeConstructor<T, W>.createOrThrow(value: W): T {
-    return with(ValidationScope.ALWAYS_THROWS) {
+    return with(ValidationFailureHandler.ALWAYS_THROWS) {
         create(value)
     }
 }

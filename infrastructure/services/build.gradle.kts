@@ -39,14 +39,6 @@ protobuf {
             it.builtins {
                 id("kotlin")
             }
-
-            it.plugins.getByName("grpc") {
-                option("lite")
-            }
-
-            it.plugins.getByName("grpckt") {
-                option("lite")
-            }
         }
     }
 }

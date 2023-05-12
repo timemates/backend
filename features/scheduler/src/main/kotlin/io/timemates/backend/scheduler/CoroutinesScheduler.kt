@@ -9,6 +9,9 @@ import java.util.concurrent.ConcurrentMap
 import kotlin.time.Duration
 
 public class CoroutinesScheduler(
+    /**
+     * Coroutine scope that will schedule operations using [delay].
+     */
     private val coroutineScope: CoroutineScope
 ) : Scheduler {
     /**
@@ -16,9 +19,11 @@ public class CoroutinesScheduler(
      */
     private val operations: ConcurrentMap<Any, Job> = ConcurrentHashMap()
 
-    override fun <Key : Any> executeLaterWithDelay(key: Key, duration: Duration, operation: suspend () -> Unit) {
+    override fun <Key : Any> withDelay(key: Key, duration: Duration, operation: suspend () -> Unit) {
         if(operations[key] != null)
-            throw IllegalStateException("Cannot schedule a operation, as there is already one.")
+            throw IllegalStateException(
+                "Cannot schedule a operation, as there is already one."
+            )
 
         operations[key] = coroutineScope.launch {
             delay(duration.inWholeMilliseconds)

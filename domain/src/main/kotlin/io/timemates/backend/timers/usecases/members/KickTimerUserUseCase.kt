@@ -23,7 +23,7 @@ class KickTimerUserUseCase(
     }
 
     sealed interface Result {
-        object Success : Result
-        object NoAccess : Result
+        data object Success : Result
+        data object NoAccess : Result
     }
 }

@@ -7,6 +7,7 @@ dependencies {
     api(projects.features.random)
     api(projects.features.validation)
     api(projects.features.time)
+    implementation(projects.features.fsm)
     implementation(projects.features.scheduler)
 
     implementation(libs.kotlinx.coroutines)

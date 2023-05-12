@@ -1,5 +1,6 @@
 package io.timemates.backend.timers.usecases.members
 
+import com.timemates.backend.time.SystemTimeProvider
 import com.timemates.backend.validation.createOrThrow
 import io.timemates.backend.features.authorization.AuthorizedContext
 import io.timemates.backend.timers.repositories.TimerSessionRepository
@@ -11,11 +12,13 @@ import io.timemates.backend.users.repositories.UsersRepository
 import io.timemates.backend.users.types.User
 import io.timemates.backend.users.types.value.UserId
 import io.timemates.backend.users.types.value.userId
+import kotlin.time.Duration.Companion.minutes
 
 class GetMembersInSessionUseCase(
     private val timersRepository: TimersRepository,
     private val sessionsRepository: TimerSessionRepository,
     private val usersRepository: UsersRepository,
+    private val timeProvider: SystemTimeProvider,
 ) {
     context(AuthorizedContext<TimerAuthScope.Read>)
     suspend fun execute(
@@ -27,12 +30,14 @@ class GetMembersInSessionUseCase(
             return Result.NoAccess
 
         val userIds = sessionsRepository.getMembers(
-            timerId,
-            lastId ?: UserId.createOrThrow(0),
-            count
+            timerId = timerId,
+            count = count,
+            lastReceivedId = lastId ?: UserId.createOrThrow(0),
+            lastActiveTime = timeProvider.provide() - 15.minutes,
         )
         val users = usersRepository.getUsers(userIds)
-        return Result.Success(users.sortedBy { it.id.long })
+
+        return Result.Success(users)
     }
 
     sealed interface Result {

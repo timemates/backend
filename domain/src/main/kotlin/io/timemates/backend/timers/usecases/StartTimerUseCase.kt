@@ -4,8 +4,9 @@ import com.timemates.backend.time.TimeProvider
 import io.timemates.backend.features.authorization.AuthorizedContext
 import io.timemates.backend.timers.repositories.TimerSessionRepository
 import io.timemates.backend.timers.repositories.TimersRepository
+import io.timemates.backend.timers.repositories.isPauseState
 import io.timemates.backend.timers.types.TimerAuthScope
-import io.timemates.backend.timers.types.TimerState
+import io.timemates.backend.timers.types.TimerEvent
 import io.timemates.backend.timers.types.value.TimerId
 import io.timemates.backend.users.types.value.userId
 
@@ -23,20 +24,22 @@ class StartTimerUseCase(
             (timer.ownerId == userId)
             || (settings.isEveryoneCanPause && timers.isMemberOf(userId, timerId))
         ) {
-            sessions.setTimerState(
-                timerId,
-                TimerState.Active.Running(
-                    time.provide() + settings.workTime
-                )
-            )
-
-            Result.Success
+            if(sessions.isPauseState(timerId)) {
+                sessions.sendEvent(timerId, TimerEvent.Start)
+                Result.Success
+            } else Result.WrongState
         } else {
             Result.NoAccess
         }
     }
 
     sealed interface Result {
+        /**
+         * Denotes that the operation was failed due to invalid
+         * state that cannot perform the operation due to inconsistency.
+         */
+        data object WrongState : Result
+
         data object Success : Result
         data object NoAccess : Result
     }

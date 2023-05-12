@@ -25,8 +25,10 @@ include(
     ":features:random",
     ":features:authorization",
     ":features:time",
-    ":features:page-tokens",
     ":features:scheduler",
+    ":features:exposed-utils",
+    ":features:test-utils",
+    ":features:fsm",
 )
 
 include(":domain", ":data")

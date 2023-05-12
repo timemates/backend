@@ -1,5 +1,6 @@
 package io.timemates.backend.timers.types
 
+import io.timemates.backend.timers.fsm.TimerState
 import io.timemates.backend.timers.types.value.TimerId
 
 /**

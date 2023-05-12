@@ -5,11 +5,11 @@ import io.timemates.backend.features.authorization.AuthorizedContext
 import io.timemates.backend.timers.repositories.TimerSessionRepository
 import io.timemates.backend.timers.repositories.TimersRepository
 import io.timemates.backend.timers.types.TimerAuthScope
-import io.timemates.backend.timers.types.TimerState
+import io.timemates.backend.timers.types.TimerEvent
 import io.timemates.backend.timers.types.value.TimerId
 import io.timemates.backend.users.repositories.UsersRepository
 import io.timemates.backend.users.types.value.userId
-import kotlinx.coroutines.flow.StateFlow
+import kotlin.time.Duration.Companion.minutes
 
 class JoinSessionUseCase(
     private val timers: TimersRepository,
@@ -24,12 +24,8 @@ class JoinSessionUseCase(
         if (!timers.isMemberOf(userId, timerId))
             return Result.NotFound
 
-        sessions.initializeSession(
-            timerId,
-            userId,
-            onNew = { sessions.setTimerState(timerId, TimerState.Active.Paused) }
-        )
-
+        sessions.addUser(timerId, userId, time.provide())
+        sessions.sendEvent(timerId, TimerEvent.UserJoined(userId))
         return Result.Success
     }
 

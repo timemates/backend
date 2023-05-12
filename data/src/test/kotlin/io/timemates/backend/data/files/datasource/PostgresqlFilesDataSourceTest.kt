@@ -1,15 +1,11 @@
 package io.timemates.backend.data.files.datasource
 
-import com.mongodb.assertions.Assertions.assertTrue
 import com.timemates.random.SecureRandomProvider
 import io.timemates.backend.files.types.value.FileId
 import junit.framework.TestCase.assertNull
 import kotlinx.coroutines.runBlocking
 import org.jetbrains.exposed.sql.Database
-import kotlin.test.BeforeTest
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFalse
+import kotlin.test.*
 
 class PostgresqlFilesDataSourceTest {
     private val random = SecureRandomProvider()
