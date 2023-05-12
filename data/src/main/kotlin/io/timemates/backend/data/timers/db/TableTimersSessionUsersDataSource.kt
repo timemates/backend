@@ -1,8 +1,8 @@
 package io.timemates.backend.data.timers.db
 
 import io.timemates.backend.data.timers.db.entities.DbSessionUser
-import io.timemates.backend.data.timers.mappers.TimerSessionMapper
 import io.timemates.backend.data.timers.db.tables.TimersSessionUsersTable
+import io.timemates.backend.data.timers.mappers.TimerSessionMapper
 import io.timemates.backend.exposed.suspendedTransaction
 import io.timemates.backend.exposed.update
 import io.timemates.backend.exposed.upsert

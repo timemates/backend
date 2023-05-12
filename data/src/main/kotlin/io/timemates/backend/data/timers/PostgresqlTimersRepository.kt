@@ -4,11 +4,9 @@ import com.timemates.backend.time.UnixTime
 import com.timemates.backend.validation.createOrThrow
 import io.timemates.backend.common.types.value.Count
 import io.timemates.backend.data.timers.cache.CacheTimersDataSource
-import io.timemates.backend.data.timers.db.TableTimerInvitesDataSource
 import io.timemates.backend.data.timers.db.TableTimerParticipantsDataSource
 import io.timemates.backend.data.timers.db.TableTimersDataSource
 import io.timemates.backend.data.timers.db.TableTimersStateDataSource
-import io.timemates.backend.data.timers.mappers.TimerInvitesMapper
 import io.timemates.backend.data.timers.mappers.TimersMapper
 import io.timemates.backend.timers.repositories.TimersRepository
 import io.timemates.backend.timers.types.TimerSettings

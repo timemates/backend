@@ -2,7 +2,6 @@ package io.timemates.backend.data.timers.db
 
 import io.timemates.backend.data.timers.db.tables.TimersParticipantsTable
 import io.timemates.backend.exposed.suspendedTransaction
-import io.timemates.backend.users.types.value.UserId
 import org.jetbrains.annotations.TestOnly
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -62,7 +61,7 @@ class TableTimerParticipantsDataSource(private val database: Database) {
     }
 
     suspend fun isMember(
-        timerId: Long, userId: Long
+        timerId: Long, userId: Long,
     ): Boolean = suspendedTransaction(database) {
         TimersParticipantsTable.select {
             TimersParticipantsTable.TIMER_ID eq timerId and

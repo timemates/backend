@@ -1,11 +1,10 @@
 package io.timemates.backend.data.timers.db
 
 import io.timemates.backend.data.timers.db.entities.DbTimer
-import io.timemates.backend.data.timers.mappers.TimersMapper
 import io.timemates.backend.data.timers.db.tables.TimersTable
+import io.timemates.backend.data.timers.mappers.TimersMapper
 import io.timemates.backend.exposed.suspendedTransaction
 import io.timemates.backend.exposed.update
-import io.timemates.backend.users.types.value.UserId
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -47,9 +46,9 @@ class TableTimersDataSource(
 
     suspend fun setSettings(
         id: Long,
-        settings: DbTimer.Settings.Patchable
+        settings: DbTimer.Settings.Patchable,
     ): Unit = suspendedTransaction(database) {
-        TimersTable.update(TimersTable.ID eq id ) { statement ->
+        TimersTable.update(TimersTable.ID eq id) { statement ->
             settings.workTime?.let {
                 statement[WORK_TIME] = it
             }
@@ -87,7 +86,7 @@ class TableTimersDataSource(
     suspend fun getTimersCountOf(userId: Long, afterTime: Long): Long = suspendedTransaction(database) {
         TimersTable.select {
             TimersTable.OWNER_ID eq userId and
-                (TimersTable.CREATION_TIME greaterEq  afterTime)
+                (TimersTable.CREATION_TIME greaterEq afterTime)
         }.count()
     }
 

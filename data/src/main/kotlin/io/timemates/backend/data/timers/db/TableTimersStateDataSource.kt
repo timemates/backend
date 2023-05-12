@@ -1,14 +1,10 @@
 package io.timemates.backend.data.timers.db
 
 import io.timemates.backend.data.timers.db.entities.DbTimer
-import io.timemates.backend.data.timers.mappers.TimersMapper
 import io.timemates.backend.data.timers.db.tables.TimersStateTable
+import io.timemates.backend.data.timers.mappers.TimersMapper
 import io.timemates.backend.exposed.suspendedTransaction
 import io.timemates.backend.exposed.update
-import kotlinx.coroutines.currentCoroutineContext
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.isActive
 import org.jetbrains.annotations.TestOnly
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -57,7 +53,7 @@ class TableTimersStateDataSource(
      * becomes before [beforeTime] time.
      */
     suspend fun resetOutdatedTimerStates(
-        beforeTime: Long
+        beforeTime: Long,
     ): Unit = suspendedTransaction(database) {
         TimersStateTable.update({
             (TimersStateTable.ENDS_AT lessEq beforeTime)

@@ -76,7 +76,8 @@ class TimersMapper(private val sessionMapper: TimerSessionMapper) {
     }
 
     fun dbSettingsToDomainSettings(
-        dbSettings: DbTimer.Settings): TimerSettings = with(dbSettings) {
+        dbSettings: DbTimer.Settings,
+    ): TimerSettings = with(dbSettings) {
         return TimerSettings(
             workTime = workTime.minutes,
             restTime = restTime.minutes,

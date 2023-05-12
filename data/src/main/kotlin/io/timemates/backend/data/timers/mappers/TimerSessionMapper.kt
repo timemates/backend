@@ -11,7 +11,6 @@ import io.timemates.backend.timers.repositories.TimerSessionRepository
 import io.timemates.backend.timers.repositories.TimersRepository
 import io.timemates.backend.timers.types.value.TimerId
 import org.jetbrains.exposed.sql.ResultRow
-import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 
 class TimerSessionMapper {
@@ -33,7 +32,7 @@ class TimerSessionMapper {
         val publishTime = UnixTime.createOrThrow(creationTime)
         val alive = (endsAt?.let { (creationTime - it) } ?: Long.MAX_VALUE).milliseconds
 
-        val state = when(phase) {
+        val state = when (phase) {
             DbTimer.State.Phase.ATTENDANCE_CONFIRMATION -> ConfirmationState(
                 timerId = timerId,
                 timeProvider = timeProvider,
@@ -42,6 +41,7 @@ class TimerSessionMapper {
                 alive = alive,
                 timerSessionRepository = timersSessionRepository,
             )
+
             DbTimer.State.Phase.OFFLINE -> InactiveState(
                 timerId = timerId,
                 publishTime = publishTime,
@@ -49,6 +49,7 @@ class TimerSessionMapper {
                 timeProvider = timeProvider,
                 timersRepository = timersRepository,
             )
+
             DbTimer.State.Phase.PAUSED ->
                 PauseState(
                     timerId = timerId,
@@ -57,6 +58,7 @@ class TimerSessionMapper {
                     timeProvider = timeProvider,
                     timerSessionRepository = timersSessionRepository,
                 )
+
             DbTimer.State.Phase.REST ->
                 RestState(
                     timerId = timerId,
@@ -66,6 +68,7 @@ class TimerSessionMapper {
                     alive = alive,
                     publishTime = publishTime,
                 )
+
             DbTimer.State.Phase.RUNNING ->
                 RunningState(
                     timerId = timerId,
@@ -82,7 +85,7 @@ class TimerSessionMapper {
 
 
     fun fsmStateToDbState(state: TimerState): DbTimer.State = with(state) {
-        val phase = when(state) {
+        val phase = when (state) {
             is ConfirmationState -> DbTimer.State.Phase.ATTENDANCE_CONFIRMATION
             is InactiveState -> DbTimer.State.Phase.OFFLINE
             is PauseState -> DbTimer.State.Phase.PAUSED

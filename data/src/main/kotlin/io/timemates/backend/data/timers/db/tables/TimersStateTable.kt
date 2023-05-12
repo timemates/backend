@@ -1,7 +1,6 @@
 package io.timemates.backend.data.timers.db.tables
 
 import io.timemates.backend.data.timers.db.entities.DbTimer.State.Phase
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.div
 import org.jetbrains.exposed.sql.Table
 
 internal object TimersStateTable : Table("timers_state") {

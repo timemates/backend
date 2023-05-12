@@ -1,8 +1,8 @@
 package io.timemates.backend.data.timers.db
 
 import io.timemates.backend.data.timers.db.entities.DbInvite
-import io.timemates.backend.data.timers.mappers.TimerInvitesMapper
 import io.timemates.backend.data.timers.db.tables.TimersInvitesTable
+import io.timemates.backend.data.timers.mappers.TimerInvitesMapper
 import io.timemates.backend.exposed.suspendedTransaction
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
