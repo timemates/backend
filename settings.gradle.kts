@@ -28,6 +28,7 @@ include(
     ":features:scheduler",
     ":features:exposed-utils",
     ":features:test-utils",
+    ":features:fsm",
 )
 
 include(":domain", ":data")

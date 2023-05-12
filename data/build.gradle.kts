@@ -6,6 +6,7 @@ dependencies {
     implementation(projects.domain)
     implementation(projects.features.scheduler)
     implementation(projects.features.exposedUtils)
+    implementation(projects.features.fsm)
 
     implementation(libs.exposed.core)
     implementation(libs.exposed.jdbc)

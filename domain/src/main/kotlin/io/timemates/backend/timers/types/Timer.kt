@@ -1,6 +1,7 @@
 package io.timemates.backend.timers.types
 
 import io.timemates.backend.common.types.value.Count
+import io.timemates.backend.timers.fsm.TimerState
 import io.timemates.backend.timers.repositories.TimersRepository
 import io.timemates.backend.timers.types.value.*
 import io.timemates.backend.users.types.value.UserId

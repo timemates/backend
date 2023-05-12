@@ -6,7 +6,6 @@ import io.timemates.backend.timers.repositories.TimerSessionRepository
 import io.timemates.backend.timers.repositories.TimersRepository
 import io.timemates.backend.timers.repositories.isConfirmationState
 import io.timemates.backend.timers.types.TimerAuthScope
-import io.timemates.backend.timers.types.TimerState
 import io.timemates.backend.timers.types.value.TimerId
 import io.timemates.backend.users.types.value.userId
 
@@ -23,11 +22,14 @@ class ConfirmStartUseCase(
             || sessions.isConfirmationState(timerId))
             return Result.NotFound
 
-        if (sessions.confirm(timerId, userId))
+        val currentTime = time.provide()
+
+        if (sessions.confirm(timerId, userId, currentTime))
             sessions.setTimerState(
                 timerId,
                 TimerState.Active.Running(
-                    time.provide() + timers.getTimerSettings(timerId)!!.workTime
+                    currentTime + timers.getTimerSettings(timerId)!!.workTime,
+                    currentTime,
                 )
             )
 

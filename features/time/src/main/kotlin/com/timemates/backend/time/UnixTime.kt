@@ -46,8 +46,11 @@ public value class UnixTime private constructor(private val long: Long) {
     public val inMilliseconds: Long
         get() = long
 
+    public operator fun compareTo(other: UnixTime): Int = long.compareTo(other.long)
+
     public companion object : SafeConstructor<UnixTime, Long>() {
         public val ZERO: UnixTime = UnixTime(0)
+        public val INFINITE: UnixTime = UnixTime(Long.MAX_VALUE)
 
         /**
          * Instantiates the instance of [UnixTime].
@@ -61,6 +64,7 @@ public value class UnixTime private constructor(private val long: Long) {
             }
         }
 
-        private val NEGATIVE_IS_NOT_ALLOWED_MESSAGE = FailureMessage("Negative Unix-time is not allowed.")
+        private val NEGATIVE_IS_NOT_ALLOWED_MESSAGE =
+            FailureMessage("Negative Unix-time is not allowed.")
     }
 }

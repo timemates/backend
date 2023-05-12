@@ -1,0 +1,46 @@
+package io.timemates.backend.fsm
+
+import com.timemates.backend.time.UnixTime
+import kotlin.time.Duration
+
+/**
+ * An abstract class representing a state in a finite state machine.
+ * @param Event the type of the events that this state can handle.
+ *
+ * **Should implement equals & hashCode**
+ */
+public abstract class State<Event> {
+
+    /**
+     * The duration that this state should remain alive.
+     */
+    public abstract val alive: Duration
+
+    /**
+     * When state was present.
+     */
+    public abstract val publishTime: UnixTime
+
+    /**
+     * Handles an event and returns the next state.
+     * @param event the event to handle.
+     * @return the next state or current if no need to change.
+     */
+    public open suspend fun processEvent(event: Event): State<Event> = this
+
+    /**
+     * Called when entering this state, before any events are processed.
+     * Can be used to perform any setup or initialization that is required
+     * before processing events.
+     * @return the current state by default or the next / transformed state.
+     */
+    public open suspend fun onEnter(): State<Event> = this
+
+    /**
+     * Called when the alive duration for this state has elapsed.
+     * Can be used to transition to a new state if required.
+     *
+     * @return the next state, or null to finish [StateMachine].
+     */
+    public open suspend fun onTimeout(): State<Event>? = null
+}
