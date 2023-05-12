@@ -1,5 +1,5 @@
 [versions]
-kotlin = "1.8.20-Beta"
+kotlin = "1.8.21"
 kotlinx-coroutines = "1.6.4"
 kotlinx-serialization = "1.4.1"
 ktor = "2.0.1"

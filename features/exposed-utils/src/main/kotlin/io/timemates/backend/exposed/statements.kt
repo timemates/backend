@@ -7,14 +7,6 @@ import org.jetbrains.exposed.sql.statements.UpdateStatement
 fun <T : Table> T.update(
     where: Op<Boolean>,
     limit: Int? = null,
-    body: T.(UpdateStatement) -> Unit
-): Int {
-    return update(where = { where }, limit = limit, body = body)
-}
-
-fun <T : Table> T.update(
-    where: Op<Boolean>,
-    limit: Int? = null,
     statement: T.(UpdateBuilder<Int>) -> Unit
 ): Int {
     return update(where = { where }, limit = limit) {

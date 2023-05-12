@@ -18,7 +18,6 @@ import io.timemates.backend.users.types.value.UserId
 class PostgresqlTimersRepository(
     private val tableTimers: TableTimersDataSource,
     private val cachedTimers: CacheTimersDataSource,
-    private val tableTimersState: TableTimersStateDataSource,
     private val tableTimerParticipants: TableTimerParticipantsDataSource,
     private val timersMapper: TimersMapper,
 ) : TimersRepository {
@@ -94,7 +93,7 @@ class PostgresqlTimersRepository(
 
     override suspend fun getMembersCountOfInvite(timerId: TimerId, inviteCode: InviteCode): Count {
         return tableTimerParticipants.getParticipantsCountOfInvite(timerId.long, inviteCode.string)
-            .let(Count::createOrThrow)
+            .let { Count.createOrThrow(it) }
     }
 
     override suspend fun isMemberOf(userId: UserId, timerId: TimerId): Boolean {

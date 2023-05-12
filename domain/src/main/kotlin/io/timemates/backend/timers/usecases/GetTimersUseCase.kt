@@ -7,6 +7,7 @@ import io.timemates.backend.timers.types.Timer
 import io.timemates.backend.timers.types.TimerAuthScope
 import io.timemates.backend.timers.types.toTimer
 import io.timemates.backend.common.types.value.Count
+import io.timemates.backend.fsm.getCurrentState
 import io.timemates.backend.timers.types.value.TimerId
 import io.timemates.backend.users.types.value.userId
 
@@ -26,7 +27,7 @@ class GetTimersUseCase(
 
         val ids = infos.map(TimersRepository.TimerInformation::id)
 
-        val states = sessionsRepository.getCurrentStatesOf(ids)
+        val states = sessionsRepository.getCurrentState(ids)
 
         return Result.Success(
             infos.map { information ->

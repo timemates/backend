@@ -1,7 +1,10 @@
 package io.timemates.backend.fsm
 
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 /**
  * An interface representing a state machine.
@@ -40,4 +43,10 @@ public suspend fun <KT : Any, ET : Any, ST : State<ET>> StateMachine<KT, ET, ST>
     key: KT
 ): ST? {
     return getState(key)?.first()
+}
+
+public suspend fun <KT : Any, ET : Any, ST : State<ET>> StateMachine<KT, ET, ST>.getCurrentState(
+    keys: List<KT>
+): Map<KT, ST?> = coroutineScope {
+    keys.associateWith { getCurrentState(it) }
 }

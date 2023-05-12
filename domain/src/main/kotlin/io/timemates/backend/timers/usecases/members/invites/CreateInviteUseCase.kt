@@ -27,11 +27,11 @@ class CreateInviteUseCase(
         if (timers.getTimerInformation(timerId)?.ownerId != userId)
             return Result.NoAccess
 
-        if (invites.getInvitesCount(timerId, timeProvider.provide() + 30.minutes) > 10)
+        if (invites.getInvitesCount(timerId, timeProvider.provide() + 30.minutes).int > 10)
             return Result.TooManyCreation
 
         val code = InviteCode.createOrThrow(randomProvider.randomHash(InviteCode.SIZE))
-        invites.createInvite(timerId, code, timeProvider.provide(), limit)
+        invites.createInvite(timerId, userId, code, timeProvider.provide(), limit)
         return Result.Success(code)
     }
 

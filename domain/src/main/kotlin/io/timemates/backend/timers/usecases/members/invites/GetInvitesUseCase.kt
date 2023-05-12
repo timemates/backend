@@ -1,5 +1,7 @@
 package io.timemates.backend.timers.usecases.members.invites
 
+import io.timemates.backend.common.types.value.Count
+import io.timemates.backend.common.types.value.Offset
 import io.timemates.backend.features.authorization.AuthorizedContext
 import io.timemates.backend.timers.repositories.TimerInvitesRepository
 import io.timemates.backend.timers.repositories.TimersRepository
@@ -15,11 +17,13 @@ class GetInvitesUseCase(
     context(AuthorizedContext<TimerAuthScope.Read>)
     suspend fun execute(
         timerId: TimerId,
+        limit: Count,
+        offset: Offset,
     ): Result {
         if (timers.getTimerInformation(timerId)?.ownerId != userId)
             return Result.NoAccess
 
-        return Result.Success(invites.getInvites(timerId))
+        return Result.Success(invites.getInvites(timerId, limit, offset))
     }
 
     sealed interface Result {

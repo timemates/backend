@@ -34,7 +34,7 @@ interface TimerSessionRepository : TimersStateMachine {
     suspend fun getMembers(
         timerId: TimerId,
         count: Count,
-        lastReceivedId: Long,
+        lastReceivedId: UserId,
         lastActiveTime: UnixTime,
     ): List<UserId>
 

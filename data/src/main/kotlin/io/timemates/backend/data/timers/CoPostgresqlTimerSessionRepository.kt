@@ -48,12 +48,12 @@ class CoPostgresqlTimerSessionRepository(
     override suspend fun getMembers(
         timerId: TimerId,
         count: Count,
-        lastReceivedId: Long,
+        lastReceivedId: UserId,
         lastActiveTime: UnixTime,
     ): List<UserId> {
         return tableTimersSessionUsers.getUsers(
             timerId.long,
-            lastReceivedId,
+            lastReceivedId.long,
             count.int,
             lastActiveTime.inMilliseconds,
         ).map { sessionUser -> UserId.createOrThrow(sessionUser.userId) }
@@ -61,7 +61,7 @@ class CoPostgresqlTimerSessionRepository(
 
     override suspend fun getMembersCount(timerId: TimerId, activeAfterTime: UnixTime): Count {
         return tableTimersSessionUsers.getUsersCount(timerId.long, activeAfterTime.inMilliseconds)
-            .let(Count::createOrThrow)
+            .let { Count.createOrThrow(it) }
     }
 
     override suspend fun setActiveUsersConfirmationRequirement(timerId: TimerId) {

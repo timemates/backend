@@ -12,6 +12,7 @@ import io.timemates.backend.users.repositories.UsersRepository
 import io.timemates.backend.users.types.User
 import io.timemates.backend.users.types.value.UserId
 import io.timemates.backend.users.types.value.userId
+import kotlin.time.Duration.Companion.minutes
 
 class GetMembersInSessionUseCase(
     private val timersRepository: TimersRepository,
@@ -29,11 +30,13 @@ class GetMembersInSessionUseCase(
             return Result.NoAccess
 
         val userIds = sessionsRepository.getMembers(
-            timerId,
-            lastId ?: UserId.createOrThrow(0),
-            count
+            timerId = timerId,
+            count = count,
+            lastReceivedId = lastId ?: UserId.createOrThrow(0),
+            lastActiveTime = timeProvider.provide() - 15.minutes,
         )
         val users = usersRepository.getUsers(userIds)
+
         return Result.Success(users)
     }
 
