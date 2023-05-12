@@ -1,16 +1,13 @@
 @file:Suppress("MemberVisibilityCanBePrivate")
 
-package io.timemates.backend.data.timers.db.mappers
+package io.timemates.backend.data.timers.mappers
 
 import com.timemates.backend.time.TimeProvider
-import com.timemates.backend.time.UnixTime
 import com.timemates.backend.validation.createOrThrow
 import io.timemates.backend.common.types.value.Count
-import io.timemates.backend.data.timers.cache.entities.CachedTimer
 import io.timemates.backend.data.timers.db.entities.DbTimer
 import io.timemates.backend.data.timers.db.tables.TimersStateTable
 import io.timemates.backend.data.timers.db.tables.TimersTable
-import io.timemates.backend.data.timers.realtime.entities.RealtimeState
 import io.timemates.backend.timers.repositories.TimerSessionRepository
 import io.timemates.backend.timers.repositories.TimersRepository
 import io.timemates.backend.timers.types.Timer

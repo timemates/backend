@@ -65,7 +65,9 @@ public class CoroutinesStateMachine<KeyType : Any, EventType : Any, StateType : 
         if (states[key] == null) {
             createStateAsync(key, state, true)
         } else {
-            states.remove(key)
+            // we do not remove state on-purpose, as we will
+            // reuse object on next iteration
+            /* states.remove(key) */
             events.remove(key)
             mutexes.remove(key)
 
@@ -80,7 +82,9 @@ public class CoroutinesStateMachine<KeyType : Any, EventType : Any, StateType : 
             mutex.withLock {
                 // If the state machine does not exist, create it
                 val transformedState = state.onEnter()
-                val flow = MutableStateFlow(transformedState as StateType)
+                // probably, there was different state before, so we keep subscribers
+                // notified and reuse state flow
+                val flow = states[key] ?: MutableStateFlow(transformedState as StateType)
 
                 if(saveAtFirst)
                     storage?.save(key, state)
@@ -93,7 +97,7 @@ public class CoroutinesStateMachine<KeyType : Any, EventType : Any, StateType : 
                 // Launch a coroutine to collect events and send it to current state.
                 launch {
                     events[key]?.collectLatest { event ->
-                        transformedState.processEvent(event)
+                        transformedState.onEvent(event)
                             .takeIf { it != flow.value }
                             ?.let { it as StateType }
                             ?.also {

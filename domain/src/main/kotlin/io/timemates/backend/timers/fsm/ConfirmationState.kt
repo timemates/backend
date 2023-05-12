@@ -20,9 +20,15 @@ data class ConfirmationState(
     override val timerSessionRepository: TimerSessionRepository,
 ) : TimerState() {
 
-    override suspend fun processEvent(event: TimerEvent): TimerState {
+    override suspend fun onEnter(): TimerState = apply {
+        timerSessionRepository.setActiveUsersConfirmationRequirement(timerId)
+    }
+
+    override suspend fun onEvent(event: TimerEvent): TimerState {
         return when (event) {
-            TimerEvent.AttendanceConfirmed -> {
+            is TimerEvent.AttendanceConfirmed -> {
+                timerSessionRepository
+
                 RunningState(
                     publishTime = timeProvider.provide(),
                     timerId = timerId,
@@ -32,11 +38,13 @@ data class ConfirmationState(
                 )
             }
 
-            else -> this
+            else -> super.onEvent(event)
         }
     }
 
     override suspend fun onTimeout(): State<TimerEvent> {
+        timerSessionRepository.removeNotConfirmedUsers(timerId)
+
         return InactiveState(
             timerId = timerId,
             publishTime = publishTime,

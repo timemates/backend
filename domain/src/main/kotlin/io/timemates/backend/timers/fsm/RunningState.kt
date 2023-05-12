@@ -22,7 +22,7 @@ data class RunningState(
         return copy(alive = settings.workTime)
     }
 
-    override suspend fun processEvent(event: TimerEvent): TimerState {
+    override suspend fun onEvent(event: TimerEvent): TimerState {
         return when (event) {
             TimerEvent.Pause -> PauseState(
                 timerId = timerId,
@@ -40,7 +40,7 @@ data class RunningState(
                 else this
             }
 
-            else -> this
+            else -> super.onEvent(event)
         }
     }
 

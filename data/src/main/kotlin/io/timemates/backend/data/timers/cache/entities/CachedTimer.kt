@@ -15,14 +15,4 @@ data class CachedTimer(
         val isEveryoneCanPause: Boolean,
         val isConfirmationRequired: Boolean,
     )
-
-    class State(
-        val timerId: Long,
-        val phase: Phase,
-        val endsAt: Long?,
-    ) {
-        enum class Phase {
-            RUNNING, PAUSED, ATTENDANCE_CONFIRMATION, OFFLINE, REST,
-        }
-    }
 }

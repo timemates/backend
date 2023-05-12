@@ -18,7 +18,7 @@ class InactiveState(
 ) : TimerState() {
     override val alive: Duration = Duration.INFINITE
 
-    override suspend fun processEvent(event: TimerEvent): State<TimerEvent> {
+    override suspend fun onEvent(event: TimerEvent): TimerState {
         return when (event) {
             TimerEvent.Start -> RunningState(
                 timerId = timerId,
@@ -29,7 +29,7 @@ class InactiveState(
                 publishTime = publishTime
             )
 
-            else -> super.processEvent(event)
+            else -> super.onEvent(event)
         }
     }
 }

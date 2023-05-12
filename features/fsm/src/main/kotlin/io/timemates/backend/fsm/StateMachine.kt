@@ -36,8 +36,8 @@ public interface StateMachine<KeyType : Any, EventType : Any, StateType : State<
 /**
  * Returns current state of the specified by [key] state machine.
  */
-public suspend fun <KeyType : Any, EventType : Any, StateType : State<EventType>> StateMachine<KeyType, EventType, StateType>.getCurrentState(
-    key: KeyType
-): StateType? {
+public suspend fun <KT : Any, ET : Any, ST : State<ET>> StateMachine<KT, ET, ST>.getCurrentState(
+    key: KT
+): ST? {
     return getState(key)?.first()
 }

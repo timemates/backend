@@ -1,4 +1,4 @@
-package io.timemates.backend.data.timers.db.mappers
+package io.timemates.backend.data.timers.mappers
 
 import com.timemates.backend.time.UnixTime
 import com.timemates.backend.validation.createOrThrow

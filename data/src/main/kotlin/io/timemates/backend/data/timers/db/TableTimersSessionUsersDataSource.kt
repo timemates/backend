@@ -1,13 +1,14 @@
 package io.timemates.backend.data.timers.db
 
 import io.timemates.backend.data.timers.db.entities.DbSessionUser
-import io.timemates.backend.data.timers.db.mappers.TimerSessionMapper
+import io.timemates.backend.data.timers.mappers.TimerSessionMapper
 import io.timemates.backend.data.timers.db.tables.TimersSessionUsersTable
 import io.timemates.backend.exposed.suspendedTransaction
 import io.timemates.backend.exposed.update
 import io.timemates.backend.exposed.upsert
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.lessEq
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class TableTimersSessionUsersDataSource(
@@ -77,6 +78,18 @@ class TableTimersSessionUsersDataSource(
         TimersSessionUsersTable.select {
             TimersSessionUsersTable.TIMER_ID eq timerId and not(TimersSessionUsersTable.IS_CONFIRMED)
         }.empty()
+    }
+
+    suspend fun removeUsersBefore(time: Long): Unit = suspendedTransaction(database) {
+        TimersSessionUsersTable.deleteWhere {
+            LAST_ACTIVITY_TIME lessEq time
+        }
+    }
+
+    suspend fun removeNotConfirmedUsers(timerId: Long): Unit = suspendedTransaction(database) {
+        TimersSessionUsersTable.deleteWhere {
+            TIMER_ID lessEq timerId and not(IS_CONFIRMED)
+        }
     }
 
     suspend fun unassignUser(

@@ -26,7 +26,7 @@ public abstract class State<Event> {
      * @param event the event to handle.
      * @return the next state or current if no need to change.
      */
-    public open suspend fun processEvent(event: Event): State<Event> = this
+    public open suspend fun onEvent(event: Event): State<Event> = this
 
     /**
      * Called when entering this state, before any events are processed.

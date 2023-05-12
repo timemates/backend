@@ -29,9 +29,21 @@ class TableTimerParticipantsDataSource(private val database: Database) {
 
     suspend fun getParticipantsCount(
         timerId: Long,
+        afterTime: Long,
     ): Long = suspendedTransaction(database) {
         TimersParticipantsTable.select {
-            TimersParticipantsTable.TIMER_ID eq timerId
+            TimersParticipantsTable.TIMER_ID eq timerId and
+                (TimersParticipantsTable.JOIN_TIME greater afterTime)
+        }.count()
+    }
+
+    suspend fun getParticipantsCountOfInvite(
+        timerId: Long,
+        inviteCode: String,
+    ): Long = suspendedTransaction(database) {
+        TimersParticipantsTable.select {
+            TimersParticipantsTable.TIMER_ID eq timerId and
+                (TimersParticipantsTable.INVITE_CODE eq inviteCode)
         }.count()
     }
 

@@ -1,13 +1,11 @@
 package io.timemates.backend.data.timers.db
 
 import io.timemates.backend.data.timers.db.entities.DbInvite
-import io.timemates.backend.data.timers.db.mappers.TimerInvitesMapper
+import io.timemates.backend.data.timers.mappers.TimerInvitesMapper
 import io.timemates.backend.data.timers.db.tables.TimersInvitesTable
 import io.timemates.backend.exposed.suspendedTransaction
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.SchemaUtils
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class TableTimerInvitesDataSource(
@@ -23,10 +21,11 @@ class TableTimerInvitesDataSource(
     suspend fun getInvites(
         timerId: Long,
         limit: Int,
+        offset: Long,
     ): List<DbInvite> = suspendedTransaction(database) {
         TimersInvitesTable.select {
             TimersInvitesTable.TIMER_ID eq timerId
-        }.limit(limit).map(invitesMapper::resultRowToDbInvite)
+        }.limit(limit, offset).map(invitesMapper::resultRowToDbInvite)
     }
 
     suspend fun createInvite(
@@ -42,6 +41,15 @@ class TableTimerInvitesDataSource(
             it[CREATOR_ID] = creatorId
             it[MAX_JOINERS_COUNT] = maxJoinersCount
             it[CREATION_TIME] = creationTime
+        }
+    }
+
+    suspend fun removeInvite(
+        timerId: Long,
+        inviteCode: String,
+    ): Unit = suspendedTransaction(database) {
+        TimersInvitesTable.deleteWhere {
+            TIMER_ID eq timerId and (INVITE_CODE eq inviteCode)
         }
     }
 

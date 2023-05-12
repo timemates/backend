@@ -1,8 +1,9 @@
 package io.timemates.backend.timers.usecases
 
 import io.timemates.backend.features.authorization.AuthorizedContext
-import io.timemates.backend.fsm.StateMachine
+import io.timemates.backend.timers.repositories.TimerSessionRepository
 import io.timemates.backend.timers.repositories.TimersRepository
+import io.timemates.backend.timers.repositories.isRunningState
 import io.timemates.backend.timers.types.TimerAuthScope
 import io.timemates.backend.timers.types.TimerEvent
 import io.timemates.backend.timers.types.value.TimerId
@@ -10,7 +11,7 @@ import io.timemates.backend.users.types.value.userId
 
 class StopTimerUseCase(
     private val timers: TimersRepository,
-    private val timersStateMachine: StateMachine<TimerId, TimerEvent>,
+    private val sessionRepository: TimerSessionRepository,
 ) {
     context(AuthorizedContext<TimerAuthScope.Write>)
     suspend fun execute(
@@ -23,9 +24,12 @@ class StopTimerUseCase(
             (timer.ownerId == userId)
             || (settings.isEveryoneCanPause && timers.isMemberOf(userId, timerId))
         ) {
-            timersStateMachine.sendEvent(timerId, TimerEvent.Pause)
-
-            Result.Success
+            return if (sessionRepository.isRunningState(timerId)) {
+                sessionRepository.sendEvent(timerId, TimerEvent.Pause)
+                Result.Success
+            } else {
+                Result.WrongState
+            }
         } else {
             Result.NoAccess
         }
@@ -34,5 +38,6 @@ class StopTimerUseCase(
     sealed interface Result {
         data object Success : Result
         data object NoAccess : Result
+        data object WrongState : Result
     }
 }

@@ -1,7 +1,7 @@
 package io.timemates.backend.data.timers.db
 
 import io.timemates.backend.data.timers.db.entities.DbTimer
-import io.timemates.backend.data.timers.db.mappers.TimersMapper
+import io.timemates.backend.data.timers.mappers.TimersMapper
 import io.timemates.backend.data.timers.db.tables.TimersStateTable
 import io.timemates.backend.exposed.suspendedTransaction
 import io.timemates.backend.exposed.update
@@ -64,47 +64,6 @@ class TableTimersStateDataSource(
                 .and(TimersStateTable.PHASE neq DbTimer.State.Phase.OFFLINE)
         }) {
             it[PHASE] = DbTimer.State.Phase.OFFLINE
-        }
-    }
-
-    /**
-     * Gets outgoing states for timers. It used to reschedule state changes when
-     * server is restarted. Usually, it should take in count old states that was scheduled
-     * some time ago, but not more than 3-4 hours ago.
-     *
-     * @param limit states per page
-     * @param afterTime border of time from which we start
-     */
-    suspend fun getOutgoingTimerStates(
-        limit: Int = 20,
-        afterTime: Long,
-    ): Flow<List<DbTimer.State>> = flow {
-        var lastId = Long.MIN_VALUE
-
-        suspendedTransaction(database) {
-            while (currentCoroutineContext().isActive) {
-                /**
-                 * We select states that are in range of [afterTime] to future time.
-                 * We save last queried state to `lastId` to be able to paginate across
-                 * different pages.
-                 */
-                val result = TimersStateTable.select {
-                    (TimersStateTable.ENDS_AT greaterEq afterTime)
-                        .and(TimersStateTable.TIMER_ID greater lastId)
-                }
-                    .orderBy(TimersStateTable.TIMER_ID, order = SortOrder.ASC)
-                    .limit(limit)
-                    .map(timersMapper::resultRowToTimerState)
-                    .takeIf { it.isNotEmpty() }
-                    ?: break
-
-                lastId = result.last().timerId
-
-                emit(result)
-
-                if (result.size < limit)
-                    break
-            }
         }
     }
 

@@ -24,7 +24,7 @@ data class RestState(
         return copy(alive = settings.restTime)
     }
 
-    override suspend fun processEvent(event: TimerEvent): TimerState {
+    override suspend fun onEvent(event: TimerEvent): TimerState {
         return when (event) {
             is TimerEvent.SettingsChanged -> {
                 if (event.newSettings.restTime != event.oldSettings.restTime)
@@ -35,7 +35,7 @@ data class RestState(
                 else this
             }
 
-            else -> this
+            else -> super.onEvent(event)
         }
     }
 

@@ -2,10 +2,9 @@ package io.timemates.backend.timers.usecases
 
 import com.timemates.backend.time.TimeProvider
 import io.timemates.backend.features.authorization.AuthorizedContext
-import io.timemates.backend.fsm.StateMachine
-import io.timemates.backend.timers.fsm.TimerState
 import io.timemates.backend.timers.repositories.TimerSessionRepository
 import io.timemates.backend.timers.repositories.TimersRepository
+import io.timemates.backend.timers.repositories.isPauseState
 import io.timemates.backend.timers.types.TimerAuthScope
 import io.timemates.backend.timers.types.TimerEvent
 import io.timemates.backend.timers.types.value.TimerId
@@ -25,9 +24,10 @@ class StartTimerUseCase(
             (timer.ownerId == userId)
             || (settings.isEveryoneCanPause && timers.isMemberOf(userId, timerId))
         ) {
-            if(sessions.sendEvent(timerId, TimerEvent.Start))
+            if(sessions.isPauseState(timerId)) {
+                sessions.sendEvent(timerId, TimerEvent.Start)
                 Result.Success
-            else Result.CannotProceed
+            } else Result.WrongState
         } else {
             Result.NoAccess
         }
@@ -38,7 +38,7 @@ class StartTimerUseCase(
          * Denotes that the operation was failed due to invalid
          * state that cannot perform the operation due to inconsistency.
          */
-        data object CannotProceed : Result
+        data object WrongState : Result
 
         data object Success : Result
         data object NoAccess : Result

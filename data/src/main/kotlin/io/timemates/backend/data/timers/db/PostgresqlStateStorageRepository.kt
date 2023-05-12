@@ -1,7 +1,7 @@
 package io.timemates.backend.data.timers.db
 
 import com.timemates.backend.time.TimeProvider
-import io.timemates.backend.data.timers.db.mappers.TimerSessionMapper
+import io.timemates.backend.data.timers.mappers.TimerSessionMapper
 import io.timemates.backend.fsm.StateStorage
 import io.timemates.backend.timers.fsm.TimerState
 import io.timemates.backend.timers.repositories.TimerSessionRepository

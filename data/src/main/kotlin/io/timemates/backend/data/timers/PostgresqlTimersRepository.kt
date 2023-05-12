@@ -3,13 +3,13 @@ package io.timemates.backend.data.timers
 import com.timemates.backend.time.UnixTime
 import com.timemates.backend.validation.createOrThrow
 import io.timemates.backend.common.types.value.Count
-import io.timemates.backend.data.timers.cache.CacheTimersStateDataSource
+import io.timemates.backend.data.timers.cache.CacheTimersDataSource
 import io.timemates.backend.data.timers.db.TableTimerInvitesDataSource
 import io.timemates.backend.data.timers.db.TableTimerParticipantsDataSource
 import io.timemates.backend.data.timers.db.TableTimersDataSource
 import io.timemates.backend.data.timers.db.TableTimersStateDataSource
-import io.timemates.backend.data.timers.db.mappers.TimerInvitesMapper
-import io.timemates.backend.data.timers.db.mappers.TimersMapper
+import io.timemates.backend.data.timers.mappers.TimerInvitesMapper
+import io.timemates.backend.data.timers.mappers.TimersMapper
 import io.timemates.backend.timers.repositories.TimersRepository
 import io.timemates.backend.timers.types.TimerSettings
 import io.timemates.backend.timers.types.value.InviteCode
@@ -19,9 +19,8 @@ import io.timemates.backend.users.types.value.UserId
 
 class PostgresqlTimersRepository(
     private val tableTimers: TableTimersDataSource,
-    private val cachedTimers: TableTimersDataSource,
+    private val cachedTimers: CacheTimersDataSource,
     private val tableTimersState: TableTimersStateDataSource,
-    private val cachedTimersState: CacheTimersStateDataSource,
     private val tableTimerParticipants: TableTimerParticipantsDataSource,
     private val tableTimerInvites: TableTimerInvitesDataSource,
     private val timersMapper: TimersMapper,
@@ -52,14 +51,14 @@ class PostgresqlTimersRepository(
             ?.let { dbTimer ->
                 timersMapper.dbTimerToDomainTimerInformation(
                     dbTimer = dbTimer,
-                    membersCount = tableTimerParticipants.getParticipantsCount(timerId.long).toInt(),
+                    membersCount = tableTimerParticipants.getParticipantsCount(timerId.long, 0).toInt(),
                 )
             }
     }
 
     override suspend fun removeTimer(timerId: TimerId) {
         tableTimers.removeTimer(timerId.long)
-        cachedTimers.removeTimer(timerId.long)
+        cachedTimers.remove(timerId.long)
     }
 
     override suspend fun getOwnedTimersCount(ownerId: UserId, after: UnixTime): Int {
@@ -105,7 +104,7 @@ class PostgresqlTimersRepository(
         return tableTimers.getTimers(userId.long, fromTimer?.long).map {
             timersMapper.dbTimerToDomainTimerInformation(
                 dbTimer = it,
-                membersCount = tableTimerParticipants.getParticipantsCount(it.id).toInt(),
+                membersCount = tableTimerParticipants.getParticipantsCount(it.id, 0).toInt(),
             )
         }
     }

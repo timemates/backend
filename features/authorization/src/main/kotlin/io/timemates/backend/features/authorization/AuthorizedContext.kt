@@ -16,7 +16,7 @@ public interface AuthorizedContext<S : Scope> {
  * @param onFailure invokes when [provider] returns null
  * @param block that invokes on success with provided user id.
  */
-public inline fun <S : Scope> withAuthorized(
+public inline fun <S : Scope> authorizationProvider(
     provider: () -> Authorized?,
     onFailure: () -> Nothing,
     block: context(AuthorizedContext<S>) () -> Unit

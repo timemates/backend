@@ -1,7 +1,7 @@
 package io.timemates.backend.data.timers.db
 
 import io.timemates.backend.data.timers.db.entities.DbTimer
-import io.timemates.backend.data.timers.db.mappers.TimersMapper
+import io.timemates.backend.data.timers.mappers.TimersMapper
 import io.timemates.backend.data.timers.db.tables.TimersTable
 import io.timemates.backend.exposed.suspendedTransaction
 import io.timemates.backend.exposed.update
