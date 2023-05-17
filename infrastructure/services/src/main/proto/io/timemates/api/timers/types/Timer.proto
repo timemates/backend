@@ -28,19 +28,21 @@ message Timer {
     // can be null, if timer paused by force
     optional int64 endsAt = 1;
 
+    int64 publishTime = 2;
+
     oneof phase {
-      Rest rest = 2;
-      Paused paused = 3;
-      Running running = 4;
-      ConfirmationWaiting confirmationWaiting = 5;
+      Rest rest = 3;
+      Paused paused = 4;
+      Running running = 5;
+      ConfirmationWaiting confirmationWaiting = 6;
+      Inactive inactive = 7;
     }
 
+    message Inactive {}
     message Rest {}
     message Paused {}
     message Running {}
-    message ConfirmationWaiting {
-      int32 nonConfirmedCount = 1;
-    }
+    message ConfirmationWaiting {}
   }
 
   message Settings {

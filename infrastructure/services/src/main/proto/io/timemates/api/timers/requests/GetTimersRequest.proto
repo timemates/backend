@@ -8,5 +8,6 @@ message GetTimersRequest {
 
   message Response {
     repeated Timer timers = 1;
+    optional string nextPageToken = 2;
   }
 }

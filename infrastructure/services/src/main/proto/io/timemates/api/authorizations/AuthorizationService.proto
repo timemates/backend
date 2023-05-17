@@ -3,8 +3,9 @@ syntax = "proto3";
 import "io/timemates/api/authorizations/requests/StartAuthorizationRequest.proto";
 import "io/timemates/api/authorizations/requests/ConfirmAuthorizationRequest.proto";
 import "io/timemates/api/common/types/Status.proto";
-import "io/timemates/api/authorizations/requests/TerminateAuthorizationRequest.proto";
 import "io/timemates/api/authorizations/requests/GetAuthorizationsRequest.proto";
+import "io/timemates/api/authorizations/options/OmitAuthorizationOption.proto";
+import "google/protobuf/empty.proto";
 
 option java_package = "io.timemates.api.authorizations";
 
@@ -15,7 +16,9 @@ service AuthorizationService {
    * Has next restrictions:
    * – 3 requests per email is max.
    */
-  rpc startAuthorization(StartAuthorizationRequest) returns (StartAuthorizationRequest.Response);
+  rpc startAuthorization(StartAuthorizationRequest) returns (google.protobuf.Empty) {
+    option (omit_authorization) = true;
+  }
 
   /**
    * Confirms authorization by sending authorization verification code.
@@ -35,5 +38,5 @@ service AuthorizationService {
    *
    * Returns [Status]
    */
-  rpc terminateAuthorization(TerminateAuthorizationRequest) returns (Status);
+  rpc terminateAuthorization(google.protobuf.Empty) returns (google.protobuf.Empty);
 }

@@ -6,9 +6,9 @@ dependencies {
     api(projects.features.authorization)
     api(projects.features.random)
     api(projects.features.validation)
+    api(projects.features.pageToken)
     api(projects.features.time)
-    implementation(projects.features.fsm)
-    implementation(projects.features.scheduler)
+    api(projects.features.fsm)
 
     implementation(libs.kotlinx.coroutines)
     testImplementation(libs.kotlin.test)

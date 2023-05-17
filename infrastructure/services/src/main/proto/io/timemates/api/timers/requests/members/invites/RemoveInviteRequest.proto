@@ -3,5 +3,6 @@ syntax = "proto3";
 option java_package = "io.timemates.api.timers.requests.members.invites";
 
 message RemoveInviteRequest {
-  string inviteCode = 1;
+  int64 timerId = 1;
+  string inviteCode = 2;
 }

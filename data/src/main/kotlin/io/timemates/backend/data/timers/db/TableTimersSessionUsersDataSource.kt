@@ -1,11 +1,18 @@
 package io.timemates.backend.data.timers.db
 
 import io.timemates.backend.data.timers.db.entities.DbSessionUser
+import io.timemates.backend.data.timers.db.entities.TimerParticipantPageToken
 import io.timemates.backend.data.timers.db.tables.TimersSessionUsersTable
 import io.timemates.backend.data.timers.mappers.TimerSessionMapper
 import io.timemates.backend.exposed.suspendedTransaction
 import io.timemates.backend.exposed.update
 import io.timemates.backend.exposed.upsert
+import io.timemates.backend.pagination.Ordering
+import io.timemates.backend.pagination.PageToken
+import io.timemates.backend.pagination.Page
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.lessEq
@@ -14,6 +21,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 class TableTimersSessionUsersDataSource(
     private val database: Database,
     private val timerSessionMapper: TimerSessionMapper,
+    private val json: Json,
 ) {
     init {
         transaction(database) {
@@ -32,17 +40,31 @@ class TableTimersSessionUsersDataSource(
 
     suspend fun getUsers(
         timerId: Long,
-        lastReceivedUserId: Long,
-        count: Int,
+        pageToken: PageToken?,
         afterTime: Long,
-    ): List<DbSessionUser> = suspendedTransaction(database) {
-        TimersSessionUsersTable.select {
+    ): Page<DbSessionUser> = suspendedTransaction(database) {
+        val currentPage: TimerParticipantPageToken? = pageToken?.decoded()?.let(json::decodeFromString)
+
+        // TODO join and sort by name
+        val result = TimersSessionUsersTable.select {
             TimersSessionUsersTable.TIMER_ID eq timerId and
                 (TimersSessionUsersTable.LAST_ACTIVITY_TIME greater afterTime) and
-                (TimersSessionUsersTable.USER_ID greater lastReceivedUserId)
+                (TimersSessionUsersTable.USER_ID greater (currentPage?.lastReceivedUserId ?: 0))
         }.orderBy(TimersSessionUsersTable.USER_ID, SortOrder.ASC)
-            .limit(count)
+            .limit(20)
             .map(timerSessionMapper::resultRowToSessionUser)
+
+        val nextPageToken = result.lastOrNull()?.userId?.let {
+            TimerParticipantPageToken(it)
+                .let(json::encodeToString)
+                .let(PageToken.Companion::withBase64)
+        } ?: pageToken
+
+        return@suspendedTransaction Page(
+            value = result,
+            nextPageToken = nextPageToken,
+            ordering = Ordering.ASCENDING,
+        )
     }
 
     suspend fun getUsersCount(

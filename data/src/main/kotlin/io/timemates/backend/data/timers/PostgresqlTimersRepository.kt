@@ -6,11 +6,14 @@ import io.timemates.backend.common.types.value.Count
 import io.timemates.backend.data.timers.cache.CacheTimersDataSource
 import io.timemates.backend.data.timers.db.TableTimerParticipantsDataSource
 import io.timemates.backend.data.timers.db.TableTimersDataSource
-import io.timemates.backend.data.timers.db.TableTimersStateDataSource
 import io.timemates.backend.data.timers.mappers.TimersMapper
+import io.timemates.backend.pagination.PageToken
+import io.timemates.backend.pagination.Page
+import io.timemates.backend.pagination.map
 import io.timemates.backend.timers.repositories.TimersRepository
 import io.timemates.backend.timers.types.TimerSettings
 import io.timemates.backend.timers.types.value.InviteCode
+import io.timemates.backend.timers.types.value.TimerDescription
 import io.timemates.backend.timers.types.value.TimerId
 import io.timemates.backend.timers.types.value.TimerName
 import io.timemates.backend.users.types.value.UserId
@@ -23,6 +26,7 @@ class PostgresqlTimersRepository(
 ) : TimersRepository {
     override suspend fun createTimer(
         name: TimerName,
+        description: TimerDescription,
         settings: TimerSettings,
         ownerId: UserId,
         creationTime: UnixTime,
@@ -85,9 +89,9 @@ class PostgresqlTimersRepository(
         tableTimerParticipants.removeParticipant(timerId.long, userId.long)
     }
 
-    override suspend fun getMembers(timerId: TimerId, fromUser: UserId?, count: Count): List<UserId> {
+    override suspend fun getMembers(timerId: TimerId, pageToken: PageToken?): Page<UserId> {
         return tableTimerParticipants.getParticipants(
-            timerId.long, count.int, fromUser?.long
+            timerId.long, pageToken,
         ).map { id -> UserId.createOrThrow(id) }
     }
 
@@ -100,12 +104,22 @@ class PostgresqlTimersRepository(
         return tableTimerParticipants.isMember(timerId.long, userId.long)
     }
 
-    override suspend fun getTimersInformation(userId: UserId, fromTimer: TimerId?, count: Count): List<TimersRepository.TimerInformation> {
-        return tableTimers.getTimers(userId.long, fromTimer?.long).map {
+    override suspend fun getTimersInformation(userId: UserId, pageToken: PageToken?): Page<TimersRepository.TimerInformation> {
+        return tableTimers.getTimers(userId.long, pageToken).map {
             timersMapper.dbTimerToDomainTimerInformation(
                 dbTimer = it,
                 membersCount = tableTimerParticipants.getParticipantsCount(it.id, 0).toInt(),
             )
         }
+    }
+
+    override suspend fun setTimerInformation(timerId: TimerId, information: TimersRepository.TimerInformation.Patch) {
+        tableTimers.editTimer(
+            id = timerId.long,
+            newName = information.name?.string,
+            newDescription = information.description?.string
+        )
+
+        cachedTimers.remove(timerId.long)
     }
 }

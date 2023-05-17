@@ -10,6 +10,7 @@ import io.timemates.backend.authorization.types.value.AccessHash
 import io.timemates.backend.authorization.types.value.RefreshHash
 import io.timemates.backend.authorization.types.value.VerificationCode
 import io.timemates.backend.authorization.types.value.VerificationHash
+import io.timemates.backend.features.authorization.Scope
 import io.timemates.backend.users.repositories.UsersRepository
 import kotlin.time.Duration.Companion.days
 
@@ -46,15 +47,18 @@ class VerifyAuthorizationUseCase(
                             userId,
                             accessToken,
                             refreshToken,
-                            expireTime
+                            expireTime,
+                            timeProvider.provide(),
                         )
+
                         Result.Success.ExistsAccount(
                             Authorization(
                                 userId,
                                 accessToken,
                                 refreshToken,
-                                listOf(Authorization.Scope.All),
-                                expireTime
+                                listOf(Scope.All),
+                                expireTime,
+                                timeProvider.provide(),
                             )
                         )
                     } else {

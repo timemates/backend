@@ -3,10 +3,12 @@ package io.timemates.backend.data.timers
 import com.timemates.backend.time.UnixTime
 import com.timemates.backend.validation.createOrThrow
 import io.timemates.backend.common.types.value.Count
-import io.timemates.backend.common.types.value.Offset
 import io.timemates.backend.data.timers.db.TableTimerInvitesDataSource
 import io.timemates.backend.data.timers.db.TableTimerParticipantsDataSource
 import io.timemates.backend.data.timers.mappers.TimerInvitesMapper
+import io.timemates.backend.pagination.PageToken
+import io.timemates.backend.pagination.Page
+import io.timemates.backend.pagination.map
 import io.timemates.backend.timers.repositories.TimerInvitesRepository
 import io.timemates.backend.timers.types.Invite
 import io.timemates.backend.timers.types.value.InviteCode
@@ -18,8 +20,8 @@ class PostgresqlTimerInvitesRepository(
     private val participantsDataSource: TableTimerParticipantsDataSource,
     private val invitesMapper: TimerInvitesMapper,
 ) : TimerInvitesRepository {
-    override suspend fun getInvites(timerId: TimerId, limit: Count, offset: Offset): List<Invite> {
-        return tableTimerInvitesDataSource.getInvites(timerId.long, limit.int, offset.long)
+    override suspend fun getInvites(timerId: TimerId, nextPageToken: PageToken?): Page<Invite> {
+        return tableTimerInvitesDataSource.getInvites(timerId.long, nextPageToken)
             .map(invitesMapper::dbInviteToDomainInvite)
     }
 

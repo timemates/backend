@@ -3,6 +3,8 @@ package io.timemates.backend.timers.repositories
 import com.timemates.backend.time.UnixTime
 import io.timemates.backend.common.types.value.Count
 import io.timemates.backend.fsm.getCurrentState
+import io.timemates.backend.pagination.PageToken
+import io.timemates.backend.pagination.Page
 import io.timemates.backend.timers.fsm.ConfirmationState
 import io.timemates.backend.timers.fsm.PauseState
 import io.timemates.backend.timers.fsm.RunningState
@@ -33,10 +35,9 @@ interface TimerSessionRepository : TimersStateMachine {
      */
     suspend fun getMembers(
         timerId: TimerId,
-        count: Count,
-        lastReceivedId: UserId,
+        pageToken: PageToken?,
         lastActiveTime: UnixTime,
-    ): List<UserId>
+    ): Page<UserId>
 
     suspend fun getMembersCount(timerId: TimerId, activeAfterTime: UnixTime): Count
 

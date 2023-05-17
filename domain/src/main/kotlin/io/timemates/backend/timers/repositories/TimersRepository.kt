@@ -3,6 +3,8 @@ package io.timemates.backend.timers.repositories
 import com.timemates.backend.time.UnixTime
 import io.timemates.backend.timers.types.TimerSettings
 import io.timemates.backend.common.types.value.Count
+import io.timemates.backend.pagination.PageToken
+import io.timemates.backend.pagination.Page
 import io.timemates.backend.timers.types.value.InviteCode
 import io.timemates.backend.timers.types.value.TimerDescription
 import io.timemates.backend.timers.types.value.TimerId
@@ -12,6 +14,7 @@ import io.timemates.backend.users.types.value.UserId
 interface TimersRepository {
     suspend fun createTimer(
         name: TimerName,
+        description: TimerDescription,
         settings: TimerSettings,
         ownerId: UserId,
         creationTime: UnixTime,
@@ -38,9 +41,8 @@ interface TimersRepository {
 
     suspend fun getMembers(
         timerId: TimerId,
-        fromUser: UserId?,
-        count: Count,
-    ): List<UserId>
+        pageToken: PageToken?,
+    ): Page<UserId>
 
     suspend fun getMembersCountOfInvite(timerId: TimerId, inviteCode: InviteCode): Count
 
@@ -51,9 +53,10 @@ interface TimersRepository {
      */
     suspend fun getTimersInformation(
         userId: UserId,
-        fromTimer: TimerId?,
-        count: Count,
-    ): List<TimerInformation>
+        pageToken: PageToken?,
+    ): Page<TimerInformation>
+
+    suspend fun setTimerInformation(timerId: TimerId, information: TimerInformation.Patch)
 
     data class TimerInformation(
         val id: TimerId,
@@ -62,5 +65,10 @@ interface TimersRepository {
         val ownerId: UserId,
         val settings: TimerSettings,
         val membersCount: Count,
-    )
+    ) {
+        data class Patch(
+            val name: TimerName? = null,
+            val description: TimerDescription? = null,
+        )
+    }
 }

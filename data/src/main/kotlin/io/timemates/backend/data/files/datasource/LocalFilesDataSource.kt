@@ -1,6 +1,11 @@
+@file:Suppress("BlockingMethodInNonBlockingContext")
+
 package io.timemates.backend.data.files.datasource
 
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import java.io.InputStream
 import java.nio.file.Path
@@ -9,10 +14,10 @@ import kotlin.io.path.*
 class LocalFilesDataSource(private val localFilesPath: Path) {
 
     enum class FileType {
-        IMAGE
+        IMAGE,
     }
 
-    suspend fun save(fileId: String, fileType: FileType, inputStream: InputStream) {
+    suspend fun save(fileId: String, fileType: FileType, inputStream: Flow<ByteArray>) {
         withContext(Dispatchers.IO) {
             localFilesPath
                 .fileSystem
@@ -21,7 +26,9 @@ class LocalFilesDataSource(private val localFilesPath: Path) {
                 .getPath(fileId)
                 .createFile()
                 .outputStream()
-                .use { inputStream.copyTo(it) }
+                .use { stream ->
+                    inputStream.collect { bytes -> stream.write(bytes) }
+                }
         }
     }
 

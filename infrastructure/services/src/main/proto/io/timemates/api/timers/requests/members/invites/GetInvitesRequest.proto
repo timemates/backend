@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+import "io/timemates/api/timers/requests/members/invites/types/Invite.proto";
+
 option java_package = "io.timemates.api.timers.requests.members.invites";
 
 message GetInvitesRequest {
@@ -7,7 +9,7 @@ message GetInvitesRequest {
   optional string nextPageToken = 2;
 
   message Response {
-    string inviteCode = 1;
-    string nextPageToken = 3;
+    repeated Invite invites = 1;
+    optional string nextPageToken = 3;
   }
 }

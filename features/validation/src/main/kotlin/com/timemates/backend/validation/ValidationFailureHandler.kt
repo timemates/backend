@@ -50,10 +50,10 @@ public fun interface ValidationFailureHandler {
  * @param handler for processing invalid data.
  * @param block to work in.
  */
-public fun validation(
+public fun <T> validation(
     handler: (FailureMessage) -> Nothing,
-    block: context(ValidationFailureHandler) () -> Unit
-) {
+    block: context(ValidationFailureHandler) () -> T
+): T {
     val instance = ValidationFailureHandler(handler)
     return block(instance)
 }

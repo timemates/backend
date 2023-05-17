@@ -5,6 +5,7 @@ import io.timemates.backend.features.authorization.AuthorizedContext
 import io.timemates.backend.timers.repositories.TimersRepository
 import io.timemates.backend.timers.types.TimerAuthScope
 import io.timemates.backend.timers.types.TimerSettings
+import io.timemates.backend.timers.types.value.TimerDescription
 import io.timemates.backend.timers.types.value.TimerId
 import io.timemates.backend.timers.types.value.TimerName
 import io.timemates.backend.users.types.value.userId
@@ -16,8 +17,9 @@ class CreateTimerUseCase(
 ) {
     context(AuthorizedContext<TimerAuthScope.Write>)
     suspend fun execute(
-        settings: TimerSettings,
         name: TimerName,
+        description: TimerDescription,
+        settings: TimerSettings,
     ): Result {
         return if (
             timers.getOwnedTimersCount(
@@ -25,7 +27,7 @@ class CreateTimerUseCase(
             ) > 20
         ) {
             Result.TooManyCreations
-        } else Result.Success(timers.createTimer(name, settings, userId, time.provide()))
+        } else Result.Success(timers.createTimer(name, description, settings, userId, time.provide()))
     }
 
     sealed interface Result {

@@ -16,16 +16,19 @@ public interface AuthorizedContext<S : Scope> {
  * @param onFailure invokes when [provider] returns null
  * @param block that invokes on success with provided user id.
  */
-public inline fun <S : Scope> authorizationProvider(
+public inline fun <S : Scope, R> authorizationProvider(
     provider: () -> Authorized?,
     onFailure: () -> Nothing,
-    block: context(AuthorizedContext<S>) () -> Unit
-) {
+    block: context(AuthorizedContext<S>) () -> R
+): R {
     val authorized = provider() ?: onFailure()
+
     val scope = object : AuthorizedContext<S> {
         override val authorization: Authorized = authorized
     }
 
-    scope.apply(block)
+    return with(scope) {
+        block(this)
+    }
 }
 

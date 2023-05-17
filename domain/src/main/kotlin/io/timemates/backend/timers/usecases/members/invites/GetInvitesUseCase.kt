@@ -1,8 +1,8 @@
 package io.timemates.backend.timers.usecases.members.invites
 
-import io.timemates.backend.common.types.value.Count
-import io.timemates.backend.common.types.value.Offset
 import io.timemates.backend.features.authorization.AuthorizedContext
+import io.timemates.backend.pagination.PageToken
+import io.timemates.backend.pagination.Page
 import io.timemates.backend.timers.repositories.TimerInvitesRepository
 import io.timemates.backend.timers.repositories.TimersRepository
 import io.timemates.backend.timers.types.Invite
@@ -17,18 +17,17 @@ class GetInvitesUseCase(
     context(AuthorizedContext<TimerAuthScope.Read>)
     suspend fun execute(
         timerId: TimerId,
-        limit: Count,
-        offset: Offset,
+        pageToken: PageToken?,
     ): Result {
         if (timers.getTimerInformation(timerId)?.ownerId != userId)
             return Result.NoAccess
 
-        return Result.Success(invites.getInvites(timerId, limit, offset))
+        return Result.Success(invites.getInvites(timerId, pageToken))
     }
 
     sealed interface Result {
         @JvmInline
-        value class Success(val list: List<Invite>) : Result
+        value class Success(val list: Page<Invite>) : Result
         data object NoAccess : Result
     }
 }

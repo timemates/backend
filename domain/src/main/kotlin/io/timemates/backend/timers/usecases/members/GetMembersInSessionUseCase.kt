@@ -7,6 +7,7 @@ import io.timemates.backend.timers.repositories.TimerSessionRepository
 import io.timemates.backend.timers.repositories.TimersRepository
 import io.timemates.backend.timers.types.TimerAuthScope
 import io.timemates.backend.common.types.value.Count
+import io.timemates.backend.pagination.PageToken
 import io.timemates.backend.timers.types.value.TimerId
 import io.timemates.backend.users.repositories.UsersRepository
 import io.timemates.backend.users.types.User
@@ -23,19 +24,17 @@ class GetMembersInSessionUseCase(
     context(AuthorizedContext<TimerAuthScope.Read>)
     suspend fun execute(
         timerId: TimerId,
-        lastId: UserId?,
-        count: Count,
+        pageToken: PageToken?,
     ): Result {
         if (!timersRepository.isMemberOf(userId, timerId))
             return Result.NoAccess
 
         val userIds = sessionsRepository.getMembers(
             timerId = timerId,
-            count = count,
-            lastReceivedId = lastId ?: UserId.createOrThrow(0),
+            pageToken = pageToken,
             lastActiveTime = timeProvider.provide() - 15.minutes,
         )
-        val users = usersRepository.getUsers(userIds)
+        val users = usersRepository.getUsers(userIds.value)
 
         return Result.Success(users)
     }

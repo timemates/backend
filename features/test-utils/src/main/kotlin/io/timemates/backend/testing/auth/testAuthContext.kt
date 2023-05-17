@@ -15,7 +15,10 @@ inline fun <T : Scope> testAuthContext(
     block: context(AuthorizedContext<T>) () -> Unit,
 ) {
     val context = object : AuthorizedContext<T> {
-        override val authorization: Authorized = Authorized(authorizedId = AuthorizedId(userId.long))
+        override val authorization: Authorized = Authorized(
+            authorizedId = AuthorizedId(userId.long),
+            scopes = listOf(Scope.All)
+        )
     }
 
     return context.run(block)

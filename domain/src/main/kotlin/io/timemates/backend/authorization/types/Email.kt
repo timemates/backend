@@ -7,7 +7,7 @@ import io.timemates.backend.users.types.value.EmailAddress
  * Class that represents email that sends to user.
  */
 sealed class Email {
-    class AuthorizeEmail(
+    data class AuthorizeEmail(
         val email: EmailAddress,
         val code: VerificationCode
     ) : Email()

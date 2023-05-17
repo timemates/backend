@@ -1,13 +1,17 @@
 syntax = "proto3";
 
+import "google/protobuf/wrappers.proto";
+
 option java_package = "io.timemates.api.timers.requests";
 
 message EditTimerSettingsRequest {
-  int32 workTimeMillis = 1;
-  int32 restTime = 2;
-  int32 bigRestTime = 3;
-  bool bigRestEnabled = 4;
-  int32 bigRestPer = 5;
-  bool isEveryoneCanPause = 6;
-  bool isConfirmationRequired = 7;
+  optional int64 timerId = 1;
+
+  optional int32 workTime = 2;
+  optional int32 restTime = 3;
+  optional int32 bigRestTime = 4;
+  optional bool bigRestEnabled = 5;
+  optional int32 bigRestPer = 6;
+  optional bool isEveryoneCanPause = 7;
+  optional bool isConfirmationRequired = 8;
 }

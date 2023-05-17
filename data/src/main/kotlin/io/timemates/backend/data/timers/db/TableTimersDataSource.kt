@@ -1,10 +1,17 @@
 package io.timemates.backend.data.timers.db
 
 import io.timemates.backend.data.timers.db.entities.DbTimer
+import io.timemates.backend.data.timers.db.entities.TimersPageToken
 import io.timemates.backend.data.timers.db.tables.TimersTable
 import io.timemates.backend.data.timers.mappers.TimersMapper
 import io.timemates.backend.exposed.suspendedTransaction
 import io.timemates.backend.exposed.update
+import io.timemates.backend.pagination.Ordering
+import io.timemates.backend.pagination.PageToken
+import io.timemates.backend.pagination.Page
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -12,6 +19,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 class TableTimersDataSource(
     private val database: Database,
     private val timersMapper: TimersMapper,
+    private val json: Json,
 ) {
     init {
         transaction {
@@ -92,12 +100,25 @@ class TableTimersDataSource(
 
     suspend fun getTimers(
         userId: Long,
-        lastTimerId: Long?,
-    ): List<DbTimer> = suspendedTransaction(database) {
-        TimersTable.select {
-            TimersTable.ID greater (lastTimerId ?: Long.MIN_VALUE) and
+        pageToken: PageToken?,
+    ): Page<DbTimer> = suspendedTransaction(database) {
+        val decodedPageToken: TimersPageToken? = pageToken?.decoded()?.let { json.decodeFromString(it) }
+
+        val result = TimersTable.select {
+            TimersTable.ID greater (decodedPageToken?.nextRetrievedTimerId ?: 0) and
                 (TimersTable.OWNER_ID eq userId)
         }.orderBy(TimersTable.CREATION_TIME, SortOrder.DESC).map(timersMapper::resultRowToDbTimer)
+
+        val lastId = result.lastOrNull()?.id
+        val nextPageToken = if (lastId != null)
+            PageToken.withBase64(json.encodeToString(TimersPageToken(lastId)))
+        else pageToken
+
+        return@suspendedTransaction Page(
+            value = result,
+            nextPageToken = nextPageToken,
+            ordering = Ordering.DESCENDING,
+        )
     }
 
     suspend fun getTimers(ids: List<Long>): DbTimer? = suspendedTransaction(database) {
