@@ -21,7 +21,7 @@ value class EmailAddress private constructor(val string: String) {
         context(ValidationFailureHandler)
         override fun create(value: String): EmailAddress {
             return when {
-                value.length in 3..SIZE -> onFail(EMAIL_ADDRESS_SIZE_OUT_OF_RANGE)
+                value.length !in 3..SIZE -> onFail(EMAIL_ADDRESS_SIZE_OUT_OF_RANGE)
                 !emailPattern.matches(value) -> onFail(EMAIL_DOES_NOT_MATCH)
                 else -> EmailAddress(value)
             }

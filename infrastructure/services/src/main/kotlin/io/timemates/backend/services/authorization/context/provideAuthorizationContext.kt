@@ -22,7 +22,7 @@ import io.timemates.backend.services.common.validation.createOrStatus
  */
 @Throws(StatusException::class)
 suspend inline fun <reified T : Scope, R> provideAuthorizationContext(
-    constraint: (List<Scope>) -> Boolean = { scopes -> scopes.any { it is T } },
+    constraint: (List<Scope>) -> Boolean = { scopes -> scopes.any { it is T || it is Scope.All } },
     block: context(AuthorizedContext<T>) () -> R,
 ): R {
     val provider = AuthorizationInterceptor.AUTHORIZATION_PROVIDER.get()

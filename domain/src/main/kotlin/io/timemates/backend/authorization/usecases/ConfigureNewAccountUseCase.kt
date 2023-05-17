@@ -29,15 +29,29 @@ class ConfigureNewAccountUseCase(
             ?.takeIf { it.isConfirmed }
             ?: return Result.NotFound
 
+        val currentTime = timeProvider.provide()
+
         val accessHash = AccessHash.createOrThrow(randomProvider.randomHash(AccessHash.SIZE))
         val refreshHash = RefreshHash.createOrThrow(randomProvider.randomHash(RefreshHash.SIZE))
-        val expiresAt = timeProvider.provide() + 30.days
+        val expiresAt = currentTime + 30.days
 
         val id = users.createUser(verification.emailAddress, userName, shortBio, timeProvider.provide())
-        authorizations.create(id, accessHash, refreshHash, expiresAt)
+        authorizations.create(
+            id,
+            accessHash,
+            refreshHash,
+            expiresAt,
+            currentTime,
+        )
+
         return Result.Success(
             Authorization(
-                id, accessHash, refreshHash, listOf(Scope.All), expiresAt
+                userId = id,
+                accessHash = accessHash,
+                refreshAccessHash = refreshHash,
+                scopes = listOf(Scope.All),
+                expiresAt = expiresAt,
+                createdAt = currentTime,
             )
         )
     }
