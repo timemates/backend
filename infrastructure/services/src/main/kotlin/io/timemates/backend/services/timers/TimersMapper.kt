@@ -67,15 +67,6 @@ class TimersMapper {
         }
     }
 
-    fun toTimerPatch(
-        timer: EditTimerInfoRequestOuterClass.EditTimerInfoRequest,
-    ): TimersRepository.TimerInformation.Patch {
-        return TimersRepository.TimerInformation.Patch(
-            name = TimerName.createOrStatus(timer.name),
-            description = TimerDescription.createOrStatus(timer.description),
-        )
-    }
-
     fun toTimerSettingsPatch(
         settings: EditTimerSettingsRequestOuterClass.EditTimerSettingsRequest,
     ): TimerSettings.Patch {
@@ -94,9 +85,9 @@ class TimersMapper {
         patch: EditTimerInfoRequestOuterClass.EditTimerInfoRequest
     ): TimersRepository.TimerInformation.Patch {
         return TimersRepository.TimerInformation.Patch(
-            name = patch.name.takeIf { patch.hasName() }?.let(TimerName::createOrStatus),
+            name = patch.name.takeIf { patch.hasName() }?.let { TimerName.createOrStatus(it) },
             description = patch.description.takeIf { patch.hasDescription() }
-                ?.let(TimerDescription::createOrStatus),
+                ?.let { TimerDescription.createOrStatus(it) },
         )
     }
 
