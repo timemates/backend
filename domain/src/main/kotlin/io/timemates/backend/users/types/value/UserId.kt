@@ -20,7 +20,7 @@ value class UserId private constructor(val long: Long) {
         }
 
         // optimized way to avoid double-checks
-        fun AuthorizedId.asUserId() = UserId(long)
+        internal fun AuthorizedId.asUserId() = UserId(long)
 
         private val ID_IS_NEGATIVE = FailureMessage(
             "User's ID cannot be negative"

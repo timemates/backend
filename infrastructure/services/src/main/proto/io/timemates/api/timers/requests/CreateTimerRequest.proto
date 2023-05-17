@@ -16,4 +16,8 @@ message CreateTimerRequest {
   optional string description = 2;
 
   optional Timer.Settings settings = 3;
+
+  message Response {
+    int64 timerId = 1;
+  }
 }

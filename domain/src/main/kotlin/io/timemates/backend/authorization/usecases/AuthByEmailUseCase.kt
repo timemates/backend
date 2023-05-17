@@ -4,7 +4,7 @@ import com.timemates.backend.time.TimeProvider
 import com.timemates.backend.time.UnixTime
 import com.timemates.backend.validation.createOrThrow
 import com.timemates.random.RandomProvider
-import io.timemates.backend.authorization.repositories.EmailsRepository
+import io.timemates.backend.common.repositories.EmailsRepository
 import io.timemates.backend.authorization.repositories.VerificationsRepository
 import io.timemates.backend.authorization.types.Email
 import io.timemates.backend.authorization.types.value.Attempts
@@ -25,8 +25,8 @@ class AuthByEmailUseCase(
         val sessionsTimeBoundary = timeProvider.provide() - 1.hours
 
         return when {
-            verifications.getNumberOfAttempts(emailAddress, sessionsTimeBoundary) >= 9 ||
-                verifications.getNumberOfSessions(emailAddress, sessionsTimeBoundary) >= 3 ->
+            verifications.getNumberOfAttempts(emailAddress, sessionsTimeBoundary).int >= 9 ||
+                verifications.getNumberOfSessions(emailAddress, sessionsTimeBoundary).int >= 3 ->
                 Result.AttemptsExceed
 
             else -> {
@@ -41,10 +41,6 @@ class AuthByEmailUseCase(
                 Result.Success(timeProvider.provide() + 10.minutes, totalAttempts)
             }
         }
-    }
-
-    enum class Test(val int: Int) {
-
     }
 
     sealed interface Result {

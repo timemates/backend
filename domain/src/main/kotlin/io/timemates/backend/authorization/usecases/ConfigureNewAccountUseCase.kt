@@ -7,6 +7,7 @@ import io.timemates.backend.authorization.repositories.AuthorizationsRepository
 import io.timemates.backend.authorization.repositories.VerificationsRepository
 import io.timemates.backend.authorization.types.Authorization
 import io.timemates.backend.authorization.types.value.*
+import io.timemates.backend.features.authorization.Scope
 import io.timemates.backend.users.repositories.UsersRepository
 import io.timemates.backend.users.types.value.UserDescription
 import io.timemates.backend.users.types.value.UserName
@@ -36,7 +37,7 @@ class ConfigureNewAccountUseCase(
         authorizations.create(id, accessHash, refreshHash, expiresAt)
         return Result.Success(
             Authorization(
-                id, accessHash, refreshHash, listOf(Authorization.Scope.All), expiresAt
+                id, accessHash, refreshHash, listOf(Scope.All), expiresAt
             )
         )
     }

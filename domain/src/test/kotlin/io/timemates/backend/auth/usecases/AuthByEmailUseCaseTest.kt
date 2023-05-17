@@ -10,7 +10,7 @@ import io.mockk.coJustRun
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import io.timemates.backend.authorization.repositories.EmailsRepository
+import io.timemates.backend.common.repositories.EmailsRepository
 import io.timemates.backend.authorization.repositories.VerificationsRepository
 import io.timemates.backend.authorization.types.value.Attempts
 import io.timemates.backend.authorization.usecases.AuthByEmailUseCase

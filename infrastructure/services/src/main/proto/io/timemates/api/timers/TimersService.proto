@@ -13,6 +13,7 @@ import "io/timemates/api/timers/requests/members/invites/GetInvitesRequest.proto
 import "io/timemates/api/timers/requests/members/invites/RemoveInviteRequest.proto";
 import "io/timemates/api/common/types/Status.proto";
 import "io/timemates/api/timers/types/Timer.proto";
+import "google/protobuf/empty.proto";
 
 option java_package = "io.timemates.api.timers";
 
@@ -22,7 +23,7 @@ service TimersService {
    *
    * Returns [Status].
    */
-  rpc createTimer(CreateTimerRequest) returns (Status);
+  rpc createTimer(CreateTimerRequest) returns (CreateTimerRequest.Response);
 
   /**
    * Gets timer by id.
@@ -32,26 +33,26 @@ service TimersService {
   /*
    * Gets timers by page token.
    */
-  rpc getTimers(GetTimersRequest) returns (GetTimersRequest);
+  rpc getTimers(GetTimersRequest) returns (GetTimersRequest.Response);
 
   /**
    * Edits timer information (name, description).
    *
    * Returns [Status].
    */
-  rpc setTimerInfo(EditTimerInfoRequest) returns (Status);
+  rpc setTimerInfo(EditTimerInfoRequest) returns (google.protobuf.Empty);
 
   /**
    * Edits timer information (name, description).
    *
    * Returns [Status].
    */
-  rpc setTimerSettings(EditTimerSettingsRequest) returns (Status);
+  rpc setTimerSettings(EditTimerSettingsRequest) returns (google.protobuf.Empty);
 
   /**
    * Kicks member out of timer.
    */
-  rpc kickMember(KickMemberRequest) returns (Status);
+  rpc kickMember(KickMemberRequest) returns (google.protobuf.Empty);
 
   /*
    * Gets members of a timer.
@@ -71,12 +72,12 @@ service TimersService {
   /**
    * Gets invites of a timer.
    */
-  rpc removeInvite(RemoveInviteRequest) returns (Status);
+  rpc removeInvite(RemoveInviteRequest) returns (google.protobuf.Empty);
 
   /**
    * Removes timer.
    *
    * Returns [Status].
    */
-  rpc removeTimer(RemoveTimerRequest) returns (Status);
+  rpc removeTimer(RemoveTimerRequest) returns (google.protobuf.Empty);
 }

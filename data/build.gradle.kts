@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlinx.serialization)
 }
 
 dependencies {
@@ -7,6 +8,11 @@ dependencies {
     implementation(projects.features.scheduler)
     implementation(projects.features.exposedUtils)
     implementation(projects.features.fsm)
+    implementation(projects.features.pageToken)
+
+    implementation(projects.features.smtpMailer)
+
+    implementation(libs.kotlinx.serialization)
 
     implementation(libs.exposed.core)
     implementation(libs.exposed.jdbc)

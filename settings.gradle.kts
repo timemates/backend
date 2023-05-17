@@ -29,6 +29,9 @@ include(
     ":features:exposed-utils",
     ":features:test-utils",
     ":features:fsm",
+    ":features:coroutines-utils",
+    ":features:page-token",
+    ":features:smtp-mailer",
 )
 
 include(":domain", ":data")

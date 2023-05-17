@@ -9,13 +9,15 @@ plugins {
 }
 
 dependencies {
+    implementation(projects.domain)
+    implementation(projects.features.coroutinesUtils)
+
     implementation(libs.kotlinx.coroutines)
     implementation(libs.grpc.kotlin.stub)
     implementation(libs.grpc.protobuf)
     implementation(libs.kotlinx.coroutines)
     implementation(libs.protobuf.kotlin)
     implementation(libs.protobuf.java)
-    implementation(projects.domain)
 }
 
 protobuf {

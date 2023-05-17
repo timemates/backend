@@ -1,16 +1,10 @@
 syntax = "proto3";
 
-import "io/timemates/api/common/types/Timestamp.proto";
+import "google/protobuf/timestamp.proto";
 
 option java_package = "io.timemates.api.authorizations.types";
 
 message Authorization {
-  /**
-   * Authorization id of the user. Unique only
-   * per user.
-   */
-  int32 authorizationId = 1;
-
   /**
    * Hash that used to identify user.
    *
@@ -28,16 +22,16 @@ message Authorization {
   /**
    * Denotes when authorization was generated.
    */
-  Timestamp generationTime = 4;
+  int64 generationTime = 4;
 
   /**
    * Additional information about authorization.
    */
-  Metadata metadata = 5;
+  optional Metadata metadata = 5;
 
   message Hash {
     string value = 1;
-    Timestamp expiresAt = 2;
+    int64 expiresAt = 2;
   }
 
   message Metadata {

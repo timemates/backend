@@ -1,9 +1,16 @@
 package io.timemates.backend.data.timers.db
 
 import io.timemates.backend.data.timers.db.entities.DbInvite
+import io.timemates.backend.data.timers.db.entities.InvitesPageToken
 import io.timemates.backend.data.timers.db.tables.TimersInvitesTable
 import io.timemates.backend.data.timers.mappers.TimerInvitesMapper
 import io.timemates.backend.exposed.suspendedTransaction
+import io.timemates.backend.pagination.Ordering
+import io.timemates.backend.pagination.PageToken
+import io.timemates.backend.pagination.Page
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -11,6 +18,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 class TableTimerInvitesDataSource(
     private val database: Database,
     private val invitesMapper: TimerInvitesMapper,
+    private val json: Json,
 ) {
     init {
         transaction(database) {
@@ -20,12 +28,21 @@ class TableTimerInvitesDataSource(
 
     suspend fun getInvites(
         timerId: Long,
-        limit: Int,
-        offset: Long,
-    ): List<DbInvite> = suspendedTransaction(database) {
-        TimersInvitesTable.select {
+        nextPageToken: PageToken?,
+    ): Page<DbInvite> = suspendedTransaction(database) {
+        val currentPage: InvitesPageToken? = nextPageToken?.decoded()?.let(json::decodeFromString)
+
+        val offset = currentPage?.offset ?: 0
+
+        val result = TimersInvitesTable.select {
             TimersInvitesTable.TIMER_ID eq timerId
-        }.limit(limit, offset).map(invitesMapper::resultRowToDbInvite)
+        }.limit(20, offset).map(invitesMapper::resultRowToDbInvite)
+
+        return@suspendedTransaction Page(
+            value = result,
+            nextPageToken = PageToken.withBase64(json.encodeToString(InvitesPageToken(offset + 21))),
+            ordering = Ordering.ASCENDING,
+        )
     }
 
     suspend fun createInvite(

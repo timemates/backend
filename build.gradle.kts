@@ -16,6 +16,7 @@ allprojects {
                 "-opt-in=kotlin.contracts.ExperimentalContracts",
                 "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
                 "-language-version=2.0",
+                "-XXLanguage:+UnitConversionsOnArbitraryExpressions",
             )
         }
     }

@@ -10,6 +10,9 @@ import io.timemates.backend.data.timers.db.TableTimersStateDataSource
 import io.timemates.backend.data.timers.mappers.TimerSessionMapper
 import io.timemates.backend.data.timers.mappers.TimersMapper
 import io.timemates.backend.fsm.CoroutinesStateMachine
+import io.timemates.backend.pagination.PageToken
+import io.timemates.backend.pagination.Page
+import io.timemates.backend.pagination.map
 import io.timemates.backend.timers.fsm.TimersStateMachine
 import io.timemates.backend.timers.repositories.TimerSessionRepository
 import io.timemates.backend.timers.repositories.TimersRepository
@@ -37,7 +40,7 @@ class CoPostgresqlTimerSessionRepository(
             timerId.long,
             userId.long,
             true,
-            joinTime.inMilliseconds
+            joinTime.inMilliseconds,
         )
     }
 
@@ -47,14 +50,12 @@ class CoPostgresqlTimerSessionRepository(
 
     override suspend fun getMembers(
         timerId: TimerId,
-        count: Count,
-        lastReceivedId: UserId,
+        pageToken: PageToken?,
         lastActiveTime: UnixTime,
-    ): List<UserId> {
+    ): Page<UserId> {
         return tableTimersSessionUsers.getUsers(
             timerId.long,
-            lastReceivedId.long,
-            count.int,
+            pageToken,
             lastActiveTime.inMilliseconds,
         ).map { sessionUser -> UserId.createOrThrow(sessionUser.userId) }
     }

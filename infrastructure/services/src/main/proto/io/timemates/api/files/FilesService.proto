@@ -3,6 +3,7 @@ syntax = "proto3";
 import "io/timemates/api/common/types/Status.proto";
 import "io/timemates/api/files/requests/GetFileBytesRequest.proto";
 import "io/timemates/api/files/requests/UploadFileRequest.proto";
+import "google/protobuf/empty.proto";
 
 option java_package = "io.timemates.api.files";
 
@@ -16,5 +17,5 @@ service FilesService {
    * Uploads file to server.
    * Returns status after upload file stream ends.
    */
-  rpc uploadFile(stream FileChunk) returns (Status);
+  rpc uploadFile(stream UploadFileRequest) returns (UploadFileRequest.Response);
 }
