@@ -1,7 +1,7 @@
 package io.timemates.backend.application.internal
 
 @JvmInline
-internal value class Arguments(private val array: Array<String>) {
+value class Arguments(private val array: Array<String>) {
     /**
      * @return [Boolean] whether the given [name] was presented in array of arguments.
      */
@@ -20,9 +20,16 @@ internal value class Arguments(private val array: Array<String>) {
             array[index + 1]
         } else null
     }
+
+    fun getNamedList(name: String): List<String> {
+        return array.withIndex()
+            .filter { (_, value) -> value.startsWith("-$value") }
+            .map { (index, _) -> array[index + 1] }
+            .toList()
+    }
 }
 
-internal fun Arguments.getNamedIntOrNull(name: String): Int? =
+fun Arguments.getNamedIntOrNull(name: String): Int? =
     getNamedOrNull(name)?.toInt()
 
-internal fun Array<String>.asArguments(): Arguments = Arguments(this)
+fun Array<String>.asArguments(): Arguments = Arguments(this)

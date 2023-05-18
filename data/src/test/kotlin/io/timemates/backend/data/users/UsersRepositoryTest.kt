@@ -15,7 +15,7 @@ class UsersRepositoryTest {
     private val postgresqlUsers = mockk<PostgresqlUsersDataSource>()
     private val cachedUsers = mockk<CachedUsersDataSource>()
     private val mapper = mockk<UserEntitiesMapper>(relaxed = true)
-    private val usersRepository = UsersRepository(postgresqlUsers, cachedUsers, mapper)
+    private val postgresqlUsersRepository = PostgresqlUsersRepository(postgresqlUsers, cachedUsers, mapper)
 
     @Test
     fun `isUserExists() shouldn't call for db if user exists in cached users data source`() = runBlocking {
@@ -24,7 +24,7 @@ class UsersRepositoryTest {
         coEvery { cachedUsers.getUser(userId.long) } returns mockk()
         coEvery { postgresqlUsers.getUser(any()) } returns mockk()
 
-        val result = usersRepository.isUserExists(userId)
+        val result = postgresqlUsersRepository.isUserExists(userId)
 
         verify { cachedUsers.getUser(userId.long) }
         coVerify(inverse = true) { postgresqlUsers.isUserExists(any()) }
@@ -38,7 +38,7 @@ class UsersRepositoryTest {
             coEvery { cachedUsers.getUser(userId.long) } returns null
             coEvery { postgresqlUsers.isUserExists(userId.long) } returns true
 
-            usersRepository.isUserExists(userId)
+            postgresqlUsersRepository.isUserExists(userId)
 
             verify { cachedUsers.getUser(userId.long) }
             coVerify { postgresqlUsers.isUserExists(userId.long) }
@@ -51,7 +51,7 @@ class UsersRepositoryTest {
 
             coEvery { cachedUsers.getUser(userId.long) } returns mockk()
 
-            val result = usersRepository.isUserExists(userId)
+            val result = postgresqlUsersRepository.isUserExists(userId)
 
             verify { cachedUsers.getUser(userId.long) }
             coVerify(inverse = true) { postgresqlUsers.isUserExists(userId.long) }
@@ -69,7 +69,7 @@ class UsersRepositoryTest {
         every { mapper.toDomainUser(any(), any()) } returns mockk()
 
         // WHEN
-        val result = usersRepository.getUser(userId)
+        val result = postgresqlUsersRepository.getUser(userId)
 
         // THEN
         verify { cachedUsers.getUser(userId.long) }
@@ -87,7 +87,7 @@ class UsersRepositoryTest {
         coJustRun { cachedUsers.invalidateUser(any()) }
 
         // WHEN
-        usersRepository.edit(userId, User.Patch(userName, description))
+        postgresqlUsersRepository.edit(userId, User.Patch(userName, description))
 
         // THEN
         coVerify {
@@ -131,7 +131,7 @@ class UsersRepositoryTest {
         every { mapper.toDomainUser(any(), any()) } returns mockk()
 
 
-        usersRepository.getUsers(listOf(userId1, userId2, userId3, userId4))
+        postgresqlUsersRepository.getUsers(listOf(userId1, userId2, userId3, userId4))
 
         verify { cachedUsers.getUsers(listOf(userId1.long, userId2.long, userId3.long, userId4.long)) }
         coVerify { postgresqlUsers.getUsers(listOf(userId4.long)) }

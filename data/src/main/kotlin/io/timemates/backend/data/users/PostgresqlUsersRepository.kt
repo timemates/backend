@@ -11,7 +11,7 @@ import io.timemates.backend.users.types.value.UserId
 import io.timemates.backend.users.types.value.UserName
 import io.timemates.backend.users.repositories.UsersRepository as UsersRepositoryContract
 
-class UsersRepository(
+class PostgresqlUsersRepository(
     private val postgresqlUsers: PostgresqlUsersDataSource,
     private val cachedUsers: CachedUsersDataSource,
     private val mapper: UserEntitiesMapper,

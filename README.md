@@ -32,7 +32,7 @@ To run this application on your own host you need to provide next env variables:
 
 > **Note**
 >
-> You can also use java arguments to set it [it](application/src/main/kotlin/io/timemates/backend/application/Application.kt) up.
+> You can also use java arguments to set it [it](infrastructure/application/src/main/kotlin/io/timemates/backend/application/Application.kt) up.
 
 ## <div align="center">Deploy</div>
 
