@@ -10,6 +10,12 @@ dependencies {
     implementation(projects.features.fsm)
     implementation(projects.features.pageToken)
 
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.cio)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.client.logging)
+    implementation(libs.ktor.json)
+
     implementation(projects.features.smtpMailer)
 
     implementation(libs.kotlinx.serialization)
