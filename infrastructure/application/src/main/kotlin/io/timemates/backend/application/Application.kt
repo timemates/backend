@@ -7,13 +7,14 @@ import io.timemates.backend.application.dependencies.AppModule
 import io.timemates.backend.application.dependencies.configuration.DatabaseConfig
 import io.timemates.backend.application.dependencies.configuration.MailerConfig
 import io.timemates.backend.application.dependencies.filesPathName
-import io.timemates.backend.application.internal.asArguments
-import io.timemates.backend.application.internal.getNamedIntOrNull
+import io.timemates.backend.cli.asArguments
+import io.timemates.backend.cli.getNamedIntOrNull
 import io.timemates.backend.services.authorization.AuthorizationsService
 import io.timemates.backend.services.files.FilesService
 import io.timemates.backend.services.timers.TimersService
 import io.timemates.backend.services.users.UsersService
 import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
 import org.koin.dsl.module
 import java.net.URI
 
@@ -56,22 +57,24 @@ fun main(args: Array<String>) {
         password = databasePassword,
     )
 
-    val mailerConfig = MailerConfig(
-        host = arguments.getNamedOrNull("smtp.host")
-            ?: System.getenv("timemates.smtp.host")
-            ?: error("You're missing smtp host."),
-        port = arguments.getNamedIntOrNull("smtp.port")
-            ?: System.getenv("timemates.smtp.port")?.toInt()
-            ?: error("You're missing smtp port."),
-        user = arguments.getNamedOrNull("smtp.user")
-            ?: System.getenv("timemates.smtp.user")
-            ?: error("You're missing smtp user."),
-        password = arguments.getNamedOrNull("smtp.user.password")
-            ?: System.getenv("timemates.smtp.user.password"),
-        sender = arguments.getNamedOrNull("smtp.sender.address")
-            ?: System.getenv("timemates.smtp.sender")
-            ?: error("You're missing smtp sender."),
-    )
+    val smtpMailingConfig = if(arguments.isPresent("smtp")) {
+        MailerConfig(
+            host = arguments.getNamedOrNull("smtp.host")
+                ?: System.getenv("timemates.smtp.host")
+                ?: error("You're missing smtp host."),
+            port = arguments.getNamedIntOrNull("smtp.port")
+                ?: System.getenv("timemates.smtp.port")?.toInt()
+                ?: error("You're missing smtp port."),
+            user = arguments.getNamedOrNull("smtp.user")
+                ?: System.getenv("timemates.smtp.user")
+                ?: error("You're missing smtp user."),
+            password = arguments.getNamedOrNull("smtp.user.password")
+                ?: System.getenv("timemates.smtp.user.password"),
+            sender = arguments.getNamedOrNull("smtp.sender.address")
+                ?: System.getenv("timemates.smtp.sender")
+                ?: error("You're missing smtp sender."),
+        )
+    } else null
 
     val filesPath = arguments.getNamedOrNull("files.path")
         ?: System.getenv("timemates.files.path")
@@ -79,7 +82,7 @@ fun main(args: Array<String>) {
 
     val dynamicModule = module {
         single<DatabaseConfig> { databaseConfig }
-        single<MailerConfig> { mailerConfig }
+        smtpMailingConfig?.let { cfg -> single<MailerConfig> { cfg } }
         single(filesPathName) { URI.create(filesPath) }
     }
 
@@ -96,6 +99,10 @@ fun main(args: Array<String>) {
 
     server.start()
 
-    Runtime.getRuntime().addShutdownHook(Thread(server::shutdown))
+    Runtime.getRuntime().addShutdownHook(Thread {
+        server.shutdown()
+        stopKoin()
+    })
+
     server.awaitTermination()
 }

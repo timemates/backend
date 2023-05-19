@@ -1,4 +1,4 @@
-package io.timemates.backend.application.internal
+package io.timemates.backend.cli
 
 @JvmInline
 value class Arguments(private val array: Array<String>) {

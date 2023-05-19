@@ -4,10 +4,8 @@ import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.logging.*
-import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.request.*
 import io.ktor.http.*
-import io.ktor.util.logging.*
 import io.timemates.backend.authorization.types.Email
 import io.timemates.backend.common.repositories.EmailsRepository
 import io.timemates.backend.users.types.value.EmailAddress
