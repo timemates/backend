@@ -1,42 +1,60 @@
 package io.timemates.backend.data.authorization
 
 import com.timemates.backend.time.UnixTime
+import com.timemates.backend.validation.createOrThrow
 import io.timemates.backend.authorization.repositories.VerificationsRepository
 import io.timemates.backend.authorization.types.Verification
 import io.timemates.backend.authorization.types.value.Attempts
 import io.timemates.backend.authorization.types.value.VerificationCode
 import io.timemates.backend.authorization.types.value.VerificationHash
 import io.timemates.backend.common.types.value.Count
+import io.timemates.backend.data.authorization.db.TableVerificationsDataSource
+import io.timemates.backend.data.authorization.mapper.VerificationsMapper
 import io.timemates.backend.users.types.value.EmailAddress
 
 class PostgresqlVerificationsRepository(
-
+    private val dbVerifications: TableVerificationsDataSource,
+    private val mapper: VerificationsMapper,
 ) : VerificationsRepository {
-    override suspend fun save(emailAddress: EmailAddress, verificationToken: VerificationHash, code: VerificationCode, time: UnixTime, attempts: Attempts) {
-        TODO("Not yet implemented")
+    override suspend fun save(
+        emailAddress: EmailAddress,
+        verificationToken: VerificationHash,
+        code: VerificationCode,
+        time: UnixTime,
+        attempts: Attempts,
+    ) {
+        dbVerifications.add(
+            emailAddress.string,
+            verificationToken.string,
+            code.string,
+            time.inMilliseconds,
+            attempts.int,
+        )
     }
 
     override suspend fun addAttempt(verificationToken: VerificationHash) {
-        TODO("Not yet implemented")
+        dbVerifications.decreaseAttempts(verificationToken.string)
     }
 
     override suspend fun getVerification(verificationToken: VerificationHash): Verification? {
-        TODO("Not yet implemented")
+        return dbVerifications.getVerification(verificationToken.string)?.let(mapper::dbToDomain)
     }
 
     override suspend fun remove(verificationToken: VerificationHash) {
-        TODO("Not yet implemented")
+        dbVerifications.remove(verificationToken.string)
     }
 
     override suspend fun getNumberOfAttempts(emailAddress: EmailAddress, after: UnixTime): Count {
-        TODO("Not yet implemented")
+        return dbVerifications.getAttempts(emailAddress.string, after.inMilliseconds)
+            .let { Count.createOrThrow(it) }
     }
 
     override suspend fun getNumberOfSessions(emailAddress: EmailAddress, after: UnixTime): Count {
-        TODO("Not yet implemented")
+        return dbVerifications.getSessionsCount(emailAddress.string, after.inMilliseconds)
+            .let { Count.createOrThrow(it) }
     }
 
     override suspend fun markConfirmed(verificationToken: VerificationHash) {
-        TODO("Not yet implemented")
+        dbVerifications.setAsConfirmed(verificationToken.string)
     }
 }
