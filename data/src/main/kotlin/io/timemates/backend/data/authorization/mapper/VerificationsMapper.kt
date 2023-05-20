@@ -15,7 +15,7 @@ class VerificationsMapper {
             code = VerificationCode.createOrThrow(dbVerification.code),
             attempts = Attempts.createOrThrow(dbVerification.attempts),
             time = UnixTime.createOrThrow(dbVerification.time),
-            isConfirmed = dbVerification.isConfirmed
+            isConfirmed = dbVerification.isConfirmed,
         )
     }
 }
