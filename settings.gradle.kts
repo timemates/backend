@@ -32,10 +32,14 @@ include(
     ":features:coroutines-utils",
     ":features:page-token",
     ":features:smtp-mailer",
+    ":features:cli-arguments",
 )
 
 include(":domain", ":data")
 
-include(":infrastructure:services")
+include(
+    ":infrastructure:services",
+    ":infrastructure:application",
+)
 
 

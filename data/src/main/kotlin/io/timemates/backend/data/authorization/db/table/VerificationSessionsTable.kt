@@ -10,6 +10,7 @@ object VerificationSessionsTable : Table("verification_sessions") {
     val VERIFICATION_HASH = varchar("verification_hash", VerificationHash.SIZE)
     val EMAIL = varchar("email", EmailAddress.SIZE)
     val IS_CONFIRMED = bool("is_confirmed").default(false)
+    val CONFIRMATION_CODE = varchar("confirmation_code", 6)
     val ATTEMPTS = integer("attempts")
     val INIT_TIME = long("init_time")
 }

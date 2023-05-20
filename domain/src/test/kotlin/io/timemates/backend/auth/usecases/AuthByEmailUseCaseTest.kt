@@ -106,7 +106,7 @@ class AuthByEmailUseCaseTest {
         // THEN
         assertEquals(
             expected = AuthByEmailUseCase.Result.AttemptsExceed,
-            actual = result
+            actual = result,
         )
     }
 }
