@@ -2,6 +2,7 @@
 
 package io.timemates.backend.application
 
+import io.grpc.BindableService
 import io.grpc.ServerBuilder
 import io.timemates.backend.application.constants.ArgumentsConstants
 import io.timemates.backend.application.constants.EnvironmentConstants
@@ -127,10 +128,10 @@ fun main(args: Array<String>) {
     }.koin
 
     val server = ServerBuilder.forPort(port)
-        .addService(koin.get<UsersService>())
-        .addService(koin.get<FilesService>())
-        .addService(koin.get<TimersService>())
-        .addService(koin.get<AuthorizationsService>())
+        .addService(koin.get<UsersService>() as BindableService)
+        .addService(koin.get<FilesService>() as BindableService)
+        .addService(koin.get<TimersService>() as BindableService)
+        .addService(koin.get<AuthorizationsService>() as BindableService)
         .build()
 
     server.start()

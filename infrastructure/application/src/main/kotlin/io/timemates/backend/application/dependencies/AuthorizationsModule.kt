@@ -5,7 +5,10 @@ import io.timemates.backend.data.authorization.PostgresqlAuthorizationsRepositor
 import io.timemates.backend.data.authorization.PostgresqlVerificationsRepository
 import io.timemates.backend.data.authorization.cache.CacheAuthorizationsDataSource
 import io.timemates.backend.data.authorization.db.TableAuthorizationsDataSource
+import io.timemates.backend.data.authorization.db.TableVerificationsDataSource
 import io.timemates.backend.data.authorization.db.mapper.DbAuthorizationsMapper
+import io.timemates.backend.data.authorization.db.mapper.DbVerificationsMapper
+import io.timemates.backend.data.authorization.mapper.VerificationsMapper
 import org.koin.dsl.module
 import kotlin.time.Duration.Companion.minutes
 
@@ -24,7 +27,7 @@ val AuthorizationsModule = module {
         DbAuthorizationsMapper()
     }
     single {
-        PostgresqlVerificationsRepository()
+        PostgresqlVerificationsRepository(TableVerificationsDataSource(get(), DbVerificationsMapper()), VerificationsMapper())
     }
     single {
         PostgresqlAuthorizationsRepository(

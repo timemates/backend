@@ -53,17 +53,15 @@ val TimersModule = module {
             coroutineScope = CoroutineScope(Dispatchers.Default.limitedParallelism(10)),
             tableTimersSessionUsers = get(),
             tableTimersStateDataSource = get(),
-            cacheTimersSessionUsers = get(),
-            timersMapper = get(),
-            timerSessionMapper = get(),
             timeProvider = get(),
-            timersRepository = get()
+            timersRepository = get(),
+            sessionsMapper = get(),
         )
     }
     single {
         GetTimersUseCase(
             timers = get(),
-            sessionsRepository = get()
+            sessionsRepository = get(),
         )
     }
     single {
@@ -75,13 +73,13 @@ val TimersModule = module {
     single {
         SetTimerSettingsUseCase(
             timers = get(),
-            sessions = get()
+            sessions = get(),
         )
     }
     single {
         GetTimerUseCase(
             timers = get(),
-            sessions = get()
+            sessions = get(),
         )
     }
     single {
