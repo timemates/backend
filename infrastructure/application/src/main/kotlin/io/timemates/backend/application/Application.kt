@@ -26,22 +26,32 @@ import java.net.URI
 
 /**
  * Application entry-point. Next environment variables should be provided:
- * ### Environment
- * - `timemates.server.port` — port of the server
- * - `timemates.database.url` – url to the postgresql database
- * - `timemates.database.user` – login or nothing (if there is no need in user)
- * - `timemates.database.user.password` – password of the database user or nothing (if
- * there is password or no user)
- * - `timemates.files.path` – path to folder with timemates files storage.
- * @see EnvironmentConstants
  *
- * ### Program arguments
+ * **Environment variables**:
+ * - **APPLICATION_PORT**: The port for the server to listen on. If not provided, defaults to 8080.
+ * - **TIME_MATES_DATABASE_URL**: The URL of the database.
+ * - **TIME_MATES_DATABASE_USER**: The username for the database connection.
+ * - **TIME_MATES_DATABASE_USER_PASSWORD**: The password for the database connection.
+ * - **TIME_MATES_SMTP_HOST**: The SMTP host for sending emails.
+ * - **TIME_MATES_SMTP_PORT**: The SMTP port for sending emails.
+ * - **TIME_MATES_SMTP_USER**: The username for the SMTP server.
+ * - **TIME_MATES_SMTP_USER_PASSWORD**: The password for the SMTP server.
+ * - **TIME_MATES_SMTP_SENDER_ADDRESS**: The sender email address for outgoing emails.
+ * - **MAILER_SEND_API_KEY**: The API key for MailerSend service.
+ * - **MAILER_SEND_SENDER**: The sender email address for MailerSend emails.
+ * - **MAILER_SEND_RECIPIENT**: The recipient email address for MailerSend emails.
+ * - **MAILER_SEND_CONFIRMATION_TEMPLATE**: The template ID for MailerSend confirmation emails.
+ * - **TIME_MATES_FILES_PATH**: The path for file storage.
+ *
+ * **Program arguments**:
+ *
  * Also, values above can be provided by arguments `port`, `databaseUrl`, `databaseUser`
  * `databaseUserPassword` and `filesPath`.
  * For example: `java -jar timemates.jar -port 8080 -databaseUrl http..`
- * @see ArgumentsConstants
  *
  * **Arguments are used first, then environment variables as fallback.**
+ * @see ArgumentsConstants
+ * @see EnvironmentConstants
  */
 fun main(args: Array<String>) {
     val arguments = args.asArguments()
@@ -68,7 +78,7 @@ fun main(args: Array<String>) {
         password = databasePassword,
     )
 
-    val mailingConfig = if (arguments.isPresent(EnvironmentConstants.SMTP_PREFIX)) {
+    val mailingConfig = if (arguments.isPresent(ArgumentsConstants.SMTP)) {
         MailerConfiguration.SMTP(
             host = arguments.getNamedOrNull(ArgumentsConstants.SMTP_HOST)
                 ?: System.getenv(EnvironmentConstants.SMTP_HOST)
@@ -142,8 +152,4 @@ fun main(args: Array<String>) {
     })
 
     server.awaitTermination()
-}
-
-private fun Arguments.getNamedOrEnv(argumentName: String, envName: String): String? {
-    return getNamedOrNull(argumentName) ?: System.getenv(envName)
 }
