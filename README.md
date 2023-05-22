@@ -49,12 +49,14 @@ The Timemates Backend Docker image is available on Docker Hub. You can pull the 
 To pull the Docker image from Docker Hub, use the following command:
 ```bash
 docker pull y9vad9/timemates-backend:$version
+docker run --env-file .env y9vad9/timemates-backend:$version
 ```
 Replace `$version` with the specific version or tag you want to use.
 
 For example, to pull the latest version, use:
 ```bash
 docker pull y9vad9/timemates-backend:latest
+docker run --env-file .env y9vad9/timemates-backend:$version
 ```
 
 You should also provide `DOCKER_IMAGE_PORT` environment variable for docker port. Also,
