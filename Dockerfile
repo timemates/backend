@@ -7,6 +7,9 @@ WORKDIR /app
 
 ENV DOCKER_IMAGE_PORT = 8080
 
+# Possible values is mailersend / smtp
+ENV MAILER_IMPLEMENTATION = "mailersend"
+
 # Install wget utility for downloading files
 RUN apt-get update && apt-get install -y wget && apt-get install -y default-jre
 
@@ -24,4 +27,4 @@ EXPOSE $SERVER_PORT
 
 # Set the command to run application
 # Refer to the documentation what environment variables should be set to run application
-CMD ["java", "-jar", "application.jar"]
+CMD ["java", "-jar", "application.jar", "-$MAILER_IMPLEMENTATION"]
