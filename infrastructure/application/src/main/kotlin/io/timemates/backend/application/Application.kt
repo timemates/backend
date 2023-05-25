@@ -99,7 +99,7 @@ fun main(args: Array<String>) {
                 ?: System.getenv(EnvironmentConstants.SMTP_SENDER_ADDRESS)
                 ?: error(FailureMessages.MISSING_SMTP_SENDER),
         )
-    } else if (arguments.isPresent("-mailersend")) {
+    } else if (arguments.isPresent(ArgumentsConstants.MAILER_SEND)) {
         MailerConfiguration.MailerSend(
             configuration = MailerSendEmailsRepository.Configuration(
                 apiKey = arguments.getNamedOrNull(ArgumentsConstants.MAILER_SEND_API_KEY)
