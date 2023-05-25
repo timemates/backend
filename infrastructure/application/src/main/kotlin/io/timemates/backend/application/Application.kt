@@ -110,10 +110,6 @@ fun main(args: Array<String>) {
                     ?: System.getenv(EnvironmentConstants.MAILER_SEND_SENDER)
                     ?: error(FailureMessages.MISSING_MAILER_SEND_SENDER),
 
-                recipient = arguments.getNamedOrNull(ArgumentsConstants.MAILER_SEND_RECIPIENT)
-                    ?: System.getenv(EnvironmentConstants.MAILER_SEND_RECIPIENT)
-                    ?: error(FailureMessages.MISSING_MAILER_SEND_RECIPIENT),
-
                 confirmationTemplateId = arguments.getNamedOrNull(ArgumentsConstants.MAILER_SEND_CONFIRMATION_TEMPLATE)
                     ?: System.getenv(EnvironmentConstants.MAILER_SEND_CONFIRMATION_TEMPLATE)
                     ?: error(FailureMessages.MISSING_MAILER_SEND_CONFIRMATION_TEMPLATE),

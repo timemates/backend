@@ -8,7 +8,7 @@ WORKDIR /app
 ENV DOCKER_IMAGE_PORT = 8080
 
 # Install wget utility for downloading files
-RUN apt-get update && apt-get install -y wget
+RUN apt-get update && apt-get install -y wget && apt-get install -y default-jre
 
 # Set the desired version of your backend JAR file
 ARG JAR_VERSION=1.0.0-M1
