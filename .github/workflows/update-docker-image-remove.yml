@@ -1,9 +1,8 @@
 name: Update/Create Container on VPS
 
 on:
-  push:
-    branches:
-      - release/*
+  release:
+    types: [published]
 
 jobs:
   deploy:
