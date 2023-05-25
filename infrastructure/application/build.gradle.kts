@@ -26,7 +26,7 @@ dependencies {
 }
 
 application {
-    mainClass.set("io.timemates.backend.ApplicationKt")
+    mainClass.set("io.timemates.backend.application.ApplicationKt")
 }
 
 
