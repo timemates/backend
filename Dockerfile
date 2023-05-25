@@ -17,7 +17,7 @@ RUN apt-get update && apt-get install -y wget && apt-get install -y default-jre
 ARG JAR_VERSION=1.0.0-M1
 
 # Set the download URL for the JAR file
-ARG JAR_DOWNLOAD_URL=https://github.com/timemates/backend/releases/download/${JAR_VERSION}/application.jar
+ARG JAR_DOWNLOAD_URL=https://github.com/timemates/backend/releases/download/${JAR_VERSION}/application.jar || true
 
 # Download the JAR file from the specified URL
 RUN wget --quiet --show-progress --no-cache --progress=bar: ${JAR_DOWNLOAD_URL} -O application.jar 
