@@ -10,6 +10,6 @@ internal object FailureMessages {
     const val MISSING_MAILER_SEND_API_KEY = "You're missing the API key for MailerSend."
     const val MISSING_MAILER_SEND_SENDER = "You're missing the author of the email (MailerSend sender)."
     const val MISSING_MAILER_SEND_CONFIRMATION_TEMPLATE = "You're missing the template for confirmations for MailerSend."
-    const val MISSING_MAILER = "You must specify a mailer (possible values are -mailersend and -smtp)."
+    const val MISSING_MAILER = "You have not specified a mailer, please refer to documentation for correct setup."
     const val MISSING_FILES_PATH = "You're missing the files path."
 }

@@ -78,7 +78,8 @@ fun main(args: Array<String>) {
         password = databasePassword,
     )
 
-    val mailingConfig = if (arguments.isPresent(ArgumentsConstants.SMTP)) {
+    val mailingConfig = if (arguments.isPresent(ArgumentsConstants.SMTP_HOST) ||
+            System.getenv(EnvironmentConstants.SMTP_HOST) != null) {
         MailerConfiguration.SMTP(
             host = arguments.getNamedOrNull(ArgumentsConstants.SMTP_HOST)
                 ?: System.getenv(EnvironmentConstants.SMTP_HOST)
@@ -99,7 +100,8 @@ fun main(args: Array<String>) {
                 ?: System.getenv(EnvironmentConstants.SMTP_SENDER_ADDRESS)
                 ?: error(FailureMessages.MISSING_SMTP_SENDER),
         )
-    } else if (arguments.isPresent(ArgumentsConstants.MAILER_SEND)) {
+    } else if (System.getenv(EnvironmentConstants.MAILER_SEND_API_KEY) != null
+            || arguments.isPresent(ArgumentsConstants.MAILER_SEND_API_KEY)) {
         MailerConfiguration.MailerSend(
             configuration = MailerSendEmailsRepository.Configuration(
                 apiKey = arguments.getNamedOrNull(ArgumentsConstants.MAILER_SEND_API_KEY)
