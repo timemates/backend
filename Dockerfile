@@ -27,4 +27,4 @@ EXPOSE $SERVER_PORT
 
 # Set the command to run application
 # Refer to the documentation what environment variables should be set to run application
-CMD ["java", "-jar", "application.jar", "-$MAILER_IMPLEMENTATION"]
+CMD ["java", "-jar", "application.jar", "-${MAILER_IMPLEMENTATION}"]
