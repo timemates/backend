@@ -19,7 +19,6 @@ class MailerSendEmailsRepository(
     data class Configuration(
         val apiKey: String,
         val sender: String,
-        val recipient: String,
         val confirmationTemplateId: String,
     )
 

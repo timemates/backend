@@ -21,7 +21,6 @@ internal object EnvironmentConstants {
     // MailerSend
     const val MAILER_SEND_API_KEY = "${MAILER_SEND_PREFIX}_API_KEY"
     const val MAILER_SEND_SENDER = "${MAILER_SEND_PREFIX}_SENDER"
-    const val MAILER_SEND_RECIPIENT = "${MAILER_SEND_PREFIX}_RECIPIENT"
     const val MAILER_SEND_CONFIRMATION_TEMPLATE = "${MAILER_SEND_PREFIX}_CONFIRMATION_TEMPLATE"
 
     // Other constants
