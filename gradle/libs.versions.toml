@@ -68,3 +68,4 @@ kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", vers
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 google-protobuf = { id = "com.google.protobuf", version.ref = "protobuf-plugin" }
 cashapp-sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
+shadow-jar = { id = "com.github.johnrengelman.shadow", version.require = "8.1.1" }
