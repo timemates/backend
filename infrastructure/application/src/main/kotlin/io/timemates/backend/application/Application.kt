@@ -11,7 +11,6 @@ import io.timemates.backend.application.dependencies.AppModule
 import io.timemates.backend.application.dependencies.configuration.DatabaseConfig
 import io.timemates.backend.application.dependencies.configuration.MailerConfiguration
 import io.timemates.backend.application.dependencies.filesPathName
-import io.timemates.backend.cli.Arguments
 import io.timemates.backend.cli.asArguments
 import io.timemates.backend.cli.getNamedIntOrNull
 import io.timemates.backend.data.common.repositories.MailerSendEmailsRepository
@@ -19,9 +18,11 @@ import io.timemates.backend.services.authorization.AuthorizationsService
 import io.timemates.backend.services.files.FilesService
 import io.timemates.backend.services.timers.TimersService
 import io.timemates.backend.services.users.UsersService
+import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.dsl.module
+import org.koin.mp.KoinPlatform
 import java.net.URI
 
 /**
@@ -79,7 +80,7 @@ fun main(args: Array<String>) {
     )
 
     val mailingConfig = if (arguments.isPresent(ArgumentsConstants.SMTP_HOST) ||
-            System.getenv(EnvironmentConstants.SMTP_HOST) != null) {
+            !System.getenv(EnvironmentConstants.SMTP_HOST).isNullOrEmpty()) {
         MailerConfiguration.SMTP(
             host = arguments.getNamedOrNull(ArgumentsConstants.SMTP_HOST)
                 ?: System.getenv(EnvironmentConstants.SMTP_HOST)
@@ -100,7 +101,7 @@ fun main(args: Array<String>) {
                 ?: System.getenv(EnvironmentConstants.SMTP_SENDER_ADDRESS)
                 ?: error(FailureMessages.MISSING_SMTP_SENDER),
         )
-    } else if (System.getenv(EnvironmentConstants.MAILER_SEND_API_KEY) != null
+    } else if (!System.getenv(EnvironmentConstants.MAILER_SEND_API_KEY).isNullOrEmpty()
             || arguments.isPresent(ArgumentsConstants.MAILER_SEND_API_KEY)) {
         MailerConfiguration.MailerSend(
             configuration = MailerSendEmailsRepository.Configuration(
@@ -128,7 +129,7 @@ fun main(args: Array<String>) {
     val dynamicModule = module {
         single<DatabaseConfig> { databaseConfig }
         single<MailerConfiguration> { mailingConfig }
-        single(filesPathName) { URI.create(filesPath) }
+        single(filesPathName) { URI.create("file://$filesPath") }
     }
 
     val koin = startKoin {
@@ -141,6 +142,8 @@ fun main(args: Array<String>) {
         .addService(koin.get<TimersService>() as BindableService)
         .addService(koin.get<AuthorizationsService>() as BindableService)
         .build()
+
+
 
     server.start()
 

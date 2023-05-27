@@ -10,6 +10,7 @@ import io.timemates.backend.data.common.repositories.MailerSendEmailsRepository
 import io.timemates.backend.data.common.repositories.SMTPEmailsRepository
 import io.timemates.backend.mailer.SMTPMailer
 import io.timemates.backend.services.timers.TimersMapper
+import kotlinx.serialization.json.Json
 import org.koin.dsl.module
 import java.time.ZoneId
 
@@ -26,10 +27,11 @@ val CommonModule = module {
     single<EmailsRepository> {
         val configuration = get<MailerConfiguration>()
 
-        when(configuration) {
+        when (configuration) {
             is MailerConfiguration.MailerSend -> {
                 MailerSendEmailsRepository(configuration.configuration)
             }
+
             is MailerConfiguration.SMTP -> {
                 val mailer = SMTPMailer(
                     host = configuration.host,
@@ -41,6 +43,14 @@ val CommonModule = module {
 
                 SMTPEmailsRepository(mailer)
             }
+        }
+    }
+
+    single<Json> {
+        Json {
+            encodeDefaults = false
+            ignoreUnknownKeys = true
+            prettyPrint = false
         }
     }
 }

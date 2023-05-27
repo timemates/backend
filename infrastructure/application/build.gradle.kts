@@ -20,6 +20,8 @@ dependencies {
     implementation(libs.exposed.core)
     implementation(libs.exposed.jdbc)
 
+    implementation(libs.h2.database)
+
     implementation(libs.grpc.netty)
 
     implementation(libs.koin.core)

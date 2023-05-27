@@ -4,12 +4,13 @@ import io.timemates.backend.data.timers.CoPostgresqlTimerSessionRepository
 import io.timemates.backend.data.timers.PostgresqlTimerInvitesRepository
 import io.timemates.backend.data.timers.PostgresqlTimersRepository
 import io.timemates.backend.data.timers.cache.CacheTimersDataSource
-import io.timemates.backend.data.timers.db.TableTimerInvitesDataSource
-import io.timemates.backend.data.timers.db.TableTimerParticipantsDataSource
-import io.timemates.backend.data.timers.db.TableTimersDataSource
+import io.timemates.backend.data.timers.db.*
 import io.timemates.backend.data.timers.mappers.TimerInvitesMapper
 import io.timemates.backend.data.timers.mappers.TimerSessionMapper
 import io.timemates.backend.data.timers.mappers.TimersMapper
+import io.timemates.backend.timers.repositories.TimerInvitesRepository
+import io.timemates.backend.timers.repositories.TimerSessionRepository
+import io.timemates.backend.timers.repositories.TimersRepository
 import io.timemates.backend.timers.usecases.*
 import io.timemates.backend.timers.usecases.members.GetMembersUseCase
 import io.timemates.backend.timers.usecases.members.KickTimerUserUseCase
@@ -18,6 +19,7 @@ import io.timemates.backend.timers.usecases.members.invites.GetInvitesUseCase
 import io.timemates.backend.timers.usecases.members.invites.RemoveInviteUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 val TimersModule = module {
@@ -28,13 +30,18 @@ val TimersModule = module {
             json = get()
         )
     }
+    singleOf(::TableTimersStateDataSource)
+    single {
+        TimerSessionMapper()
+    }
+    singleOf(::TableTimersSessionUsersDataSource)
     single {
         CacheTimersDataSource(100)
     }
     single {
         TableTimerParticipantsDataSource(database = get(), json = get())
     }
-    single {
+    single<TimersRepository> {
         PostgresqlTimersRepository(
             tableTimers = get(),
             cachedTimers = get(),
@@ -48,7 +55,7 @@ val TimersModule = module {
     single {
         TimersMapper(sessionMapper = get())
     }
-    single {
+    single<TimerSessionRepository> {
         CoPostgresqlTimerSessionRepository(
             coroutineScope = CoroutineScope(Dispatchers.Default.limitedParallelism(10)),
             tableTimersSessionUsers = get(),
@@ -92,7 +99,7 @@ val TimersModule = module {
     single {
         TimerInvitesMapper()
     }
-    single {
+    single<TimerInvitesRepository> {
         PostgresqlTimerInvitesRepository(
             tableTimerInvitesDataSource = get(),
             participantsDataSource = get(),
@@ -129,13 +136,6 @@ val TimersModule = module {
     }
     single {
         TimerInvitesMapper()
-    }
-    single {
-        PostgresqlTimerInvitesRepository(
-            tableTimerInvitesDataSource = get(),
-            participantsDataSource = get(),
-            invitesMapper = get()
-        )
     }
     single {
         GetInvitesUseCase(

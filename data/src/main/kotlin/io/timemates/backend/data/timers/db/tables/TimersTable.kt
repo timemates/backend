@@ -20,4 +20,6 @@ internal object TimersTable : Table("timers") {
     val BIG_REST_PER = integer("big_rest_per")
     val IS_EVERYONE_CAN_PAUSE = bool("is_everyone_can_pause")
     val IS_CONFIRMATION_REQUIRED = bool("is_confirmation_required")
+
+    override val primaryKey = PrimaryKey(ID)
 }

@@ -25,4 +25,6 @@ internal object TimersInvitesTable : Table("timers_invites") {
      * It can be deleted or just expired by [MAX_JOINERS_COUNT].
      */
     val IS_ARCHIVED = bool("is_archived").default(false)
+
+    override val primaryKey = PrimaryKey(INVITE_CODE)
 }
