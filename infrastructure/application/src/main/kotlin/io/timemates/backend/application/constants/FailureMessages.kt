@@ -7,9 +7,9 @@ internal object FailureMessages {
     const val MISSING_SMTP_PORT = "You're missing the SMTP port."
     const val MISSING_SMTP_USER = "You're missing the SMTP user."
     const val MISSING_SMTP_SENDER = "You're missing the SMTP sender."
-    const val MISSING_MAILER_SEND_API_KEY = "You're missing the API key for MailerSend."
-    const val MISSING_MAILER_SEND_SENDER = "You're missing the author of the email (MailerSend sender)."
-    const val MISSING_MAILER_SEND_CONFIRMATION_TEMPLATE = "You're missing the template for confirmations for MailerSend."
+    const val MISSING_MAILERSEND_API_KEY = "You're missing the API key for MailerSend."
+    const val MISSING_MAILERSEND_SENDER = "You're missing the author of the email (MailerSend sender)."
+    const val MISSING_MAILERSEND_CONFIRMATION_TEMPLATE = "You're missing the template for confirmations for MailerSend."
     const val MISSING_MAILER = "You have not specified a mailer, please refer to documentation for correct setup."
     const val MISSING_FILES_PATH = "You're missing the files path."
 }

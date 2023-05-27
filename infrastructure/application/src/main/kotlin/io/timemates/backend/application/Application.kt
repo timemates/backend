@@ -30,19 +30,19 @@ import java.net.URI
  *
  * **Environment variables**:
  * - **APPLICATION_PORT**: The port for the server to listen on. If not provided, defaults to 8080.
- * - **TIME_MATES_DATABASE_URL**: The URL of the database.
- * - **TIME_MATES_DATABASE_USER**: The username for the database connection.
- * - **TIME_MATES_DATABASE_USER_PASSWORD**: The password for the database connection.
- * - **TIME_MATES_SMTP_HOST**: The SMTP host for sending emails.
- * - **TIME_MATES_SMTP_PORT**: The SMTP port for sending emails.
- * - **TIME_MATES_SMTP_USER**: The username for the SMTP server.
- * - **TIME_MATES_SMTP_USER_PASSWORD**: The password for the SMTP server.
- * - **TIME_MATES_SMTP_SENDER_ADDRESS**: The sender email address for outgoing emails.
- * - **MAILER_SEND_API_KEY**: The API key for MailerSend service.
- * - **MAILER_SEND_SENDER**: The sender email address for MailerSend emails.
- * - **MAILER_SEND_RECIPIENT**: The recipient email address for MailerSend emails.
- * - **MAILER_SEND_CONFIRMATION_TEMPLATE**: The template ID for MailerSend confirmation emails.
- * - **TIME_MATES_FILES_PATH**: The path for file storage.
+ * - **TIMEMATES_DATABASE_URL**: The URL of the database.
+ * - **TIMEMATES_DATABASE_USER**: The username for the database connection.
+ * - **TIMEMATES_DATABASE_USER_PASSWORD**: The password for the database connection.
+ * - **TIMEMATES_SMTP_HOST**: The SMTP host for sending emails.
+ * - **TIMEMATES_SMTP_PORT**: The SMTP port for sending emails.
+ * - **TIMEMATES_SMTP_USER**: The username for the SMTP server.
+ * - **TIMEMATES_SMTP_USER_PASSWORD**: The password for the SMTP server.
+ * - **TIMEMATES_SMTP_SENDER_ADDRESS**: The sender email address for outgoing emails.
+ * - **MAILERSEND_API_KEY**: The API key for MailerSend service.
+ * - **MAILERSEND_SENDER**: The sender email address for MailerSend emails.
+ * - **MAILERSEND_RECIPIENT**: The recipient email address for MailerSend emails.
+ * - **MAILERSEND_CONFIRMATION_TEMPLATE**: The template ID for MailerSend confirmation emails.
+ * - **TIMEMATES_FILES_PATH**: The path for file storage.
  *
  * **Program arguments**:
  *
@@ -101,21 +101,21 @@ fun main(args: Array<String>) {
                 ?: System.getenv(EnvironmentConstants.SMTP_SENDER_ADDRESS)
                 ?: error(FailureMessages.MISSING_SMTP_SENDER),
         )
-    } else if (!System.getenv(EnvironmentConstants.MAILER_SEND_API_KEY).isNullOrEmpty()
-            || arguments.isPresent(ArgumentsConstants.MAILER_SEND_API_KEY)) {
+    } else if (!System.getenv(EnvironmentConstants.MAILERSEND_API_KEY).isNullOrEmpty()
+            || arguments.isPresent(ArgumentsConstants.MAILERSEND_API_KEY)) {
         MailerConfiguration.MailerSend(
             configuration = MailerSendEmailsRepository.Configuration(
-                apiKey = arguments.getNamedOrNull(ArgumentsConstants.MAILER_SEND_API_KEY)
-                    ?: System.getenv(EnvironmentConstants.MAILER_SEND_API_KEY)
-                    ?: error(FailureMessages.MISSING_MAILER_SEND_API_KEY),
+                apiKey = arguments.getNamedOrNull(ArgumentsConstants.MAILERSEND_API_KEY)
+                    ?: System.getenv(EnvironmentConstants.MAILERSEND_API_KEY)
+                    ?: error(FailureMessages.MISSING_MAILERSEND_API_KEY),
 
-                sender = arguments.getNamedOrNull(ArgumentsConstants.MAILER_SEND_SENDER)
-                    ?: System.getenv(EnvironmentConstants.MAILER_SEND_SENDER)
-                    ?: error(FailureMessages.MISSING_MAILER_SEND_SENDER),
+                sender = arguments.getNamedOrNull(ArgumentsConstants.MAILERSEND_SENDER)
+                    ?: System.getenv(EnvironmentConstants.MAILERSEND_SENDER)
+                    ?: error(FailureMessages.MISSING_MAILERSEND_SENDER),
 
-                confirmationTemplateId = arguments.getNamedOrNull(ArgumentsConstants.MAILER_SEND_CONFIRMATION_TEMPLATE)
-                    ?: System.getenv(EnvironmentConstants.MAILER_SEND_CONFIRMATION_TEMPLATE)
-                    ?: error(FailureMessages.MISSING_MAILER_SEND_CONFIRMATION_TEMPLATE),
+                confirmationTemplateId = arguments.getNamedOrNull(ArgumentsConstants.MAILERSEND_CONFIRMATION_TEMPLATE)
+                    ?: System.getenv(EnvironmentConstants.MAILERSEND_CONFIRMATION_TEMPLATE)
+                    ?: error(FailureMessages.MISSING_MAILERSEND_CONFIRMATION_TEMPLATE),
             )
         )
     } else {

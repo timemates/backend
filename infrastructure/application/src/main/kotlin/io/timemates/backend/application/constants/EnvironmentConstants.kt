@@ -2,7 +2,7 @@ package io.timemates.backend.application.constants
 
 internal object EnvironmentConstants {
     private const val TIME_MATES_PREFIX = "TIMEMATES"
-    private const val MAILER_SEND_PREFIX = "MAILERSEND"
+    private const val MAILERSEND_PREFIX = "MAILERSEND"
 
     const val APPLICATION_PORT = "APPLICATION_PORT"
 
@@ -19,9 +19,9 @@ internal object EnvironmentConstants {
     const val SMTP_SENDER_ADDRESS = "${TIME_MATES_PREFIX}_SMTP_SENDER_ADDRESS"
 
     // MailerSend
-    const val MAILER_SEND_API_KEY = "${MAILER_SEND_PREFIX}_API_KEY"
-    const val MAILER_SEND_SENDER = "${MAILER_SEND_PREFIX}_SENDER"
-    const val MAILER_SEND_CONFIRMATION_TEMPLATE = "${MAILER_SEND_PREFIX}_CONFIRMATION_TEMPLATE"
+    const val MAILERSEND_API_KEY = "${MAILERSEND_PREFIX}_API_KEY"
+    const val MAILERSEND_SENDER = "${MAILERSEND_PREFIX}_SENDER"
+    const val MAILERSEND_CONFIRMATION_TEMPLATE = "${MAILERSEND_PREFIX}_CONFIRMATION_TEMPLATE"
 
     // Other constants
     const val FILES_PATH = "${TIME_MATES_PREFIX}_FILES_PATH"

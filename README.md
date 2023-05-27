@@ -5,6 +5,9 @@
 # TimeMates Backend
 The repository with source code of TimeMates server on Kotlin.
 
+> **Warning** <br>
+> The current backend version may lack stability in the API and migration support. It's not production ready.
+
 ## Setup
 
 If you want to host the application yourself, follow the instructions below:
@@ -29,18 +32,16 @@ To run this application on your own host, you need to provide the following envi
 - `TIMEMATES_SMTP_USER_PASSWORD` – The password for the SMTP user
 - `TIMEMATES_SMTP_SENDER` – The email address of the SMTP mailer
 
-> **Note**
->
+> **Note** <br>
 > There are two mailer implementations available: SMTP and MailerSend. Depending on your choice, you need to provide the corresponding environment variables.
 >
 > If using the SMTP mailer implementation, make sure to set the `TIMEMATES_SMTP_HOST`, `TIMEMATES_SMTP_PORT`, `TIMEMATES_SMTP_USER`, `TIMEMATES_SMTP_USER_PASSWORD`, and `TIMEMATES_SMTP_SENDER` variables.
 >
-> If using the MailerSend implementation, you should set the `TIMEMATES_MAILER_SEND_API_KEY`, `TIMEMATES_MAILER_SEND_SENDER`, `TIMEMATES_MAILER_SEND_RECIPIENT`, and `TIMEMATES_MAILER_SEND_CONFIRMATION_TEMPLATE` variables.
+> If using the MailerSend implementation, you should set the `MAILERSEND_API_KEY`, `MAILERSEND_SENDER`, and `MAILERSEND_CONFIRMATION_TEMPLATE` variables.
 >
 > Refer to the code documentation for more details on configuring the mailer implementation.
 
-> **Note**
->
+> **Note** <br>
 > You can also use Java arguments to set up the application. Refer to the [source code](infrastructure/application/src/main/kotlin/io/timemates/backend/application/Application.kt) for more information.
 
 ## Docker image
@@ -64,5 +65,5 @@ you should add all environment variables from [Environment](#environment).
 
 ### Database
 
-Backend creates and migrates database by itself (if it's release version),
+Backend creates and migrates Postgresql database by itself (if it's release version),
 so that no need in your own setup or migration.
