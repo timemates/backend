@@ -62,6 +62,7 @@ grpc-netty = { module = "io.grpc:grpc-netty", version.ref = "grpc-netty" }
 protobuf-kotlin = { module = "com.google.protobuf:protobuf-kotlin", version.ref = "protobuf" }
 protobuf-java = { module = "com.google.protobuf:protobuf-java", version.ref = "protobuf" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
+postgresql-driver = { module = "org.postgresql:postgresql", version.require = "42.6.0" }
 
 [plugins]
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

@@ -20,6 +20,7 @@ dependencies {
     implementation(libs.exposed.core)
     implementation(libs.exposed.jdbc)
 
+    implementation(libs.postgresql.driver)
     implementation(libs.h2.database)
 
     implementation(libs.grpc.netty)
