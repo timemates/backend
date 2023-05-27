@@ -19,7 +19,7 @@ val CommonModule = module {
         TimersMapper()
     }
     single<TimeProvider> {
-        SystemTimeProvider(ZoneId.of("Europe/Kyiv"))
+        SystemTimeProvider(ZoneId.of("UTC"))
     }
     single<RandomProvider> {
         SecureRandomProvider()
