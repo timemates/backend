@@ -1,5 +1,5 @@
 # Use a base image with Java and PostgreSQL
-FROM openjdk:11-alpine-jdk
+FROM openjdk:11
 
 # Set the working directory inside the container
 WORKDIR /app
