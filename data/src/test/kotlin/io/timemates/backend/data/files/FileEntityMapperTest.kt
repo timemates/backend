@@ -1,11 +1,11 @@
 package io.timemates.backend.data.files
 
-import com.timemates.backend.validation.createOrThrow
 import com.timemates.random.SecureRandomProvider
 import io.timemates.backend.data.files.datasource.FileEntityMapper
 import io.timemates.backend.data.files.datasource.PostgresqlFilesDataSource
 import io.timemates.backend.files.types.File
 import io.timemates.backend.files.types.value.FileId
+import io.timemates.backend.testing.validation.createOrAssert
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -23,7 +23,7 @@ class FileEntityMapperTest {
         val fileCreationType = 4444L
 
         val expectedFile = File.Image(
-            FileId.createOrThrow(fileId)
+            FileId.createOrAssert(fileId)
         )
 
         // WHEN

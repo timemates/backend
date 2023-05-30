@@ -1,9 +1,9 @@
 package io.timemates.backend.data.users
 
-import com.timemates.backend.validation.createOrThrow
 import io.mockk.*
 import io.timemates.backend.data.users.datasource.CachedUsersDataSource
 import io.timemates.backend.data.users.datasource.PostgresqlUsersDataSource
+import io.timemates.backend.testing.validation.createOrAssert
 import io.timemates.backend.users.types.User
 import io.timemates.backend.users.types.value.UserDescription
 import io.timemates.backend.users.types.value.UserId
@@ -33,7 +33,7 @@ class UsersRepositoryTest {
     @Test
     fun `isUserExists() should call for database if no cache`() =
         runBlocking {
-            val userId = UserId.createOrThrow(123L)
+            val userId = UserId.createOrAssert(123L)
 
             coEvery { cachedUsers.getUser(userId.long) } returns null
             coEvery { postgresqlUsers.isUserExists(userId.long) } returns true
@@ -101,10 +101,10 @@ class UsersRepositoryTest {
 
     @Test
     fun `getUsers() should return users from cache and DB`() = runBlocking {
-        val userId1 = UserId.createOrThrow(1)
-        val userId2 = UserId.createOrThrow(2)
-        val userId3 = UserId.createOrThrow(3)
-        val userId4 = UserId.createOrThrow(4)
+        val userId1 = UserId.createOrAssert(1)
+        val userId2 = UserId.createOrAssert(2)
+        val userId3 = UserId.createOrAssert(3)
+        val userId4 = UserId.createOrAssert(4)
 
         val cachedUser1 = CachedUsersDataSource.User("User 1", null, null, "user1@example.com")
         val cachedUser2 = CachedUsersDataSource.User("User 2", null, null, "user2@example.com")

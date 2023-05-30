@@ -9,6 +9,7 @@ dependencies {
     implementation(projects.features.exposedUtils)
     implementation(projects.features.fsm)
     implementation(projects.features.pageToken)
+    implementation(projects.features.testUtils)
 
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.cio)
