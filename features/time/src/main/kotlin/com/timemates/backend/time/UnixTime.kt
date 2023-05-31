@@ -4,6 +4,7 @@ import com.timemates.backend.validation.FailureMessage
 import com.timemates.backend.validation.SafeConstructor
 import com.timemates.backend.validation.ValidationFailureHandler
 import com.timemates.backend.validation.createOrThrow
+import com.timemates.backend.validation.reflection.wrapperTypeName
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -49,6 +50,8 @@ public value class UnixTime private constructor(private val long: Long) {
     public operator fun compareTo(other: UnixTime): Int = long.compareTo(other.long)
 
     public companion object : SafeConstructor<UnixTime, Long>() {
+        override val displayName: String by wrapperTypeName()
+
         public val ZERO: UnixTime = UnixTime(0)
         public val INFINITE: UnixTime = UnixTime(Long.MAX_VALUE)
 
@@ -59,12 +62,9 @@ public value class UnixTime private constructor(private val long: Long) {
         context(ValidationFailureHandler)
         override fun create(value: Long): UnixTime {
             return when {
-                value < 0 -> onFail(NEGATIVE_IS_NOT_ALLOWED_MESSAGE)
+                value < 0 -> onFail(FailureMessage.ofNegative())
                 else -> UnixTime(long = value)
             }
         }
-
-        private val NEGATIVE_IS_NOT_ALLOWED_MESSAGE =
-            FailureMessage("Negative Unix-time is not allowed.")
     }
 }

@@ -20,6 +20,12 @@ import com.timemates.backend.validation.exceptions.ValidationFailure
  */
 public abstract class SafeConstructor<Type, WrappedType> {
     /**
+     * Name of the class what is validated. Used to display for API
+     * responses.
+     */
+    public abstract val displayName: String
+
+    /**
      * Method to construct valid instance of [Type].
      *
      * In addition, this function can transform input if needed (for example,
