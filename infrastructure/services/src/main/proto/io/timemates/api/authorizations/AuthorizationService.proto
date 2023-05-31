@@ -26,7 +26,9 @@ service AuthorizationService {
    * Has next restrictions:
    * – 3 attempts per verification code.
    */
-  rpc confirmAuthorization(ConfirmAuthorizationRequest) returns (ConfirmAuthorizationRequest.Response);
+  rpc confirmAuthorization(ConfirmAuthorizationRequest) returns (ConfirmAuthorizationRequest.Response) {
+    option (omit_authorization) = true;
+  }
 
   /**
    * Gets all active authorizations.
