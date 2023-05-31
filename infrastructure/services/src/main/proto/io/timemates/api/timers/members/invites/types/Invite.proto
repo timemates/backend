@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option java_package = "io.timemates.api.timers.requests.members.invites.types";
+option java_package = "io.timemates.api.timers.members.invites.types";
 
 message Invite {
   string code = 1;

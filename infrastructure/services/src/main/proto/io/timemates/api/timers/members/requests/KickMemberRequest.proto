@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option java_package = "io.timemates.api.timers.requests.members";
+option java_package = "io.timemates.api.timers.members.requests";
 
 message KickMemberRequest {
   int64 timerId = 1;
