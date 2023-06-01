@@ -14,7 +14,6 @@ dependencies {
     testImplementation(libs.kotlin.test)
     testImplementation(libs.junit.jupiter)
     testImplementation(libs.mockk)
-    implementation(projects.features.validation)
     testImplementation(projects.features.testUtils)
 }
 
