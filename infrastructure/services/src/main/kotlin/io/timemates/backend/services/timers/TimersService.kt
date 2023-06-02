@@ -3,22 +3,20 @@ package io.timemates.backend.services.timers
 import com.google.protobuf.Empty
 import io.grpc.Status
 import io.grpc.StatusException
-import io.timemates.api.common.types.StatusOuterClass
 import io.timemates.api.timers.TimersServiceGrpcKt
+import io.timemates.api.timers.members.invites.requests.*
+import io.timemates.api.timers.members.requests.GetMembersRequestKt
+import io.timemates.api.timers.members.requests.GetMembersRequestOuterClass.GetMembersRequest
+import io.timemates.api.timers.members.requests.KickMemberRequestOuterClass
 import io.timemates.api.timers.requests.*
 import io.timemates.api.timers.requests.CreateTimerRequestOuterClass.CreateTimerRequest
-import io.timemates.api.timers.requests.members.GetMembersRequestKt
-import io.timemates.api.timers.requests.members.GetMembersRequestOuterClass
-import io.timemates.api.timers.requests.members.GetMembersRequestOuterClass.GetMembersRequest
-import io.timemates.api.timers.requests.members.KickMemberRequestOuterClass
-import io.timemates.api.timers.requests.members.invites.*
 import io.timemates.api.timers.types.TimerOuterClass
 import io.timemates.backend.common.types.value.Count
 import io.timemates.backend.pagination.PageToken
 import io.timemates.backend.pagination.map
 import io.timemates.backend.services.authorization.context.provideAuthorizationContext
 import io.timemates.backend.services.common.validation.createOrStatus
-import io.timemates.backend.services.users.UserEntitiesMapper
+import io.timemates.backend.services.users.GrpcUsersMapper
 import io.timemates.backend.timers.types.value.InviteCode
 import io.timemates.backend.timers.types.value.TimerDescription
 import io.timemates.backend.timers.types.value.TimerId
@@ -43,8 +41,8 @@ class TimersService(
     private val kickTimerUserUseCase: KickTimerUserUseCase,
     private val removeInviteUseCase: RemoveInviteUseCase,
     private val getTimerUseCase: GetTimerUseCase,
-    private val mapper: TimersMapper,
-    private val usersMapper: UserEntitiesMapper,
+    private val mapper: GrpcTimersMapper,
+    private val usersMapper: GrpcUsersMapper,
 ) : TimersServiceGrpcKt.TimersServiceCoroutineImplBase() {
     override suspend fun createInvite(
         request: CreateInviteRequest.InviteMemberRequest,

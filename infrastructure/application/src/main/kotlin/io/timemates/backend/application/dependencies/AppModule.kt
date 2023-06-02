@@ -5,6 +5,7 @@ val AppModule = listOf(
     CommonModule,
     UsersModule,
     TimersModule,
+    TimerSessionsModule,
     FilesModule,
     AuthorizationsModule,
     ServicesModule,

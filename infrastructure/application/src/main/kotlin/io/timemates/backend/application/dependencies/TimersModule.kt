@@ -55,16 +55,6 @@ val TimersModule = module {
     single {
         TimersMapper(sessionMapper = get())
     }
-    single<TimerSessionRepository> {
-        CoPostgresqlTimerSessionRepository(
-            coroutineScope = CoroutineScope(Dispatchers.Default.limitedParallelism(10)),
-            tableTimersSessionUsers = get(),
-            tableTimersStateDataSource = get(),
-            timeProvider = get(),
-            timersRepository = get(),
-            sessionsMapper = get(),
-        )
-    }
     single {
         GetTimersUseCase(
             timers = get(),

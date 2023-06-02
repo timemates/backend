@@ -41,11 +41,8 @@ class AuthorizationInterceptor(
             GrpcContextElement(
                 Context.current()
                     .withValue(ACCESS_TOKEN_KEY, headers.get(ACCESS_TOKEN_METADATA_KEY))
+                    .withValue(AUTHORIZATION_PROVIDER, authorizationProvider)
             )
-        else GrpcContextElement(
-            Context.current()
-                .withValue(ACCESS_TOKEN_KEY, null)
-                .withValue(AUTHORIZATION_PROVIDER, authorizationProvider)
-        )
+        else GrpcContextElement(Context.current())
     }
 }

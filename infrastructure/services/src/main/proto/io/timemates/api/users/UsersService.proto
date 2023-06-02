@@ -3,7 +3,6 @@ syntax = "proto3";
 import "io/timemates/api/users/requests/GetUsersRequest.proto";
 import "io/timemates/api/users/requests/EditUserRequest.proto";
 import "io/timemates/api/users/requests/EditEmailRequest.proto";
-import "io/timemates/api/common/types/Status.proto";
 import "io/timemates/api/users/types/User.proto";
 import "google/protobuf/empty.proto";
 

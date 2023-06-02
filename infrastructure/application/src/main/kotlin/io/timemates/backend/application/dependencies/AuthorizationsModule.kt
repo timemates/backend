@@ -12,6 +12,8 @@ import io.timemates.backend.data.authorization.db.mapper.DbAuthorizationsMapper
 import io.timemates.backend.data.authorization.db.mapper.DbVerificationsMapper
 import io.timemates.backend.data.authorization.mapper.AuthorizationsMapper
 import io.timemates.backend.data.authorization.mapper.VerificationsMapper
+import io.timemates.backend.services.authorization.GrpcAuthorizationsMapper
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import kotlin.time.Duration.Companion.minutes
 
@@ -47,6 +49,10 @@ val AuthorizationsModule = module {
             authorizationsRepository = get(),
             timerProvider = get(),
         )
+    }
+
+    single {
+        GrpcAuthorizationsMapper()
     }
 
     // Use cases

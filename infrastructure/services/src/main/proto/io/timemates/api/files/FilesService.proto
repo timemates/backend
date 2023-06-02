@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-import "io/timemates/api/common/types/Status.proto";
 import "io/timemates/api/files/requests/GetFileBytesRequest.proto";
 import "io/timemates/api/files/requests/UploadFileRequest.proto";
+import "io/timemates/api/authorizations/options/OmitAuthorizationOption.proto";
 import "google/protobuf/empty.proto";
 
 option java_package = "io.timemates.api.files";
@@ -11,7 +11,9 @@ service FilesService {
   /**
    * Returns a sequence of bytes of the file's content.
    */
-  rpc getFileBytes(GetFileBytesRequest) returns (stream GetFileBytesRequest.Response);
+  rpc getFileBytes(GetFileBytesRequest) returns (stream GetFileBytesRequest.Response) {
+    option (omit_authorization) = true;
+  }
 
   /*
    * Uploads file to server.

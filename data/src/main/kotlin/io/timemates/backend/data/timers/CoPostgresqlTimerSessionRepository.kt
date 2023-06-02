@@ -36,8 +36,14 @@ class CoPostgresqlTimerSessionRepository(
     private val coStateMachine: TimersStateMachine =
         CoroutinesStateMachine(
             coroutineScope = coroutineScope,
-            storage = PostgresqlStateStorageRepository(tableTimersStateDataSource, sessionsMapper, timeProvider, timersRepository, this),
-            timeProvider = timeProvider
+            storage = PostgresqlStateStorageRepository(
+                tableTimersStateDataSource = tableTimersStateDataSource,
+                sessionsMapper = sessionsMapper,
+                timeProvider = timeProvider,
+                timersRepository = timersRepository,
+                timersSessionRepository = this
+            ),
+            timeProvider = timeProvider,
         )
 
     override suspend fun addUser(timerId: TimerId, userId: UserId, joinTime: UnixTime) {
@@ -51,6 +57,11 @@ class CoPostgresqlTimerSessionRepository(
 
     override suspend fun removeUser(timerId: TimerId, userId: UserId) {
         tableTimersSessionUsers.unassignUser(timerId.long, userId.long)
+    }
+
+    override suspend fun getTimerIdOfCurrentSession(userId: UserId, lastActiveTime: UnixTime): TimerId? {
+        return tableTimersSessionUsers.getTimerIdFromUserSession(userId.long, lastActiveTime.inMilliseconds)
+            ?.let { TimerId.createOrThrow(it) }
     }
 
     override suspend fun getMembers(
@@ -95,6 +106,10 @@ class CoPostgresqlTimerSessionRepository(
 
     override suspend fun removeNotConfirmedUsers(timerId: TimerId) {
         tableTimersSessionUsers.removeNotConfirmedUsers(timerId.long)
+    }
+
+    override suspend fun updateLastActivityTime(timerId: TimerId, userId: UserId, time: UnixTime) {
+        tableTimersSessionUsers.updateLastActivityTime(timerId.long, userId.long, timerId.long)
     }
 
     override suspend fun setState(key: TimerId, state: TimerState) {

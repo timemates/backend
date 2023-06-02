@@ -9,7 +9,7 @@ import io.timemates.backend.users.types.value.UserDescription
 import io.timemates.backend.users.types.value.UserName
 import io.timemates.backend.users.types.User as DomainUser
 
-class UserEntitiesMapper {
+class GrpcUsersMapper {
     fun toGrpcUser(domain: DomainUser): UserOuterClass.User {
         return user {
             id = domain.id.long

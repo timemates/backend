@@ -6,7 +6,7 @@ import io.timemates.backend.pagination.Page
 import io.timemates.backend.timers.repositories.TimerInvitesRepository
 import io.timemates.backend.timers.repositories.TimersRepository
 import io.timemates.backend.timers.types.Invite
-import io.timemates.backend.timers.types.TimerAuthScope
+import io.timemates.backend.timers.types.TimersScope
 import io.timemates.backend.timers.types.value.TimerId
 import io.timemates.backend.users.types.value.userId
 
@@ -14,7 +14,7 @@ class GetInvitesUseCase(
     private val invites: TimerInvitesRepository,
     private val timers: TimersRepository,
 ) {
-    context(AuthorizedContext<TimerAuthScope.Read>)
+    context(AuthorizedContext<TimersScope.Read>)
     suspend fun execute(
         timerId: TimerId,
         pageToken: PageToken?,
