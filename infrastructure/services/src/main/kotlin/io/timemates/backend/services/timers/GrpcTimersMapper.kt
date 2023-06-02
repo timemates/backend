@@ -1,10 +1,12 @@
 package io.timemates.backend.services.timers
 
+import io.timemates.api.timers.members.invites.types.InviteOuterClass
 import io.timemates.api.timers.requests.EditTimerInfoRequestOuterClass
 import io.timemates.api.timers.requests.EditTimerSettingsRequestOuterClass
-import io.timemates.api.timers.members.invites.types.InviteOuterClass
+import io.timemates.api.timers.sessions.types.TimerStateKt
+import io.timemates.api.timers.sessions.types.TimerStateOuterClass
+import io.timemates.api.timers.sessions.types.timerState
 import io.timemates.api.timers.types.TimerOuterClass
-import io.timemates.api.timers.types.TimerOuterClass.Timer.State
 import io.timemates.api.timers.types.timer
 import io.timemates.backend.common.types.value.Count
 import io.timemates.backend.services.common.validation.createOrStatus
@@ -20,7 +22,7 @@ import kotlin.time.Duration.Companion.milliseconds
 class GrpcTimersMapper {
     fun toDomainSettings(settings: TimerOuterClass.Timer.Settings): TimerSettings {
         return TimerSettings(
-            workTime = settings.workTimeMillis.milliseconds,
+            workTime = settings.workTime.milliseconds,
             restTime = settings.restTime.milliseconds,
             bigRestPer = Count.createOrStatus(settings.bigRestPer),
             bigRestEnabled = settings.bigRestEnabled,
@@ -32,7 +34,7 @@ class GrpcTimersMapper {
 
     fun toGrpcTimerSettings(settings: TimerSettings): TimerOuterClass.Timer.Settings {
         return TimerOuterClass.Timer.Settings.newBuilder()
-            .setWorkTimeMillis(settings.workTime.inWholeMilliseconds.toInt())
+            .setWorkTime(settings.workTime.inWholeMilliseconds.toInt())
             .setRestTime(settings.restTime.inWholeMilliseconds.toInt())
             .setBigRestEnabled(settings.bigRestEnabled)
             .setBigRestPer(settings.bigRestPer.int)
@@ -42,16 +44,27 @@ class GrpcTimersMapper {
             .build()
     }
 
-    fun toGrpcState(state: TimerState): State = state {
+    fun toGrpcState(state: TimerState): TimerStateOuterClass.TimerState = timerState {
         publishTime = state.publishTime.inMilliseconds
-        endsAt = (state.publishTime + state.alive).inMilliseconds
 
         when (state) {
-            is ConfirmationState -> confirmationWaiting = State.ConfirmationWaiting.getDefaultInstance()
-            is InactiveState -> inactive = State.Inactive.getDefaultInstance()
-            is PauseState -> paused = State.Paused.getDefaultInstance()
-            is RestState -> rest = State.Rest.getDefaultInstance()
-            is RunningState -> running = State.Running.getDefaultInstance()
+            is ConfirmationState ->
+                confirmationWaiting = TimerStateOuterClass.TimerState.ConfirmationWaiting.getDefaultInstance()
+
+            is InactiveState ->
+                inactive = TimerStateOuterClass.TimerState.Inactive.getDefaultInstance()
+
+            is PauseState ->
+                paused = TimerStateOuterClass.TimerState.Paused.getDefaultInstance()
+
+            is RestState ->
+                rest = TimerStateKt.rest {
+                    endsAt = endsAt
+                }
+
+            is RunningState -> running = TimerStateKt.running {
+                endsAt = endsAt
+            }
         }
     }
 
