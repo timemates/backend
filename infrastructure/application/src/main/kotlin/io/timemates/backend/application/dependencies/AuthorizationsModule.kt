@@ -55,6 +55,8 @@ val AuthorizationsModule = module {
         GrpcAuthorizationsMapper()
     }
 
+    singleOf(::GetAuthorizationsUseCase)
+
     // Use cases
     single {
         AuthByEmailUseCase(
