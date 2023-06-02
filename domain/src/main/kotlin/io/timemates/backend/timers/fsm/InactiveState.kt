@@ -28,6 +28,7 @@ class InactiveState(
                 alive = alive,
                 publishTime = publishTime
             )
+            TimerEvent.Stop -> this
 
             else -> super.onEvent(event)
         }

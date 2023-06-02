@@ -92,3 +92,8 @@ suspend fun TimerSessionRepository.isRunningState(timerId: TimerId): Boolean =
 
 suspend fun TimerSessionRepository.isPauseState(timerId: TimerId): Boolean =
     getCurrentState(timerId) is PauseState
+
+suspend fun TimerSessionRepository.hasSession(
+    userId: UserId,
+    lastActiveTime: UnixTime,
+): Boolean = getTimerIdOfCurrentSession(userId, lastActiveTime) != null

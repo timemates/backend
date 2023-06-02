@@ -72,6 +72,7 @@ class TimerSessionsService(
 
         when (joinSessionsUseCase.execute(timerId)) {
             JoinSessionUseCase.Result.NotFound -> throw StatusException(Status.NOT_FOUND)
+            JoinSessionUseCase.Result.AlreadyInSession -> throw StatusException(Status.ALREADY_EXISTS)
             JoinSessionUseCase.Result.Success -> Empty.getDefaultInstance()
         }
     }

@@ -36,7 +36,13 @@ class CoPostgresqlTimerSessionRepository(
     private val coStateMachine: TimersStateMachine =
         CoroutinesStateMachine(
             coroutineScope = coroutineScope,
-            storage = PostgresqlStateStorageRepository(tableTimersStateDataSource, sessionsMapper, timeProvider, timersRepository, this),
+            storage = PostgresqlStateStorageRepository(
+                tableTimersStateDataSource = tableTimersStateDataSource,
+                sessionsMapper = sessionsMapper,
+                timeProvider = timeProvider,
+                timersRepository = timersRepository,
+                timersSessionRepository = this
+            ),
             timeProvider = timeProvider,
         )
 
