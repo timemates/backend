@@ -11,7 +11,6 @@ import "io/timemates/api/timers/members/requests/GetMembersRequest.proto";
 import "io/timemates/api/timers/members/invites/requests/CreateInviteRequest.proto";
 import "io/timemates/api/timers/members/invites/requests/GetInvitesRequest.proto";
 import "io/timemates/api/timers/members/invites/requests/RemoveInviteRequest.proto";
-import "io/timemates/api/common/types/Status.proto";
 import "io/timemates/api/timers/types/Timer.proto";
 import "google/protobuf/empty.proto";
 
@@ -20,8 +19,6 @@ option java_package = "io.timemates.api.timers";
 service TimersService {
   /**
    * Creates timer.
-   *
-   * Returns [Status].
    */
   rpc createTimer(CreateTimerRequest) returns (CreateTimerRequest.Response);
 
@@ -37,15 +34,11 @@ service TimersService {
 
   /**
    * Edits timer information (name, description).
-   *
-   * Returns [Status].
    */
   rpc setTimerInfo(EditTimerInfoRequest) returns (google.protobuf.Empty);
 
   /**
    * Edits timer information (name, description).
-   *
-   * Returns [Status].
    */
   rpc setTimerSettings(EditTimerSettingsRequest) returns (google.protobuf.Empty);
 
@@ -76,8 +69,6 @@ service TimersService {
 
   /**
    * Removes timer.
-   *
-   * Returns [Status].
    */
   rpc removeTimer(RemoveTimerRequest) returns (google.protobuf.Empty);
 }

@@ -96,6 +96,18 @@ class TableTimersSessionUsersDataSource(
         }
     }
 
+    suspend fun updateLastActivityTime(
+        timerId: Long,
+        userId: Long,
+        time: Long,
+    ): Unit = suspendedTransaction(database) {
+        val condition = TimersSessionUsersTable.USER_ID eq userId and (TimersSessionUsersTable.TIMER_ID eq timerId)
+
+        TimersSessionUsersTable.update(condition) {
+            it[LAST_ACTIVITY_TIME] = time
+        }
+    }
+
     suspend fun isEveryoneConfirmed(timerId: Long): Boolean = suspendedTransaction(database) {
         TimersSessionUsersTable.select {
             TimersSessionUsersTable.TIMER_ID eq timerId and not(TimersSessionUsersTable.IS_CONFIRMED)
@@ -119,6 +131,12 @@ class TableTimersSessionUsersDataSource(
         userId: Long,
     ): Unit = suspendedTransaction(database) {
         TimersSessionUsersTable.deleteWhere { TIMER_ID eq timerId and (USER_ID eq userId) }
+    }
+
+    suspend fun getTimerIdFromUserSession(userId: Long, afterTime: Long): Long? = suspendedTransaction(database) {
+        TimersSessionUsersTable.select {
+            TimersSessionUsersTable.USER_ID eq userId and (TimersSessionUsersTable.LAST_ACTIVITY_TIME greater afterTime)
+        }.singleOrNull()?.getOrNull(TimersSessionUsersTable.TIMER_ID)
     }
 
     suspend fun setAllAsNotConfirmed(

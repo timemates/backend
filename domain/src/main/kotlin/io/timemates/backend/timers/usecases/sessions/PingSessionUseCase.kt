@@ -4,34 +4,28 @@ import com.timemates.backend.time.TimeProvider
 import io.timemates.backend.features.authorization.AuthorizedContext
 import io.timemates.backend.timers.repositories.TimerSessionRepository
 import io.timemates.backend.timers.types.TimerAuthScope
-import io.timemates.backend.timers.types.TimerEvent
-import io.timemates.backend.timers.types.value.TimerId
-import io.timemates.backend.users.types.value.UserId
 import io.timemates.backend.users.types.value.userId
 import kotlin.time.Duration.Companion.minutes
 
-class LeaveSessionUseCase(
+class PingSessionUseCase(
     private val sessions: TimerSessionRepository,
     private val timeProvider: TimeProvider,
 ) {
     context (AuthorizedContext<TimerAuthScope.Write>)
     suspend fun execute(): Result {
+        val currentTime = timeProvider.provide()
+
         val timerId = sessions.getTimerIdOfCurrentSession(
-            userId = userId,
-            lastActiveTime = timeProvider.provide() - 15.minutes
-        ) ?: return Result.NotFound
+            userId, currentTime - 15.minutes
+        ) ?: return Result.NoSession
 
-        sessions.removeUser(
-            timerId = timerId,
-            userId = userId,
-        )
-        sessions.sendEvent(timerId, TimerEvent.UserLeft(userId))
-
+        sessions.updateLastActivityTime(timerId, userId, currentTime)
         return Result.Success
     }
 
-    sealed interface Result {
-        data object Success : Result
-        data object NotFound : Result
+    sealed class Result {
+        data object Success : Result()
+
+        data object NoSession : Result()
     }
 }

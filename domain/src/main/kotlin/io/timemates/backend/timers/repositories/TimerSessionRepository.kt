@@ -31,6 +31,11 @@ interface TimerSessionRepository : TimersStateMachine {
     suspend fun removeUser(timerId: TimerId, userId: UserId)
 
     /**
+     * @return [TimerId] of a session where's the user joined or `null`.
+     */
+    suspend fun getTimerIdOfCurrentSession(userId: UserId, lastActiveTime: UnixTime): TimerId?
+
+    /**
      * Gets members of a session.
      */
     suspend fun getMembers(
@@ -71,6 +76,11 @@ interface TimerSessionRepository : TimersStateMachine {
      * their attendance.
      */
     suspend fun removeNotConfirmedUsers(timerId: TimerId)
+
+    /**
+     * Updates last user activity time in session. It should be done every 5-10 minutes by the client.
+     */
+    suspend fun updateLastActivityTime(timerId: TimerId, userId: UserId, time: UnixTime)
 }
 
 

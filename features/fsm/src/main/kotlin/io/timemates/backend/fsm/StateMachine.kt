@@ -1,10 +1,8 @@
 package io.timemates.backend.fsm
 
-import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
 
 /**
  * An interface representing a state machine.

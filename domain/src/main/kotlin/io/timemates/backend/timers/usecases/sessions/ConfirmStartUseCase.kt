@@ -1,4 +1,4 @@
-package io.timemates.backend.timers.usecases
+package io.timemates.backend.timers.usecases.sessions
 
 import com.timemates.backend.time.TimeProvider
 import io.timemates.backend.features.authorization.AuthorizedContext
@@ -7,8 +7,8 @@ import io.timemates.backend.timers.repositories.TimersRepository
 import io.timemates.backend.timers.repositories.isConfirmationState
 import io.timemates.backend.timers.types.TimerAuthScope
 import io.timemates.backend.timers.types.TimerEvent
-import io.timemates.backend.timers.types.value.TimerId
 import io.timemates.backend.users.types.value.userId
+import kotlin.time.Duration.Companion.minutes
 
 class ConfirmStartUseCase(
     private val timers: TimersRepository,
@@ -16,23 +16,19 @@ class ConfirmStartUseCase(
     private val time: TimeProvider,
 ) {
     context(AuthorizedContext<TimerAuthScope.Write>)
-    suspend fun execute(
-        timerId: TimerId,
-    ): Result {
-        if (!timers.isMemberOf(userId, timerId)
-            || sessions.isConfirmationState(timerId))
-            return Result.NotFound
+    suspend fun execute(): Result {
+        val timerId = sessions.getTimerIdOfCurrentSession(userId, time.provide() - 15.minutes)
+            ?: return Result.NotFound
 
-        return if(sessions.isConfirmationState(timerId)) {
-            sessions.sendEvent(timerId, TimerEvent.UserJoined(userId))
-            Result.Success
-        } else {
-            Result.WrongState
-        }
+        if (sessions.isConfirmationState(timerId))
+            return Result.WrongState
+
+        sessions.sendEvent(timerId, TimerEvent.AttendanceConfirmed(timerId, userId))
+        return Result.Success
     }
 
     sealed interface Result {
-        data object WrongState: Result
+        data object WrongState : Result
         data object NotFound : Result
         data object Success : Result
     }

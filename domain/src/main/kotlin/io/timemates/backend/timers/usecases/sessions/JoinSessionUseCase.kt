@@ -15,7 +15,6 @@ class JoinSessionUseCase(
     private val timers: TimersRepository,
     private val sessions: TimerSessionRepository,
     private val time: TimeProvider,
-    private val users: UsersRepository,
 ) {
     context(AuthorizedContext<TimerAuthScope.Write>)
     suspend fun execute(

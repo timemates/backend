@@ -2,7 +2,6 @@ syntax = "proto3";
 
 import "io/timemates/api/authorizations/requests/StartAuthorizationRequest.proto";
 import "io/timemates/api/authorizations/requests/ConfirmAuthorizationRequest.proto";
-import "io/timemates/api/common/types/Status.proto";
 import "io/timemates/api/authorizations/requests/GetAuthorizationsRequest.proto";
 import "io/timemates/api/authorizations/options/OmitAuthorizationOption.proto";
 import "google/protobuf/empty.proto";
