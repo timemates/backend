@@ -1,8 +1,14 @@
 package io.timemates.backend.testing.validation
 
+import com.timemates.backend.validation.SafeConstructor
 import com.timemates.backend.validation.ValidationFailureHandler
-import com.timemates.backend.validation.validation
 import org.jetbrains.annotations.TestOnly
+
+val ValidationFailureHandler.Companion.ALWAYS_ASSERTION_ERROR by lazy {
+    ValidationFailureHandler { failure ->
+        throw AssertionError(failure.string)
+    }
+}
 
 /**
  * A function for testing to pass / fail test where [ValidationFailureHandler]
@@ -14,11 +20,8 @@ import org.jetbrains.annotations.TestOnly
  */
 @TestOnly
 @Throws(AssertionError::class)
-fun testValidationScope(block: context(ValidationFailureHandler) () -> Unit) {
-    validation(
-        handler = {
-            message -> throw AssertionError("Validation failed: $message")
-        },
-        block = block,
-    )
+fun <T, W> SafeConstructor<T, W>.createOrAssert(
+    w: W,
+): T = with(ValidationFailureHandler.ALWAYS_ASSERTION_ERROR) {
+    create(w)
 }

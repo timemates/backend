@@ -1,16 +1,16 @@
 package io.timemates.backend.data.users
 
-import com.timemates.backend.validation.createOrThrow
 import io.timemates.backend.data.users.datasource.CachedUsersDataSource
 import io.timemates.backend.data.users.datasource.PostgresqlUsersDataSource
 import io.timemates.backend.files.types.value.FileId
+import io.timemates.backend.testing.validation.createOrAssert
 import io.timemates.backend.users.types.User
 import io.timemates.backend.users.types.value.EmailAddress
 import io.timemates.backend.users.types.value.UserDescription
 import io.timemates.backend.users.types.value.UserId
 import io.timemates.backend.users.types.value.UserName
-import kotlin.test.assertEquals
 import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class UserEntitiesMapperTest {
 
@@ -27,11 +27,11 @@ class UserEntitiesMapperTest {
         )
 
         val expectedUser = User(
-            UserId.createOrThrow(userId),
-            UserName.createOrThrow(cachedUser.name),
-            cachedUser.email?.let { EmailAddress.createOrThrow(it) },
-            cachedUser.shortBio?.let { UserDescription.createOrThrow(it) },
-            cachedUser.avatarFileId?.let { FileId.createOrThrow(it) }
+            UserId.createOrAssert(userId),
+            UserName.createOrAssert(cachedUser.name),
+            cachedUser.email?.let { EmailAddress.createOrAssert(it) },
+            cachedUser.shortBio?.let { UserDescription.createOrAssert(it) },
+            cachedUser.avatarFileId?.let { FileId.createOrAssert(it) }
         )
 
         val actualUser = mapper.toDomainUser(userId, cachedUser)
@@ -70,8 +70,8 @@ class UserEntitiesMapperTest {
     @Test
     fun `toPostgresqlUserPatch converts User patch to PostgresqlUsersDataSource User patch`() {
         val userPatch = User.Patch(
-            name = UserName.createOrThrow("John"),
-            shortBio = UserDescription.createOrThrow("This is a short bio"),
+            name = UserName.createOrAssert("John"),
+            shortBio = UserDescription.createOrAssert("This is a short bio"),
             avatarId = null
         )
 
@@ -88,10 +88,10 @@ class UserEntitiesMapperTest {
     @Test
     fun `toCachedUser converts User to CachedUsersDataSource User`() {
         val user = User(
-            id = UserId.createOrThrow(123),
-            name = UserName.createOrThrow("John"),
-            emailAddress = EmailAddress.createOrThrow("john@example.com"),
-            description = UserDescription.createOrThrow("This is a description"),
+            id = UserId.createOrAssert(123),
+            name = UserName.createOrAssert("John"),
+            emailAddress = EmailAddress.createOrAssert("john@example.com"),
+            description = UserDescription.createOrAssert("This is a description"),
             avatarId = null
         )
 
@@ -117,10 +117,10 @@ class UserEntitiesMapperTest {
         )
 
         val expected = User(
-            id = UserId.createOrThrow(pUser.id),
-            name = UserName.createOrThrow(pUser.userName),
-            emailAddress = EmailAddress.createOrThrow(pUser.userEmail),
-            description = pUser.userShortDesc?.let { UserDescription.createOrThrow(it) },
+            id = UserId.createOrAssert(pUser.id),
+            name = UserName.createOrAssert(pUser.userName),
+            emailAddress = EmailAddress.createOrAssert(pUser.userEmail),
+            description = pUser.userShortDesc?.let { UserDescription.createOrAssert(it) },
             avatarId = null
         )
         val actual = mapper.toDomainUser(pUser)
