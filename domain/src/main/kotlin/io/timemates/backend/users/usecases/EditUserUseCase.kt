@@ -3,13 +3,13 @@ package io.timemates.backend.users.usecases
 import io.timemates.backend.features.authorization.AuthorizedContext
 import io.timemates.backend.users.repositories.UsersRepository
 import io.timemates.backend.users.types.User
-import io.timemates.backend.users.types.UserScope
+import io.timemates.backend.users.types.UsersScope
 import io.timemates.backend.users.types.value.userId
 
 class EditUserUseCase(
     private val usersRepository: UsersRepository,
 ) {
-    context(AuthorizedContext<UserScope.Write>)
+    context(AuthorizedContext<UsersScope.Write>)
     suspend fun execute(
         patch: User.Patch,
     ): Result {

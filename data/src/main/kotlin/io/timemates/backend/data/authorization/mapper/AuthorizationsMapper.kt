@@ -3,15 +3,15 @@ package io.timemates.backend.data.authorization.mapper
 import com.timemates.backend.time.UnixTime
 import com.timemates.backend.validation.createOrThrow
 import io.timemates.backend.authorization.types.Authorization
-import io.timemates.backend.authorization.types.AuthorizationScope
+import io.timemates.backend.authorization.types.AuthorizationsScope
 import io.timemates.backend.authorization.types.value.AccessHash
 import io.timemates.backend.authorization.types.value.RefreshHash
 import io.timemates.backend.data.authorization.cache.entities.CacheAuthorization
 import io.timemates.backend.data.authorization.db.entities.DbAuthorization
 import io.timemates.backend.features.authorization.Scope
-import io.timemates.backend.files.types.FileAuthScope
-import io.timemates.backend.timers.types.TimerAuthScope
-import io.timemates.backend.users.types.UserScope
+import io.timemates.backend.files.types.FilesScope
+import io.timemates.backend.timers.types.TimersScope
+import io.timemates.backend.users.types.UsersScope
 import io.timemates.backend.users.types.value.UserId
 import io.timemates.backend.data.authorization.cache.entities.CacheAuthorization.Permissions.GrantLevel as CacheGrantLevel
 import io.timemates.backend.data.authorization.db.entities.DbAuthorization.Permissions.GrantLevel as DbGrantLevel
@@ -46,32 +46,32 @@ class AuthorizationsMapper {
             if(authorization != DbGrantLevel.NOT_GRANTED) {
                 add(
                     if(authorization == DbGrantLevel.WRITE)
-                        AuthorizationScope.Write
-                    else AuthorizationScope.Read
+                        AuthorizationsScope.Write
+                    else AuthorizationsScope.Read
                 )
             }
 
             if(users != DbGrantLevel.NOT_GRANTED) {
                 add(
                     if(users == DbGrantLevel.WRITE)
-                        UserScope.Write
-                    else UserScope.Read
+                        UsersScope.Write
+                    else UsersScope.Read
                 )
             }
 
             if(files != DbGrantLevel.NOT_GRANTED) {
                 add(
                     if(files == DbGrantLevel.WRITE)
-                        FileAuthScope.Write
-                    else FileAuthScope.Read
+                        FilesScope.Write
+                    else FilesScope.Read
                 )
             }
 
             if(timers != DbGrantLevel.NOT_GRANTED) {
                 add(
                     if(timers == DbGrantLevel.WRITE)
-                        TimerAuthScope.Write
-                    else TimerAuthScope.Read
+                        TimersScope.Write
+                    else TimersScope.Read
                 )
             }
         }
@@ -84,32 +84,32 @@ class AuthorizationsMapper {
             if(authorization != CacheGrantLevel.NOT_GRANTED) {
                 add(
                     if(authorization == CacheGrantLevel.WRITE)
-                        AuthorizationScope.Write
-                    else AuthorizationScope.Read
+                        AuthorizationsScope.Write
+                    else AuthorizationsScope.Read
                 )
             }
 
             if(users != CacheGrantLevel.NOT_GRANTED) {
                 add(
                     if(users == CacheGrantLevel.WRITE)
-                        UserScope.Write
-                    else UserScope.Read
+                        UsersScope.Write
+                    else UsersScope.Read
                 )
             }
 
             if(files != CacheGrantLevel.NOT_GRANTED) {
                 add(
                     if(files == CacheGrantLevel.WRITE)
-                        FileAuthScope.Write
-                    else FileAuthScope.Read
+                        FilesScope.Write
+                    else FilesScope.Read
                 )
             }
 
             if(timers != CacheGrantLevel.NOT_GRANTED) {
                 add(
                     if(timers == CacheGrantLevel.WRITE)
-                        TimerAuthScope.Write
-                    else TimerAuthScope.Read
+                        TimersScope.Write
+                    else TimersScope.Read
                 )
             }
         }

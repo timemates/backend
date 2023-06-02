@@ -4,19 +4,17 @@ import com.timemates.backend.time.TimeProvider
 import io.timemates.backend.features.authorization.AuthorizedContext
 import io.timemates.backend.timers.repositories.TimerSessionRepository
 import io.timemates.backend.timers.repositories.TimersRepository
-import io.timemates.backend.timers.types.TimerAuthScope
+import io.timemates.backend.timers.types.TimersScope
 import io.timemates.backend.timers.types.TimerEvent
 import io.timemates.backend.timers.types.value.TimerId
-import io.timemates.backend.users.repositories.UsersRepository
 import io.timemates.backend.users.types.value.userId
-import kotlin.time.Duration.Companion.minutes
 
 class JoinSessionUseCase(
     private val timers: TimersRepository,
     private val sessions: TimerSessionRepository,
     private val time: TimeProvider,
 ) {
-    context(AuthorizedContext<TimerAuthScope.Write>)
+    context(AuthorizedContext<TimersScope.Write>)
     suspend fun execute(
         timerId: TimerId,
     ): Result {

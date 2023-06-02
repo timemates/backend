@@ -1,12 +1,10 @@
 package io.timemates.backend.timers.usecases.members.invites
 
 import com.timemates.backend.time.TimeProvider
-import com.timemates.backend.validation.createOrThrow
 import io.timemates.backend.features.authorization.AuthorizedContext
 import io.timemates.backend.timers.repositories.TimerInvitesRepository
 import io.timemates.backend.timers.repositories.TimersRepository
-import io.timemates.backend.timers.types.TimerAuthScope
-import io.timemates.backend.common.types.value.Count
+import io.timemates.backend.timers.types.TimersScope
 import io.timemates.backend.timers.types.value.InviteCode
 import io.timemates.backend.timers.types.value.TimerId
 import io.timemates.backend.users.types.value.userId
@@ -16,7 +14,7 @@ class JoinByInviteUseCase(
     private val timers: TimersRepository,
     private val time: TimeProvider,
 ) {
-    context(AuthorizedContext<TimerAuthScope.Write>)
+    context(AuthorizedContext<TimersScope.Write>)
     suspend fun execute(
         timerId: TimerId,
         code: InviteCode,

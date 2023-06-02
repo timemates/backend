@@ -6,7 +6,7 @@ import com.timemates.random.RandomProvider
 import io.timemates.backend.features.authorization.AuthorizedContext
 import io.timemates.backend.timers.repositories.TimerInvitesRepository
 import io.timemates.backend.timers.repositories.TimersRepository
-import io.timemates.backend.timers.types.TimerAuthScope
+import io.timemates.backend.timers.types.TimersScope
 import io.timemates.backend.common.types.value.Count
 import io.timemates.backend.timers.types.value.InviteCode
 import io.timemates.backend.timers.types.value.TimerId
@@ -19,7 +19,7 @@ class CreateInviteUseCase(
     private val randomProvider: RandomProvider,
     private val timeProvider: TimeProvider,
 ) {
-    context(AuthorizedContext<TimerAuthScope.Write>)
+    context(AuthorizedContext<TimersScope.Write>)
     suspend fun execute(
         timerId: TimerId,
         limit: Count,

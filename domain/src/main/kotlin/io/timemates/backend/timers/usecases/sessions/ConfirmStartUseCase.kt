@@ -5,7 +5,7 @@ import io.timemates.backend.features.authorization.AuthorizedContext
 import io.timemates.backend.timers.repositories.TimerSessionRepository
 import io.timemates.backend.timers.repositories.TimersRepository
 import io.timemates.backend.timers.repositories.isConfirmationState
-import io.timemates.backend.timers.types.TimerAuthScope
+import io.timemates.backend.timers.types.TimersScope
 import io.timemates.backend.timers.types.TimerEvent
 import io.timemates.backend.users.types.value.userId
 import kotlin.time.Duration.Companion.minutes
@@ -15,7 +15,7 @@ class ConfirmStartUseCase(
     private val sessions: TimerSessionRepository,
     private val time: TimeProvider,
 ) {
-    context(AuthorizedContext<TimerAuthScope.Write>)
+    context(AuthorizedContext<TimersScope.Write>)
     suspend fun execute(): Result {
         val timerId = sessions.getTimerIdOfCurrentSession(userId, time.provide() - 15.minutes)
             ?: return Result.NotFound

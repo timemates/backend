@@ -9,7 +9,7 @@ import io.timemates.backend.pagination.mapIndexed
 import io.timemates.backend.timers.repositories.TimerSessionRepository
 import io.timemates.backend.timers.repositories.TimersRepository
 import io.timemates.backend.timers.types.Timer
-import io.timemates.backend.timers.types.TimerAuthScope
+import io.timemates.backend.timers.types.TimersScope
 import io.timemates.backend.timers.types.toTimer
 import io.timemates.backend.users.types.value.userId
 
@@ -17,7 +17,7 @@ class GetTimersUseCase(
     private val timers: TimersRepository,
     private val sessionsRepository: TimerSessionRepository,
 ) {
-    context(AuthorizedContext<TimerAuthScope.Read>)
+    context(AuthorizedContext<TimersScope.Read>)
     suspend fun execute(
         nextPageToken: PageToken?,
     ): Result {
