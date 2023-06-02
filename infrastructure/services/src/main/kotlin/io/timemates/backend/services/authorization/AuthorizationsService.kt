@@ -6,6 +6,7 @@ import io.grpc.StatusException
 import io.timemates.api.authorizations.AuthorizationServiceGrpcKt
 import io.timemates.api.authorizations.requests.ConfirmAuthorizationRequestKt
 import io.timemates.api.authorizations.requests.ConfirmAuthorizationRequestOuterClass.ConfirmAuthorizationRequest
+import io.timemates.api.authorizations.requests.GetAuthorizationsRequestKt
 import io.timemates.api.authorizations.requests.GetAuthorizationsRequestOuterClass.GetAuthorizationsRequest
 import io.timemates.api.authorizations.requests.StartAuthorizationRequestOuterClass.StartAuthorizationRequest
 import io.timemates.api.users.requests.CreateProfileRequestKt
@@ -14,6 +15,8 @@ import io.timemates.backend.authorization.types.value.AccessHash
 import io.timemates.backend.authorization.types.value.VerificationCode
 import io.timemates.backend.authorization.types.value.VerificationHash
 import io.timemates.backend.authorization.usecases.*
+import io.timemates.backend.pagination.PageToken
+import io.timemates.backend.services.authorization.context.provideAuthorizationContext
 import io.timemates.backend.services.authorization.interceptor.AuthorizationInterceptor
 import io.timemates.backend.services.common.validation.createOrStatus
 import io.timemates.backend.users.types.value.EmailAddress
@@ -26,7 +29,7 @@ class AuthorizationsService(
     private val refreshTokenUseCase: RefreshTokenUseCase,
     private val removeAccessTokenUseCase: RemoveAccessTokenUseCase,
     private val verifyAuthorizationUseCase: VerifyAuthorizationUseCase,
-    private val getAuthorizationsUseCase: GetAuthorizationUseCase,
+    private val getAuthorizationsUseCase: GetAuthorizationsUseCase,
     private val mapper: GrpcAuthorizationsMapper,
 ) : AuthorizationServiceGrpcKt.AuthorizationServiceCoroutineImplBase() {
 
@@ -85,7 +88,19 @@ class AuthorizationsService(
 
     override suspend fun getAuthorizations(
         request: GetAuthorizationsRequest,
-    ): GetAuthorizationsRequest.Response = throw StatusException(Status.UNIMPLEMENTED)
+    ): GetAuthorizationsRequest.Response = provideAuthorizationContext {
+        val pageToken = request.pageToken
+            .takeIf { request.hasPageToken() }
+            ?.takeIf { it.isNotBlank() }
+            ?.let { PageToken.raw(it) }
+
+        when (val result = getAuthorizationsUseCase.execute(pageToken)) {
+            is GetAuthorizationsUseCase.Result.Success -> GetAuthorizationsRequestKt.response {
+                authorizations.addAll(result.list.map(mapper::toGrpcAuthorization))
+                result.nextPageToken?.let { nextPageToken = it.encoded() }
+            }
+        }
+    }
 
     override suspend fun terminateAuthorization(
         request: Empty,

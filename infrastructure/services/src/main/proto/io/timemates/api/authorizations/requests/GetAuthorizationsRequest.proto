@@ -5,7 +5,7 @@ option java_package = "io.timemates.api.authorizations.requests";
 
 message GetAuthorizationsRequest {
   // null if it's start of pagination
-  optional string nextPageToken = 1;
+  optional string pageToken = 1;
 
   message Response {
     repeated Authorization authorizations = 1;
