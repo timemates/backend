@@ -1,10 +1,10 @@
 package io.timemates.backend.data.files.datasource
 
 import io.timemates.backend.data.files.datasource.PostgresqlFilesDataSource.FilesTable.FILE_ID
+import io.timemates.backend.exposed.suspendedTransaction
 import org.jetbrains.annotations.TestOnly
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class PostgresqlFilesDataSource(private val database: Database, private val mapper: FileEntityMapper) {
@@ -24,16 +24,16 @@ class PostgresqlFilesDataSource(private val database: Database, private val mapp
         }
     }
 
-    suspend fun isFileExists(id: String): Boolean = newSuspendedTransaction(db = database) {
+    suspend fun isFileExists(id: String): Boolean = suspendedTransaction(database) {
         FilesTable.select { FILE_ID eq id }.any()
     }
 
-    suspend fun getFile(id: String): File? = newSuspendedTransaction(db = database) {
+    suspend fun getFile(id: String): File? = suspendedTransaction(database) {
         FilesTable.select { FILE_ID eq id }.singleOrNull()?.let(mapper::resultRowToPSqlFile)
     }
 
     suspend fun createFile(fileId: String, fileName: String, fileType: FileType, filePath: String, creationTime: Long) =
-        newSuspendedTransaction(db = database) {
+        suspendedTransaction(database) {
             FilesTable.insert {
                 it[FILE_ID] = fileId
                 it[FILE_NAME] = fileName
@@ -44,7 +44,7 @@ class PostgresqlFilesDataSource(private val database: Database, private val mapp
         }
 
     suspend fun deleteFile(fileId: String) =
-        newSuspendedTransaction(db = database) {
+        suspendedTransaction(database) {
             FilesTable.deleteWhere {
                 FILE_ID eq fileId
             }
@@ -63,7 +63,7 @@ class PostgresqlFilesDataSource(private val database: Database, private val mapp
     }
 
     @TestOnly
-    suspend fun clear() = newSuspendedTransaction(db = database) {
+    suspend fun clear() = suspendedTransaction(database) {
         FilesTable.deleteAll()
     }
 }
