@@ -1,8 +1,8 @@
 package io.timemates.backend.data.users.datasource
 
+import io.timemates.backend.exposed.suspendedTransaction
 import org.jetbrains.annotations.TestOnly
 import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class PostgresqlUsersDataSource(private val database: Database) {
@@ -23,27 +23,27 @@ class PostgresqlUsersDataSource(private val database: Database) {
         }
     }
 
-    suspend fun isUserExists(id: Long): Boolean = newSuspendedTransaction(db = database) {
+    suspend fun isUserExists(id: Long): Boolean = suspendedTransaction(database) {
         UsersTable.select { UsersTable.USER_ID eq id }.any()
     }
 
-    suspend fun getUserByEmail(email: String) = newSuspendedTransaction(db = database) {
+    suspend fun getUserByEmail(email: String) = suspendedTransaction(database) {
         UsersTable.select { UsersTable.USER_EMAIL eq email }.singleOrNull()?.toUser()
     }
 
     suspend fun getUser(id: Long): User? =
-        newSuspendedTransaction(db = database) {
+        suspendedTransaction(database) {
             UsersTable.select { UsersTable.USER_ID eq id }.singleOrNull()?.toUser()
         }
 
     suspend fun getUsers(collection: List<Long>): Map<Long, User> =
-        newSuspendedTransaction(db = database) {
+        suspendedTransaction(database) {
             UsersTable.select { UsersTable.USER_ID inList (collection) }.asSequence()
                 .map { it.toUser() }.associateBy { it.id }
         }
 
     suspend fun edit(id: Long, patch: User.Patch): Unit =
-        newSuspendedTransaction(db = database) {
+        suspendedTransaction(database) {
             UsersTable.update({ UsersTable.USER_ID eq id }) { update ->
                 patch.userName?.let { update[USER_NAME] = it }
                 patch.userAvatarFileId?.let { update[AVATAR_FILE_ID] = it }
@@ -52,7 +52,7 @@ class PostgresqlUsersDataSource(private val database: Database) {
         }
 
     suspend fun createUser(email: String, userName: String, shortBio: String?, creationTime: Long): Long =
-        newSuspendedTransaction(db = database) {
+        suspendedTransaction(database) {
             UsersTable.insert {
                 it[USER_EMAIL] = email
                 it[USER_NAME] = userName
@@ -86,7 +86,7 @@ class PostgresqlUsersDataSource(private val database: Database) {
     }
 
     @TestOnly
-    suspend fun clear(): Unit = newSuspendedTransaction(db = database) {
+    suspend fun clear(): Unit = suspendedTransaction(database) {
         UsersTable.deleteAll()
     }
 
