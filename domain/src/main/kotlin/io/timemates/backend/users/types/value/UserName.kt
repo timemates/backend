@@ -17,6 +17,7 @@ value class UserName private constructor(val string: String) {
         context(ValidationFailureHandler)
         override fun create(value: String): UserName {
             return when (value.length) {
+                0 -> onFail(FailureMessage.ofBlank())
                 !in SIZE -> onFail(FailureMessage.ofSize(SIZE))
                 else -> UserName(value)
             }

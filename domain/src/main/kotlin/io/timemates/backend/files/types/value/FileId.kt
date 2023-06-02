@@ -14,6 +14,7 @@ value class FileId private constructor(val string: String) {
         context(ValidationFailureHandler)
         override fun create(value: String): FileId {
             return when (value.length) {
+                0 -> onFail(FailureMessage.ofBlank())
                 SIZE -> FileId(value)
                 else -> onFail(FailureMessage.ofSize(SIZE))
             }

@@ -15,6 +15,7 @@ value class AccessHash private constructor(val string: String) {
         context(ValidationFailureHandler)
         override fun create(value: String): AccessHash {
             return when (value.length) {
+                0 -> onFail(FailureMessage.ofBlank())
                 SIZE -> AccessHash(value)
                 else -> onFail(FailureMessage.ofSize(SIZE))
             }

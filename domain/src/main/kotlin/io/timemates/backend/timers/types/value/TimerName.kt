@@ -14,6 +14,7 @@ value class TimerName private constructor(val string: String) {
         context(ValidationFailureHandler)
         override fun create(value: String): TimerName {
             return when (value.length) {
+                0 -> onFail(FailureMessage.ofBlank())
                 in LENGTH_RANGE -> TimerName(value)
                 else -> onFail(FailureMessage.ofSize(LENGTH_RANGE))
             }

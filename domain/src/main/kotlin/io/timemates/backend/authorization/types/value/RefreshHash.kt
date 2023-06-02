@@ -14,6 +14,7 @@ value class RefreshHash private constructor(val string: String) {
         context(ValidationFailureHandler)
         override fun create(value: String): RefreshHash {
             return when (value.length) {
+                0 -> onFail(FailureMessage.ofBlank())
                 SIZE -> RefreshHash(value)
                 else -> onFail(FailureMessage.ofSize(SIZE))
             }

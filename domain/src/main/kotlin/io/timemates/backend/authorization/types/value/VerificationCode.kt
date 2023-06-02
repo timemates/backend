@@ -14,6 +14,7 @@ value class VerificationCode private constructor(val string: String) {
         context(ValidationFailureHandler)
         override fun create(value: String): VerificationCode {
             return when (value.length) {
+                0 -> onFail(FailureMessage.ofBlank())
                 SIZE -> VerificationCode(value)
                 else -> onFail(FailureMessage.ofSize(SIZE))
             }
