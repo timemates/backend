@@ -23,6 +23,7 @@ value class EmailAddress private constructor(val string: String) {
         context(ValidationFailureHandler)
         override fun create(value: String): EmailAddress {
             return when {
+                value.isEmpty() -> onFail(FailureMessage.ofBlank())
                 value.length !in SIZE -> onFail(FailureMessage.ofSize(SIZE))
                 !emailPattern.matches(value) -> onFail(FailureMessage.ofPattern(emailPattern))
                 else -> EmailAddress(value)
