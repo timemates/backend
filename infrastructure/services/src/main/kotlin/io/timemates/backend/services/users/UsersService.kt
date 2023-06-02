@@ -1,8 +1,6 @@
 package io.timemates.backend.services.users
 
 import com.google.protobuf.Empty
-import com.timemates.backend.validation.createAsResult
-import com.timemates.backend.validation.createOrThrow
 import io.grpc.Status
 import io.grpc.StatusException
 import io.timemates.api.users.UsersServiceGrpcKt
@@ -14,13 +12,12 @@ import io.timemates.backend.services.authorization.context.provideAuthorizationC
 import io.timemates.backend.users.types.value.UserId
 import io.timemates.backend.users.usecases.EditUserUseCase
 import io.timemates.backend.users.usecases.GetUsersUseCase
-import io.timemates.backend.files.usecases.UploadFileUseCase
 import io.timemates.backend.services.common.validation.createOrStatus
 
 class UsersService(
     private val editUserUseCase: EditUserUseCase,
     private val getUsersUseCase: GetUsersUseCase,
-    private val mapper: UserEntitiesMapper,
+    private val mapper: GrpcUsersMapper,
 ) : UsersServiceGrpcKt.UsersServiceCoroutineImplBase() {
     override suspend fun getUsers(request: GetUsersRequestOuterClass.GetUsersRequest): Users {
         return when(val result = getUsersUseCase.execute(request.userIdList.map { UserId.createOrStatus(it) })) {

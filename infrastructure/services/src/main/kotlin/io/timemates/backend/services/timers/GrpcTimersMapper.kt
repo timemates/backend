@@ -3,7 +3,6 @@ package io.timemates.backend.services.timers
 import io.timemates.api.timers.requests.EditTimerInfoRequestOuterClass
 import io.timemates.api.timers.requests.EditTimerSettingsRequestOuterClass
 import io.timemates.api.timers.members.invites.types.InviteOuterClass
-import io.timemates.api.timers.types.TimerKt.state
 import io.timemates.api.timers.types.TimerOuterClass
 import io.timemates.api.timers.types.TimerOuterClass.Timer.State
 import io.timemates.api.timers.types.timer
@@ -18,7 +17,7 @@ import io.timemates.backend.timers.types.value.TimerDescription
 import io.timemates.backend.timers.types.value.TimerName
 import kotlin.time.Duration.Companion.milliseconds
 
-class TimersMapper {
+class GrpcTimersMapper {
     fun toDomainSettings(settings: TimerOuterClass.Timer.Settings): TimerSettings {
         return TimerSettings(
             workTime = settings.workTimeMillis.milliseconds,

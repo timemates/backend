@@ -8,17 +8,17 @@ import io.timemates.api.authorizations.requests.ConfirmAuthorizationRequestKt
 import io.timemates.api.authorizations.requests.ConfirmAuthorizationRequestOuterClass.ConfirmAuthorizationRequest
 import io.timemates.api.authorizations.requests.GetAuthorizationsRequestOuterClass.GetAuthorizationsRequest
 import io.timemates.api.authorizations.requests.StartAuthorizationRequestOuterClass.StartAuthorizationRequest
-import io.timemates.api.authorizations.types.AuthorizationKt.hash
-import io.timemates.api.authorizations.types.authorization
+import io.timemates.api.users.requests.CreateProfileRequestKt
+import io.timemates.api.users.requests.CreateProfileRequestOuterClass
 import io.timemates.backend.authorization.types.value.AccessHash
 import io.timemates.backend.authorization.types.value.VerificationCode
 import io.timemates.backend.authorization.types.value.VerificationHash
 import io.timemates.backend.authorization.usecases.*
-import io.timemates.backend.pagination.PageToken
-import io.timemates.backend.services.authorization.context.provideAuthorizationContext
 import io.timemates.backend.services.authorization.interceptor.AuthorizationInterceptor
 import io.timemates.backend.services.common.validation.createOrStatus
 import io.timemates.backend.users.types.value.EmailAddress
+import io.timemates.backend.users.types.value.UserDescription
+import io.timemates.backend.users.types.value.UserName
 
 class AuthorizationsService(
     private val authByEmailUseCase: AuthByEmailUseCase,
@@ -27,7 +27,20 @@ class AuthorizationsService(
     private val removeAccessTokenUseCase: RemoveAccessTokenUseCase,
     private val verifyAuthorizationUseCase: VerifyAuthorizationUseCase,
     private val getAuthorizationsUseCase: GetAuthorizationUseCase,
+    private val mapper: GrpcAuthorizationsMapper,
 ) : AuthorizationServiceGrpcKt.AuthorizationServiceCoroutineImplBase() {
+
+    override suspend fun startAuthorization(
+        request: StartAuthorizationRequest,
+    ): Empty {
+        val email = EmailAddress.createOrStatus(request.emailAddress)
+
+        return when (authByEmailUseCase.execute(email)) {
+            AuthByEmailUseCase.Result.AttemptsExceed -> throw StatusException(Status.RESOURCE_EXHAUSTED)
+            AuthByEmailUseCase.Result.SendFailed -> throw StatusException(Status.UNAVAILABLE)
+            is AuthByEmailUseCase.Result.Success -> Empty.getDefaultInstance()
+        }
+    }
 
     override suspend fun confirmAuthorization(
         request: ConfirmAuthorizationRequest,
@@ -47,17 +60,7 @@ class AuthorizationsService(
                 ConfirmAuthorizationRequestKt.response {
                     isNewAccount = false
 
-                    authorization = authorization {
-                        accessHash = hash {
-                            value = result.authorization.accessHash.string
-                            expiresAt = result.authorization.expiresAt.inMilliseconds
-                        }
-                        refreshHash = hash {
-                            value = result.authorization.refreshAccessHash.string
-                            expiresAt = result.authorization.expiresAt.inMilliseconds
-                        }
-                        generationTime = result.authorization.createdAt.inMilliseconds
-                    }
+                    authorization = mapper.toGrpcAuthorization(result.authorization)
                 }
 
             VerifyAuthorizationUseCase.Result.Success.NewAccount ->
@@ -67,21 +70,22 @@ class AuthorizationsService(
         }
     }
 
+    override suspend fun createProfile(request: CreateProfileRequestOuterClass.CreateProfileRequest): CreateProfileRequestOuterClass.CreateProfileRequest.Response {
+        val name = UserName.createOrStatus(request.name)
+        val description = UserDescription.createOrStatus(request.description)
+        val verificationHash = VerificationHash.createOrStatus(request.verificationHash)
+
+        return when (val result = configureNewAccountUseCase.execute(verificationHash, name, description)) {
+            ConfigureNewAccountUseCase.Result.NotFound -> throw StatusException(Status.UNAUTHENTICATED)
+            is ConfigureNewAccountUseCase.Result.Success -> CreateProfileRequestKt.response {
+                authorization = mapper.toGrpcAuthorization(result.authorization)
+            }
+        }
+    }
+
     override suspend fun getAuthorizations(
         request: GetAuthorizationsRequest,
     ): GetAuthorizationsRequest.Response = throw StatusException(Status.UNIMPLEMENTED)
-
-    override suspend fun startAuthorization(
-        request: StartAuthorizationRequest,
-    ): Empty {
-        val email = EmailAddress.createOrStatus(request.emailAddress)
-
-        return when (authByEmailUseCase.execute(email)) {
-            AuthByEmailUseCase.Result.AttemptsExceed -> throw StatusException(Status.RESOURCE_EXHAUSTED)
-            AuthByEmailUseCase.Result.SendFailed -> throw StatusException(Status.UNAVAILABLE)
-            is AuthByEmailUseCase.Result.Success -> Empty.getDefaultInstance()
-        }
-    }
 
     override suspend fun terminateAuthorization(
         request: Empty,

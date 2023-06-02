@@ -9,14 +9,14 @@ import io.timemates.backend.common.repositories.EmailsRepository
 import io.timemates.backend.data.common.repositories.MailerSendEmailsRepository
 import io.timemates.backend.data.common.repositories.SMTPEmailsRepository
 import io.timemates.backend.mailer.SMTPMailer
-import io.timemates.backend.services.timers.TimersMapper
+import io.timemates.backend.services.timers.GrpcTimersMapper
 import kotlinx.serialization.json.Json
 import org.koin.dsl.module
 import java.time.ZoneId
 
 val CommonModule = module {
     single {
-        TimersMapper()
+        GrpcTimersMapper()
     }
     single<TimeProvider> {
         SystemTimeProvider(ZoneId.of("UTC"))
