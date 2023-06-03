@@ -116,6 +116,10 @@ fun main(args: Array<String>) {
                 confirmationTemplateId = arguments.getNamedOrNull(ArgumentsConstants.MAILERSEND_CONFIRMATION_TEMPLATE)
                     ?: System.getenv(EnvironmentConstants.MAILERSEND_CONFIRMATION_TEMPLATE)
                     ?: error(FailureMessages.MISSING_MAILERSEND_CONFIRMATION_TEMPLATE),
+
+                supportEmail = arguments.getNamedOrNull(ArgumentsConstants.MAILERSEND_SUPPORT_EMAIL)
+                    ?: System.getenv(EnvironmentConstants.MAILERSEND_SUPPORT_EMAIL)
+                    ?: error(FailureMessages.MISSING_MAILERSEND_SUPPORT_EMAIL),
             )
         )
     } else {

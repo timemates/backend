@@ -26,6 +26,7 @@ class MailerSendEmailsRepository(
         val apiKey: String,
         val sender: String,
         val confirmationTemplateId: String,
+        val supportEmail: String,
     )
 
     private val client = client.config {
@@ -56,7 +57,7 @@ class MailerSendEmailsRepository(
                 Variable(
                     email = emailAddress.string,
                     substitutions = listOf(
-                        Substitution(varName = "support_email", value = ""),
+                        Substitution(varName = "support_email", value = configuration.supportEmail),
                         Substitution(varName = "confirmation.code", value = email.code.string)
                     )
                 )

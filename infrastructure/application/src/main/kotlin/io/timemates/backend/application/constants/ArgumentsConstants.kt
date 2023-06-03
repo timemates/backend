@@ -16,5 +16,6 @@ internal object ArgumentsConstants {
     const val MAILERSEND_SENDER = "mailersendSender"
     const val MAILERSEND_RECIPIENT = "mailersendRecipient"
     const val MAILERSEND_CONFIRMATION_TEMPLATE = "mailersendTemplatesConfirmation"
+    const val MAILERSEND_SUPPORT_EMAIL = "mailersendSupportEmail"
     const val FILES_PATH = "filesPath"
 }
