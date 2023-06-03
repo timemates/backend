@@ -15,6 +15,7 @@ import io.timemates.backend.cli.asArguments
 import io.timemates.backend.cli.getNamedIntOrNull
 import io.timemates.backend.data.common.repositories.MailerSendEmailsRepository
 import io.timemates.backend.services.authorization.AuthorizationsService
+import io.timemates.backend.services.authorization.interceptor.AuthorizationInterceptor
 import io.timemates.backend.services.files.FilesService
 import io.timemates.backend.services.timers.TimersService
 import io.timemates.backend.services.users.UsersService
@@ -130,8 +131,6 @@ fun main(args: Array<String>) {
         ?: System.getenv(EnvironmentConstants.FILES_PATH)
         ?: error(FailureMessages.MISSING_FILES_PATH)
 
-    println(databaseConfig)
-
     val dynamicModule = module {
         single<DatabaseConfig> { databaseConfig }
         single<MailerConfiguration> { mailingConfig }
@@ -147,6 +146,7 @@ fun main(args: Array<String>) {
         .addService(koin.get<FilesService>() as BindableService)
         .addService(koin.get<TimersService>() as BindableService)
         .addService(koin.get<AuthorizationsService>() as BindableService)
+        .intercept(AuthorizationInterceptor(koin.get()))
         .build()
 
 
