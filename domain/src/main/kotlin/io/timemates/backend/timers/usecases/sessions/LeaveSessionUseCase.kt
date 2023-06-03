@@ -3,8 +3,8 @@ package io.timemates.backend.timers.usecases.sessions
 import com.timemates.backend.time.TimeProvider
 import io.timemates.backend.features.authorization.AuthorizedContext
 import io.timemates.backend.timers.repositories.TimerSessionRepository
-import io.timemates.backend.timers.types.TimersScope
 import io.timemates.backend.timers.types.TimerEvent
+import io.timemates.backend.timers.types.TimersScope
 import io.timemates.backend.users.types.value.userId
 import kotlin.time.Duration.Companion.minutes
 

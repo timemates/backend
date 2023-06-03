@@ -86,7 +86,7 @@ public class CoroutinesStateMachine<KeyType : Any, EventType : Any, StateType : 
                 // notified and reuse state flow
                 val flow = states[key] ?: MutableStateFlow(transformedState as StateType)
 
-                if(saveAtFirst)
+                if (saveAtFirst)
                     storage?.save(key, state)
 
                 // Store the CoroutineScope, state flow, and event flow in

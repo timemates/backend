@@ -9,7 +9,7 @@ import io.timemates.backend.services.authorization.provider.AuthorizationProvide
 import kotlin.coroutines.CoroutineContext
 
 class AuthorizationInterceptor(
-    private val authorizationProvider: AuthorizationProvider
+    private val authorizationProvider: AuthorizationProvider,
 ) : CoroutineContextServerInterceptor() {
     companion object {
         private val ACCESS_TOKEN_METADATA_KEY: Metadata.Key<String> =
@@ -34,6 +34,7 @@ class AuthorizationInterceptor(
 
         val AUTHORIZATION_PROVIDER = Context.key<AuthorizationProvider>("authorization-provider")
     }
+
     override fun coroutineContext(call: ServerCall<*, *>, headers: Metadata): CoroutineContext {
         val bypassAuth = headers.get(OMIT_AUTHORIZATION) ?: false
 

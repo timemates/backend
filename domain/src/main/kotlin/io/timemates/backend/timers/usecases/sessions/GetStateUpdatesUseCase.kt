@@ -15,7 +15,7 @@ class GetStateUpdatesUseCase(
 ) {
     context(AuthorizedContext<TimersScope.Read>)
     suspend fun execute(timerId: TimerId): Result {
-        if(!timersRepository.isMemberOf(userId, timerId))
+        if (!timersRepository.isMemberOf(userId, timerId))
             return Result.NoAccess
 
         return Result.Success(sessionRepository.getState(timerId) ?: return Result.NoAccess)

@@ -2,7 +2,6 @@ package io.timemates.backend.services.common.validation
 
 import com.timemates.backend.validation.SafeConstructor
 import com.timemates.backend.validation.ValidationFailureHandler
-import com.timemates.backend.validation.validation
 import io.grpc.Status
 import io.grpc.StatusException
 

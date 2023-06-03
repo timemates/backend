@@ -39,7 +39,7 @@ class TableTimerParticipantsDataSource(
 
         val lastId = result.lastOrNull()
 
-        val nextPageToken = if(lastId != null)
+        val nextPageToken = if (lastId != null)
             PageToken.withBase64(json.encodeToString(TimerParticipantPageToken(lastId)))
         else pageToken
 

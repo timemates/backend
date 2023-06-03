@@ -38,7 +38,7 @@ public abstract class SafeConstructor<Type, WrappedType> {
      */
     context(ValidationFailureHandler)
     public abstract fun create(
-        value: WrappedType
+        value: WrappedType,
     ): Type
 }
 

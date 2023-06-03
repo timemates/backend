@@ -2,7 +2,6 @@ package io.timemates.backend.mailer
 
 import org.simplejavamail.email.EmailBuilder
 import org.simplejavamail.mailer.MailerBuilder
-import kotlin.coroutines.coroutineContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
@@ -12,7 +11,7 @@ class SMTPMailer(
     port: Int,
     user: String,
     password: String?,
-    private val sender: String
+    private val sender: String,
 ) {
     private val mailer = MailerBuilder
         .withSMTPServer(host, port, user, password)
@@ -34,7 +33,7 @@ class SMTPMailer(
             continuation.resume(false)
 
         mailer.sendMail(emailAddress, true).handleAsync { _, throwable ->
-            if(throwable == null)
+            if (throwable == null)
                 continuation.resume(true)
             else continuation.resumeWithException(throwable)
         }

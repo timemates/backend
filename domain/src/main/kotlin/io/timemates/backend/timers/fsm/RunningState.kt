@@ -31,6 +31,7 @@ data class RunningState(
                 timersRepository = timersRepository,
                 timeProvider = timeProvider,
             )
+
             is TimerEvent.SettingsChanged -> {
                 if (event.newSettings.workTime != event.oldSettings.workTime)
                     copy(

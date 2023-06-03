@@ -4,7 +4,6 @@ import com.timemates.backend.validation.FailureMessage
 import com.timemates.backend.validation.SafeConstructor
 import com.timemates.backend.validation.ValidationFailureHandler
 import com.timemates.backend.validation.reflection.wrapperTypeName
-import io.timemates.backend.features.authorization.types.AuthorizedId
 
 @JvmInline
 value class AuthorizationId private constructor(val id: Int) {

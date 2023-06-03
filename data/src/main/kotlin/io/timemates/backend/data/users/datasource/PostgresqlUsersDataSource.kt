@@ -66,12 +66,12 @@ class PostgresqlUsersDataSource(private val database: Database) {
         val userName: String,
         val userEmail: String,
         val userShortDesc: String?,
-        val userAvatarFileId: String?
+        val userAvatarFileId: String?,
     ) {
         data class Patch(
             val userName: String? = null,
             val userShortDesc: String? = null,
-            val userAvatarFileId: String? = null
+            val userAvatarFileId: String? = null,
         )
     }
 

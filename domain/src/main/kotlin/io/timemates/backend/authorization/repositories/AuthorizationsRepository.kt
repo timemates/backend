@@ -5,8 +5,8 @@ import io.timemates.backend.authorization.types.Authorization
 import io.timemates.backend.authorization.types.value.AccessHash
 import io.timemates.backend.authorization.types.value.AuthorizationId
 import io.timemates.backend.authorization.types.value.RefreshHash
-import io.timemates.backend.pagination.PageToken
 import io.timemates.backend.pagination.Page
+import io.timemates.backend.pagination.PageToken
 import io.timemates.backend.users.types.value.UserId
 
 /**

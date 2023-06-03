@@ -47,21 +47,21 @@ class TimersService(
     override suspend fun createInvite(
         request: CreateInviteRequest.InviteMemberRequest,
     ): CreateInviteRequest.InviteMemberRequest.Response = provideAuthorizationContext {
-            val timerId = TimerId.createOrStatus(request.timerId)
-            val count = Count.createOrStatus(request.maxJoiners)
+        val timerId = TimerId.createOrStatus(request.timerId)
+        val count = Count.createOrStatus(request.maxJoiners)
 
-            when (val result = createInviteUseCase.execute(timerId, count)) {
-                CreateInviteUseCase.Result.NoAccess ->
-                    throw StatusException(Status.NOT_FOUND)
+        when (val result = createInviteUseCase.execute(timerId, count)) {
+            CreateInviteUseCase.Result.NoAccess ->
+                throw StatusException(Status.NOT_FOUND)
 
-                is CreateInviteUseCase.Result.Success -> InviteMemberRequestKt.response {
-                    inviteCode = result.code.string
-                }
-
-                CreateInviteUseCase.Result.TooManyCreation ->
-                    throw StatusException(Status.RESOURCE_EXHAUSTED)
+            is CreateInviteUseCase.Result.Success -> InviteMemberRequestKt.response {
+                inviteCode = result.code.string
             }
+
+            CreateInviteUseCase.Result.TooManyCreation ->
+                throw StatusException(Status.RESOURCE_EXHAUSTED)
         }
+    }
 
     override suspend fun createTimer(
         request: CreateTimerRequest,
@@ -74,6 +74,7 @@ class TimersService(
             is CreateTimerUseCase.Result.Success -> CreateTimerRequestKt.response {
                 timerId = result.timerId.long
             }
+
             CreateTimerUseCase.Result.TooManyCreations -> throw StatusException(Status.RESOURCE_EXHAUSTED)
         }
     }
@@ -95,7 +96,7 @@ class TimersService(
     }
 
     override suspend fun getMembers(
-        request: GetMembersRequest
+        request: GetMembersRequest,
     ): GetMembersRequest.Response = provideAuthorizationContext {
         val timerId = TimerId.createOrStatus(request.timerId)
         val pageToken = request.nextPageToken
@@ -112,7 +113,7 @@ class TimersService(
     }
 
     override suspend fun getTimer(
-        request: GetTimerRequestOuterClass.GetTimerRequest
+        request: GetTimerRequestOuterClass.GetTimerRequest,
     ): TimerOuterClass.Timer = provideAuthorizationContext {
         val timerId = TimerId.createOrStatus(request.timerId)
 
@@ -123,7 +124,7 @@ class TimersService(
     }
 
     override suspend fun getTimers(
-        request: GetTimersRequestOuterClass.GetTimersRequest
+        request: GetTimersRequestOuterClass.GetTimersRequest,
     ): GetTimersRequestOuterClass.GetTimersRequest.Response = provideAuthorizationContext {
         val pageToken = request.nextPageToken.takeIf { request.hasNextPageToken() }
             ?.let(PageToken::raw)
@@ -137,19 +138,19 @@ class TimersService(
     }
 
     override suspend fun kickMember(
-        request: KickMemberRequestOuterClass.KickMemberRequest
+        request: KickMemberRequestOuterClass.KickMemberRequest,
     ): Empty = provideAuthorizationContext {
         val timerId = TimerId.createOrStatus(request.userId)
         val userId = UserId.createOrStatus(request.userId)
 
-        when(kickTimerUserUseCase.execute(timerId, userId)) {
+        when (kickTimerUserUseCase.execute(timerId, userId)) {
             KickTimerUserUseCase.Result.NoAccess -> throw StatusException(Status.NOT_FOUND)
             KickTimerUserUseCase.Result.Success -> Empty.getDefaultInstance()
         }
     }
 
     override suspend fun removeInvite(
-        request: RemoveInviteRequestOuterClass.RemoveInviteRequest
+        request: RemoveInviteRequestOuterClass.RemoveInviteRequest,
     ): Empty = provideAuthorizationContext {
         val timerId = TimerId.createOrStatus(request.timerId)
         val code = InviteCode.createOrStatus(request.inviteCode)
@@ -162,11 +163,11 @@ class TimersService(
     }
 
     override suspend fun removeTimer(
-        request: RemoveTimerRequestOuterClass.RemoveTimerRequest
+        request: RemoveTimerRequestOuterClass.RemoveTimerRequest,
     ): Empty = provideAuthorizationContext {
         val timerId = TimerId.createOrStatus(request.timerId)
 
-        when(removeTimerUseCase.execute(timerId)) {
+        when (removeTimerUseCase.execute(timerId)) {
             RemoveTimerUseCase.Result.NotFound -> throw StatusException(Status.NOT_FOUND)
             RemoveTimerUseCase.Result.Success -> Empty.getDefaultInstance()
         }
@@ -186,7 +187,7 @@ class TimersService(
     }
 
     override suspend fun setTimerSettings(
-        request: EditTimerSettingsRequestOuterClass.EditTimerSettingsRequest
+        request: EditTimerSettingsRequestOuterClass.EditTimerSettingsRequest,
     ): Empty = provideAuthorizationContext {
         val timerId = TimerId.createOrStatus(request.timerId)
         val patch = mapper.toTimerSettingsPatch(request)

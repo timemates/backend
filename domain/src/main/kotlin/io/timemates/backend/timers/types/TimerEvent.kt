@@ -16,11 +16,11 @@ sealed class TimerEvent {
     ) : TimerEvent()
 
     data class UserJoined(
-        val userId: UserId
+        val userId: UserId,
     ) : TimerEvent()
 
     data class UserLeft(
-        val userId: UserId
+        val userId: UserId,
     ) : TimerEvent()
 
     data class AttendanceConfirmed(

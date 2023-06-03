@@ -38,8 +38,8 @@ public fun interface ValidationFailureHandler {
          *
          * @throws [ValidationFailure] if validation failed.
          */
-        public val ALWAYS_THROWS: ValidationFailureHandler = ValidationFailureHandler {
-            failure -> throw ValidationFailure(failure.string)
+        public val ALWAYS_THROWS: ValidationFailureHandler = ValidationFailureHandler { failure ->
+            throw ValidationFailure(failure.string)
         }
     }
 }
@@ -52,7 +52,7 @@ public fun interface ValidationFailureHandler {
  */
 public fun <T> validation(
     handler: (FailureMessage) -> Nothing,
-    block: context(ValidationFailureHandler) () -> T
+    block: context(ValidationFailureHandler) () -> T,
 ): T {
     val instance = ValidationFailureHandler(handler)
     return block(instance)

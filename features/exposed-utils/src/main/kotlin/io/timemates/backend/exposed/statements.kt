@@ -1,13 +1,15 @@
 package io.timemates.backend.exposed
 
-import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.Op
+import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.statements.UpdateBuilder
-import org.jetbrains.exposed.sql.statements.UpdateStatement
+import org.jetbrains.exposed.sql.update
 
 fun <T : Table> T.update(
     where: Op<Boolean>,
     limit: Int? = null,
-    statement: T.(UpdateBuilder<Int>) -> Unit
+    statement: T.(UpdateBuilder<Int>) -> Unit,
 ): Int {
     return update(where = { where }, limit = limit) {
         statement(it)
@@ -15,7 +17,7 @@ fun <T : Table> T.update(
 }
 
 fun <T : Table> T.insert(
-    statement: T.(UpdateBuilder<Int>) -> Unit
+    statement: T.(UpdateBuilder<Int>) -> Unit,
 ): Int {
     return insert {
         statement(it)
@@ -34,11 +36,11 @@ fun <T : Table> T.insert(
  */
 fun <T : Table> T.upsert(
     condition: Op<Boolean>,
-    statement: T.(UpdateBuilder<Int>, exists: Boolean) -> Unit
+    statement: T.(UpdateBuilder<Int>, exists: Boolean) -> Unit,
 ): Int {
     val exists = !select(condition).empty()
 
-    return if(exists) {
+    return if (exists) {
         insert { statement(it, false) }
     } else {
         update(condition) { statement(it, true) }

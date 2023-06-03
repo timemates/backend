@@ -3,8 +3,8 @@ package io.timemates.backend.timers.usecases
 import com.timemates.backend.time.TimeProvider
 import io.timemates.backend.features.authorization.AuthorizedContext
 import io.timemates.backend.timers.repositories.TimersRepository
-import io.timemates.backend.timers.types.TimersScope
 import io.timemates.backend.timers.types.TimerSettings
+import io.timemates.backend.timers.types.TimersScope
 import io.timemates.backend.timers.types.value.TimerDescription
 import io.timemates.backend.timers.types.value.TimerId
 import io.timemates.backend.timers.types.value.TimerName

@@ -11,7 +11,7 @@ import io.timemates.backend.files.repositories.FilesRepository as FilesRepositor
 
 class FilesRepository(
     private val localFilesDataSource: LocalFilesDataSource,
-    private val postgresqlFilesDataSource: PostgresqlFilesDataSource
+    private val postgresqlFilesDataSource: PostgresqlFilesDataSource,
 ) : FilesRepositoryContract {
     override suspend fun save(fileId: FileId, input: Flow<ByteArray>) {
         localFilesDataSource.save(fileId.string, LocalFilesDataSource.FileType.IMAGE, input)

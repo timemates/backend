@@ -94,7 +94,7 @@ class GrpcTimersMapper {
     }
 
     fun toTimerInfoPatch(
-        patch: EditTimerInfoRequestOuterClass.EditTimerInfoRequest
+        patch: EditTimerInfoRequestOuterClass.EditTimerInfoRequest,
     ): TimersRepository.TimerInformation.Patch {
         return TimersRepository.TimerInformation.Patch(
             name = patch.name.takeIf { patch.hasName() }?.let { TimerName.createOrStatus(it) },

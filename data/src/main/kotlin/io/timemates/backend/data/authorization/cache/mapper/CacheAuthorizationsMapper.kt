@@ -16,7 +16,7 @@ class CacheAuthorizationsMapper {
     }
 
     private fun dbPermissionsToCachePermissions(
-        permissions: DbAuthorization.Permissions
+        permissions: DbAuthorization.Permissions,
     ): CacheAuthorization.Permissions = with(permissions) {
         CacheAuthorization.Permissions(
             authorization = authorization.toCacheGrantLevel(),

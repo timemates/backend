@@ -9,6 +9,7 @@ import com.timemates.backend.validation.reflection.wrapperTypeName
 value class UserName private constructor(val string: String) {
     companion object : SafeConstructor<UserName, String>() {
         override val displayName: String by wrapperTypeName()
+
         /**
          * Size range of the user's name.
          */

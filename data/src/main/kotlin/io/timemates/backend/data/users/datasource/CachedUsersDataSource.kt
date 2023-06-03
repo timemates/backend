@@ -3,7 +3,7 @@ package io.timemates.backend.data.users.datasource
 import io.github.reactivecircus.cache4k.Cache
 
 class CachedUsersDataSource(
-    maxEntries: Long
+    maxEntries: Long,
 ) {
     private val cache = Cache.Builder()
         .maximumCacheSize(maxEntries)
@@ -21,6 +21,6 @@ class CachedUsersDataSource(
         val name: String,
         val shortBio: String?,
         val avatarFileId: String?,
-        val email: String?
+        val email: String?,
     )
 }

@@ -9,6 +9,6 @@ import io.timemates.backend.users.types.value.EmailAddress
 sealed class Email {
     data class AuthorizeEmail(
         val email: EmailAddress,
-        val code: VerificationCode
+        val code: VerificationCode,
     ) : Email()
 }

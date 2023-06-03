@@ -1,7 +1,6 @@
 package io.timemates.backend.data.authorization.db.table
 
 import io.timemates.backend.authorization.types.value.AccessHash
-import io.timemates.backend.data.authorization.db.entities.DbAuthorization
 import io.timemates.backend.data.authorization.db.entities.DbAuthorization.Permissions.GrantLevel
 import io.timemates.backend.data.users.datasource.PostgresqlUsersDataSource
 import org.jetbrains.exposed.sql.Table

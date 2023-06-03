@@ -12,6 +12,6 @@ sealed class MailerConfiguration {
     ) : MailerConfiguration()
 
     data class MailerSend(
-        val configuration: MailerSendEmailsRepository.Configuration
+        val configuration: MailerSendEmailsRepository.Configuration,
     ) : MailerConfiguration()
 }

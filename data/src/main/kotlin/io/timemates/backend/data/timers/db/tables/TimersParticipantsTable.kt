@@ -1,6 +1,5 @@
 package io.timemates.backend.data.timers.db.tables
 
-import io.timemates.backend.data.users.datasource.PostgresqlUsersDataSource
 import io.timemates.backend.data.users.datasource.PostgresqlUsersDataSource.UsersTable
 import org.jetbrains.exposed.sql.Table
 

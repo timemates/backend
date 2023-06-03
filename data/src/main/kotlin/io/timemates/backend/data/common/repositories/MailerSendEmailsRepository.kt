@@ -13,10 +13,6 @@ import io.timemates.backend.common.repositories.EmailsRepository
 import io.timemates.backend.users.types.value.EmailAddress
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.buildJsonArray
-import kotlinx.serialization.json.buildJsonObject
-import kotlinx.serialization.json.put
 
 class MailerSendEmailsRepository(
     private val configuration: Configuration,
@@ -65,9 +61,9 @@ class MailerSendEmailsRepository(
             templateId = configuration.confirmationTemplateId,
             subject = "Authorization confirmation"
         )
-         client.post {
-             setBody(request)
-         }.status.isSuccess()
+        client.post {
+            setBody(request)
+        }.status.isSuccess()
     } catch (e: Throwable) {
         e.printStackTrace()
         false
@@ -82,14 +78,17 @@ internal data class EmailRequest(
     val to: List<To>,
     val variables: List<Variable>,
     @SerialName("template_id")
-    val templateId: String
+    val templateId: String,
 )
 
 @Serializable
 internal data class From(val email: String)
+
 @Serializable
 internal data class To(val email: String)
+
 @Serializable
 internal data class Variable(val email: String, val substitutions: List<Substitution>)
+
 @Serializable
 internal data class Substitution(@SerialName("var") val varName: String, val value: String)

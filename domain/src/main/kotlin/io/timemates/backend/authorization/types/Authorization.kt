@@ -4,7 +4,6 @@ import com.timemates.backend.time.UnixTime
 import io.timemates.backend.authorization.types.value.AccessHash
 import io.timemates.backend.authorization.types.value.RefreshHash
 import io.timemates.backend.features.authorization.Scope
-import io.timemates.backend.timers.types.value.TimerId
 import io.timemates.backend.users.types.value.UserId
 
 data class Authorization(

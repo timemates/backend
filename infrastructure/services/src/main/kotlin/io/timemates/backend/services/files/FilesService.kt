@@ -40,9 +40,9 @@ class FilesService(
     }
 
     override suspend fun uploadFile(
-        requests: Flow<UploadFileRequestOuterClass.UploadFileRequest>
+        requests: Flow<UploadFileRequestOuterClass.UploadFileRequest>,
     ): UploadFileRequestOuterClass.UploadFileRequest.Response = provideAuthorizationContext {
-        when(val result = uploadFileUseCase.execute(requests.map { it.chunk.toByteArray() })) {
+        when (val result = uploadFileUseCase.execute(requests.map { it.chunk.toByteArray() })) {
             UploadFileUseCase.Result.Failure -> throw StatusException(Status.INTERNAL)
             is UploadFileUseCase.Result.Success -> UploadFileRequestKt.response {
                 fileId = result.fileId.string

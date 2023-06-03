@@ -20,7 +20,7 @@ class PostgresqlUsersRepository(
         userEmailAddress: EmailAddress,
         userName: UserName,
         shortBio: UserDescription?,
-        creationTime: UnixTime
+        creationTime: UnixTime,
     ): UserId {
         return postgresqlUsers.createUser(
             userEmailAddress.string,

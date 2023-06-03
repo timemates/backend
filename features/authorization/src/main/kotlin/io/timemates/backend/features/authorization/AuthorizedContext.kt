@@ -19,7 +19,7 @@ public interface AuthorizedContext<S : Scope> {
 public inline fun <S : Scope, R> authorizationProvider(
     provider: () -> Authorized?,
     onFailure: () -> Nothing,
-    block: context(AuthorizedContext<S>) () -> R
+    block: context(AuthorizedContext<S>) () -> R,
 ): R {
     val authorized = provider() ?: onFailure()
 

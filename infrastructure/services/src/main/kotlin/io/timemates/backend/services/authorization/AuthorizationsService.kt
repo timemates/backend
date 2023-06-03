@@ -79,7 +79,7 @@ class AuthorizationsService(
     }
 
     override suspend fun createProfile(
-        request: CreateProfileRequestOuterClass.CreateProfileRequest
+        request: CreateProfileRequestOuterClass.CreateProfileRequest,
     ): CreateProfileRequestOuterClass.CreateProfileRequest.Response {
         val name = UserName.createOrStatus(request.name)
         val description = UserDescription.createOrStatus(request.description)

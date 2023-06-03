@@ -1,6 +1,5 @@
 package io.timemates.backend.application.dependencies
 
-import io.timemates.backend.data.timers.CoPostgresqlTimerSessionRepository
 import io.timemates.backend.data.timers.PostgresqlTimerInvitesRepository
 import io.timemates.backend.data.timers.PostgresqlTimersRepository
 import io.timemates.backend.data.timers.cache.CacheTimersDataSource
@@ -9,7 +8,6 @@ import io.timemates.backend.data.timers.mappers.TimerInvitesMapper
 import io.timemates.backend.data.timers.mappers.TimerSessionMapper
 import io.timemates.backend.data.timers.mappers.TimersMapper
 import io.timemates.backend.timers.repositories.TimerInvitesRepository
-import io.timemates.backend.timers.repositories.TimerSessionRepository
 import io.timemates.backend.timers.repositories.TimersRepository
 import io.timemates.backend.timers.usecases.*
 import io.timemates.backend.timers.usecases.members.GetMembersUseCase
@@ -17,8 +15,6 @@ import io.timemates.backend.timers.usecases.members.KickTimerUserUseCase
 import io.timemates.backend.timers.usecases.members.invites.CreateInviteUseCase
 import io.timemates.backend.timers.usecases.members.invites.GetInvitesUseCase
 import io.timemates.backend.timers.usecases.members.invites.RemoveInviteUseCase
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 

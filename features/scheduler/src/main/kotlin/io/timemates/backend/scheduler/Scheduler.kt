@@ -13,7 +13,7 @@ public interface Scheduler {
     public fun <Key : Any> withDelay(
         key: Key,
         duration: Duration,
-        operation: suspend () -> Unit
+        operation: suspend () -> Unit,
     )
 
     /**

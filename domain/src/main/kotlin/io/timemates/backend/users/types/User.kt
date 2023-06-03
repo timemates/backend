@@ -5,7 +5,6 @@ import io.timemates.backend.users.types.value.EmailAddress
 import io.timemates.backend.users.types.value.UserDescription
 import io.timemates.backend.users.types.value.UserId
 import io.timemates.backend.users.types.value.UserName
-import java.io.File
 
 data class User(
     val id: UserId,

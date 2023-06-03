@@ -4,10 +4,9 @@ import com.timemates.backend.validation.createOrThrow
 import java.time.Clock
 import java.time.Instant
 import java.time.ZoneId
-import java.util.*
 
 public class SystemTimeProvider(
-    private val timeZone: ZoneId = ZoneId.systemDefault()
+    private val timeZone: ZoneId = ZoneId.systemDefault(),
 ) : TimeProvider {
     private val clock = Clock.system(timeZone)
 

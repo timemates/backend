@@ -40,36 +40,36 @@ class AuthorizationsMapper {
     }
 
     private fun dbPermissionsToDomain(
-        dbPermissions: DbAuthorization.Permissions
+        dbPermissions: DbAuthorization.Permissions,
     ): List<Scope> = with(dbPermissions) {
         return buildList {
-            if(authorization != DbGrantLevel.NOT_GRANTED) {
+            if (authorization != DbGrantLevel.NOT_GRANTED) {
                 add(
-                    if(authorization == DbGrantLevel.WRITE)
+                    if (authorization == DbGrantLevel.WRITE)
                         AuthorizationsScope.Write
                     else AuthorizationsScope.Read
                 )
             }
 
-            if(users != DbGrantLevel.NOT_GRANTED) {
+            if (users != DbGrantLevel.NOT_GRANTED) {
                 add(
-                    if(users == DbGrantLevel.WRITE)
+                    if (users == DbGrantLevel.WRITE)
                         UsersScope.Write
                     else UsersScope.Read
                 )
             }
 
-            if(files != DbGrantLevel.NOT_GRANTED) {
+            if (files != DbGrantLevel.NOT_GRANTED) {
                 add(
-                    if(files == DbGrantLevel.WRITE)
+                    if (files == DbGrantLevel.WRITE)
                         FilesScope.Write
                     else FilesScope.Read
                 )
             }
 
-            if(timers != DbGrantLevel.NOT_GRANTED) {
+            if (timers != DbGrantLevel.NOT_GRANTED) {
                 add(
-                    if(timers == DbGrantLevel.WRITE)
+                    if (timers == DbGrantLevel.WRITE)
                         TimersScope.Write
                     else TimersScope.Read
                 )
@@ -78,36 +78,36 @@ class AuthorizationsMapper {
     }
 
     private fun cachePermissionsToDomain(
-        cache: CacheAuthorization.Permissions
+        cache: CacheAuthorization.Permissions,
     ): List<Scope> = with(cache) {
         return buildList {
-            if(authorization != CacheGrantLevel.NOT_GRANTED) {
+            if (authorization != CacheGrantLevel.NOT_GRANTED) {
                 add(
-                    if(authorization == CacheGrantLevel.WRITE)
+                    if (authorization == CacheGrantLevel.WRITE)
                         AuthorizationsScope.Write
                     else AuthorizationsScope.Read
                 )
             }
 
-            if(users != CacheGrantLevel.NOT_GRANTED) {
+            if (users != CacheGrantLevel.NOT_GRANTED) {
                 add(
-                    if(users == CacheGrantLevel.WRITE)
+                    if (users == CacheGrantLevel.WRITE)
                         UsersScope.Write
                     else UsersScope.Read
                 )
             }
 
-            if(files != CacheGrantLevel.NOT_GRANTED) {
+            if (files != CacheGrantLevel.NOT_GRANTED) {
                 add(
-                    if(files == CacheGrantLevel.WRITE)
+                    if (files == CacheGrantLevel.WRITE)
                         FilesScope.Write
                     else FilesScope.Read
                 )
             }
 
-            if(timers != CacheGrantLevel.NOT_GRANTED) {
+            if (timers != CacheGrantLevel.NOT_GRANTED) {
                 add(
-                    if(timers == CacheGrantLevel.WRITE)
+                    if (timers == CacheGrantLevel.WRITE)
                         TimersScope.Write
                     else TimersScope.Read
                 )

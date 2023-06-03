@@ -10,7 +10,6 @@ import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.timemates.backend.authorization.repositories.VerificationsRepository
-import io.timemates.backend.authorization.types.value.Attempts
 import io.timemates.backend.authorization.usecases.AuthByEmailUseCase
 import io.timemates.backend.common.repositories.EmailsRepository
 import io.timemates.backend.common.types.value.Count
@@ -20,7 +19,6 @@ import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.extension.ExtendWith
 import kotlin.test.assertEquals
-import kotlin.time.Duration.Companion.minutes
 
 // @Testable
 // @TestInstance(TestInstance.Lifecycle.PER_CLASS)

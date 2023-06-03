@@ -38,13 +38,13 @@ public interface StateMachine<KeyType : Any, EventType : Any, StateType : State<
  * Returns current state of the specified by [key] state machine.
  */
 public suspend fun <KT : Any, ET : Any, ST : State<ET>> StateMachine<KT, ET, ST>.getCurrentState(
-    key: KT
+    key: KT,
 ): ST? {
     return getState(key)?.first()
 }
 
 public suspend fun <KT : Any, ET : Any, ST : State<ET>> StateMachine<KT, ET, ST>.getCurrentState(
-    keys: List<KT>
+    keys: List<KT>,
 ): Map<KT, ST?> = coroutineScope {
     keys.associateWith { getCurrentState(it) }
 }

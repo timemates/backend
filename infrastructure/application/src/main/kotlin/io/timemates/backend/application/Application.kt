@@ -19,11 +19,9 @@ import io.timemates.backend.services.authorization.interceptor.AuthorizationInte
 import io.timemates.backend.services.files.FilesService
 import io.timemates.backend.services.timers.TimersService
 import io.timemates.backend.services.users.UsersService
-import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.dsl.module
-import org.koin.mp.KoinPlatform
 import java.net.URI
 
 /**
@@ -81,7 +79,7 @@ fun main(args: Array<String>) {
     )
 
     val mailingConfig = if (arguments.isPresent(ArgumentsConstants.SMTP_HOST) ||
-            !System.getenv(EnvironmentConstants.SMTP_HOST).isNullOrEmpty()) {
+        !System.getenv(EnvironmentConstants.SMTP_HOST).isNullOrEmpty()) {
         MailerConfiguration.SMTP(
             host = arguments.getNamedOrNull(ArgumentsConstants.SMTP_HOST)
                 ?: System.getenv(EnvironmentConstants.SMTP_HOST)
@@ -103,7 +101,7 @@ fun main(args: Array<String>) {
                 ?: error(FailureMessages.MISSING_SMTP_SENDER),
         )
     } else if (!System.getenv(EnvironmentConstants.MAILERSEND_API_KEY).isNullOrEmpty()
-            || arguments.isPresent(ArgumentsConstants.MAILERSEND_API_KEY)) {
+        || arguments.isPresent(ArgumentsConstants.MAILERSEND_API_KEY)) {
         MailerConfiguration.MailerSend(
             configuration = MailerSendEmailsRepository.Configuration(
                 apiKey = arguments.getNamedOrNull(ArgumentsConstants.MAILERSEND_API_KEY)

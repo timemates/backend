@@ -4,12 +4,12 @@ import com.timemates.backend.time.TimeProvider
 import com.timemates.backend.time.UnixTime
 import com.timemates.backend.validation.createOrThrow
 import com.timemates.random.RandomProvider
-import io.timemates.backend.common.repositories.EmailsRepository
 import io.timemates.backend.authorization.repositories.VerificationsRepository
 import io.timemates.backend.authorization.types.Email
 import io.timemates.backend.authorization.types.value.Attempts
 import io.timemates.backend.authorization.types.value.VerificationCode
 import io.timemates.backend.authorization.types.value.VerificationHash
+import io.timemates.backend.common.repositories.EmailsRepository
 import io.timemates.backend.users.types.value.EmailAddress
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
@@ -35,7 +35,7 @@ class AuthByEmailUseCase(
                 val expiresAt = timeProvider.provide() + 10.minutes
                 val totalAttempts = Attempts.createOrThrow(3)
 
-                if(!emails.send(emailAddress, Email.AuthorizeEmail(emailAddress, code)))
+                if (!emails.send(emailAddress, Email.AuthorizeEmail(emailAddress, code)))
                     return Result.SendFailed
                 verifications.save(emailAddress, verificationHash, code, expiresAt, totalAttempts)
                 Result.Success(verificationHash, timeProvider.provide() + 10.minutes, totalAttempts)

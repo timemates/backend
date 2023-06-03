@@ -30,7 +30,7 @@ class TimerSessionsService(
     private val mapper: GrpcTimersMapper,
 ) : TimerSessionsServiceGrpcKt.TimerSessionsServiceCoroutineImplBase() {
     override suspend fun startTimer(
-        request: StartTimerSessionRequest.StartTimerRequest
+        request: StartTimerSessionRequest.StartTimerRequest,
     ): Empty = provideAuthorizationContext {
         val timerId = TimerId.createOrStatus(request.timerId)
 
@@ -45,7 +45,7 @@ class TimerSessionsService(
     }
 
     override suspend fun stopTimer(
-        request: StopTimerSessionRequest.StopTimerRequest
+        request: StopTimerSessionRequest.StopTimerRequest,
     ): Empty = provideAuthorizationContext {
         val timerId = TimerId.createOrStatus(request.timerId)
 
@@ -66,7 +66,7 @@ class TimerSessionsService(
     }
 
     override suspend fun joinSession(
-        request: JoinTimerSessionRequestOuterClass.JoinTimerSessionRequest
+        request: JoinTimerSessionRequestOuterClass.JoinTimerSessionRequest,
     ): Empty = provideAuthorizationContext {
         val timerId = TimerId.createOrStatus(request.timerId)
 
@@ -78,7 +78,7 @@ class TimerSessionsService(
     }
 
     override fun getState(
-        request: GetTimerStateRequestOuterClass.GetTimerStateRequest
+        request: GetTimerStateRequestOuterClass.GetTimerStateRequest,
     ): Flow<TimerStateOuterClass.TimerState> = flow {
         val timerId = TimerId.createOrStatus(request.timerId)
 
