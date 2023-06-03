@@ -17,7 +17,7 @@ service AuthorizationService {
    * Has next restrictions:
    * – 3 requests per email is max.
    */
-  rpc startAuthorization(StartAuthorizationRequest) returns (google.protobuf.Empty) {
+  rpc startAuthorization(StartAuthorizationRequest) returns (StartAuthorizationRequest.Result) {
     option (omit_authorization) = true;
   }
 

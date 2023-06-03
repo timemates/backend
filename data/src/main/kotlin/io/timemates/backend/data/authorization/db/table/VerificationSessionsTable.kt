@@ -1,5 +1,6 @@
 package io.timemates.backend.data.authorization.db.table
 
+import io.timemates.backend.authorization.types.value.VerificationCode
 import io.timemates.backend.authorization.types.value.VerificationHash
 import io.timemates.backend.data.users.datasource.PostgresqlUsersDataSource.UsersTable
 import io.timemates.backend.users.types.value.EmailAddress
@@ -10,7 +11,7 @@ object VerificationSessionsTable : Table("verification_sessions") {
     val VERIFICATION_HASH = varchar("verification_hash", VerificationHash.SIZE)
     val EMAIL = varchar("email", EmailAddress.SIZE.last)
     val IS_CONFIRMED = bool("is_confirmed").default(false)
-    val CONFIRMATION_CODE = varchar("confirmation_code", 6)
+    val CONFIRMATION_CODE = varchar("confirmation_code", VerificationCode.SIZE)
     val ATTEMPTS = integer("attempts")
     val INIT_TIME = long("init_time")
 }

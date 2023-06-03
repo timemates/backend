@@ -64,7 +64,7 @@ class VerifyAuthorizationUseCase(
                     } else {
                         verifications.markConfirmed(verificationToken)
                         Result.Success.NewAccount
-                    }.also { verifications.remove(verificationToken) }
+                    }
                 }
 
                 verifications.addAttempt(verificationToken)

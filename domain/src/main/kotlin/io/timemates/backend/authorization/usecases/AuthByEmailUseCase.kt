@@ -38,7 +38,7 @@ class AuthByEmailUseCase(
                 if(!emails.send(emailAddress, Email.AuthorizeEmail(emailAddress, code)))
                     return Result.SendFailed
                 verifications.save(emailAddress, verificationHash, code, expiresAt, totalAttempts)
-                Result.Success(timeProvider.provide() + 10.minutes, totalAttempts)
+                Result.Success(verificationHash, timeProvider.provide() + 10.minutes, totalAttempts)
             }
         }
     }
@@ -46,6 +46,7 @@ class AuthByEmailUseCase(
     sealed interface Result {
         data object SendFailed : Result
         data class Success(
+            val verificationHash: VerificationHash,
             val expiresAt: UnixTime,
             val attempts: Attempts,
         ) : Result

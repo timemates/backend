@@ -9,7 +9,7 @@ import kotlin.coroutines.CoroutineContext
 /**
  * Base pool of threads that are used for database connection.
  */
-private val DB = Dispatchers.IO.limitedParallelism(60)
+val Dispatchers.DB by lazy { Dispatchers.IO.limitedParallelism(60) }
 
 /**
  * A suspend function that provides context for performing database transactions in
@@ -18,12 +18,12 @@ private val DB = Dispatchers.IO.limitedParallelism(60)
  * @param block The block of code that will be executed as part of the transaction.
  * @return [ReturnType] of the query.
  */
-suspend fun <ReturnType> suspendedTransaction(
+suspend inline fun <ReturnType> suspendedTransaction(
     database: Database,
-    coroutineContext: CoroutineContext = DB,
-    block: suspend Transaction.() -> ReturnType,
+    coroutineContext: CoroutineContext = Dispatchers.DB,
+    noinline block: Transaction.() -> ReturnType,
 ): ReturnType = newSuspendedTransaction(
     context = coroutineContext,
     db = database,
-    statement = block
+    statement = block,
 )

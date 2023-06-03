@@ -13,7 +13,7 @@ value class Count private constructor(val int: Int) {
         context(ValidationFailureHandler)
         override fun create(value: Int): Count {
             return when {
-                value > 0 -> Count(value)
+                value >= 0 -> Count(value)
                 else -> onFail(FailureMessage.ofNegative())
             }
         }

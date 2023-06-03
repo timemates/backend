@@ -1,9 +1,5 @@
 package io.timemates.backend.data.authorization.db
 
-import com.timemates.backend.time.UnixTime
-import io.timemates.backend.authorization.types.value.Attempts
-import io.timemates.backend.authorization.types.value.VerificationCode
-import io.timemates.backend.authorization.types.value.VerificationHash
 import io.timemates.backend.data.authorization.db.entities.DbVerification
 import io.timemates.backend.data.authorization.db.mapper.DbVerificationsMapper
 import io.timemates.backend.data.authorization.db.table.VerificationSessionsTable
@@ -11,14 +7,21 @@ import io.timemates.backend.data.authorization.db.table.VerificationSessionsTabl
 import io.timemates.backend.data.authorization.db.table.VerificationSessionsTable.VERIFICATION_HASH
 import io.timemates.backend.exposed.suspendedTransaction
 import io.timemates.backend.exposed.update
-import io.timemates.backend.users.types.value.EmailAddress
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.transactions.transaction
 
 class TableVerificationsDataSource(
     private val database: Database,
     private val verificationsMapper: DbVerificationsMapper,
 ) {
+
+    init {
+        transaction(database) {
+            SchemaUtils.create(VerificationSessionsTable)
+        }
+    }
+
     suspend fun add(
         emailAddress: String,
         verificationToken: String,
@@ -53,11 +56,16 @@ class TableVerificationsDataSource(
         }
     }
 
-    suspend fun getAttempts(email: String, afterTime: Long): Int = suspendedTransaction(database) {
-        VerificationSessionsTable.select {
-            VerificationSessionsTable.EMAIL eq email and
-                (VerificationSessionsTable.INIT_TIME greater afterTime)
-        }.sumOf { it[VerificationSessionsTable.ATTEMPTS] }
+    suspend fun getAttempts(email: String, afterTime: Long): Int = try {
+        suspendedTransaction(database) {
+            VerificationSessionsTable.select {
+                VerificationSessionsTable.EMAIL eq email and
+                    (VerificationSessionsTable.INIT_TIME greater afterTime)
+            }.sumOf { it[ATTEMPTS] }
+        }
+    } catch (e: Throwable) {
+        e.printStackTrace()
+        0
     }
 
     suspend fun getSessionsCount(

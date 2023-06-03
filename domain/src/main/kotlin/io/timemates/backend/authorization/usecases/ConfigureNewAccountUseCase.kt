@@ -44,6 +44,8 @@ class ConfigureNewAccountUseCase(
             currentTime,
         )
 
+        verifications.remove(verificationToken)
+
         return Result.Success(
             Authorization(
                 userId = id,

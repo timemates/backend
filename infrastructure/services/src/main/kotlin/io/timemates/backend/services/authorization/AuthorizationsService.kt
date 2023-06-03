@@ -8,6 +8,7 @@ import io.timemates.api.authorizations.requests.ConfirmAuthorizationRequestKt
 import io.timemates.api.authorizations.requests.ConfirmAuthorizationRequestOuterClass.ConfirmAuthorizationRequest
 import io.timemates.api.authorizations.requests.GetAuthorizationsRequestKt
 import io.timemates.api.authorizations.requests.GetAuthorizationsRequestOuterClass.GetAuthorizationsRequest
+import io.timemates.api.authorizations.requests.StartAuthorizationRequestKt
 import io.timemates.api.authorizations.requests.StartAuthorizationRequestOuterClass.StartAuthorizationRequest
 import io.timemates.api.users.requests.CreateProfileRequestKt
 import io.timemates.api.users.requests.CreateProfileRequestOuterClass
@@ -35,13 +36,17 @@ class AuthorizationsService(
 
     override suspend fun startAuthorization(
         request: StartAuthorizationRequest,
-    ): Empty {
+    ): StartAuthorizationRequest.Result {
         val email = EmailAddress.createOrStatus(request.emailAddress)
 
-        return when (authByEmailUseCase.execute(email)) {
+        return when (val result = authByEmailUseCase.execute(email)) {
             AuthByEmailUseCase.Result.AttemptsExceed -> throw StatusException(Status.RESOURCE_EXHAUSTED)
             AuthByEmailUseCase.Result.SendFailed -> throw StatusException(Status.UNAVAILABLE)
-            is AuthByEmailUseCase.Result.Success -> Empty.getDefaultInstance()
+            is AuthByEmailUseCase.Result.Success -> StartAuthorizationRequestKt.result {
+                verificationHash = result.verificationHash.string
+                attempts = result.attempts.int
+                expiresAt = result.expiresAt.inMilliseconds
+            }
         }
     }
 
@@ -73,7 +78,9 @@ class AuthorizationsService(
         }
     }
 
-    override suspend fun createProfile(request: CreateProfileRequestOuterClass.CreateProfileRequest): CreateProfileRequestOuterClass.CreateProfileRequest.Response {
+    override suspend fun createProfile(
+        request: CreateProfileRequestOuterClass.CreateProfileRequest
+    ): CreateProfileRequestOuterClass.CreateProfileRequest.Response {
         val name = UserName.createOrStatus(request.name)
         val description = UserDescription.createOrStatus(request.description)
         val verificationHash = VerificationHash.createOrStatus(request.verificationHash)

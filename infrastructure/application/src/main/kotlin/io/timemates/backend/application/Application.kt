@@ -126,6 +126,8 @@ fun main(args: Array<String>) {
         ?: System.getenv(EnvironmentConstants.FILES_PATH)
         ?: error(FailureMessages.MISSING_FILES_PATH)
 
+    println(databaseConfig)
+
     val dynamicModule = module {
         single<DatabaseConfig> { databaseConfig }
         single<MailerConfiguration> { mailingConfig }

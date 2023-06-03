@@ -8,7 +8,7 @@ import com.timemates.backend.validation.reflection.wrapperTypeName
 @JvmInline
 value class VerificationCode private constructor(val string: String) {
     companion object : SafeConstructor<VerificationCode, String>() {
-        const val SIZE = 5
+        const val SIZE = 8
         override val displayName: String by wrapperTypeName()
 
         context(ValidationFailureHandler)

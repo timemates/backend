@@ -26,6 +26,8 @@ dependencies {
     implementation(libs.grpc.netty)
 
     implementation(libs.koin.core)
+
+    implementation(libs.logback.classic)
 }
 
 application {
