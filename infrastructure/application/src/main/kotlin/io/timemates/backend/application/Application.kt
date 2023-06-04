@@ -4,6 +4,7 @@ package io.timemates.backend.application
 
 import io.grpc.BindableService
 import io.grpc.ServerBuilder
+import io.grpc.ServerInterceptor
 import io.timemates.backend.application.constants.ArgumentsConstants
 import io.timemates.backend.application.constants.EnvironmentConstants
 import io.timemates.backend.application.constants.FailureMessages
@@ -144,7 +145,7 @@ fun main(args: Array<String>) {
         .addService(koin.get<FilesService>() as BindableService)
         .addService(koin.get<TimersService>() as BindableService)
         .addService(koin.get<AuthorizationsService>() as BindableService)
-        .intercept(AuthorizationInterceptor(koin.get()))
+        .intercept(AuthorizationInterceptor(koin.get()) as ServerInterceptor)
         .build()
 
 
