@@ -9,7 +9,7 @@ import java.io.InputStream
 import java.nio.file.Path
 import kotlin.io.path.*
 
-class LocalFilesDataSource(private val localFilesPath: Path) {
+class LocalFilesDataSource(internal val localFilesPath: Path) {
 
     enum class FileType {
         IMAGE,

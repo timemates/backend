@@ -5,6 +5,7 @@ import io.timemates.backend.data.files.datasource.PostgresqlFilesDataSource.File
 import io.timemates.backend.files.types.value.FileId
 import org.jetbrains.exposed.sql.ResultRow
 import io.timemates.backend.files.types.File as DomainFile
+import io.timemates.backend.files.types.FileType as DomainFileType
 
 
 class FileEntityMapper {
@@ -13,6 +14,18 @@ class FileEntityMapper {
             FileType.IMAGE -> DomainFile.Image(
                 FileId.createOrThrow(file.fileId),
             )
+        }
+    }
+
+    fun domainTypeToLocalFilesType(fileType: DomainFileType): LocalFilesDataSource.FileType {
+        return when (fileType) {
+            DomainFileType.IMAGE -> LocalFilesDataSource.FileType.IMAGE
+        }
+    }
+
+    fun domainTypeToDbType(fileType: DomainFileType): FileType {
+        return when (fileType) {
+            DomainFileType.IMAGE -> FileType.IMAGE
         }
     }
 
