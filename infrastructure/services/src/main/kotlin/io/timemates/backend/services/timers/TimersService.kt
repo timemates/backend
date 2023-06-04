@@ -3,7 +3,7 @@ package io.timemates.backend.services.timers
 import com.google.protobuf.Empty
 import io.grpc.Status
 import io.grpc.StatusException
-import io.timemates.api.timers.TimersServiceGrpcKt
+import io.timemates.api.timers.TimersServiceGrpcKt.TimersServiceCoroutineImplBase
 import io.timemates.api.timers.members.invites.requests.*
 import io.timemates.api.timers.members.requests.GetMembersRequestKt
 import io.timemates.api.timers.members.requests.GetMembersRequestOuterClass.GetMembersRequest
@@ -43,7 +43,7 @@ class TimersService(
     private val getTimerUseCase: GetTimerUseCase,
     private val mapper: GrpcTimersMapper,
     private val usersMapper: GrpcUsersMapper,
-) : TimersServiceGrpcKt.TimersServiceCoroutineImplBase() {
+) : TimersServiceCoroutineImplBase() {
     override suspend fun createInvite(
         request: CreateInviteRequest.InviteMemberRequest,
     ): CreateInviteRequest.InviteMemberRequest.Response = provideAuthorizationContext {
@@ -173,28 +173,17 @@ class TimersService(
         }
     }
 
-    override suspend fun setTimerInfo(
-        request: EditTimerInfoRequestOuterClass.EditTimerInfoRequest,
+    override suspend fun editTimer(
+        request: EditTimerInfoRequest.EditTimerRequest
     ): Empty = provideAuthorizationContext {
         val timerId = TimerId.createOrStatus(request.timerId)
-        val patch = mapper.toTimerInfoPatch(request)
+        val infoPatch = mapper.toTimerInfoPatch(request)
+        val settingsPatch = request.settingsOrNull?.let { mapper.toTimerSettingsPatch(it) }
 
-        return when (setTimerInfoUseCase.execute(timerId, patch)) {
+        return when (setTimerInfoUseCase.execute(timerId, infoPatch, settingsPatch)) {
             SetTimerInfoUseCase.Result.Success -> Empty.getDefaultInstance()
             SetTimerInfoUseCase.Result.NoAccess -> throw StatusException(Status.PERMISSION_DENIED)
             SetTimerInfoUseCase.Result.NotFound -> throw StatusException(Status.NOT_FOUND)
-        }
-    }
-
-    override suspend fun setTimerSettings(
-        request: EditTimerSettingsRequestOuterClass.EditTimerSettingsRequest,
-    ): Empty = provideAuthorizationContext {
-        val timerId = TimerId.createOrStatus(request.timerId)
-        val patch = mapper.toTimerSettingsPatch(request)
-
-        when (setTimerSettingsUseCase.execute(timerId, patch)) {
-            SetTimerSettingsUseCase.Result.NoAccess -> throw StatusException(Status.PERMISSION_DENIED)
-            SetTimerSettingsUseCase.Result.Success -> Empty.getDefaultInstance()
         }
     }
 }
