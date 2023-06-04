@@ -20,7 +20,7 @@ class UsersService(
     private val mapper: GrpcUsersMapper,
 ) : UsersServiceGrpcKt.UsersServiceCoroutineImplBase() {
     override suspend fun getUsers(request: GetUsersRequestOuterClass.GetUsersRequest): Users {
-        return when (val result = getUsersUseCase.execute(request.userIdList.map(UserId::createOrStatus))) {
+        return when (val result = getUsersUseCase.execute(request.userIdList.map { UserId.createOrStatus(it) })) {
             is GetUsersUseCase.Result.Success -> Users.newBuilder()
                 .addAllUsers(result.collection.map { mapper.toGrpcUser(it) })
                 .build()
