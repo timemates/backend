@@ -40,6 +40,7 @@ include(":domain", ":data")
 include(
     ":infrastructure:services",
     ":infrastructure:application",
+    ":infrastructure:configuration-api",
 )
 
 

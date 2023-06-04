@@ -63,6 +63,9 @@ protobuf-kotlin = { module = "com.google.protobuf:protobuf-kotlin", version.ref 
 protobuf-java = { module = "com.google.protobuf:protobuf-java", version.ref = "protobuf" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 postgresql-driver = { module = "org.postgresql:postgresql", version.require = "42.6.0" }
+kotlin-scripting-common = { module = "org.jetbrains.kotlin:kotlin-scripting-common", version.ref = "kotlin" }
+kotlin-scripting-dependencies = { module = "org.jetbrains.kotlin:kotlin-scripting-dependencies", version.ref = "kotlin" }
+kotlin-scripting-maven = { module = "org.jetbrains.kotlin:kotlin-scripting-dependencies-maven", version.ref = "kotlin" }
 
 [plugins]
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
