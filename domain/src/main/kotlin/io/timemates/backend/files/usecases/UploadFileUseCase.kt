@@ -1,9 +1,11 @@
 package io.timemates.backend.files.usecases
 
+import com.timemates.backend.time.TimeProvider
 import com.timemates.backend.validation.createOrThrow
 import com.timemates.random.RandomProvider
 import io.timemates.backend.features.authorization.AuthorizedContext
 import io.timemates.backend.files.repositories.FilesRepository
+import io.timemates.backend.files.types.FileType
 import io.timemates.backend.files.types.FilesScope
 import io.timemates.backend.files.types.value.FileId
 import kotlinx.coroutines.coroutineScope
@@ -12,9 +14,11 @@ import kotlinx.coroutines.flow.Flow
 class UploadFileUseCase(
     private val files: FilesRepository,
     private val randomProvider: RandomProvider,
+    private val timeProvider: TimeProvider,
 ) {
     context(AuthorizedContext<FilesScope.Write>)
     suspend fun execute(
+        fileType: FileType,
         inputStream: Flow<ByteArray>,
     ): Result {
         val fileId = FileId.createOrThrow(randomProvider.randomHash(FileId.SIZE))
@@ -23,7 +27,7 @@ class UploadFileUseCase(
         // saved variants
         try {
             coroutineScope {
-                files.save(fileId, inputStream)
+                files.save(fileId, fileType, inputStream, timeProvider.provide())
             }
         } catch (exception: Exception) {
             files.remove(fileId)
