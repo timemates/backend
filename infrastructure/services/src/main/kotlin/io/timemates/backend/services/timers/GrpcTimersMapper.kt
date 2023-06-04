@@ -1,8 +1,7 @@
 package io.timemates.backend.services.timers
 
 import io.timemates.api.timers.members.invites.types.InviteOuterClass
-import io.timemates.api.timers.requests.EditTimerInfoRequestOuterClass
-import io.timemates.api.timers.requests.EditTimerSettingsRequestOuterClass
+import io.timemates.api.timers.requests.EditTimerInfoRequest.EditTimerRequest
 import io.timemates.api.timers.sessions.types.TimerStateKt
 import io.timemates.api.timers.sessions.types.TimerStateOuterClass
 import io.timemates.api.timers.sessions.types.timerState
@@ -18,15 +17,16 @@ import io.timemates.backend.timers.types.TimerSettings
 import io.timemates.backend.timers.types.value.TimerDescription
 import io.timemates.backend.timers.types.value.TimerName
 import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration.Companion.seconds
 
 class GrpcTimersMapper {
     fun toDomainSettings(settings: TimerOuterClass.Timer.Settings): TimerSettings {
         return TimerSettings(
-            workTime = settings.workTime.milliseconds,
-            restTime = settings.restTime.milliseconds,
+            workTime = settings.workTime.seconds,
+            restTime = settings.restTime.seconds,
             bigRestPer = Count.createOrStatus(settings.bigRestPer),
             bigRestEnabled = settings.bigRestEnabled,
-            bigRestTime = settings.bigRestTime.milliseconds,
+            bigRestTime = settings.bigRestTime.seconds,
             isEveryoneCanPause = settings.isEveryoneCanPause,
             isConfirmationRequired = settings.isConfirmationRequired,
         )
@@ -80,7 +80,7 @@ class GrpcTimersMapper {
     }
 
     fun toTimerSettingsPatch(
-        settings: EditTimerSettingsRequestOuterClass.EditTimerSettingsRequest,
+        settings: TimerOuterClass.Timer.Settings.Patch,
     ): TimerSettings.Patch {
         return TimerSettings.Patch(
             workTime = settings.workTime.takeIf { settings.hasWorkTime() }?.milliseconds,
@@ -94,7 +94,7 @@ class GrpcTimersMapper {
     }
 
     fun toTimerInfoPatch(
-        patch: EditTimerInfoRequestOuterClass.EditTimerInfoRequest,
+        patch: EditTimerRequest,
     ): TimersRepository.TimerInformation.Patch {
         return TimersRepository.TimerInformation.Patch(
             name = patch.name.takeIf { patch.hasName() }?.let { TimerName.createOrStatus(it) },
