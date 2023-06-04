@@ -4,12 +4,12 @@ plugins {
 }
 
 dependencies {
-    implementation(projects.domain)
-    implementation(projects.features.scheduler)
-    implementation(projects.features.exposedUtils)
-    implementation(projects.features.fsm)
-    implementation(projects.features.pageToken)
-    testImplementation(projects.features.testUtils)
+    implementation(projects.core)
+    implementation(projects.common.scheduler)
+    implementation(projects.common.exposedUtils)
+    implementation(projects.common.stateMachine)
+    implementation(projects.common.pageToken)
+    testImplementation(projects.common.testUtils)
 
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.cio)
@@ -17,7 +17,7 @@ dependencies {
     implementation(libs.ktor.client.logging)
     implementation(libs.ktor.json)
 
-    implementation(projects.features.smtpMailer)
+    implementation(projects.common.smtpMailer)
 
     implementation(libs.kotlinx.serialization)
 
