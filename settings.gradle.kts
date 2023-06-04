@@ -21,25 +21,24 @@ pluginManagement {
 rootProject.name = "timemates-backend"
 
 include(
-    ":features:validation",
-    ":features:random",
-    ":features:authorization",
-    ":features:time",
-    ":features:scheduler",
-    ":features:exposed-utils",
-    ":features:test-utils",
-    ":features:fsm",
-    ":features:coroutines-utils",
-    ":features:page-token",
-    ":features:smtp-mailer",
-    ":features:cli-arguments",
+    ":common:validation",
+    ":common:random",
+    ":common:authorization",
+    ":common:time",
+    ":common:scheduler",
+    ":common:exposed-utils",
+    ":common:test-utils",
+    ":common:state-machine",
+    ":common:coroutines-utils",
+    ":common:page-token",
+    ":common:smtp-mailer",
+    ":common:cli-arguments",
 )
 
-include(":domain", ":data")
+include(":core", ":data")
 
-include(
-    ":infrastructure:services",
-    ":infrastructure:application",
-)
+include(":infrastructure:grpc-api")
+
+include(":app")
 
 
