@@ -19,29 +19,11 @@ val FilesModule = module {
     single {
         LocalFilesDataSource(Path.of(get<URI>(filesPathName)))
     }
-    single {
-        PostgresqlFilesDataSource(database = get(), mapper = get())
-    }
-    single {
-        FileEntityMapper()
-    }
+    singleOf(::PostgresqlFilesDataSource)
+    singleOf(::FileEntityMapper)
     singleOf(::LocalFilesRepository)
-    single {
-        GetImageUseCase(filesRepository = get())
-    }
-    single {
-        UploadFileUseCase(files = get(), randomProvider = get())
-    }
-
 
     // Use cases
-    single {
-        GetImageUseCase(filesRepository = get())
-    }
-    single {
-        UploadFileUseCase(
-            files = get(),
-            randomProvider = get()
-        )
-    }
+    singleOf(::GetImageUseCase)
+    singleOf(::UploadFileUseCase)
 }
