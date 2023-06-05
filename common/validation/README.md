@@ -35,6 +35,7 @@ value class EmailAddress private constructor(val string: String) {
         private val SIZE = 3..200
         private val EMAIL_PATTERN = Regex("<email-regex-pattern>")
 
+        context (ValidationFailureHandler)
         override fun create(value: String): EmailAddress {
             return when {
                 value.isEmpty() -> onFail(FailureMessage.ofBlank())
