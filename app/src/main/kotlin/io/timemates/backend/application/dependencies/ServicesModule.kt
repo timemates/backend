@@ -10,13 +10,9 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 val ServicesModule = module {
-    single {
-        GrpcUsersMapper()
-    }
+    singleOf(::GrpcUsersMapper)
 
-    single {
-        GrpcTimersMapper()
-    }
+    singleOf(::GrpcTimersMapper)
 
     singleOf(::UsersService)
     singleOf(::FilesService)
