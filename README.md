@@ -40,11 +40,10 @@ To run this application on your own host, you need to provide the following envi
 > corresponding environment variables.
 >
 > If using the SMTP mailer implementation, make sure to set
-> the `TIMEMATES_SMTP_HOST`, `TIMEMATES_SMTP_PORT`, `TIMEMATES_SMTP_USER`, `TIMEMATES_SMTP_USER_PASSWORD`, 
-> `TIMEMATES_SMTP_SENDER` and `MAILERSEND_SUPPORT_EMAIL` variables.
+> the `TIMEMATES_SMTP_HOST`, `TIMEMATES_SMTP_PORT`, `TIMEMATES_SMTP_USER`, `TIMEMATES_SMTP_USER_PASSWORD` and
+> `TIMEMATES_SMTP_SENDER` variables.
 >
-> If using the MailerSend implementation, you should set the `MAILERSEND_API_KEY`, `MAILERSEND_SENDER`,
-> and `MAILERSEND_CONFIRMATION_TEMPLATE` variables.
+> If using the MailerSend implementation, you should set the `MAILERSEND_API_KEY`, `MAILERSEND_SENDER`, `MAILERSEND_CONFIRMATION_TEMPLATE` and `MAILERSEND_SUPPORT_EMAIL` variables.
 >
 > Refer to the code documentation for more details on configuring the mailer implementation.
 
