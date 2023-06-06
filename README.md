@@ -40,8 +40,8 @@ To run this application on your own host, you need to provide the following envi
 > corresponding environment variables.
 >
 > If using the SMTP mailer implementation, make sure to set
-> the `TIMEMATES_SMTP_HOST`, `TIMEMATES_SMTP_PORT`, `TIMEMATES_SMTP_USER`, `TIMEMATES_SMTP_USER_PASSWORD`,
-> and `TIMEMATES_SMTP_SENDER` variables.
+> the `TIMEMATES_SMTP_HOST`, `TIMEMATES_SMTP_PORT`, `TIMEMATES_SMTP_USER`, `TIMEMATES_SMTP_USER_PASSWORD`, 
+> `TIMEMATES_SMTP_SENDER` and `MAILERSEND_SUPPORT_EMAIL` variables.
 >
 > If using the MailerSend implementation, you should set the `MAILERSEND_API_KEY`, `MAILERSEND_SENDER`,
 > and `MAILERSEND_CONFIRMATION_TEMPLATE` variables.
@@ -50,7 +50,7 @@ To run this application on your own host, you need to provide the following envi
 
 > **Note** <br>
 > You can also use Java arguments to set up the application. Refer to
-> the [source code](infrastructure/application/src/main/kotlin/io/timemates/backend/application/Application.kt) for more
+> the [source code](/app/src/main/kotlin/io/timemates/backend/application/Application.kt) for more
 > information.
 
 ## Docker image

@@ -43,7 +43,7 @@ value class EmailAddress private constructor(val string: String) {
             return when {
                 value.isEmpty() -> onFail(FailureMessage.ofBlank())
                 value.length !in SIZE -> onFail(FailureMessage.ofSize(SIZE))
-                !EMAIL_PATTERN.matches(value) -> onFail(FailureMessage.ofPattern(EMAIL_PATTERN))
+                !EMAIL_PATTERN.magtches(value) -> onFail(FailureMessage.ofPattern(EMAIL_PATTERN))
                 else -> EmailAddress(value)
             }
         }

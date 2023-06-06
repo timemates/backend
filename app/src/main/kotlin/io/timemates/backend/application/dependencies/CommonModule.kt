@@ -2,6 +2,7 @@ package io.timemates.backend.application.dependencies
 
 import com.timemates.backend.time.SystemTimeProvider
 import com.timemates.backend.time.TimeProvider
+import com.timemates.random.RandomProvider
 import com.timemates.random.SecureRandomProvider
 import io.timemates.backend.application.dependencies.configuration.MailerConfiguration
 import io.timemates.backend.common.repositories.EmailsRepository
@@ -19,7 +20,9 @@ val CommonModule = module {
     single<TimeProvider> {
         SystemTimeProvider(ZoneId.of("UTC"))
     }
-    singleOf(::SecureRandomProvider)
+    single<RandomProvider> {
+        SecureRandomProvider()
+    }
     single<EmailsRepository> {
 
         when (val configuration = get<MailerConfiguration>()) {

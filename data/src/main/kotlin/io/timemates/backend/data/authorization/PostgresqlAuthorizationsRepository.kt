@@ -63,6 +63,7 @@ class PostgresqlAuthorizationsRepository(
             ?.let { return mapper.cacheAuthToDomainAuth(it) }
 
         return tableAuthorizationsDataSource.getAuthorization(accessToken.string, afterTime.inMilliseconds)
+            ?.also { cacheAuthorizations.saveAuthorization(accessToken.string, mapper.dbAuthToCacheAuth(it)) }
             ?.let(mapper::dbAuthToDomainAuth)
     }
 

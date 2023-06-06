@@ -2,6 +2,7 @@
 
 package io.timemates.backend.application
 
+import io.grpc.BinaryLog
 import io.grpc.BindableService
 import io.grpc.ServerBuilder
 import io.grpc.ServerInterceptor
@@ -17,11 +18,14 @@ import io.timemates.backend.cli.getNamedIntOrNull
 import io.timemates.backend.data.common.repositories.MailerSendEmailsRepository
 import io.timemates.backend.services.authorization.AuthorizationsService
 import io.timemates.backend.services.authorization.interceptor.AuthorizationInterceptor
+import io.timemates.backend.services.authorization.provider.AuthorizationProvider
 import io.timemates.backend.services.files.FilesService
 import io.timemates.backend.services.timers.TimersService
+import io.timemates.backend.services.timers.sessions.TimerSessionsService
 import io.timemates.backend.services.users.UsersService
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import java.net.URI
 
@@ -134,6 +138,7 @@ fun main(args: Array<String>) {
         single<DatabaseConfig> { databaseConfig }
         single<MailerConfiguration> { mailingConfig }
         single(filesPathName) { URI.create("file://$filesPath") }
+        singleOf(::AuthorizationProvider)
     }
 
     val koin = startKoin {
@@ -145,6 +150,7 @@ fun main(args: Array<String>) {
         .addService(koin.get<FilesService>() as BindableService)
         .addService(koin.get<TimersService>() as BindableService)
         .addService(koin.get<AuthorizationsService>() as BindableService)
+        .addService(koin.get<TimerSessionsService>() as BindableService)
         .intercept(AuthorizationInterceptor(koin.get()) as ServerInterceptor)
         .build()
 

@@ -1,5 +1,6 @@
 package io.timemates.backend.application.dependencies
 
+import io.timemates.backend.authorization.repositories.AuthorizationsRepository
 import io.timemates.backend.authorization.repositories.VerificationsRepository
 import io.timemates.backend.authorization.usecases.*
 import io.timemates.backend.data.authorization.PostgresqlAuthorizationsRepository
@@ -25,7 +26,9 @@ val AuthorizationsModule = module {
     single<VerificationsRepository> {
         PostgresqlVerificationsRepository(TableVerificationsDataSource(get(), DbVerificationsMapper()), VerificationsMapper())
     }
-    singleOf(::PostgresqlAuthorizationsRepository)
+    single<AuthorizationsRepository> {
+        PostgresqlAuthorizationsRepository(get(), get(), get())
+    }
     singleOf(::AuthorizationsMapper)
     singleOf(::GetAuthorizationUseCase)
     singleOf(::GrpcAuthorizationsMapper)
@@ -34,7 +37,7 @@ val AuthorizationsModule = module {
     // Use cases
     singleOf(::AuthByEmailUseCase)
     singleOf(::ConfigureNewAccountUseCase)
-    singleOf(::RemoveAccessTokenUseCase)
+    singleOf(::RefreshTokenUseCase)
     singleOf(::RemoveAccessTokenUseCase)
     singleOf(::VerifyAuthorizationUseCase)
     singleOf(::GetAuthorizationUseCase)

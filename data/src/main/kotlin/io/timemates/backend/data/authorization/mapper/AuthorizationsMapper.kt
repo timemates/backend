@@ -28,6 +28,38 @@ class AuthorizationsMapper {
         )
     }
 
+    fun dbAuthToCacheAuth(auth: DbAuthorization): CacheAuthorization = with(auth) {
+        return CacheAuthorization(
+            userId,
+            accessHash,
+            refreshAccessHash,
+            dbPermissionsToCachePermissions(permissions),
+            expiresAt,
+            createdAt,
+        )
+    }
+
+    private fun dbPermissionsToCachePermissions(
+        auth: DbAuthorization.Permissions,
+    ): CacheAuthorization.Permissions = with(auth) {
+        return CacheAuthorization.Permissions(
+            dbGrantLevelToCacheGrantLevel(authorization),
+            dbGrantLevelToCacheGrantLevel(users),
+            dbGrantLevelToCacheGrantLevel(timers),
+            dbGrantLevelToCacheGrantLevel(files),
+        )
+    }
+
+    private fun dbGrantLevelToCacheGrantLevel(
+        level: DbAuthorization.Permissions.GrantLevel,
+    ): CacheAuthorization.Permissions.GrantLevel {
+        return when (level) {
+            DbAuthorization.Permissions.GrantLevel.READ -> CacheAuthorization.Permissions.GrantLevel.READ
+            DbAuthorization.Permissions.GrantLevel.WRITE -> CacheAuthorization.Permissions.GrantLevel.WRITE
+            DbAuthorization.Permissions.GrantLevel.NOT_GRANTED -> CacheAuthorization.Permissions.GrantLevel.NOT_GRANTED
+        }
+    }
+
     fun cacheAuthToDomainAuth(auth: CacheAuthorization): Authorization = with(auth) {
         return Authorization(
             userId = UserId.createOrThrow(auth.userId),

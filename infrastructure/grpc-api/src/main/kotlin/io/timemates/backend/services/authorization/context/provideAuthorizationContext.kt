@@ -8,8 +8,10 @@ import io.timemates.backend.features.authorization.AuthorizedContext
 import io.timemates.backend.features.authorization.Scope
 import io.timemates.backend.features.authorization.authorizationProvider
 import io.timemates.backend.features.authorization.types.AuthorizedId
+import io.timemates.backend.services.authorization.interceptor.AuthorizationContext
 import io.timemates.backend.services.authorization.interceptor.AuthorizationInterceptor
 import io.timemates.backend.services.common.validation.createOrStatus
+import kotlin.coroutines.coroutineContext
 
 /**
  * Provides an authorization context based on the access token provided in the request headers.
@@ -25,12 +27,12 @@ suspend inline fun <reified T : Scope, R> provideAuthorizationContext(
     constraint: (List<Scope>) -> Boolean = { scopes -> scopes.any { it is T || it is Scope.All } },
     block: context(AuthorizedContext<T>) () -> R,
 ): R {
-    val provider = AuthorizationInterceptor.AUTHORIZATION_PROVIDER.get()
-    val accessHash = AccessHash.createOrStatus(AuthorizationInterceptor.ACCESS_TOKEN_KEY.get())
+    val authorizationContext = coroutineContext[AuthorizationContext]!!
+    val accessHash = AccessHash.createOrStatus(authorizationContext?.accessHash ?: throw StatusException(Status.UNAUTHENTICATED))
 
     return authorizationProvider(
         provider = {
-            provider.provide(accessHash)?.takeIf {
+            authorizationContext.provider.provide(accessHash)?.takeIf {
                 constraint(it.scopes)
             }?.let {
                 Authorized(AuthorizedId(it.userId.long), scopes = it.scopes)

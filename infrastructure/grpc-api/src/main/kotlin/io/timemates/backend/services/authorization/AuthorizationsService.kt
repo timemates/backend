@@ -18,11 +18,13 @@ import io.timemates.backend.authorization.types.value.VerificationHash
 import io.timemates.backend.authorization.usecases.*
 import io.timemates.backend.pagination.PageToken
 import io.timemates.backend.services.authorization.context.provideAuthorizationContext
+import io.timemates.backend.services.authorization.interceptor.AuthorizationContext
 import io.timemates.backend.services.authorization.interceptor.AuthorizationInterceptor
 import io.timemates.backend.services.common.validation.createOrStatus
 import io.timemates.backend.users.types.value.EmailAddress
 import io.timemates.backend.users.types.value.UserDescription
 import io.timemates.backend.users.types.value.UserName
+import kotlin.coroutines.coroutineContext
 
 class AuthorizationsService(
     private val authByEmailUseCase: AuthByEmailUseCase,
@@ -112,8 +114,8 @@ class AuthorizationsService(
     override suspend fun terminateAuthorization(
         request: Empty,
     ): Empty {
-        val accessToken = AuthorizationInterceptor.ACCESS_TOKEN_KEY.get()
-            .let { AccessHash.createOrStatus(it) }
+        val accessToken = coroutineContext[AuthorizationContext]
+            .let { AccessHash.createOrStatus(it?.accessHash ?: throw StatusException(Status.UNAUTHENTICATED)) }
 
         return when (removeAccessTokenUseCase.execute(accessToken)) {
             RemoveAccessTokenUseCase.Result.AuthorizationNotFound ->
