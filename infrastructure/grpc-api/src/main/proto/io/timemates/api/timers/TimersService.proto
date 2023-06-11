@@ -12,6 +12,7 @@ import "io/timemates/api/timers/members/invites/requests/GetInvitesRequest.proto
 import "io/timemates/api/timers/members/invites/requests/RemoveInviteRequest.proto";
 import "io/timemates/api/timers/types/Timer.proto";
 import "google/protobuf/empty.proto";
+import "io/timemates/api/timers/requests/GetCurrentTimerSessionRequest.proto";
 
 option java_package = "io.timemates.api.timers";
 
@@ -65,4 +66,9 @@ service TimersService {
    * Removes timer.
    */
   rpc removeTimer(RemoveTimerRequest) returns (google.protobuf.Empty);
+
+  /**
+  * Gets current timer session
+  */
+  rpc getCurrentTimerSession(GetCurrentTimerSessionRequest) returns (GetCurrentTimerSessionRequest.Response);
 }
