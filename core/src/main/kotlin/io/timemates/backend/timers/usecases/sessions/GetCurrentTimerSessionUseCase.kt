@@ -32,6 +32,7 @@ class GetCurrentTimerSessionUseCase(
         data class Success(
             val timer: Timer
         ) : Result
+
         data object NotFound : Result
     }
 }
