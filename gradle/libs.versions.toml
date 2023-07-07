@@ -13,6 +13,7 @@ protobuf = "3.22.0"
 protobuf-plugin = "0.9.2"
 sqldelight = "2.0.0-alpha05"
 grpc-netty = "1.55.1"
+grpc-services = "1.55.1"
 koin = "3.4.0"
 
 [libraries]
@@ -59,6 +60,7 @@ mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 grpc-protobuf = { module = "io.grpc:grpc-protobuf", version.require = "1.54.0" }
 grpc-kotlin-stub = { module = "io.grpc:grpc-kotlin-stub", version.ref = "grpc" }
 grpc-netty = { module = "io.grpc:grpc-netty", version.ref = "grpc-netty" }
+grpc-services = { module = "io.grpc:grpc-services", version.ref= "grpc-services" }
 protobuf-kotlin = { module = "com.google.protobuf:protobuf-kotlin", version.ref = "protobuf" }
 protobuf-java = { module = "com.google.protobuf:protobuf-java", version.ref = "protobuf" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
