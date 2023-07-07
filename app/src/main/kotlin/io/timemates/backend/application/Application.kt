@@ -2,10 +2,10 @@
 
 package io.timemates.backend.application
 
-import io.grpc.BinaryLog
 import io.grpc.BindableService
 import io.grpc.ServerBuilder
 import io.grpc.ServerInterceptor
+import io.grpc.protobuf.services.ProtoReflectionService
 import io.timemates.backend.application.constants.ArgumentsConstants
 import io.timemates.backend.application.constants.EnvironmentConstants
 import io.timemates.backend.application.constants.FailureMessages
@@ -58,6 +58,7 @@ import java.net.URI
  * @see ArgumentsConstants
  * @see EnvironmentConstants
  */
+
 fun main(args: Array<String>) {
     val arguments = args.asArguments()
 
@@ -151,6 +152,7 @@ fun main(args: Array<String>) {
         .addService(koin.get<TimersService>() as BindableService)
         .addService(koin.get<AuthorizationsService>() as BindableService)
         .addService(koin.get<TimerSessionsService>() as BindableService)
+        .addService(ProtoReflectionService.newInstance())
         .intercept(AuthorizationInterceptor(koin.get()) as ServerInterceptor)
         .build()
 

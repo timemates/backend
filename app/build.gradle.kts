@@ -24,6 +24,7 @@ dependencies {
     implementation(libs.h2.database)
 
     implementation(libs.grpc.netty)
+    implementation(libs.grpc.services)
 
     implementation(libs.koin.core)
 
