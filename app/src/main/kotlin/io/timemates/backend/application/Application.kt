@@ -58,7 +58,6 @@ import java.net.URI
  * @see ArgumentsConstants
  * @see EnvironmentConstants
  */
-
 fun main(args: Array<String>) {
     val arguments = args.asArguments()
 
