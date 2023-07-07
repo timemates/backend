@@ -1,11 +1,11 @@
 package io.timemates.backend.auth.usecases
 
+import com.timemates.backend.time.SystemTimeProvider
 import com.timemates.backend.time.UnixTime
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
-import io.timemates.backend.fsm.getCurrentState
 import io.timemates.backend.testing.auth.testAuthContext
 import io.timemates.backend.testing.validation.createOrAssert
 import io.timemates.backend.timers.fsm.TimerState
@@ -19,10 +19,7 @@ import io.timemates.backend.users.types.value.UserId
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.extension.ExtendWith
-import org.junit.platform.commons.annotation.Testable
 import kotlin.test.assertEquals
 
 
@@ -40,13 +37,15 @@ class GetCurrentTimerSessionUseCaseTest {
 
     private val userId = UserId.createOrAssert(0)
 
+    private val timeProvider = SystemTimeProvider()
+
     private val lastActiveTime = UnixTime.ZERO
 
     private val id = TimerId.createOrAssert(1)
 
     @BeforeAll
     fun before() {
-        useCase = GetCurrentTimerSessionUseCase(sessionsRepository, timers)
+        useCase = GetCurrentTimerSessionUseCase(sessionsRepository, timers, timeProvider)
     }
 
     // @Test
@@ -59,7 +58,7 @@ class GetCurrentTimerSessionUseCaseTest {
         coEvery { timers.getTimerInformation(id)!!.toTimer(mockk()) } returns timer
 
         // WHEN
-        val result = testAuthContext { useCase.execute(userId, lastActiveTime) }
+        val result = testAuthContext { useCase.execute() }
 
         // THEN
         assertEquals(
@@ -74,7 +73,7 @@ class GetCurrentTimerSessionUseCaseTest {
         coEvery { sessionsRepository.getTimerIdOfCurrentSession(userId, lastActiveTime) } returns null
 
         // WHEN
-        val result = testAuthContext { useCase.execute(userId, lastActiveTime) }
+        val result = testAuthContext { useCase.execute() }
 
         // THEN
         assertEquals(
