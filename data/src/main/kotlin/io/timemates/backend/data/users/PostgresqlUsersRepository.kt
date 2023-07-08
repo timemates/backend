@@ -9,11 +9,13 @@ import io.timemates.backend.users.types.value.EmailAddress
 import io.timemates.backend.users.types.value.UserDescription
 import io.timemates.backend.users.types.value.UserId
 import io.timemates.backend.users.types.value.UserName
+import timemates.backend.hashing.repository.HashingRepository
 import io.timemates.backend.users.repositories.UsersRepository as UsersRepositoryContract
 
 class PostgresqlUsersRepository(
     private val postgresqlUsers: PostgresqlUsersDataSource,
     private val cachedUsers: CachedUsersDataSource,
+    private val hashingRepository: HashingRepository,
     private val mapper: UserEntitiesMapper,
 ) : UsersRepositoryContract {
     override suspend fun createUser(
@@ -82,7 +84,8 @@ class PostgresqlUsersRepository(
         return true
     }
 
-    override suspend fun setGravatar(emailAddress: EmailAddress) {
-        TODO("Not yet implemented")
+    override suspend fun setGravatar(userId: UserId, emailAddress: EmailAddress) {
+        val emailAddressHash = hashingRepository.generateMD5Hash(emailAddress.string)
+        postgresqlUsers.setGravatar(userId.long, emailAddressHash)
     }
 }

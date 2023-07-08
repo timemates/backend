@@ -13,6 +13,7 @@ dependencies {
     implementation(projects.infrastructure.grpcApi)
     implementation(projects.common.smtpMailer)
     implementation(projects.common.cliArguments)
+    implementation(projects.common.hashing)
 
     implementation(libs.kotlinx.serialization)
     implementation(libs.kotlinx.coroutines)

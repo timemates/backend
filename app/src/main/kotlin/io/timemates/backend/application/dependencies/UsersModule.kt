@@ -18,7 +18,7 @@ val UsersModule = module {
     }
     singleOf(::UserEntitiesMapper)
     single<UsersRepository> {
-        PostgresqlUsersRepository(get(), get(), get())
+        PostgresqlUsersRepository(get(), get(), get(), get())
     }
 
     // Use cases

@@ -31,5 +31,5 @@ interface UsersRepository {
 
     suspend fun getUser(emailAddress: EmailAddress): User?
 
-    suspend fun setGravatar(emailAddress: EmailAddress)
+    suspend fun setGravatar(userId: UserId, emailAddress: EmailAddress)
 }

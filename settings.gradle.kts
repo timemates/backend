@@ -40,5 +40,5 @@ include(":core", ":data")
 include(":infrastructure:grpc-api")
 
 include(":app")
-
-
+include("common:hashing")
+findProject(":common:hashing")?.name = "hashing"
