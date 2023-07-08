@@ -10,10 +10,10 @@ import io.timemates.backend.users.types.value.UserId
 /**
  * Authorization scope for text purposes. Only usage of it is to provide [AuthorizedContext] of given scope [T].
  */
-inline fun <T : Scope> testAuthContext(
+inline fun <T : Scope, R> testAuthContext(
     userId: UserId = UserId.createOrThrow(0),
-    block: context(AuthorizedContext<T>) () -> Unit,
-) {
+    block: context(AuthorizedContext<T>) () -> R,
+): R {
     val context = object : AuthorizedContext<T> {
         override val authorization: Authorized = Authorized(
             authorizedId = AuthorizedId(userId.long),
@@ -21,5 +21,5 @@ inline fun <T : Scope> testAuthContext(
         )
     }
 
-    return context.run(block)
+    return context.let(block)
 }
