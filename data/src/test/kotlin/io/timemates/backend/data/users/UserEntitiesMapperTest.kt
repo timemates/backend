@@ -49,7 +49,8 @@ class UserEntitiesMapperTest {
             "John Doe",
             "email",
             "Short description",
-            null
+            null,
+            gravatarId = null
         )
 
         val expectedCachedUser = CachedUsersDataSource.User(
@@ -113,7 +114,8 @@ class UserEntitiesMapperTest {
             userName = "John",
             userEmail = "john@example.com",
             userShortDesc = "This is a description",
-            userAvatarFileId = null
+            userAvatarFileId = null,
+            gravatarId = null
         )
 
         val expected = User(
