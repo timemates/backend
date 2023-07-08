@@ -81,4 +81,8 @@ class PostgresqlUsersRepository(
         cachedUsers.invalidateUser(userId.long)
         return true
     }
+
+    override suspend fun setGravatar(emailAddress: EmailAddress) {
+        TODO("Not yet implemented")
+    }
 }
