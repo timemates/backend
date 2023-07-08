@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+import "io/timemates/api/settings/requests/SetGravatarRequest.proto";
+import "google/protobuf/empty.proto";
+
+option java_package = "io.timemates.api.users";
+
+service GravatarService {
+  rpc setGravatar(SetGravatarRequest) returns (google.protobuf.Empty);
+}

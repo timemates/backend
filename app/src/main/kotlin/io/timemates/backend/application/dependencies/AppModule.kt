@@ -9,4 +9,5 @@ val AppModule = listOf(
     FilesModule,
     AuthorizationsModule,
     ServicesModule,
+    SettingsModule
 )

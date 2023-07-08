@@ -2,6 +2,7 @@ package io.timemates.backend.application.dependencies
 
 import io.timemates.backend.services.authorization.AuthorizationsService
 import io.timemates.backend.services.files.FilesService
+import io.timemates.backend.services.settings.GravatarService
 import io.timemates.backend.services.timers.GrpcTimersMapper
 import io.timemates.backend.services.timers.TimersService
 import io.timemates.backend.services.users.GrpcUsersMapper
@@ -18,4 +19,5 @@ val ServicesModule = module {
     singleOf(::FilesService)
     singleOf(::TimersService)
     singleOf(::AuthorizationsService)
+    singleOf(::GravatarService)
 }

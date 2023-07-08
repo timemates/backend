@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+option java_package = "io.timemates.api.settings.requests";
+
+message SetGravatarRequest {
+  string email = 1;
+}

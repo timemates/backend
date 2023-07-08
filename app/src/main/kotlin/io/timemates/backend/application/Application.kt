@@ -20,6 +20,7 @@ import io.timemates.backend.services.authorization.AuthorizationsService
 import io.timemates.backend.services.authorization.interceptor.AuthorizationInterceptor
 import io.timemates.backend.services.authorization.provider.AuthorizationProvider
 import io.timemates.backend.services.files.FilesService
+import io.timemates.backend.services.settings.GravatarService
 import io.timemates.backend.services.timers.TimersService
 import io.timemates.backend.services.timers.sessions.TimerSessionsService
 import io.timemates.backend.services.users.UsersService
@@ -151,6 +152,7 @@ fun main(args: Array<String>) {
         .addService(koin.get<TimersService>() as BindableService)
         .addService(koin.get<AuthorizationsService>() as BindableService)
         .addService(koin.get<TimerSessionsService>() as BindableService)
+        .addService(koin.get<GravatarService>() as BindableService)
         .addService(ProtoReflectionService.newInstance())
         .intercept(AuthorizationInterceptor(koin.get()) as ServerInterceptor)
         .build()
