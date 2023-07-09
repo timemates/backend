@@ -33,6 +33,7 @@ include(
     ":common:page-token",
     ":common:smtp-mailer",
     ":common:cli-arguments",
+    ":common:hashing"
 )
 
 include(":core", ":data")
@@ -40,5 +41,3 @@ include(":core", ":data")
 include(":infrastructure:grpc-api")
 
 include(":app")
-include("common:hashing")
-findProject(":common:hashing")?.name = "hashing"
