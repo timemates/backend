@@ -3,6 +3,7 @@ package io.timemates.backend.data.users.datasource
 import io.timemates.backend.exposed.suspendedTransaction
 import org.jetbrains.annotations.TestOnly
 import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.mod
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class PostgresqlUsersDataSource(private val database: Database) {
@@ -13,6 +14,7 @@ class PostgresqlUsersDataSource(private val database: Database) {
         val USER_SHORT_DESC = varchar("user_short_desc", 100).nullable()
         val AVATAR_FILE_ID = varchar("user_avatar_id", 100).nullable()
         val CREATION_TIME = long("creation_time")
+        val GRAVATAR_ID = varchar("gravatar_id", 32).nullable()
 
         override val primaryKey: PrimaryKey = PrimaryKey(USER_ID)
     }
@@ -61,12 +63,22 @@ class PostgresqlUsersDataSource(private val database: Database) {
             }.resultedValues!!.single().toUser().id
         }
 
+    suspend fun setGravatar(id: Long, gravatarId: String) {
+        suspendedTransaction(database) {
+            UsersTable.update({ UsersTable.USER_ID eq id }) {
+                it[GRAVATAR_ID] = gravatarId
+                it[AVATAR_FILE_ID] = null
+            }
+        }
+    }
+
     data class User(
         val id: Long,
         val userName: String,
         val userEmail: String,
         val userShortDesc: String?,
         val userAvatarFileId: String?,
+        val gravatarId: String?,
     ) {
         data class Patch(
             val userName: String? = null,
@@ -81,7 +93,8 @@ class PostgresqlUsersDataSource(private val database: Database) {
             get(UsersTable.USER_NAME),
             get(UsersTable.USER_EMAIL),
             get(UsersTable.USER_SHORT_DESC),
-            get(UsersTable.AVATAR_FILE_ID)
+            get(UsersTable.AVATAR_FILE_ID),
+            get(UsersTable.GRAVATAR_ID),
         )
     }
 
@@ -89,5 +102,4 @@ class PostgresqlUsersDataSource(private val database: Database) {
     suspend fun clear(): Unit = suspendedTransaction(database) {
         UsersTable.deleteAll()
     }
-
 }

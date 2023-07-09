@@ -1,5 +1,6 @@
 package io.timemates.backend.application.dependencies
 
+import io.timemates.backend.users.usecases.SetGravatarUseCase
 import io.timemates.backend.data.users.PostgresqlUsersRepository
 import io.timemates.backend.data.users.UserEntitiesMapper
 import io.timemates.backend.data.users.datasource.CachedUsersDataSource
@@ -17,10 +18,11 @@ val UsersModule = module {
     }
     singleOf(::UserEntitiesMapper)
     single<UsersRepository> {
-        PostgresqlUsersRepository(get(), get(), get())
+        PostgresqlUsersRepository(get(), get(), get(), get())
     }
 
     // Use cases
     singleOf(::EditUserUseCase)
     singleOf(::GetUsersUseCase)
+    singleOf(::SetGravatarUseCase)
 }

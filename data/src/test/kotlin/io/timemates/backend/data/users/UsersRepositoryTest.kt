@@ -9,13 +9,18 @@ import io.timemates.backend.users.types.value.UserDescription
 import io.timemates.backend.users.types.value.UserId
 import io.timemates.backend.users.types.value.UserName
 import kotlinx.coroutines.runBlocking
+import timemates.backend.hashing.HashingRepository
+import timemates.backend.hashing.repository.HashingRepository as HashingRepositoryContract
 import kotlin.test.Test
 
 class UsersRepositoryTest {
     private val postgresqlUsers = mockk<PostgresqlUsersDataSource>()
     private val cachedUsers = mockk<CachedUsersDataSource>()
     private val mapper = mockk<UserEntitiesMapper>(relaxed = true)
-    private val postgresqlUsersRepository = PostgresqlUsersRepository(postgresqlUsers, cachedUsers, mapper)
+    private val hashingRepository: HashingRepositoryContract = HashingRepository()
+    private val postgresqlUsersRepository = PostgresqlUsersRepository(
+        postgresqlUsers, cachedUsers, hashingRepository,  mapper
+    )
 
     @Test
     fun `isUserExists() shouldn't call for db if user exists in cached users data source`() = runBlocking {
@@ -123,6 +128,7 @@ class UsersRepositoryTest {
             userEmail = "user4@example.com",
             userShortDesc = "4",
             userAvatarFileId = null,
+            gravatarId = null,
         )
 
         coEvery { cachedUsers.getUsers(any()) } returns cachedUsersMap

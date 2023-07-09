@@ -9,6 +9,7 @@ dependencies {
     implementation(projects.common.exposedUtils)
     implementation(projects.common.stateMachine)
     implementation(projects.common.pageToken)
+    implementation(projects.common.hashing)
     testImplementation(projects.common.testUtils)
 
     implementation(libs.ktor.client.core)

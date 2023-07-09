@@ -13,6 +13,8 @@ import io.timemates.backend.services.timers.GrpcTimersMapper
 import kotlinx.serialization.json.Json
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
+import timemates.backend.hashing.HashingRepository
+import timemates.backend.hashing.repository.HashingRepository as HashingRepositoryContract
 import java.time.ZoneId
 
 val CommonModule = module {
@@ -50,5 +52,8 @@ val CommonModule = module {
             ignoreUnknownKeys = true
             prettyPrint = false
         }
+    }
+    single<HashingRepositoryContract> {
+        HashingRepository()
     }
 }

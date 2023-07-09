@@ -30,4 +30,6 @@ interface UsersRepository {
     suspend fun edit(userId: UserId, patch: User.Patch): Boolean
 
     suspend fun getUser(emailAddress: EmailAddress): User?
+
+    suspend fun setGravatar(userId: UserId, emailAddress: EmailAddress)
 }

@@ -3,13 +3,16 @@ package io.timemates.backend.services.users
 import com.google.protobuf.Empty
 import io.grpc.Status
 import io.grpc.StatusException
+import io.timemates.api.settings.requests.SetGravatarRequestOuterClass
 import io.timemates.api.users.UsersServiceGrpcKt
 import io.timemates.api.users.requests.EditEmailRequestOuterClass
 import io.timemates.api.users.requests.EditUserRequestOuterClass
 import io.timemates.api.users.requests.GetUsersRequestOuterClass
 import io.timemates.api.users.types.UserOuterClass.Users
+import io.timemates.backend.users.usecases.SetGravatarUseCase
 import io.timemates.backend.services.authorization.context.provideAuthorizationContext
 import io.timemates.backend.services.common.validation.createOrStatus
+import io.timemates.backend.users.types.value.EmailAddress
 import io.timemates.backend.users.types.value.UserId
 import io.timemates.backend.users.usecases.EditUserUseCase
 import io.timemates.backend.users.usecases.GetUsersUseCase
@@ -17,6 +20,7 @@ import io.timemates.backend.users.usecases.GetUsersUseCase
 class UsersService(
     private val editUserUseCase: EditUserUseCase,
     private val getUsersUseCase: GetUsersUseCase,
+    private val setGravatarUseCase: SetGravatarUseCase,
     private val mapper: GrpcUsersMapper,
 ) : UsersServiceGrpcKt.UsersServiceCoroutineImplBase() {
     override suspend fun getUsers(request: GetUsersRequestOuterClass.GetUsersRequest): Users {
@@ -39,5 +43,13 @@ class UsersService(
         when (editUserUseCase.execute(patch)) {
             EditUserUseCase.Result.Success -> Empty.getDefaultInstance()
         }
+    }
+
+    override suspend fun setGravatar(
+        request: SetGravatarRequestOuterClass.SetGravatarRequest
+    ): Empty = provideAuthorizationContext {
+        val email = EmailAddress.createOrStatus(request.email)
+        setGravatarUseCase.execute(email)
+        return Empty.getDefaultInstance()
     }
 }
