@@ -33,7 +33,7 @@ include(
     ":common:page-token",
     ":common:smtp-mailer",
     ":common:cli-arguments",
-    ":common:hashing"
+    ":common:hashing",
 )
 
 include(":core", ":data")

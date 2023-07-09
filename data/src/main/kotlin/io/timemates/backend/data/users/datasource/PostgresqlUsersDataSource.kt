@@ -6,9 +6,7 @@ import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.mod
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class PostgresqlUsersDataSource(
-    private val database: Database)
-{
+class PostgresqlUsersDataSource(private val database: Database) {
     internal object UsersTable : Table("users") {
         val USER_ID = long("user_id").autoIncrement()
         val USER_NAME = varchar("user_name", 50)
@@ -80,7 +78,7 @@ class PostgresqlUsersDataSource(
         val userEmail: String,
         val userShortDesc: String?,
         val userAvatarFileId: String?,
-        val gravatarId: String?
+        val gravatarId: String?,
     ) {
         data class Patch(
             val userName: String? = null,
@@ -96,7 +94,7 @@ class PostgresqlUsersDataSource(
             get(UsersTable.USER_EMAIL),
             get(UsersTable.USER_SHORT_DESC),
             get(UsersTable.AVATAR_FILE_ID),
-            get(UsersTable.GRAVATAR_ID)
+            get(UsersTable.GRAVATAR_ID),
         )
     }
 

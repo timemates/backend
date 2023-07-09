@@ -42,7 +42,7 @@ class PostgresqlUsersDataSourceTest {
             userEmail = email,
             userShortDesc = testBio,
             userAvatarFileId = null,
-            gravatarId = null
+            gravatarId = null,
         )
 
         val result = datasource.getUserByEmail(email)
@@ -64,7 +64,7 @@ class PostgresqlUsersDataSourceTest {
             userEmail = email,
             userShortDesc = testBio,
             userAvatarFileId = null,
-            gravatarId = null
+            gravatarId = null,
         )
         val result = datasource.getUser(userId)
         assertEquals(
@@ -90,7 +90,7 @@ class PostgresqlUsersDataSourceTest {
                 userEmail = email,
                 userShortDesc = "Test Bio 1",
                 userAvatarFileId = null,
-                gravatarId = null
+                gravatarId = null,
             ),
             userId2 to PostgresqlUsersDataSource.User(
                 id = userId2,
@@ -98,7 +98,7 @@ class PostgresqlUsersDataSourceTest {
                 userEmail = "user5@example.com",
                 userShortDesc = "Test Bio 2",
                 userAvatarFileId = null,
-                gravatarId = null
+                gravatarId = null,
             )
         )
         val result = datasource.getUsers(listOf(userId1, userId2))

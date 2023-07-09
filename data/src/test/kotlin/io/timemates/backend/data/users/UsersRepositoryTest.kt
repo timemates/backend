@@ -128,7 +128,7 @@ class UsersRepositoryTest {
             userEmail = "user4@example.com",
             userShortDesc = "4",
             userAvatarFileId = null,
-            gravatarId = null
+            gravatarId = null,
         )
 
         coEvery { cachedUsers.getUsers(any()) } returns cachedUsersMap
