@@ -4,6 +4,7 @@ import com.timemates.backend.time.UnixTime
 import com.timemates.backend.validation.createOrThrow
 import io.timemates.backend.authorization.repositories.AuthorizationsRepository
 import io.timemates.backend.authorization.types.Authorization
+import io.timemates.backend.authorization.types.metadata.Metadata
 import io.timemates.backend.authorization.types.value.AccessHash
 import io.timemates.backend.authorization.types.value.AuthorizationId
 import io.timemates.backend.authorization.types.value.RefreshHash
@@ -13,6 +14,7 @@ import io.timemates.backend.data.authorization.db.TableAuthorizationsDataSource
 import io.timemates.backend.data.authorization.db.entities.DbAuthorization
 import io.timemates.backend.data.authorization.mapper.AuthorizationsMapper
 import io.timemates.backend.pagination.Page
+import io.timemates.backend.authorization.types.metadata.Metadata as AuthMetadata
 import io.timemates.backend.pagination.PageToken
 import io.timemates.backend.pagination.map
 import io.timemates.backend.users.types.value.UserId
@@ -28,6 +30,7 @@ class PostgresqlAuthorizationsRepository(
         refreshToken: RefreshHash,
         expiresAt: UnixTime,
         creationTime: UnixTime,
+        metadata: Metadata,
     ): AuthorizationId {
         val id = tableAuthorizationsDataSource.createAuthorizations(
             userId = userId.long,
@@ -36,6 +39,9 @@ class PostgresqlAuthorizationsRepository(
             permissions = DbAuthorization.Permissions.All,
             expiresAt = expiresAt.inMilliseconds,
             createdAt = creationTime.inMilliseconds,
+            metaClientName = metadata.clientName.string,
+            metaClientVersion = metadata.clientVersion.string,
+            metaClientIpAddress = metadata.clientIpAddress.string,
         )
 
         cacheAuthorizations.saveAuthorization(
@@ -47,6 +53,11 @@ class PostgresqlAuthorizationsRepository(
                 permissions = CacheAuthorization.Permissions.All,
                 expiresAt = expiresAt.inMilliseconds,
                 createdAt = creationTime.inMilliseconds,
+                metadata = AuthMetadata(
+                    clientName = metadata.clientName,
+                    clientVersion = metadata.clientVersion,
+                    clientIpAddress = metadata.clientIpAddress,
+                )
             )
         )
 

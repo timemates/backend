@@ -6,6 +6,7 @@ import com.timemates.backend.validation.createOrThrow
 import com.timemates.random.RandomProvider
 import io.timemates.backend.authorization.repositories.VerificationsRepository
 import io.timemates.backend.authorization.types.Email
+import io.timemates.backend.authorization.types.metadata.Metadata
 import io.timemates.backend.authorization.types.value.Attempts
 import io.timemates.backend.authorization.types.value.VerificationCode
 import io.timemates.backend.authorization.types.value.VerificationHash
@@ -20,7 +21,7 @@ class AuthByEmailUseCase(
     private val timeProvider: TimeProvider,
     private val randomProvider: RandomProvider,
 ) {
-    suspend fun execute(emailAddress: EmailAddress): Result {
+    suspend fun execute(emailAddress: EmailAddress, metadata: Metadata): Result {
         // used for limits (max count of sessions & attempts that can be requested)
         val sessionsTimeBoundary = timeProvider.provide() - 1.hours
 
@@ -37,7 +38,7 @@ class AuthByEmailUseCase(
 
                 if (!emails.send(emailAddress, Email.AuthorizeEmail(emailAddress, code)))
                     return Result.SendFailed
-                verifications.save(emailAddress, verificationHash, code, expiresAt, totalAttempts)
+                verifications.save(emailAddress, verificationHash, code, expiresAt, totalAttempts, metadata)
                 Result.Success(verificationHash, timeProvider.provide() + 10.minutes, totalAttempts)
             }
         }

@@ -43,7 +43,7 @@ class ConfigureNewAccountUseCase(
             accessHash,
             refreshHash,
             expiresAt,
-            currentTime,
+            currentTime
         )
 
         verifications.remove(verificationToken)

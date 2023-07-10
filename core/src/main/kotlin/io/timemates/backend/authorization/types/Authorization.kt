@@ -14,5 +14,5 @@ data class Authorization(
     val scopes: List<Scope>,
     val expiresAt: UnixTime,
     val createdAt: UnixTime,
-    val metadata: Metadata
+    val metadata: Metadata,
 )

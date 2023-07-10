@@ -2,6 +2,7 @@ package io.timemates.backend.authorization.repositories
 
 import com.timemates.backend.time.UnixTime
 import io.timemates.backend.authorization.types.Verification
+import io.timemates.backend.authorization.types.metadata.Metadata
 import io.timemates.backend.authorization.types.value.Attempts
 import io.timemates.backend.authorization.types.value.VerificationCode
 import io.timemates.backend.authorization.types.value.VerificationHash
@@ -29,6 +30,7 @@ interface VerificationsRepository {
         code: VerificationCode,
         time: UnixTime,
         attempts: Attempts,
+        metadata: Metadata,
     )
 
     /**

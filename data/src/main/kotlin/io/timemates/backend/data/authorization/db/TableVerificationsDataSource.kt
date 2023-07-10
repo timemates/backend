@@ -1,5 +1,6 @@
 package io.timemates.backend.data.authorization.db
 
+import io.timemates.backend.authorization.types.metadata.Metadata
 import io.timemates.backend.data.authorization.db.entities.DbVerification
 import io.timemates.backend.data.authorization.db.mapper.DbVerificationsMapper
 import io.timemates.backend.data.authorization.db.table.VerificationSessionsTable

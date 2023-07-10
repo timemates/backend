@@ -19,6 +19,9 @@ class DbAuthorizationsMapper {
                 timers = row[AuthorizationsTable.TIMERS_PERMISSION],
                 files = row[AuthorizationsTable.FILES_PERMISSION],
             ),
+            metaClientName = row[AuthorizationsTable.META_CLIENT_NAME],
+            metaClientVersion = row[AuthorizationsTable.META_CLIENT_VERSION],
+            metaClientIpAddress = row[AuthorizationsTable.META_CLIENT_IP_ADDRESS],
         )
     }
 }

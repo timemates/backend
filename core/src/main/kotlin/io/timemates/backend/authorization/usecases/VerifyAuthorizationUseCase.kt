@@ -58,7 +58,7 @@ class VerifyAuthorizationUseCase(
                                 refreshToken,
                                 listOf(Scope.All),
                                 expireTime,
-                                timeProvider.provide(),
+                                timeProvider.provide()
                             )
                         )
                     } else {
