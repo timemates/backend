@@ -1,6 +1,7 @@
 package io.timemates.backend.authorization.types
 
 import com.timemates.backend.time.UnixTime
+import io.timemates.backend.authorization.types.metadata.Metadata
 import io.timemates.backend.authorization.types.value.AccessHash
 import io.timemates.backend.authorization.types.value.RefreshHash
 import io.timemates.backend.features.authorization.Scope
@@ -13,4 +14,5 @@ data class Authorization(
     val scopes: List<Scope>,
     val expiresAt: UnixTime,
     val createdAt: UnixTime,
+    val metadata: Metadata
 )
