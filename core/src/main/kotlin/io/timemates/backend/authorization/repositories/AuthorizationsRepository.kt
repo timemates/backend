@@ -32,7 +32,8 @@ interface AuthorizationsRepository {
         accessToken: AccessHash,
         refreshToken: RefreshHash,
         expiresAt: UnixTime,
-        creationTime: UnixTime
+        creationTime: UnixTime,
+        metadata: Metadata
     ): AuthorizationId
 
     /**
