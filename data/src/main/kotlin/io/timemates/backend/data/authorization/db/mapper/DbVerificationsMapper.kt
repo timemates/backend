@@ -13,6 +13,9 @@ class DbVerificationsMapper {
             attempts = get(VerificationSessionsTable.ATTEMPTS),
             time = get(VerificationSessionsTable.INIT_TIME),
             isConfirmed = get(VerificationSessionsTable.IS_CONFIRMED),
+            metaClientName = get(VerificationSessionsTable.META_CLIENT_NAME),
+            metaClientVersion = get(VerificationSessionsTable.META_CLIENT_VERSION),
+            metaClientIpAddress = get(VerificationSessionsTable.META_CLIENT_IP_ADDRESS),
         )
     }
 }

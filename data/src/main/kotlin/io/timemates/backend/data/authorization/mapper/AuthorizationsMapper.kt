@@ -4,6 +4,10 @@ import com.timemates.backend.time.UnixTime
 import com.timemates.backend.validation.createOrThrow
 import io.timemates.backend.authorization.types.Authorization
 import io.timemates.backend.authorization.types.AuthorizationsScope
+import io.timemates.backend.authorization.types.metadata.ClientMetadata
+import io.timemates.backend.authorization.types.metadata.value.ClientIpAddress
+import io.timemates.backend.authorization.types.metadata.value.ClientName
+import io.timemates.backend.authorization.types.metadata.value.ClientVersion
 import io.timemates.backend.authorization.types.value.AccessHash
 import io.timemates.backend.authorization.types.value.RefreshHash
 import io.timemates.backend.data.authorization.cache.entities.CacheAuthorization
@@ -25,6 +29,11 @@ class AuthorizationsMapper {
             scopes = dbPermissionsToDomain(permissions),
             expiresAt = UnixTime.createOrThrow(expiresAt),
             createdAt = UnixTime.createOrThrow(createdAt),
+            clientMetadata = ClientMetadata(
+                clientName = ClientName.createOrThrow(auth.metaClientName),
+                clientVersion = ClientVersion.createOrThrow(auth.metaClientVersion),
+                clientIpAddress = ClientIpAddress.createOrThrow(auth.metaClientVersion),
+            )
         )
     }
 
@@ -36,6 +45,11 @@ class AuthorizationsMapper {
             dbPermissionsToCachePermissions(permissions),
             expiresAt,
             createdAt,
+            ClientMetadata(
+                clientName = ClientName.createOrThrow(auth.metaClientName),
+                clientVersion = ClientVersion.createOrThrow(auth.metaClientVersion),
+                clientIpAddress = ClientIpAddress.createOrThrow(auth.metaClientVersion),
+            )
         )
     }
 
@@ -68,6 +82,11 @@ class AuthorizationsMapper {
             scopes = cachePermissionsToDomain(permissions),
             expiresAt = UnixTime.createOrThrow(expiresAt),
             createdAt = UnixTime.createOrThrow(createdAt),
+            clientMetadata = ClientMetadata(
+                clientName = ClientName.createOrThrow(auth.clientMetadata.clientName.string),
+                clientVersion = ClientVersion.createOrThrow(auth.clientMetadata.clientVersion.string),
+                clientIpAddress = ClientIpAddress.createOrThrow(auth.clientMetadata.clientIpAddress.string),
+            )
         )
     }
 

@@ -1,7 +1,5 @@
 package io.timemates.backend.data.authorization.db.entities
 
-import java.security.Permissions
-
 data class DbAuthorization(
     val authorizationId: Int,
     val userId: Long,
@@ -10,6 +8,9 @@ data class DbAuthorization(
     val permissions: Permissions,
     val expiresAt: Long,
     val createdAt: Long,
+    val metaClientName: String,
+    val metaClientVersion: String,
+    val metaClientIpAddress: String,
 ) {
     data class Permissions(
         val authorization: GrantLevel,

@@ -1,6 +1,6 @@
 package io.timemates.backend.data.authorization.cache.entities
 
-import java.security.Permissions
+import io.timemates.backend.authorization.types.metadata.ClientMetadata
 
 data class CacheAuthorization(
     val userId: Long,
@@ -9,6 +9,7 @@ data class CacheAuthorization(
     val permissions: Permissions,
     val expiresAt: Long,
     val createdAt: Long,
+    val clientMetadata: ClientMetadata,
 ) {
     data class Permissions(
         val authorization: GrantLevel,

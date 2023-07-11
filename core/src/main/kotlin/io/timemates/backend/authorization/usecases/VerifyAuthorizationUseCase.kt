@@ -37,6 +37,7 @@ class VerifyAuthorizationUseCase(
                     val refreshToken = RefreshHash.createOrThrow(
                         randomProvider.randomHash(AccessHash.SIZE)
                     )
+                    val metadata = verification.clientMetadata
 
                     val userId = users.getUserIdByEmail(verification.emailAddress)
 
@@ -49,6 +50,7 @@ class VerifyAuthorizationUseCase(
                             refreshToken,
                             expireTime,
                             timeProvider.provide(),
+                            metadata,
                         )
 
                         Result.Success.ExistsAccount(
@@ -59,6 +61,7 @@ class VerifyAuthorizationUseCase(
                                 listOf(Scope.All),
                                 expireTime,
                                 timeProvider.provide(),
+                                metadata,
                             )
                         )
                     } else {

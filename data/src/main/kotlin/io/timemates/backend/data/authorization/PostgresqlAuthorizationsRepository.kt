@@ -4,6 +4,7 @@ import com.timemates.backend.time.UnixTime
 import com.timemates.backend.validation.createOrThrow
 import io.timemates.backend.authorization.repositories.AuthorizationsRepository
 import io.timemates.backend.authorization.types.Authorization
+import io.timemates.backend.authorization.types.metadata.ClientMetadata
 import io.timemates.backend.authorization.types.value.AccessHash
 import io.timemates.backend.authorization.types.value.AuthorizationId
 import io.timemates.backend.authorization.types.value.RefreshHash
@@ -28,6 +29,7 @@ class PostgresqlAuthorizationsRepository(
         refreshToken: RefreshHash,
         expiresAt: UnixTime,
         creationTime: UnixTime,
+        clientMetadata: ClientMetadata,
     ): AuthorizationId {
         val id = tableAuthorizationsDataSource.createAuthorizations(
             userId = userId.long,
@@ -36,6 +38,9 @@ class PostgresqlAuthorizationsRepository(
             permissions = DbAuthorization.Permissions.All,
             expiresAt = expiresAt.inMilliseconds,
             createdAt = creationTime.inMilliseconds,
+            metaClientName = clientMetadata.clientName.string,
+            metaClientVersion = clientMetadata.clientVersion.string,
+            metaClientIpAddress = clientMetadata.clientIpAddress.string,
         )
 
         cacheAuthorizations.saveAuthorization(
@@ -47,6 +52,11 @@ class PostgresqlAuthorizationsRepository(
                 permissions = CacheAuthorization.Permissions.All,
                 expiresAt = expiresAt.inMilliseconds,
                 createdAt = creationTime.inMilliseconds,
+                clientMetadata = ClientMetadata(
+                    clientName = clientMetadata.clientName,
+                    clientVersion = clientMetadata.clientVersion,
+                    clientIpAddress = clientMetadata.clientIpAddress,
+                )
             )
         )
 

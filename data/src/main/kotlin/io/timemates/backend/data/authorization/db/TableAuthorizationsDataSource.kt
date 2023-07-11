@@ -71,6 +71,9 @@ class TableAuthorizationsDataSource(
         permissions: DbAuthorization.Permissions,
         expiresAt: Long,
         createdAt: Long,
+        metaClientName: String,
+        metaClientVersion: String,
+        metaClientIpAddress: String,
     ): Int = suspendedTransaction(database) {
         AuthorizationsTable.insert {
             it[USER_ID] = userId
@@ -78,6 +81,9 @@ class TableAuthorizationsDataSource(
             it[REFRESH_TOKEN] = refreshAccessHash
             it[EXPIRES_AT] = expiresAt
             it[CREATION_TIME] = createdAt
+            it[META_CLIENT_NAME] = metaClientName
+            it[META_CLIENT_VERSION] = metaClientVersion
+            it[META_CLIENT_IP_ADDRESS] = metaClientIpAddress
             it[AUTHORIZATIONS_PERMISSION] = permissions.authorization
             it[USERS_PERMISSION] = permissions.users
             it[FILES_PERMISSION] = permissions.files

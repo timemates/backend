@@ -28,6 +28,9 @@ class TableVerificationsDataSource(
         code: String,
         time: Long,
         attempts: Int,
+        metaClientName: String,
+        metaClientVersion: String,
+        metaClientIpAddress: String,
     ): Unit = suspendedTransaction(database) {
         VerificationSessionsTable.insert {
             it[EMAIL] = emailAddress
@@ -36,6 +39,9 @@ class TableVerificationsDataSource(
             it[CONFIRMATION_CODE] = code
             it[ATTEMPTS] = attempts
             it[INIT_TIME] = time
+            it[META_CLIENT_NAME] = metaClientName
+            it[META_CLIENT_VERSION] = metaClientVersion
+            it[META_CLIENT_IP_ADDRESS] = metaClientIpAddress
         }
     }
 

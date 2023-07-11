@@ -12,6 +12,10 @@ import io.timemates.api.authorizations.requests.StartAuthorizationRequestKt
 import io.timemates.api.authorizations.requests.StartAuthorizationRequestOuterClass.StartAuthorizationRequest
 import io.timemates.api.users.requests.CreateProfileRequestKt
 import io.timemates.api.users.requests.CreateProfileRequestOuterClass.CreateProfileRequest
+import io.timemates.backend.authorization.types.metadata.ClientMetadata
+import io.timemates.backend.authorization.types.metadata.value.ClientIpAddress
+import io.timemates.backend.authorization.types.metadata.value.ClientName
+import io.timemates.backend.authorization.types.metadata.value.ClientVersion
 import io.timemates.backend.authorization.types.value.AccessHash
 import io.timemates.backend.authorization.types.value.VerificationCode
 import io.timemates.backend.authorization.types.value.VerificationHash
@@ -19,7 +23,6 @@ import io.timemates.backend.authorization.usecases.*
 import io.timemates.backend.pagination.PageToken
 import io.timemates.backend.services.authorization.context.provideAuthorizationContext
 import io.timemates.backend.services.authorization.interceptor.AuthorizationContext
-import io.timemates.backend.services.authorization.interceptor.AuthorizationInterceptor
 import io.timemates.backend.services.common.validation.createOrStatus
 import io.timemates.backend.users.types.value.EmailAddress
 import io.timemates.backend.users.types.value.UserDescription
@@ -40,8 +43,13 @@ class AuthorizationsService(
         request: StartAuthorizationRequest,
     ): StartAuthorizationRequest.Result {
         val email = EmailAddress.createOrStatus(request.emailAddress)
+        val metadata = ClientMetadata(
+            clientName = ClientName.createOrStatus(request.metadata.clientName),
+            clientVersion = ClientVersion.createOrStatus(request.metadata.clientVersion),
+            clientIpAddress = ClientIpAddress.createOrStatus(request.metadata.clientIpAddress),
+        )
 
-        return when (val result = authByEmailUseCase.execute(email)) {
+        return when (val result = authByEmailUseCase.execute(email, metadata)) {
             AuthByEmailUseCase.Result.AttemptsExceed -> throw StatusException(Status.RESOURCE_EXHAUSTED)
             AuthByEmailUseCase.Result.SendFailed -> throw StatusException(Status.UNAVAILABLE)
             is AuthByEmailUseCase.Result.Success -> StartAuthorizationRequestKt.result {
@@ -81,7 +89,7 @@ class AuthorizationsService(
     }
 
     override suspend fun createProfile(
-        request: CreateProfileRequest,
+        request: CreateProfileRequest
     ): CreateProfileRequest.Response {
         val name = UserName.createOrStatus(request.name)
         val description = UserDescription.createOrStatus(request.description)

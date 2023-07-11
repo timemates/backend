@@ -36,6 +36,7 @@ class ConfigureNewAccountUseCase(
         val accessHash = AccessHash.createOrThrow(randomProvider.randomHash(AccessHash.SIZE))
         val refreshHash = RefreshHash.createOrThrow(randomProvider.randomHash(RefreshHash.SIZE))
         val expiresAt = currentTime + 30.days
+        val metadata = verification.clientMetadata
 
         val id = users.createUser(verification.emailAddress, userName, shortBio, timeProvider.provide())
         authorizations.create(
@@ -44,6 +45,7 @@ class ConfigureNewAccountUseCase(
             refreshHash,
             expiresAt,
             currentTime,
+            metadata,
         )
 
         verifications.remove(verificationToken)
@@ -56,6 +58,7 @@ class ConfigureNewAccountUseCase(
                 scopes = listOf(Scope.All),
                 expiresAt = expiresAt,
                 createdAt = currentTime,
+                clientMetadata = metadata,
             )
         )
     }
