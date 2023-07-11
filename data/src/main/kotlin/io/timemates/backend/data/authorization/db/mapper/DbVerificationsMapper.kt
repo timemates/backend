@@ -1,6 +1,5 @@
 package io.timemates.backend.data.authorization.db.mapper
 
-import io.timemates.backend.authorization.types.metadata.Metadata as AuthMetadata
 import io.timemates.backend.data.authorization.db.entities.DbVerification
 import io.timemates.backend.data.authorization.db.table.VerificationSessionsTable
 import org.jetbrains.exposed.sql.ResultRow

@@ -4,12 +4,12 @@ import com.timemates.backend.time.UnixTime
 import com.timemates.backend.validation.createOrThrow
 import io.timemates.backend.authorization.types.Authorization
 import io.timemates.backend.authorization.types.AuthorizationsScope
+import io.timemates.backend.authorization.types.metadata.ClientMetadata
 import io.timemates.backend.authorization.types.metadata.value.ClientIpAddress
 import io.timemates.backend.authorization.types.metadata.value.ClientName
 import io.timemates.backend.authorization.types.metadata.value.ClientVersion
 import io.timemates.backend.authorization.types.value.AccessHash
 import io.timemates.backend.authorization.types.value.RefreshHash
-import io.timemates.backend.authorization.types.metadata.Metadata as AuthMetadata
 import io.timemates.backend.data.authorization.cache.entities.CacheAuthorization
 import io.timemates.backend.data.authorization.db.entities.DbAuthorization
 import io.timemates.backend.features.authorization.Scope
@@ -29,7 +29,7 @@ class AuthorizationsMapper {
             scopes = dbPermissionsToDomain(permissions),
             expiresAt = UnixTime.createOrThrow(expiresAt),
             createdAt = UnixTime.createOrThrow(createdAt),
-            metadata = AuthMetadata(
+            clientMetadata = ClientMetadata(
                 clientName = ClientName.createOrThrow(auth.metaClientName),
                 clientVersion = ClientVersion.createOrThrow(auth.metaClientVersion),
                 clientIpAddress = ClientIpAddress.createOrThrow(auth.metaClientVersion),
@@ -45,7 +45,7 @@ class AuthorizationsMapper {
             dbPermissionsToCachePermissions(permissions),
             expiresAt,
             createdAt,
-            AuthMetadata(
+            ClientMetadata(
                 clientName = ClientName.createOrThrow(auth.metaClientName),
                 clientVersion = ClientVersion.createOrThrow(auth.metaClientVersion),
                 clientIpAddress = ClientIpAddress.createOrThrow(auth.metaClientVersion),
@@ -82,10 +82,10 @@ class AuthorizationsMapper {
             scopes = cachePermissionsToDomain(permissions),
             expiresAt = UnixTime.createOrThrow(expiresAt),
             createdAt = UnixTime.createOrThrow(createdAt),
-            metadata = AuthMetadata(
-                clientName = ClientName.createOrThrow(auth.metadata.clientName.string),
-                clientVersion = ClientVersion.createOrThrow(auth.metadata.clientVersion.string),
-                clientIpAddress = ClientIpAddress.createOrThrow(auth.metadata.clientIpAddress.string),
+            clientMetadata = ClientMetadata(
+                clientName = ClientName.createOrThrow(auth.clientMetadata.clientName.string),
+                clientVersion = ClientVersion.createOrThrow(auth.clientMetadata.clientVersion.string),
+                clientIpAddress = ClientIpAddress.createOrThrow(auth.clientMetadata.clientIpAddress.string),
             )
         )
     }

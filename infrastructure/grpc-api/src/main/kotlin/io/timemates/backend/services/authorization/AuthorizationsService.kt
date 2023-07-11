@@ -12,8 +12,8 @@ import io.timemates.api.authorizations.requests.StartAuthorizationRequestKt
 import io.timemates.api.authorizations.requests.StartAuthorizationRequestOuterClass.StartAuthorizationRequest
 import io.timemates.api.users.requests.CreateProfileRequestKt
 import io.timemates.api.users.requests.CreateProfileRequestOuterClass.CreateProfileRequest
+import io.timemates.backend.authorization.types.metadata.ClientMetadata
 import io.timemates.backend.authorization.types.metadata.value.ClientIpAddress
-import io.timemates.backend.authorization.types.metadata.Metadata as AuthMetadata
 import io.timemates.backend.authorization.types.metadata.value.ClientName
 import io.timemates.backend.authorization.types.metadata.value.ClientVersion
 import io.timemates.backend.authorization.types.value.AccessHash
@@ -43,7 +43,7 @@ class AuthorizationsService(
         request: StartAuthorizationRequest,
     ): StartAuthorizationRequest.Result {
         val email = EmailAddress.createOrStatus(request.emailAddress)
-        val metadata = AuthMetadata(
+        val metadata = ClientMetadata(
             clientName = ClientName.createOrStatus(request.metadata.clientName),
             clientVersion = ClientVersion.createOrStatus(request.metadata.clientVersion),
             clientIpAddress = ClientIpAddress.createOrStatus(request.metadata.clientIpAddress),

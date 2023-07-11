@@ -4,7 +4,7 @@ import io.timemates.backend.authorization.types.metadata.value.ClientIpAddress
 import io.timemates.backend.authorization.types.metadata.value.ClientName
 import io.timemates.backend.authorization.types.metadata.value.ClientVersion
 
-data class Metadata(
+data class ClientMetadata(
     val clientName: ClientName,
     val clientVersion: ClientVersion,
     val clientIpAddress: ClientIpAddress,

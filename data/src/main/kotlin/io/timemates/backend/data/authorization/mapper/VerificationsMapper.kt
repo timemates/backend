@@ -3,7 +3,7 @@ package io.timemates.backend.data.authorization.mapper
 import com.timemates.backend.time.UnixTime
 import com.timemates.backend.validation.createOrThrow
 import io.timemates.backend.authorization.types.Verification
-import io.timemates.backend.authorization.types.metadata.Metadata
+import io.timemates.backend.authorization.types.metadata.ClientMetadata
 import io.timemates.backend.authorization.types.metadata.value.ClientIpAddress
 import io.timemates.backend.authorization.types.metadata.value.ClientName
 import io.timemates.backend.authorization.types.metadata.value.ClientVersion
@@ -20,7 +20,7 @@ class VerificationsMapper {
             attempts = Attempts.createOrThrow(dbVerification.attempts),
             time = UnixTime.createOrThrow(dbVerification.time),
             isConfirmed = dbVerification.isConfirmed,
-            metadata = Metadata(
+            clientMetadata = ClientMetadata(
                 clientName = ClientName.createOrThrow(dbVerification.metaClientName),
                 clientVersion = ClientVersion.createOrThrow(dbVerification.metaClientVersion),
                 clientIpAddress = ClientIpAddress.createOrThrow(dbVerification.metaClientVersion),

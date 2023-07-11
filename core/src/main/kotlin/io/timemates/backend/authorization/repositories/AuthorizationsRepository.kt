@@ -2,7 +2,7 @@ package io.timemates.backend.authorization.repositories
 
 import com.timemates.backend.time.UnixTime
 import io.timemates.backend.authorization.types.Authorization
-import io.timemates.backend.authorization.types.metadata.Metadata
+import io.timemates.backend.authorization.types.metadata.ClientMetadata
 import io.timemates.backend.authorization.types.value.AccessHash
 import io.timemates.backend.authorization.types.value.AuthorizationId
 import io.timemates.backend.authorization.types.value.RefreshHash
@@ -33,7 +33,7 @@ interface AuthorizationsRepository {
         refreshToken: RefreshHash,
         expiresAt: UnixTime,
         creationTime: UnixTime,
-        metadata: Metadata
+        clientMetadata: ClientMetadata,
     ): AuthorizationId
 
     /**

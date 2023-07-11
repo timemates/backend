@@ -10,7 +10,7 @@ import io.mockk.spyk
 import io.timemates.backend.authorization.repositories.AuthorizationsRepository
 import io.timemates.backend.authorization.repositories.VerificationsRepository
 import io.timemates.backend.authorization.types.Verification
-import io.timemates.backend.authorization.types.metadata.Metadata
+import io.timemates.backend.authorization.types.metadata.ClientMetadata
 import io.timemates.backend.authorization.types.value.Attempts
 import io.timemates.backend.authorization.types.value.VerificationCode
 import io.timemates.backend.authorization.types.value.VerificationHash
@@ -58,7 +58,7 @@ class ConfigureNewAccountUseCaseTest {
     //@Test
     fun `test configure new account`(): Unit = runBlocking {
         // GIVEN
-        val metadata = spyk<Metadata>()
+        val clientMetadata = spyk<ClientMetadata>()
         val userId = mockk<UserId>(relaxed = true)
         val email = EmailAddress.createOrAssert("test@email.com")
         val verificationHash = VerificationHash.createOrAssert(randomProvider.randomHash(VerificationHash.SIZE))
@@ -70,7 +70,7 @@ class ConfigureNewAccountUseCaseTest {
                     Attempts.createOrAssert(3),
                     timeProvider.provide(),
                     true,
-                    metadata
+                    clientMetadata
                 )
             )
         coEvery { usersRepository.createUser(any(), any(), any(), any()) }

@@ -4,7 +4,7 @@ import com.timemates.backend.time.UnixTime
 import com.timemates.backend.validation.createOrThrow
 import io.timemates.backend.authorization.repositories.VerificationsRepository
 import io.timemates.backend.authorization.types.Verification
-import io.timemates.backend.authorization.types.metadata.Metadata
+import io.timemates.backend.authorization.types.metadata.ClientMetadata
 import io.timemates.backend.authorization.types.value.Attempts
 import io.timemates.backend.authorization.types.value.VerificationCode
 import io.timemates.backend.authorization.types.value.VerificationHash
@@ -23,7 +23,7 @@ class PostgresqlVerificationsRepository(
         code: VerificationCode,
         time: UnixTime,
         attempts: Attempts,
-        metadata: Metadata
+        clientMetadata: ClientMetadata
     ) {
         dbVerifications.add(
             emailAddress.string,
@@ -31,9 +31,9 @@ class PostgresqlVerificationsRepository(
             code.string,
             time.inMilliseconds,
             attempts.int,
-            metadata.clientName.string,
-            metadata.clientVersion.string,
-            metadata.clientIpAddress.string,
+            clientMetadata.clientName.string,
+            clientMetadata.clientVersion.string,
+            clientMetadata.clientIpAddress.string,
         )
     }
 

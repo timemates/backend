@@ -37,7 +37,7 @@ class VerifyAuthorizationUseCase(
                     val refreshToken = RefreshHash.createOrThrow(
                         randomProvider.randomHash(AccessHash.SIZE)
                     )
-                    val metadata = verification.metadata
+                    val metadata = verification.clientMetadata
 
                     val userId = users.getUserIdByEmail(verification.emailAddress)
 
