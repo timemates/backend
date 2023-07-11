@@ -30,7 +30,10 @@ class PostgresqlVerificationsRepository(
             verificationToken.string,
             code.string,
             time.inMilliseconds,
-            attempts.int
+            attempts.int,
+            metadata.clientName.string,
+            metadata.clientVersion.string,
+            metadata.clientIpAddress.string,
         )
     }
 
