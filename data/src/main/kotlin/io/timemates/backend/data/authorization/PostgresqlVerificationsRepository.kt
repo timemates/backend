@@ -23,7 +23,7 @@ class PostgresqlVerificationsRepository(
         code: VerificationCode,
         time: UnixTime,
         attempts: Attempts,
-        clientMetadata: ClientMetadata
+        clientMetadata: ClientMetadata,
     ) {
         dbVerifications.add(
             emailAddress.string,
@@ -33,7 +33,7 @@ class PostgresqlVerificationsRepository(
             attempts.int,
             clientMetadata.clientName.string,
             clientMetadata.clientVersion.string,
-            clientMetadata.clientIpAddress.string,
+            clientMetadata.clientIpAddress.string
         )
     }
 

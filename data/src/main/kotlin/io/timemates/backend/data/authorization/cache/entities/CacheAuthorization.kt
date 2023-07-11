@@ -9,7 +9,7 @@ data class CacheAuthorization(
     val permissions: Permissions,
     val expiresAt: Long,
     val createdAt: Long,
-    val clientMetadata: ClientMetadata
+    val clientMetadata: ClientMetadata,
 ) {
     data class Permissions(
         val authorization: GrantLevel,

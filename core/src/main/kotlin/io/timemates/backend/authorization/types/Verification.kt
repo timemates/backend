@@ -12,5 +12,5 @@ data class Verification(
     val attempts: Attempts,
     val time: UnixTime,
     val isConfirmed: Boolean,
-    val clientMetadata: ClientMetadata
+    val clientMetadata: ClientMetadata,
 )

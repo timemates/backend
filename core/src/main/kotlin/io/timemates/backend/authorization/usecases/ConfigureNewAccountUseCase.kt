@@ -45,7 +45,7 @@ class ConfigureNewAccountUseCase(
             refreshHash,
             expiresAt,
             currentTime,
-            metadata
+            metadata,
         )
 
         verifications.remove(verificationToken)
@@ -58,7 +58,7 @@ class ConfigureNewAccountUseCase(
                 scopes = listOf(Scope.All),
                 expiresAt = expiresAt,
                 createdAt = currentTime,
-                clientMetadata = metadata
+                clientMetadata = metadata,
             )
         )
     }
