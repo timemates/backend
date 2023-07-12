@@ -6,8 +6,6 @@ import com.timemates.random.SecureRandomProvider
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
-import io.mockk.impl.annotations.RelaxedMockK
-import io.mockk.mockk
 import io.timemates.backend.authorization.repositories.AuthorizationsRepository
 import io.timemates.backend.authorization.types.Authorization
 import io.timemates.backend.authorization.types.metadata.ClientMetadata
@@ -16,12 +14,10 @@ import io.timemates.backend.authorization.types.metadata.value.ClientName
 import io.timemates.backend.authorization.types.metadata.value.ClientVersion
 import io.timemates.backend.authorization.types.value.AccessHash
 import io.timemates.backend.authorization.types.value.RefreshHash
-import io.timemates.backend.authorization.usecases.GetUserIdByAccessTokenUseCase
-import io.timemates.backend.authorization.usecases.RemoveAccessTokenUseCase
+import io.timemates.backend.authorization.usecases.GetAuthorizationUseCase
 import io.timemates.backend.testing.validation.createOrAssert
 import io.timemates.backend.users.types.value.UserId
 import kotlinx.coroutines.runBlocking
-import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -30,38 +26,37 @@ import kotlin.test.assertEquals
 
 @Testable
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class GetUserIdByAccessTokenUseCaseTest {
+class GetAuthorizationUseCaseTest {
 
-    private lateinit var useCase: GetUserIdByAccessTokenUseCase
+    private lateinit var useCase: GetAuthorizationUseCase
     private val timeProvider = SystemTimeProvider()
     private val randomProvider = SecureRandomProvider()
 
-    @RelaxedMockK
+    @MockK
     lateinit var authorizationsRepository: AuthorizationsRepository
 
     @BeforeEach
-    fun beforeEach() {
+    fun before() {
         MockKAnnotations.init(this)
-        useCase = GetUserIdByAccessTokenUseCase(
-            authorizations = authorizationsRepository,
-            time = timeProvider
+        useCase = GetAuthorizationUseCase(
+            authorizationsRepository = authorizationsRepository,
+            timerProvider = timeProvider
         )
     }
 
     @Test
-    fun `test success get user by id access token`() = runBlocking {
+    fun `test success get authorization`() = runBlocking {
         // GIVEN
-        val accessHash = AccessHash.createOrAssert(randomProvider.randomHash(AccessHash.SIZE))
-        val refreshHash = RefreshHash.createOrAssert(randomProvider.randomHash(RefreshHash.SIZE))
-        val time = UnixTime.createOrAssert(123232335)
-        val userId = UserId.createOrAssert(1235)
+        val accessHashValue = randomProvider.randomHash(AccessHash.SIZE)
+        val accessHash = AccessHash.createOrAssert(accessHashValue)
+        val refreshHash = RefreshHash.createOrAssert(randomProvider.randomHash(AccessHash.SIZE))
         val authorization = Authorization(
-            userId = userId,
+            userId = UserId.createOrAssert(1235),
             accessHash = accessHash,
             refreshAccessHash = refreshHash,
             scopes = listOf(),
             createdAt = UnixTime.createOrAssert(12323232),
-            expiresAt = time,
+            expiresAt = UnixTime.createOrAssert(12323235),
             clientMetadata = ClientMetadata(
                 clientName = ClientName.createOrAssert("Xiaomi"),
                 clientVersion = ClientVersion.createOrAssert("11"),
@@ -72,17 +67,17 @@ class GetUserIdByAccessTokenUseCaseTest {
         // WHEN
         val result = useCase.execute(accessHash)
         // THEN
-        assertEquals(GetUserIdByAccessTokenUseCase.Result.Success(userId), result)
+        assertEquals(GetAuthorizationUseCase.Result.Success(authorization), result)
     }
 
     @Test
-    fun `test failed get user by id access token, user was not found`() = runBlocking {
+    fun `test failed get authorization, user was not found`() = runBlocking {
         // GIVEN
         val accessHash = AccessHash.createOrAssert(randomProvider.randomHash(AccessHash.SIZE))
         coEvery { authorizationsRepository.get(any(), any()) }.returns(null)
         // WHEN
         val result = useCase.execute(accessHash)
         // THEN
-        assertEquals(GetUserIdByAccessTokenUseCase.Result.NotFound, result)
+        assertEquals(GetAuthorizationUseCase.Result.NotFound, result)
     }
 }

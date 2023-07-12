@@ -13,9 +13,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.platform.commons.annotation.Testable
-import java.lang.ClassCastException
 import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
 
 @Testable
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -35,17 +33,23 @@ class RemoveAccessTokenUseCaseTest {
 
     @Test
     fun `test success remove token`() = runBlocking {
+        // GIVEN
         val accessHash = AccessHash.createOrAssert(randomProvider.randomHash(AccessHash.SIZE))
         coEvery { authorizationsRepository.remove(accessHash) }.returns(true)
+        // WHEN
         val result = useCase.execute(accessHash)
+        // THEN
         assertEquals(RemoveAccessTokenUseCase.Result.Success, result)
     }
 
     @Test
-    fun `test failed remove token, access hash is wrong`(): Unit = runBlocking {
+    fun `test failed remove token, access hash is wrong`() = runBlocking {
+        // GIVEN
         val accessHash = AccessHash.createOrAssert(randomProvider.randomHash(AccessHash.SIZE))
         coEvery { authorizationsRepository.remove(any()) }.returns(false)
+        // WHEN
         val result = useCase.execute(accessHash)
+        // THEN
         assertEquals(RemoveAccessTokenUseCase.Result.AuthorizationNotFound, result)
     }
 }
