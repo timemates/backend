@@ -6,6 +6,7 @@ import com.timemates.random.SecureRandomProvider
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
+import io.mockk.mockk
 import io.timemates.backend.authorization.repositories.AuthorizationsRepository
 import io.timemates.backend.authorization.types.Authorization
 import io.timemates.backend.authorization.types.metadata.ClientMetadata
@@ -33,8 +34,7 @@ class GetAuthorizationUseCaseTest {
     private val timeProvider = SystemTimeProvider()
     private val randomProvider = SecureRandomProvider()
 
-    @MockK
-    lateinit var authorizationsRepository: AuthorizationsRepository
+    private val authorizationsRepository = mockk<AuthorizationsRepository>()
 
     @BeforeAll
     fun before() {
@@ -46,7 +46,7 @@ class GetAuthorizationUseCaseTest {
     }
 
     @Test
-    fun `test success get authorization`() = runBlocking {
+    fun `successful authorization should pass`() = runBlocking {
         // GIVEN
         val accessHashValue = randomProvider.randomHash(AccessHash.SIZE)
         val accessHash = AccessHash.createOrAssert(accessHashValue)
@@ -72,7 +72,7 @@ class GetAuthorizationUseCaseTest {
     }
 
     @Test
-    fun `test failed get authorization, user was not found`() = runBlocking {
+    fun `invalid authorization should return NotFound`() = runBlocking {
         // GIVEN
         val accessHash = AccessHash.createOrAssert(randomProvider.randomHash(AccessHash.SIZE))
         coEvery { authorizationsRepository.get(any(), any()) }.returns(null)

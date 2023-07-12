@@ -36,8 +36,7 @@ class GetUserIdByAccessTokenUseCaseTest {
     private val timeProvider = SystemTimeProvider()
     private val randomProvider = SecureRandomProvider()
 
-    @RelaxedMockK
-    lateinit var authorizationsRepository: AuthorizationsRepository
+    private val authorizationsRepository = mockk<AuthorizationsRepository>()
 
     @BeforeAll
     fun before() {
@@ -49,7 +48,7 @@ class GetUserIdByAccessTokenUseCaseTest {
     }
 
     @Test
-    fun `test success get user by id access token`() = runBlocking {
+    fun `get user id by valid access hash should pass`() = runBlocking {
         // GIVEN
         val accessHash = AccessHash.createOrAssert(randomProvider.randomHash(AccessHash.SIZE))
         val refreshHash = RefreshHash.createOrAssert(randomProvider.randomHash(RefreshHash.SIZE))
@@ -76,7 +75,7 @@ class GetUserIdByAccessTokenUseCaseTest {
     }
 
     @Test
-    fun `test failed get user by id access token, user was not found`() = runBlocking {
+    fun `get user id by invalid access hash should return NotFound`() = runBlocking {
         // GIVEN
         val accessHash = AccessHash.createOrAssert(randomProvider.randomHash(AccessHash.SIZE))
         coEvery { authorizationsRepository.get(any(), any()) }.returns(null)

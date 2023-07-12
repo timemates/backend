@@ -6,6 +6,7 @@ import com.timemates.random.SecureRandomProvider
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.mockk
 import io.timemates.backend.authorization.repositories.AuthorizationsRepository
 import io.timemates.backend.authorization.types.Authorization
 import io.timemates.backend.authorization.types.metadata.ClientMetadata
@@ -35,8 +36,7 @@ class RefreshTokenUseCaseTest {
     private val randomProvider = SecureRandomProvider()
     private val timeProvider = SystemTimeProvider()
 
-    @RelaxedMockK
-    lateinit var authorizationsRepository: AuthorizationsRepository
+    private val authorizationsRepository = mockk<AuthorizationsRepository>()
 
     @BeforeAll
     fun before() {
@@ -49,7 +49,7 @@ class RefreshTokenUseCaseTest {
     }
 
     @Test
-    fun `test success refresh token`() = runBlocking {
+    fun `refresh access token by valid access hash should pass`() = runBlocking {
         // GIVEN
         val accessHashValue = randomProvider.randomHash(AccessHash.SIZE)
         val accessHash = AccessHash.createOrAssert(accessHashValue)
@@ -75,7 +75,7 @@ class RefreshTokenUseCaseTest {
     }
 
     @Test
-    fun `test failed refresh token, access hash is null`(): Unit = runBlocking {
+    fun `refresh access token by invalid access hash should return InvalidAuthorization`() = runBlocking {
         // GIVEN
         val refreshHash = RefreshHash.createOrAssert(randomProvider.randomHash(AccessHash.SIZE))
         coEvery { authorizationsRepository.renew(any(), any(), any()) }.returns(null)
