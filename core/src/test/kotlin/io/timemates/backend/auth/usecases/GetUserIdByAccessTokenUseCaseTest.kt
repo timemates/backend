@@ -39,8 +39,8 @@ class GetUserIdByAccessTokenUseCaseTest {
     @RelaxedMockK
     lateinit var authorizationsRepository: AuthorizationsRepository
 
-    @BeforeEach
-    fun beforeEach() {
+    @BeforeAll
+    fun before() {
         MockKAnnotations.init(this)
         useCase = GetUserIdByAccessTokenUseCase(
             authorizations = authorizationsRepository,

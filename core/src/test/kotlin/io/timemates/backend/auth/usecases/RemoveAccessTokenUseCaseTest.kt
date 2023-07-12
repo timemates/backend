@@ -9,6 +9,7 @@ import io.timemates.backend.authorization.types.value.AccessHash
 import io.timemates.backend.authorization.usecases.RemoveAccessTokenUseCase
 import io.timemates.backend.testing.validation.createOrAssert
 import kotlinx.coroutines.runBlocking
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -25,7 +26,7 @@ class RemoveAccessTokenUseCaseTest {
     @MockK
     lateinit var authorizationsRepository: AuthorizationsRepository
 
-    @BeforeEach
+    @BeforeAll
     fun before() {
         MockKAnnotations.init(this)
         useCase = RemoveAccessTokenUseCase(authorizationsRepository)

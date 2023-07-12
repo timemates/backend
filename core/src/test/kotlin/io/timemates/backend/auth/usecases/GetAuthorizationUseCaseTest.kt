@@ -18,6 +18,7 @@ import io.timemates.backend.authorization.usecases.GetAuthorizationUseCase
 import io.timemates.backend.testing.validation.createOrAssert
 import io.timemates.backend.users.types.value.UserId
 import kotlinx.coroutines.runBlocking
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -35,7 +36,7 @@ class GetAuthorizationUseCaseTest {
     @MockK
     lateinit var authorizationsRepository: AuthorizationsRepository
 
-    @BeforeEach
+    @BeforeAll
     fun before() {
         MockKAnnotations.init(this)
         useCase = GetAuthorizationUseCase(
