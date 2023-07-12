@@ -12,6 +12,9 @@ import io.mockk.junit5.MockKExtension
 import io.mockk.spyk
 import io.timemates.backend.authorization.repositories.VerificationsRepository
 import io.timemates.backend.authorization.types.metadata.ClientMetadata
+import io.timemates.backend.authorization.types.metadata.value.ClientIpAddress
+import io.timemates.backend.authorization.types.metadata.value.ClientName
+import io.timemates.backend.authorization.types.metadata.value.ClientVersion
 import io.timemates.backend.authorization.usecases.AuthByEmailUseCase
 import io.timemates.backend.common.repositories.EmailsRepository
 import io.timemates.backend.common.types.value.Count
@@ -19,11 +22,14 @@ import io.timemates.backend.testing.validation.createOrAssert
 import io.timemates.backend.users.types.value.EmailAddress
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.extension.ExtendWith
+import org.junit.platform.commons.annotation.Testable
 import kotlin.test.assertEquals
 
-// @Testable
-// @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@Testable
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ExtendWith(MockKExtension::class)
 class AuthByEmailUseCaseTest {
     @MockK
@@ -48,7 +54,7 @@ class AuthByEmailUseCaseTest {
         )
     }
 
-    // @Test
+    //@Test
     fun `test success email sending`(): Unit = runBlocking {
         // GIVEN
         val clientMetadata = spyk<ClientMetadata>()
@@ -75,7 +81,11 @@ class AuthByEmailUseCaseTest {
     // @Test
     fun `test sessions number exceed`(): Unit = runBlocking {
         // GIVEN
-        val clientMetadata = spyk<ClientMetadata>()
+        val clientMetadata = ClientMetadata(
+            clientName = ClientName.createOrAssert("name"),
+            clientVersion = ClientVersion.createOrAssert("version"),
+            clientIpAddress = ClientIpAddress.createOrAssert("ip_address"),
+        )
         coEvery { verificationsRepository.getNumberOfAttempts(any(), any()) } returns Count.createOrAssert(0)
         coEvery { verificationsRepository.getNumberOfSessions(any(), any()) } returns Count.createOrAssert(3)
         every { timeProvider.provide() } returns UnixTime.createOrAssert(System.currentTimeMillis())
