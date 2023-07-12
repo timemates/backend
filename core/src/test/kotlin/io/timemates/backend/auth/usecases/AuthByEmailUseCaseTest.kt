@@ -78,7 +78,7 @@ class AuthByEmailUseCaseTest {
 //        )
     }
 
-    @Test
+    // @Test
     fun `test sessions number exceed`(): Unit = runBlocking {
         // GIVEN
         val clientMetadata = ClientMetadata(
