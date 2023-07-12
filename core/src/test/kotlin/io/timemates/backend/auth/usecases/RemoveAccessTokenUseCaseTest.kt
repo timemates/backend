@@ -43,10 +43,9 @@ class RemoveAccessTokenUseCaseTest {
 
     @Test
     fun `test failed remove token, access hash is wrong`(): Unit = runBlocking {
-        assertFailsWith<ClassCastException> {
-            val invalidHash = AccessHash.createOrAssert("12")
-            coEvery { authorizationsRepository.remove(invalidHash) }.returns(false)
-            useCase.execute(invalidHash)
-        }
+        val accessHash = AccessHash.createOrAssert(randomProvider.randomHash(AccessHash.SIZE))
+        coEvery { authorizationsRepository.remove(any()) }.returns(false)
+        val result = useCase.execute(accessHash)
+        assertEquals(RemoveAccessTokenUseCase.Result.AuthorizationNotFound, result)
     }
 }

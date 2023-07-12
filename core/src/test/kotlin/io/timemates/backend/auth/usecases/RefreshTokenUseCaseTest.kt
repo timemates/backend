@@ -74,7 +74,7 @@ class RefreshTokenUseCaseTest {
     }
 
     @Test
-    fun `test failed refresh token`(): Unit = runBlocking {
+    fun `test failed refresh token, access hash is null`(): Unit = runBlocking {
         // GIVEN
         val refreshHash = RefreshHash.createOrAssert(randomProvider.randomHash(AccessHash.SIZE))
         coEvery { authorizationsRepository.renew(any(), any(), any()) }.returns(null)
