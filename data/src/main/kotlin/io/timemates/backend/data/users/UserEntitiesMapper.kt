@@ -3,11 +3,9 @@ package io.timemates.backend.data.users
 import com.timemates.backend.validation.createOrThrow
 import io.timemates.backend.data.users.datasource.CachedUsersDataSource
 import io.timemates.backend.data.users.datasource.PostgresqlUsersDataSource
-import io.timemates.backend.files.types.value.FileId
 import io.timemates.backend.users.types.Avatar
 import io.timemates.backend.users.types.User
 import io.timemates.backend.users.types.value.*
-import kotlin.math.hypot
 
 class UserEntitiesMapper {
     fun toDomainUser(id: Long, cachedUser: CachedUsersDataSource.User): User = with(cachedUser) {
@@ -26,7 +24,7 @@ class UserEntitiesMapper {
     }
 
     fun toPostgresqlUserPatch(patch: User.Patch) = with(patch) {
-        PostgresqlUsersDataSource.User.Patch(name?.string, shortBio?.string, avatarId?.string)
+        PostgresqlUsersDataSource.User.Patch(name?.string, shortBio?.string, avatarId?.string, gravatarId?.string)
     }
 
     fun toCachedUser(user: User) = with(user) {

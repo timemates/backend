@@ -17,4 +17,9 @@ message EditUserRequest {
    * User's description.
    */
   optional string description = 3;
+
+  /**
+   * Email for gravatar
+   */
+  optional string gravatarEmail = 4;
 }

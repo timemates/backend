@@ -86,6 +86,7 @@ class PostgresqlUsersDataSource(private val database: Database) {
             val userName: String? = null,
             val userShortDesc: String? = null,
             val userAvatarFileId: String? = null,
+            val userGravatarId: String? = null
         )
     }
 

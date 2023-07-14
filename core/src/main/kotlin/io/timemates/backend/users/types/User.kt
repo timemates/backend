@@ -14,5 +14,6 @@ data class User(
         val name: UserName? = null,
         val shortBio: UserDescription? = null,
         val avatarId: FileId? = null,
+        val gravatarId: EmailAddress? = null
     )
 }
