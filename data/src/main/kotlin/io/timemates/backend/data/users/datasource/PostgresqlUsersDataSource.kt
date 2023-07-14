@@ -47,7 +47,10 @@ class PostgresqlUsersDataSource(private val database: Database) {
         suspendedTransaction(database) {
             UsersTable.update({ UsersTable.USER_ID eq id }) { update ->
                 patch.userName?.let { update[USER_NAME] = it }
-                patch.userAvatarFileId?.let { update[AVATAR_FILE_ID] = it }
+                patch.userAvatarFileId?.let {
+                    update[AVATAR_FILE_ID] = it
+                    update[GRAVATAR_ID] = null
+                }
                 patch.userShortDesc?.let { update[USER_SHORT_DESC] = it }
             }
         }
