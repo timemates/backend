@@ -111,9 +111,15 @@ class UsersRepositoryTest {
         val userId3 = UserId.createOrAssert(3)
         val userId4 = UserId.createOrAssert(4)
 
-        val cachedUser1 = CachedUsersDataSource.User("User 1", null, null, "user1@example.com")
-        val cachedUser2 = CachedUsersDataSource.User("User 2", null, null, "user2@example.com")
-        val cachedUser3 = CachedUsersDataSource.User("User 3", null, null, "user3@example.com")
+        val cachedUser1 = CachedUsersDataSource.User(
+            "User 1", null, null, null, "user1@example.com"
+        )
+        val cachedUser2 = CachedUsersDataSource.User(
+            "User 2", null, null, null, "user2@example.com"
+        )
+        val cachedUser3 = CachedUsersDataSource.User(
+            "User 3", null, null, null, "user2@example.com"
+        )
 
         val cachedUsersMap = mapOf(
             userId1.long to cachedUser1,
@@ -128,7 +134,7 @@ class UsersRepositoryTest {
             userEmail = "user4@example.com",
             userShortDesc = "4",
             userAvatarFileId = null,
-            gravatarId = null,
+            userGravatarId = null,
         )
 
         coEvery { cachedUsers.getUsers(any()) } returns cachedUsersMap

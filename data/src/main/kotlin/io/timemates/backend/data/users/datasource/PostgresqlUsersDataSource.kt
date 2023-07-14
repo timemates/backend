@@ -3,7 +3,6 @@ package io.timemates.backend.data.users.datasource
 import io.timemates.backend.exposed.suspendedTransaction
 import org.jetbrains.annotations.TestOnly
 import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.mod
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class PostgresqlUsersDataSource(private val database: Database) {
@@ -78,7 +77,7 @@ class PostgresqlUsersDataSource(private val database: Database) {
         val userEmail: String,
         val userShortDesc: String?,
         val userAvatarFileId: String?,
-        val gravatarId: String?,
+        val userGravatarId: String?,
     ) {
         data class Patch(
             val userName: String? = null,

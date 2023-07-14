@@ -5,10 +5,7 @@ import io.timemates.backend.data.users.datasource.CachedUsersDataSource
 import io.timemates.backend.data.users.datasource.PostgresqlUsersDataSource
 import io.timemates.backend.files.types.value.FileId
 import io.timemates.backend.users.types.User
-import io.timemates.backend.users.types.value.EmailAddress
-import io.timemates.backend.users.types.value.UserDescription
-import io.timemates.backend.users.types.value.UserId
-import io.timemates.backend.users.types.value.UserName
+import io.timemates.backend.users.types.value.*
 
 class UserEntitiesMapper {
     fun toDomainUser(id: Long, cachedUser: CachedUsersDataSource.User): User = with(cachedUser) {
@@ -17,12 +14,13 @@ class UserEntitiesMapper {
             UserName.createOrThrow(name),
             email?.let { EmailAddress.createOrThrow(it) },
             shortBio?.let { UserDescription.createOrThrow(it) },
-            avatarFileId?.let { FileId.createOrThrow(it) }
+            avatarFileId?.let { FileId.createOrThrow(it) },
+            gravatarId?.let { GravatarId.createOrThrow(it) }
         )
     }
 
     fun toCachedUser(pUser: PostgresqlUsersDataSource.User): CachedUsersDataSource.User = with(pUser) {
-        return CachedUsersDataSource.User(userName, userShortDesc, userAvatarFileId, userEmail)
+        return CachedUsersDataSource.User(userName, userShortDesc, userAvatarFileId, userGravatarId, userEmail)
     }
 
     fun toPostgresqlUserPatch(patch: User.Patch) = with(patch) {
@@ -31,7 +29,7 @@ class UserEntitiesMapper {
 
     fun toCachedUser(user: User) = with(user) {
         CachedUsersDataSource.User(
-            name.string, description?.string, avatarId?.string, emailAddress?.string
+            name.string, description?.string, avatarId?.string, gravatarId?.string, emailAddress?.string
         )
     }
 
@@ -41,7 +39,8 @@ class UserEntitiesMapper {
             UserName.createOrThrow(userName),
             EmailAddress.createOrThrow(userEmail),
             userShortDesc?.let { UserDescription.createOrThrow(it) },
-            userAvatarFileId?.let { FileId.createOrThrow(it) }
+            userAvatarFileId?.let { FileId.createOrThrow(it) },
+            userGravatarId?.let { GravatarId.createOrThrow(it) }
         )
     }
 }

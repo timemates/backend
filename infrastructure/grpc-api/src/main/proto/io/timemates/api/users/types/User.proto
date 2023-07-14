@@ -12,23 +12,26 @@ message User {
    * String identifier of 128 length. Can be null
    * if there is no avatar.
    */
-  optional string avatarId = 2;
+  oneof avatar {
+    string avatarId = 2;
+    string gravatarId = 3;
+  }
 
   /**
    * User's name
    */
-  string name = 3;
+  string name = 4;
 
   /**
    * User's description.
    */
-  string description = 4;
+  string description = 5;
 
   /**
    * User's email up to 200 symbols.
    * Can be null if there is no access.
    */
-  optional string email = 5;
+  optional string email = 6;
 }
 
 message Users {

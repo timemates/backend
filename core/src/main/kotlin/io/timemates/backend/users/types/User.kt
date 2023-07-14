@@ -1,10 +1,7 @@
 package io.timemates.backend.users.types
 
 import io.timemates.backend.files.types.value.FileId
-import io.timemates.backend.users.types.value.EmailAddress
-import io.timemates.backend.users.types.value.UserDescription
-import io.timemates.backend.users.types.value.UserId
-import io.timemates.backend.users.types.value.UserName
+import io.timemates.backend.users.types.value.*
 
 data class User(
     val id: UserId,
@@ -12,6 +9,7 @@ data class User(
     val emailAddress: EmailAddress?,
     val description: UserDescription?,
     val avatarId: FileId?,
+    val gravatarId: GravatarId?
 ) {
     data class Patch(
         val name: UserName? = null,
