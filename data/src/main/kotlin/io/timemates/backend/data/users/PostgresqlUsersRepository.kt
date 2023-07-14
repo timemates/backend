@@ -83,9 +83,4 @@ class PostgresqlUsersRepository(
         cachedUsers.invalidateUser(userId.long)
         return true
     }
-
-    override suspend fun setGravatar(userId: UserId, emailAddress: EmailAddress) {
-        val emailAddressHash = hashingRepository.generateMD5Hash(emailAddress.string)
-        postgresqlUsers.setGravatar(userId.long, emailAddressHash)
-    }
 }

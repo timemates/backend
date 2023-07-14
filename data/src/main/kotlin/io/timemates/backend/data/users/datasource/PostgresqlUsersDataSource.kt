@@ -3,7 +3,6 @@ package io.timemates.backend.data.users.datasource
 import io.timemates.backend.exposed.suspendedTransaction
 import org.jetbrains.annotations.TestOnly
 import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.mod
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class PostgresqlUsersDataSource(private val database: Database) {
@@ -48,7 +47,14 @@ class PostgresqlUsersDataSource(private val database: Database) {
         suspendedTransaction(database) {
             UsersTable.update({ UsersTable.USER_ID eq id }) { update ->
                 patch.userName?.let { update[USER_NAME] = it }
-                patch.userAvatarFileId?.let { update[AVATAR_FILE_ID] = it }
+                patch.userAvatarFileId?.let {
+                    update[AVATAR_FILE_ID] = it
+                    update[GRAVATAR_ID] = null
+                }
+                patch.userGravatarId?.let {
+                    update[GRAVATAR_ID] = it
+                    update[AVATAR_FILE_ID] = null
+                }
                 patch.userShortDesc?.let { update[USER_SHORT_DESC] = it }
             }
         }
@@ -78,12 +84,13 @@ class PostgresqlUsersDataSource(private val database: Database) {
         val userEmail: String,
         val userShortDesc: String?,
         val userAvatarFileId: String?,
-        val gravatarId: String?,
+        val userGravatarId: String?,
     ) {
         data class Patch(
             val userName: String? = null,
             val userShortDesc: String? = null,
             val userAvatarFileId: String? = null,
+            val userGravatarId: String? = null,
         )
     }
 

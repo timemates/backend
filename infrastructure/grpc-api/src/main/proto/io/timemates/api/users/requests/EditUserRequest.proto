@@ -4,17 +4,19 @@ option java_package = "io.timemates.api.users.requests";
 
 message EditUserRequest {
   /**
-   * String identifier of 128 length. Can be null
-   * if there is no avatar.
+   * User's avatar id
    */
-  optional string avatarId = 1;
+  oneof avatar {
+    string avatarId = 1;
+    string gravatarId = 2;
+  }
   /**
    * User's name
    */
-  optional string name = 2;
+  optional string name = 3;
 
   /**
    * User's description.
    */
-  optional string description = 3;
+  optional string description = 4;
 }

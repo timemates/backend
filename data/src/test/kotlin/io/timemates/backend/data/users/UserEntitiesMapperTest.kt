@@ -1,14 +1,13 @@
 package io.timemates.backend.data.users
 
+import com.timemates.backend.validation.createOrThrow
 import io.timemates.backend.data.users.datasource.CachedUsersDataSource
 import io.timemates.backend.data.users.datasource.PostgresqlUsersDataSource
 import io.timemates.backend.files.types.value.FileId
 import io.timemates.backend.testing.validation.createOrAssert
+import io.timemates.backend.users.types.Avatar
 import io.timemates.backend.users.types.User
-import io.timemates.backend.users.types.value.EmailAddress
-import io.timemates.backend.users.types.value.UserDescription
-import io.timemates.backend.users.types.value.UserId
-import io.timemates.backend.users.types.value.UserName
+import io.timemates.backend.users.types.value.*
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -23,7 +22,8 @@ class UserEntitiesMapperTest {
             "John Doe",
             "Short bio",
             null,
-            "johndoe@example.com"
+            null,
+            "johndoe@example.com",
         )
 
         val expectedUser = User(
@@ -31,7 +31,8 @@ class UserEntitiesMapperTest {
             UserName.createOrAssert(cachedUser.name),
             cachedUser.email?.let { EmailAddress.createOrAssert(it) },
             cachedUser.shortBio?.let { UserDescription.createOrAssert(it) },
-            cachedUser.avatarFileId?.let { FileId.createOrAssert(it) }
+            avatar = cachedUser.avatarFileId?.let { Avatar.FileId.createOrThrow(it) } ?:
+                cachedUser.gravatarId?.let { Avatar.GravatarId.createOrThrow(it) }
         )
 
         val actualUser = mapper.toDomainUser(userId, cachedUser)
@@ -50,13 +51,14 @@ class UserEntitiesMapperTest {
             "email",
             "Short description",
             null,
-            gravatarId = null
+            null
         )
 
         val expectedCachedUser = CachedUsersDataSource.User(
             name = pUser.userName,
             shortBio = pUser.userShortDesc,
             avatarFileId = pUser.userAvatarFileId,
+            gravatarId = pUser.userGravatarId,
             email = pUser.userEmail
         )
 
@@ -93,13 +95,14 @@ class UserEntitiesMapperTest {
             name = UserName.createOrAssert("John"),
             emailAddress = EmailAddress.createOrAssert("john@example.com"),
             description = UserDescription.createOrAssert("This is a description"),
-            avatarId = null
+            avatar = null
         )
 
         val expected = CachedUsersDataSource.User(
             user.name.string,
             user.description?.string,
-            user.avatarId?.string,
+            avatarFileId = (user.avatar as? Avatar.FileId)?.string,
+            gravatarId = (user.avatar as? Avatar.GravatarId)?.string,
             user.emailAddress?.string
         )
         val actual = mapper.toCachedUser(user)
@@ -115,7 +118,7 @@ class UserEntitiesMapperTest {
             userEmail = "john@example.com",
             userShortDesc = "This is a description",
             userAvatarFileId = null,
-            gravatarId = null
+            userGravatarId = null
         )
 
         val expected = User(
@@ -123,7 +126,7 @@ class UserEntitiesMapperTest {
             name = UserName.createOrAssert(pUser.userName),
             emailAddress = EmailAddress.createOrAssert(pUser.userEmail),
             description = pUser.userShortDesc?.let { UserDescription.createOrAssert(it) },
-            avatarId = null
+            avatar = null
         )
         val actual = mapper.toDomainUser(pUser)
 

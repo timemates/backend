@@ -5,6 +5,8 @@ import io.timemates.api.users.types.UserOuterClass
 import io.timemates.api.users.types.user
 import io.timemates.backend.files.types.value.FileId
 import io.timemates.backend.services.common.validation.createOrStatus
+import io.timemates.backend.users.types.Avatar
+import io.timemates.backend.users.types.value.EmailAddress
 import io.timemates.backend.users.types.value.UserDescription
 import io.timemates.backend.users.types.value.UserName
 import io.timemates.backend.users.types.User as DomainUser
@@ -16,7 +18,11 @@ class GrpcUsersMapper {
             name = domain.name.string
             domain.emailAddress?.string?.let { email = it }
             domain.description?.string?.let { description = it }
-            domain.avatarId?.string?.let { avatarId = it }
+            when (val avatar = domain.avatar) {
+                is Avatar.GravatarId -> gravatarId = avatar.string
+                is Avatar.FileId -> avatarId = avatar.string
+                else -> {}
+            }
         }
     }
 
@@ -28,6 +34,8 @@ class GrpcUsersMapper {
                 ?.let { UserDescription.createOrStatus(it) },
             avatarId = patch.avatarId.takeIf { patch.hasAvatarId() }
                 ?.let { FileId.createOrStatus(it) },
+            gravatarId = patch.gravatarId.takeIf { patch.hasGravatarId() }
+                ?.let { EmailAddress.createOrStatus(it) },
         )
     }
 }
