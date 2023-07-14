@@ -4,8 +4,10 @@ import com.timemates.backend.validation.createOrThrow
 import io.timemates.backend.data.users.datasource.CachedUsersDataSource
 import io.timemates.backend.data.users.datasource.PostgresqlUsersDataSource
 import io.timemates.backend.files.types.value.FileId
+import io.timemates.backend.users.types.Avatar
 import io.timemates.backend.users.types.User
 import io.timemates.backend.users.types.value.*
+import kotlin.math.hypot
 
 class UserEntitiesMapper {
     fun toDomainUser(id: Long, cachedUser: CachedUsersDataSource.User): User = with(cachedUser) {
@@ -14,8 +16,8 @@ class UserEntitiesMapper {
             UserName.createOrThrow(name),
             email?.let { EmailAddress.createOrThrow(it) },
             shortBio?.let { UserDescription.createOrThrow(it) },
-            avatarFileId?.let { FileId.createOrThrow(it) },
-            gravatarId?.let { GravatarId.createOrThrow(it) }
+            avatar = avatarFileId?.let { Avatar.FileId.createOrThrow(it) } ?:
+                gravatarId?.let { Avatar.GravatarId.createOrThrow(it) }
         )
     }
 
@@ -29,7 +31,11 @@ class UserEntitiesMapper {
 
     fun toCachedUser(user: User) = with(user) {
         CachedUsersDataSource.User(
-            name.string, description?.string, avatarId?.string, gravatarId?.string, emailAddress?.string
+            name.string,
+            description?.string,
+            avatarFileId = (avatar as? Avatar.FileId)?.string,
+            gravatarId = (avatar as? Avatar.GravatarId)?.string,
+            emailAddress?.string
         )
     }
 
@@ -39,8 +45,8 @@ class UserEntitiesMapper {
             UserName.createOrThrow(userName),
             EmailAddress.createOrThrow(userEmail),
             userShortDesc?.let { UserDescription.createOrThrow(it) },
-            userAvatarFileId?.let { FileId.createOrThrow(it) },
-            userGravatarId?.let { GravatarId.createOrThrow(it) }
+            avatar = pUser.userAvatarFileId?.let { Avatar.FileId.createOrThrow(it) } ?:
+            pUser.userGravatarId?.let { Avatar.GravatarId.createOrThrow(it) }
         )
     }
 }

@@ -8,8 +8,7 @@ data class User(
     val name: UserName,
     val emailAddress: EmailAddress?,
     val description: UserDescription?,
-    val avatarId: FileId?,
-    val gravatarId: GravatarId?
+    val avatar: Avatar?,
 ) {
     data class Patch(
         val name: UserName? = null,

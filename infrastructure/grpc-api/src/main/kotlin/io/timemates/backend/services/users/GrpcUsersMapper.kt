@@ -16,8 +16,6 @@ class GrpcUsersMapper {
             name = domain.name.string
             domain.emailAddress?.string?.let { email = it }
             domain.description?.string?.let { description = it }
-            domain.avatarId?.string?.let { avatarId = it }
-            domain.gravatarId?.string?.let { gravatarId = it }
         }
     }
 
