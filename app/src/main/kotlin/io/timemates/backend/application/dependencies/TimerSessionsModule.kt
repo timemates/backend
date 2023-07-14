@@ -26,6 +26,7 @@ val TimerSessionsModule = module {
     singleOf(::PingSessionUseCase)
     singleOf(::ConfirmStartUseCase)
     singleOf(::GetStateUpdatesUseCase)
+    singleOf(::GetCurrentTimerSessionUseCase)
 
     singleOf(::TimerSessionsService)
 }
