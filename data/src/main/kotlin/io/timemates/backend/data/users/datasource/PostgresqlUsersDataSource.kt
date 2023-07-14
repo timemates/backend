@@ -51,6 +51,10 @@ class PostgresqlUsersDataSource(private val database: Database) {
                     update[AVATAR_FILE_ID] = it
                     update[GRAVATAR_ID] = null
                 }
+                patch.userGravatarId?.let {
+                    update[GRAVATAR_ID] = it
+                    update[AVATAR_FILE_ID] = null
+                }
                 patch.userShortDesc?.let { update[USER_SHORT_DESC] = it }
             }
         }
