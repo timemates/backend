@@ -1,4 +1,4 @@
-package io.timemates.backend.auth.usecases
+package io.timemates.backend.timers.usecases.sessions
 
 import com.timemates.backend.time.SystemTimeProvider
 import com.timemates.backend.time.UnixTime
@@ -14,7 +14,6 @@ import io.timemates.backend.timers.repositories.TimersRepository
 import io.timemates.backend.timers.types.Timer
 import io.timemates.backend.timers.types.toTimer
 import io.timemates.backend.timers.types.value.TimerId
-import io.timemates.backend.timers.usecases.sessions.GetCurrentTimerSessionUseCase
 import io.timemates.backend.users.types.value.UserId
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
