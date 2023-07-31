@@ -23,6 +23,8 @@ import io.timemates.backend.authorization.usecases.*
 import io.timemates.backend.pagination.PageToken
 import io.timemates.backend.services.authorization.context.provideAuthorizationContext
 import io.timemates.backend.services.authorization.interceptor.AuthorizationContext
+import io.timemates.backend.services.authorization.interceptor.IpAddressInterceptor
+import io.timemates.backend.services.authorization.interceptor.SessionContext
 import io.timemates.backend.services.common.validation.createOrStatus
 import io.timemates.backend.users.types.value.EmailAddress
 import io.timemates.backend.users.types.value.UserDescription
@@ -46,7 +48,7 @@ class AuthorizationsService(
         val metadata = ClientMetadata(
             clientName = ClientName.createOrStatus(request.metadata.clientName),
             clientVersion = ClientVersion.createOrStatus(request.metadata.clientVersion),
-            clientIpAddress = ClientIpAddress.createOrStatus(request.metadata.clientIpAddress),
+            clientIpAddress = coroutineContext[SessionContext]!!.ipAddress,
         )
 
         return when (val result = authByEmailUseCase.execute(email, metadata)) {
