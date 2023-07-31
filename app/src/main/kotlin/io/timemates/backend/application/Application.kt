@@ -154,7 +154,7 @@ fun main(args: Array<String>) {
         .addService(koin.get<TimerSessionsService>() as BindableService)
         .addService(ProtoReflectionService.newInstance())
         .intercept(AuthorizationInterceptor(koin.get()) as ServerInterceptor)
-        .intercept(IpAddressInterceptor())
+        .intercept(IpAddressInterceptor() as ServerInterceptor)
         .build()
 
 
