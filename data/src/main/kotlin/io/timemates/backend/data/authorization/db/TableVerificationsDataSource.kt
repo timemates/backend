@@ -29,7 +29,7 @@ class TableVerificationsDataSource(
         time: Long,
         attempts: Int,
         metaClientName: String,
-        metaClientVersion: String,
+        metaClientVersion: Double,
         metaClientIpAddress: String,
     ): Unit = suspendedTransaction(database) {
         VerificationSessionsTable.insert {

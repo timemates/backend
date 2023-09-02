@@ -38,6 +38,9 @@ include(
 
 include(":core", ":data")
 
-include(":infrastructure:grpc-api")
+include(
+    ":infrastructure:grpc-api",
+    ":infrastructure:rsocket-api",
+)
 
 include(":app")

@@ -1,7 +1,7 @@
 package io.timemates.backend.data.authorization.mapper
 
 import com.timemates.backend.time.UnixTime
-import com.timemates.backend.validation.createOrThrow
+import com.timemates.backend.validation.createOrThrowInternally
 import io.timemates.backend.authorization.types.Authorization
 import io.timemates.backend.authorization.types.AuthorizationsScope
 import io.timemates.backend.authorization.types.metadata.ClientMetadata
@@ -12,6 +12,7 @@ import io.timemates.backend.authorization.types.value.AccessHash
 import io.timemates.backend.authorization.types.value.RefreshHash
 import io.timemates.backend.data.authorization.cache.entities.CacheAuthorization
 import io.timemates.backend.data.authorization.db.entities.DbAuthorization
+import io.timemates.backend.data.common.markers.Mapper
 import io.timemates.backend.features.authorization.Scope
 import io.timemates.backend.files.types.FilesScope
 import io.timemates.backend.timers.types.TimersScope
@@ -20,19 +21,19 @@ import io.timemates.backend.users.types.value.UserId
 import io.timemates.backend.data.authorization.cache.entities.CacheAuthorization.Permissions.GrantLevel as CacheGrantLevel
 import io.timemates.backend.data.authorization.db.entities.DbAuthorization.Permissions.GrantLevel as DbGrantLevel
 
-class AuthorizationsMapper {
+class AuthorizationsMapper : Mapper {
     fun dbAuthToDomainAuth(auth: DbAuthorization): Authorization = with(auth) {
         return Authorization(
-            userId = UserId.createOrThrow(auth.userId),
-            accessHash = AccessHash.createOrThrow(auth.accessHash),
-            refreshAccessHash = RefreshHash.createOrThrow(auth.refreshAccessHash),
+            userId = UserId.createOrThrowInternally(auth.userId),
+            accessHash = AccessHash.createOrThrowInternally(auth.accessHash),
+            refreshAccessHash = RefreshHash.createOrThrowInternally(auth.refreshAccessHash),
             scopes = dbPermissionsToDomain(permissions),
-            expiresAt = UnixTime.createOrThrow(expiresAt),
-            createdAt = UnixTime.createOrThrow(createdAt),
+            expiresAt = UnixTime.createOrThrowInternally(expiresAt),
+            createdAt = UnixTime.createOrThrowInternally(createdAt),
             clientMetadata = ClientMetadata(
-                clientName = ClientName.createOrThrow(auth.metaClientName),
-                clientVersion = ClientVersion.createOrThrow(auth.metaClientVersion),
-                clientIpAddress = ClientIpAddress.createOrThrow(auth.metaClientVersion),
+                clientName = ClientName.createOrThrowInternally(auth.metaClientName),
+                clientVersion = ClientVersion.createOrThrowInternally(auth.metaClientVersion),
+                clientIpAddress = ClientIpAddress.createOrThrowInternally(auth.metaClientIpAddress),
             )
         )
     }
@@ -46,9 +47,9 @@ class AuthorizationsMapper {
             expiresAt,
             createdAt,
             ClientMetadata(
-                clientName = ClientName.createOrThrow(auth.metaClientName),
-                clientVersion = ClientVersion.createOrThrow(auth.metaClientVersion),
-                clientIpAddress = ClientIpAddress.createOrThrow(auth.metaClientVersion),
+                clientName = ClientName.createOrThrowInternally(auth.metaClientName),
+                clientVersion = ClientVersion.createOrThrowInternally(auth.metaClientVersion),
+                clientIpAddress = ClientIpAddress.createOrThrowInternally(auth.metaClientIpAddress),
             )
         )
     }
@@ -76,16 +77,16 @@ class AuthorizationsMapper {
 
     fun cacheAuthToDomainAuth(auth: CacheAuthorization): Authorization = with(auth) {
         return Authorization(
-            userId = UserId.createOrThrow(auth.userId),
-            accessHash = AccessHash.createOrThrow(auth.accessHash),
-            refreshAccessHash = RefreshHash.createOrThrow(auth.refreshAccessHash),
+            userId = UserId.createOrThrowInternally(auth.userId),
+            accessHash = AccessHash.createOrThrowInternally(auth.accessHash),
+            refreshAccessHash = RefreshHash.createOrThrowInternally(auth.refreshAccessHash),
             scopes = cachePermissionsToDomain(permissions),
-            expiresAt = UnixTime.createOrThrow(expiresAt),
-            createdAt = UnixTime.createOrThrow(createdAt),
+            expiresAt = UnixTime.createOrThrowInternally(expiresAt),
+            createdAt = UnixTime.createOrThrowInternally(createdAt),
             clientMetadata = ClientMetadata(
-                clientName = ClientName.createOrThrow(auth.clientMetadata.clientName.string),
-                clientVersion = ClientVersion.createOrThrow(auth.clientMetadata.clientVersion.string),
-                clientIpAddress = ClientIpAddress.createOrThrow(auth.clientMetadata.clientIpAddress.string),
+                clientName = ClientName.createOrThrowInternally(auth.clientMetadata.clientName.string),
+                clientVersion = ClientVersion.createOrThrowInternally(auth.clientMetadata.clientVersion.double),
+                clientIpAddress = ClientIpAddress.createOrThrowInternally(auth.clientMetadata.clientIpAddress.string),
             )
         )
     }

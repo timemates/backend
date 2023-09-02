@@ -1,6 +1,6 @@
 package com.timemates.backend.validation
 
-import com.timemates.backend.validation.exceptions.ValidationFailure
+import com.timemates.backend.validation.exceptions.InternalValidationFailure
 
 /**
  * Scope that handles validation failures and propagates
@@ -36,24 +36,10 @@ public fun interface ValidationFailureHandler {
         /**
          * Scope that should be used if validation should always throw exception.
          *
-         * @throws [ValidationFailure] if validation failed.
+         * @throws [InternalValidationFailure] if validation failed.
          */
-        public val ALWAYS_THROWS: ValidationFailureHandler = ValidationFailureHandler { failure ->
-            throw ValidationFailure(failure.string)
+        internal val THROWS_INTERNAL: ValidationFailureHandler = ValidationFailureHandler { failure ->
+            throw InternalValidationFailure(failure.string)
         }
     }
-}
-
-/**
- * Creates a handler for validation errors.
- *
- * @param handler for processing invalid data.
- * @param block to work in.
- */
-public fun <T> validation(
-    handler: (FailureMessage) -> Nothing,
-    block: context(ValidationFailureHandler) () -> T,
-): T {
-    val instance = ValidationFailureHandler(handler)
-    return block(instance)
 }

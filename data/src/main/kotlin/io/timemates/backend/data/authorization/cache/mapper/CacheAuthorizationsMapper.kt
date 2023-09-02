@@ -1,14 +1,15 @@
 package io.timemates.backend.data.authorization.cache.mapper
 
-import com.timemates.backend.validation.createOrThrow
+import com.timemates.backend.validation.createOrThrowInternally
 import io.timemates.backend.authorization.types.metadata.ClientMetadata
 import io.timemates.backend.authorization.types.metadata.value.ClientIpAddress
 import io.timemates.backend.authorization.types.metadata.value.ClientName
 import io.timemates.backend.authorization.types.metadata.value.ClientVersion
 import io.timemates.backend.data.authorization.cache.entities.CacheAuthorization
 import io.timemates.backend.data.authorization.db.entities.DbAuthorization
+import io.timemates.backend.data.common.markers.Mapper
 
-class CacheAuthorizationsMapper {
+class CacheAuthorizationsMapper : Mapper {
     fun dbToCacheAuthorization(auth: DbAuthorization): CacheAuthorization = with(auth) {
         CacheAuthorization(
             userId = userId,
@@ -18,9 +19,9 @@ class CacheAuthorizationsMapper {
             expiresAt = expiresAt,
             createdAt = createdAt,
             clientMetadata = ClientMetadata(
-                clientName = ClientName.createOrThrow(metaClientName),
-                clientVersion = ClientVersion.createOrThrow(metaClientVersion),
-                clientIpAddress = ClientIpAddress.createOrThrow(metaClientIpAddress),
+                clientName = ClientName.createOrThrowInternally(metaClientName),
+                clientVersion = ClientVersion.createOrThrowInternally(metaClientVersion),
+                clientIpAddress = ClientIpAddress.createOrThrowInternally(metaClientIpAddress),
             )
         )
     }

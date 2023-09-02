@@ -1,5 +1,5 @@
 package com.timemates.backend.validation.exceptions
 
-public class ValidationFailure(
+internal class InternalValidationFailure(
     message: String,
 ) : Exception("Validation failed with message: $message")

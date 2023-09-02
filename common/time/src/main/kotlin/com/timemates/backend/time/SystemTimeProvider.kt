@@ -1,6 +1,6 @@
 package com.timemates.backend.time
 
-import com.timemates.backend.validation.createOrThrow
+import com.timemates.backend.validation.createOrThrowInternally
 import java.time.Clock
 import java.time.Instant
 import java.time.ZoneId
@@ -12,6 +12,6 @@ public class SystemTimeProvider(
 
     override fun provide(): UnixTime {
         val instant = Instant.now(clock)
-        return UnixTime.createOrThrow(instant.toEpochMilli())
+        return UnixTime.createOrThrowInternally(instant.toEpochMilli())
     }
 }

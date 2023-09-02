@@ -2,7 +2,7 @@ package io.timemates.backend.data.timers
 
 import com.timemates.backend.time.TimeProvider
 import com.timemates.backend.time.UnixTime
-import com.timemates.backend.validation.createOrThrow
+import com.timemates.backend.validation.createOrThrowInternally
 import io.timemates.backend.common.types.value.Count
 import io.timemates.backend.data.timers.db.PostgresqlStateStorageRepository
 import io.timemates.backend.data.timers.db.TableTimersSessionUsersDataSource
@@ -61,7 +61,7 @@ class CoPostgresqlTimerSessionRepository(
 
     override suspend fun getTimerIdOfCurrentSession(userId: UserId, lastActiveTime: UnixTime): TimerId? {
         return tableTimersSessionUsers.getTimerIdFromUserSession(userId.long, lastActiveTime.inMilliseconds)
-            ?.let { TimerId.createOrThrow(it) }
+            ?.let { TimerId.createOrThrowInternally(it) }
     }
 
     override suspend fun getMembers(
@@ -73,12 +73,12 @@ class CoPostgresqlTimerSessionRepository(
             timerId.long,
             pageToken,
             lastActiveTime.inMilliseconds,
-        ).map { sessionUser -> UserId.createOrThrow(sessionUser.userId) }
+        ).map { sessionUser -> UserId.createOrThrowInternally(sessionUser.userId) }
     }
 
     override suspend fun getMembersCount(timerId: TimerId, activeAfterTime: UnixTime): Count {
         return tableTimersSessionUsers.getUsersCount(timerId.long, activeAfterTime.inMilliseconds)
-            .let { Count.createOrThrow(it) }
+            .let { Count.createOrThrowInternally(it) }
     }
 
     override suspend fun setActiveUsersConfirmationRequirement(timerId: TimerId) {

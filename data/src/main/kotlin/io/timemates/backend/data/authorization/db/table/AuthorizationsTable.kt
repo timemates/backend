@@ -13,7 +13,7 @@ object AuthorizationsTable : Table("authorizations") {
     val EXPIRES_AT = long("access_token_expires_at")
     val CREATION_TIME = long("creation_time")
     val META_CLIENT_NAME = varchar("meta_client_name", 128)
-    val META_CLIENT_VERSION = varchar("meta_client_version", 128)
+    val META_CLIENT_VERSION = double("meta_client_version")
     val META_CLIENT_IP_ADDRESS = varchar("meta_client_ip_address", 128)
 
     val AUTHORIZATIONS_PERMISSION = enumeration<GrantLevel>("authorizations_permission")

@@ -1,7 +1,6 @@
 package io.timemates.backend.services.files
 
 import com.google.protobuf.kotlin.toByteString
-import com.timemates.backend.validation.createOrThrow
 import io.grpc.Status
 import io.grpc.StatusException
 import io.timemates.api.files.FilesServiceGrpcKt
@@ -18,16 +17,18 @@ import io.timemates.backend.files.types.value.FileId
 import io.timemates.backend.files.usecases.GetImageUseCase
 import io.timemates.backend.files.usecases.UploadFileUseCase
 import io.timemates.backend.services.authorization.context.provideAuthorizationContext
+import io.timemates.backend.services.common.markers.GrpcService
+import io.timemates.backend.services.common.validation.createOrStatus
 import kotlinx.coroutines.flow.*
 
 class FilesService(
     private val getImageUseCase: GetImageUseCase,
     private val uploadFileUseCase: UploadFileUseCase,
-) : FilesServiceGrpcKt.FilesServiceCoroutineImplBase() {
+) : FilesServiceGrpcKt.FilesServiceCoroutineImplBase(), GrpcService {
     override fun getFileBytes(
         request: GetFileBytesRequest,
     ): Flow<GetFileBytesRequest.Response> = flow {
-        when (val result = getImageUseCase.execute(File.Image(FileId.createOrThrow(request.fileId)))) {
+        when (val result = getImageUseCase.execute(File.Image(FileId.createOrStatus(request.fileId)))) {
             GetImageUseCase.Result.NotFound -> throw StatusException(Status.NOT_FOUND)
             is GetImageUseCase.Result.Success -> {
                 result.inputStream

@@ -1,6 +1,7 @@
 package io.timemates.backend.timers.usecases.members.invites
 
 import com.timemates.backend.time.TimeProvider
+import io.timemates.backend.common.markers.UseCase
 import io.timemates.backend.features.authorization.AuthorizedContext
 import io.timemates.backend.timers.repositories.TimerInvitesRepository
 import io.timemates.backend.timers.repositories.TimersRepository
@@ -13,7 +14,7 @@ class JoinByInviteUseCase(
     private val invites: TimerInvitesRepository,
     private val timers: TimersRepository,
     private val time: TimeProvider,
-) {
+) : UseCase {
     context(AuthorizedContext<TimersScope.Write>)
     suspend fun execute(
         timerId: TimerId,

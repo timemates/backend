@@ -1,7 +1,7 @@
 package io.timemates.backend.authorization.usecases
 
 import com.timemates.backend.time.TimeProvider
-import com.timemates.backend.validation.createOrThrow
+import com.timemates.backend.validation.createOrThrowInternally
 import com.timemates.random.RandomProvider
 import io.timemates.backend.authorization.repositories.AuthorizationsRepository
 import io.timemates.backend.authorization.repositories.VerificationsRepository
@@ -10,6 +10,7 @@ import io.timemates.backend.authorization.types.value.AccessHash
 import io.timemates.backend.authorization.types.value.RefreshHash
 import io.timemates.backend.authorization.types.value.VerificationCode
 import io.timemates.backend.authorization.types.value.VerificationHash
+import io.timemates.backend.common.markers.UseCase
 import io.timemates.backend.features.authorization.Scope
 import io.timemates.backend.users.repositories.UsersRepository
 import kotlin.time.Duration.Companion.days
@@ -20,7 +21,7 @@ class VerifyAuthorizationUseCase(
     private val randomProvider: RandomProvider,
     private val users: UsersRepository,
     private val timeProvider: TimeProvider,
-) {
+) : UseCase {
     suspend fun execute(
         verificationToken: VerificationHash,
         code: VerificationCode,
@@ -31,10 +32,10 @@ class VerifyAuthorizationUseCase(
         return when (verification.attempts.int) {
             in 1..3 -> {
                 if (verification.code == code) {
-                    val accessToken = AccessHash.createOrThrow(
+                    val accessToken = AccessHash.createOrThrowInternally(
                         randomProvider.randomHash(AccessHash.SIZE)
                     )
-                    val refreshToken = RefreshHash.createOrThrow(
+                    val refreshToken = RefreshHash.createOrThrowInternally(
                         randomProvider.randomHash(AccessHash.SIZE)
                     )
                     val metadata = verification.clientMetadata

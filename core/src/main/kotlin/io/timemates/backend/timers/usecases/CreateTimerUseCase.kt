@@ -1,6 +1,7 @@
 package io.timemates.backend.timers.usecases
 
 import com.timemates.backend.time.TimeProvider
+import io.timemates.backend.common.markers.UseCase
 import io.timemates.backend.features.authorization.AuthorizedContext
 import io.timemates.backend.timers.repositories.TimersRepository
 import io.timemates.backend.timers.types.TimerSettings
@@ -14,7 +15,7 @@ import kotlin.time.Duration.Companion.minutes
 class CreateTimerUseCase(
     private val timers: TimersRepository,
     private val time: TimeProvider,
-) {
+) : UseCase {
     context(AuthorizedContext<TimersScope.Write>)
     suspend fun execute(
         name: TimerName,

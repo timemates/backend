@@ -3,7 +3,6 @@ package io.timemates.backend.users.types
 import com.timemates.backend.validation.FailureMessage
 import com.timemates.backend.validation.SafeConstructor
 import com.timemates.backend.validation.ValidationFailureHandler
-import com.timemates.backend.validation.createOrThrow
 import com.timemates.backend.validation.reflection.wrapperTypeName
 
 sealed interface Avatar {

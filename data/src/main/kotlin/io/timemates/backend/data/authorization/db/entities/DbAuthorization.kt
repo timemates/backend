@@ -9,7 +9,7 @@ data class DbAuthorization(
     val expiresAt: Long,
     val createdAt: Long,
     val metaClientName: String,
-    val metaClientVersion: String,
+    val metaClientVersion: Double,
     val metaClientIpAddress: String,
 ) {
     data class Permissions(

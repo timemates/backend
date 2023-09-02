@@ -15,6 +15,7 @@ import io.timemates.backend.common.types.value.Count
 import io.timemates.backend.pagination.PageToken
 import io.timemates.backend.pagination.map
 import io.timemates.backend.services.authorization.context.provideAuthorizationContext
+import io.timemates.backend.services.common.markers.GrpcService
 import io.timemates.backend.services.common.validation.createOrStatus
 import io.timemates.backend.services.users.GrpcUsersMapper
 import io.timemates.backend.timers.types.value.InviteCode
@@ -43,7 +44,7 @@ class TimersService(
     private val getTimerUseCase: GetTimerUseCase,
     private val mapper: GrpcTimersMapper,
     private val usersMapper: GrpcUsersMapper,
-) : TimersServiceCoroutineImplBase() {
+) : TimersServiceCoroutineImplBase(), GrpcService {
     override suspend fun createInvite(
         request: CreateInviteRequest.InviteMemberRequest,
     ): CreateInviteRequest.InviteMemberRequest.Response = provideAuthorizationContext {

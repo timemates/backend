@@ -1,13 +1,14 @@
 package io.timemates.backend.users.repositories
 
 import com.timemates.backend.time.UnixTime
+import io.timemates.backend.common.markers.Repository
 import io.timemates.backend.users.types.User
 import io.timemates.backend.users.types.value.EmailAddress
 import io.timemates.backend.users.types.value.UserDescription
 import io.timemates.backend.users.types.value.UserId
 import io.timemates.backend.users.types.value.UserName
 
-interface UsersRepository {
+interface UsersRepository : Repository {
     suspend fun createUser(
         userEmailAddress: EmailAddress,
         userName: UserName,

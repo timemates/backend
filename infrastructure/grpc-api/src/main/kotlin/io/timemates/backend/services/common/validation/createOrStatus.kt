@@ -4,6 +4,7 @@ import com.timemates.backend.validation.SafeConstructor
 import com.timemates.backend.validation.ValidationFailureHandler
 import io.grpc.Status
 import io.grpc.StatusException
+import io.timemates.backend.services.common.markers.GrpcContext
 
 /**
  * A [ValidationFailureHandler] that always throws a [StatusException] with a
@@ -26,6 +27,7 @@ val ValidationFailureHandler.Companion.ALWAYS_STATUS_EXCEPTION by lazy {
  * @param w the input to pass to the [SafeConstructor]
  * @return the created instance of [T]
  */
+context (GrpcContext)
 fun <T, W> SafeConstructor<T, W>.createOrStatus(
     w: W,
 ): T = with(ValidationFailureHandler.ALWAYS_STATUS_EXCEPTION) {

@@ -8,6 +8,7 @@ import io.timemates.api.timers.sessions.types.timerState
 import io.timemates.api.timers.types.TimerOuterClass
 import io.timemates.api.timers.types.timer
 import io.timemates.backend.common.types.value.Count
+import io.timemates.backend.services.common.markers.GrpcMapper
 import io.timemates.backend.services.common.validation.createOrStatus
 import io.timemates.backend.timers.fsm.*
 import io.timemates.backend.timers.repositories.TimersRepository
@@ -19,7 +20,7 @@ import io.timemates.backend.timers.types.value.TimerName
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
-class GrpcTimersMapper {
+class GrpcTimersMapper : GrpcMapper {
     fun toDomainSettings(settings: TimerOuterClass.Timer.Settings): TimerSettings {
         return TimerSettings(
             workTime = settings.workTime.seconds,

@@ -4,7 +4,7 @@ import com.timemates.backend.validation.SafeConstructor
 import com.timemates.backend.validation.ValidationFailureHandler
 import org.jetbrains.annotations.TestOnly
 
-val ValidationFailureHandler.Companion.ALWAYS_ASSERTION_ERROR by lazy {
+val ValidationFailureHandler.Companion.THROWS_ASSERTION_ERROR by lazy {
     ValidationFailureHandler { failure ->
         throw AssertionError(failure.string)
     }
@@ -22,6 +22,6 @@ val ValidationFailureHandler.Companion.ALWAYS_ASSERTION_ERROR by lazy {
 @Throws(AssertionError::class)
 fun <T, W> SafeConstructor<T, W>.createOrAssert(
     w: W,
-): T = with(ValidationFailureHandler.ALWAYS_ASSERTION_ERROR) {
+): T = with(ValidationFailureHandler.THROWS_ASSERTION_ERROR) {
     create(w)
 }

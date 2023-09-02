@@ -1,6 +1,7 @@
 package com.timemates.backend.validation
 
-import com.timemates.backend.validation.exceptions.ValidationFailure
+import com.timemates.backend.validation.exceptions.InternalValidationFailure
+import com.timemates.backend.validation.markers.InternalThrowAbility
 
 /**
  * Abstraction for factories that construct value objects.
@@ -48,25 +49,12 @@ public abstract class SafeConstructor<Type, WrappedType> {
  *
  * @see [ValidationFailureHandler]
  * @see [SafeConstructor.create]
- * @throws [com.timemates.backend.validation.exceptions.ValidationFailure] if validation failed.
+ * @throws [com.timemates.backend.validation.exceptions.InternalValidationFailure] if validation failed.
  */
-@Throws(ValidationFailure::class)
-public fun <T, W> SafeConstructor<T, W>.createOrThrow(value: W): T {
-    return with(ValidationFailureHandler.ALWAYS_THROWS) {
+context (InternalThrowAbility)
+@Throws(InternalValidationFailure::class)
+public fun <T, W> SafeConstructor<T, W>.createOrThrowInternally(value: W): T {
+    return with(ValidationFailureHandler.THROWS_INTERNAL) {
         create(value)
-    }
-}
-
-/**
- * Instantiates [Result] from [createOrThrow]. Catches only
- * [ValidationFailure].
- *
- * @see createOrThrow
- */
-public fun <T, W> SafeConstructor<T, W>.createAsResult(value: W): Result<T> {
-    return try {
-        Result.success(createOrThrow(value))
-    } catch (failure: ValidationFailure) {
-        Result.failure(failure)
     }
 }

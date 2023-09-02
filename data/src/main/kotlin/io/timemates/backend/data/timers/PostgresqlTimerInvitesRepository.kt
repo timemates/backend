@@ -1,7 +1,7 @@
 package io.timemates.backend.data.timers
 
 import com.timemates.backend.time.UnixTime
-import com.timemates.backend.validation.createOrThrow
+import com.timemates.backend.validation.createOrThrowInternally
 import io.timemates.backend.common.types.value.Count
 import io.timemates.backend.data.timers.db.TableTimerInvitesDataSource
 import io.timemates.backend.data.timers.db.TableTimerParticipantsDataSource
@@ -36,7 +36,7 @@ class PostgresqlTimerInvitesRepository(
 
     override suspend fun getInvitesCount(timerId: TimerId, after: UnixTime): Count {
         return participantsDataSource.getParticipantsCount(timerId.long, after.inMilliseconds)
-            .let { Count.createOrThrow(it.toInt()) }
+            .let { Count.createOrThrowInternally(it.toInt()) }
     }
 
     override suspend fun createInvite(

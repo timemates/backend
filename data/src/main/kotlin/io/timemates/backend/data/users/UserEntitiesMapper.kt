@@ -1,21 +1,25 @@
 package io.timemates.backend.data.users
 
-import com.timemates.backend.validation.createOrThrow
+import com.timemates.backend.validation.createOrThrowInternally
+import io.timemates.backend.data.common.markers.Mapper
 import io.timemates.backend.data.users.datasource.CachedUsersDataSource
 import io.timemates.backend.data.users.datasource.PostgresqlUsersDataSource
 import io.timemates.backend.users.types.Avatar
 import io.timemates.backend.users.types.User
-import io.timemates.backend.users.types.value.*
+import io.timemates.backend.users.types.value.EmailAddress
+import io.timemates.backend.users.types.value.UserDescription
+import io.timemates.backend.users.types.value.UserId
+import io.timemates.backend.users.types.value.UserName
 
-class UserEntitiesMapper {
+class UserEntitiesMapper : Mapper {
     fun toDomainUser(id: Long, cachedUser: CachedUsersDataSource.User): User = with(cachedUser) {
         return User(
-            UserId.createOrThrow(id),
-            UserName.createOrThrow(name),
-            email?.let { EmailAddress.createOrThrow(it) },
-            shortBio?.let { UserDescription.createOrThrow(it) },
-            avatar = avatarFileId?.let { Avatar.FileId.createOrThrow(it) } ?:
-                gravatarId?.let { Avatar.GravatarId.createOrThrow(it) }
+            UserId.createOrThrowInternally(id),
+            UserName.createOrThrowInternally(name),
+            email?.let { EmailAddress.createOrThrowInternally(it) },
+            shortBio?.let { UserDescription.createOrThrowInternally(it) },
+            avatar = avatarFileId?.let { Avatar.FileId.createOrThrowInternally(it) }
+                ?: gravatarId?.let { Avatar.GravatarId.createOrThrowInternally(it) }
         )
     }
 
@@ -24,7 +28,7 @@ class UserEntitiesMapper {
     }
 
     fun toPostgresqlUserPatch(patch: User.Patch) = with(patch) {
-        PostgresqlUsersDataSource.User.Patch(name?.string, shortBio?.string, avatarId?.string, gravatarId?.string)
+        PostgresqlUsersDataSource.User.Patch(name?.string, description?.string, avatarId?.string, gravatarId?.string)
     }
 
     fun toCachedUser(user: User) = with(user) {
@@ -39,12 +43,12 @@ class UserEntitiesMapper {
 
     fun toDomainUser(pUser: PostgresqlUsersDataSource.User): User = with(pUser) {
         return User(
-            UserId.createOrThrow(id),
-            UserName.createOrThrow(userName),
-            EmailAddress.createOrThrow(userEmail),
-            userShortDesc?.let { UserDescription.createOrThrow(it) },
-            avatar = pUser.userAvatarFileId?.let { Avatar.FileId.createOrThrow(it) } ?:
-            pUser.userGravatarId?.let { Avatar.GravatarId.createOrThrow(it) }
+            UserId.createOrThrowInternally(id),
+            UserName.createOrThrowInternally(userName),
+            EmailAddress.createOrThrowInternally(userEmail),
+            userShortDesc?.let { UserDescription.createOrThrowInternally(it) },
+            avatar = pUser.userAvatarFileId?.let { Avatar.FileId.createOrThrowInternally(it) }
+                ?: pUser.userGravatarId?.let { Avatar.GravatarId.createOrThrowInternally(it) }
         )
     }
 }

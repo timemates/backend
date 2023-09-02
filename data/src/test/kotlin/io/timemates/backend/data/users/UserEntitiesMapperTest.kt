@@ -1,13 +1,14 @@
 package io.timemates.backend.data.users
 
-import com.timemates.backend.validation.createOrThrow
 import io.timemates.backend.data.users.datasource.CachedUsersDataSource
 import io.timemates.backend.data.users.datasource.PostgresqlUsersDataSource
-import io.timemates.backend.files.types.value.FileId
 import io.timemates.backend.testing.validation.createOrAssert
 import io.timemates.backend.users.types.Avatar
 import io.timemates.backend.users.types.User
-import io.timemates.backend.users.types.value.*
+import io.timemates.backend.users.types.value.EmailAddress
+import io.timemates.backend.users.types.value.UserDescription
+import io.timemates.backend.users.types.value.UserId
+import io.timemates.backend.users.types.value.UserName
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -31,8 +32,8 @@ class UserEntitiesMapperTest {
             UserName.createOrAssert(cachedUser.name),
             cachedUser.email?.let { EmailAddress.createOrAssert(it) },
             cachedUser.shortBio?.let { UserDescription.createOrAssert(it) },
-            avatar = cachedUser.avatarFileId?.let { Avatar.FileId.createOrThrow(it) } ?:
-                cachedUser.gravatarId?.let { Avatar.GravatarId.createOrThrow(it) }
+            avatar = cachedUser.avatarFileId?.let { Avatar.FileId.createOrAssert(it) }
+                ?: cachedUser.gravatarId?.let { Avatar.GravatarId.createOrAssert(it) }
         )
 
         val actualUser = mapper.toDomainUser(userId, cachedUser)
@@ -74,13 +75,13 @@ class UserEntitiesMapperTest {
     fun `toPostgresqlUserPatch converts User patch to PostgresqlUsersDataSource User patch`() {
         val userPatch = User.Patch(
             name = UserName.createOrAssert("John"),
-            shortBio = UserDescription.createOrAssert("This is a short bio"),
+            description = UserDescription.createOrAssert("This is a short bio"),
             avatarId = null
         )
 
         val expected = PostgresqlUsersDataSource.User.Patch(
             userPatch.name?.string,
-            userPatch.shortBio?.string,
+            userPatch.description?.string,
             userPatch.avatarId?.string
         )
         val actual = mapper.toPostgresqlUserPatch(userPatch)

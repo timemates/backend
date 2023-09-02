@@ -3,7 +3,6 @@ package com.timemates.backend.time
 import com.timemates.backend.validation.FailureMessage
 import com.timemates.backend.validation.SafeConstructor
 import com.timemates.backend.validation.ValidationFailureHandler
-import com.timemates.backend.validation.createOrThrow
 import com.timemates.backend.validation.reflection.wrapperTypeName
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
@@ -29,7 +28,10 @@ public value class UnixTime private constructor(private val long: Long) {
      * @return [UnixTime] + [Duration]
      */
     public operator fun plus(duration: Duration): UnixTime {
-        return createOrThrow(long + duration.inWholeMilliseconds)
+        val result = long + duration.inWholeMilliseconds
+        require(result >= 0) { "Unix time cannot be negative" }
+
+        return UnixTime(result)
     }
 
     /**
@@ -38,7 +40,10 @@ public value class UnixTime private constructor(private val long: Long) {
      * @return [UnixTime] - [Duration]
      */
     public operator fun minus(duration: Duration): UnixTime {
-        return createOrThrow(long - duration.inWholeMilliseconds)
+        val result = long - duration.inWholeMilliseconds
+        require(result >= 0) { "Unix time cannot be negative" }
+
+        return UnixTime(long - duration.inWholeMilliseconds)
     }
 
     /**

@@ -1,8 +1,9 @@
 package io.timemates.backend.files.usecases
 
 import com.timemates.backend.time.TimeProvider
-import com.timemates.backend.validation.createOrThrow
+import com.timemates.backend.validation.createOrThrowInternally
 import com.timemates.random.RandomProvider
+import io.timemates.backend.common.markers.UseCase
 import io.timemates.backend.features.authorization.AuthorizedContext
 import io.timemates.backend.files.repositories.FilesRepository
 import io.timemates.backend.files.types.FileType
@@ -15,13 +16,13 @@ class UploadFileUseCase(
     private val files: FilesRepository,
     private val randomProvider: RandomProvider,
     private val timeProvider: TimeProvider,
-) {
+) : UseCase {
     context(AuthorizedContext<FilesScope.Write>)
     suspend fun execute(
         fileType: FileType,
         inputStream: Flow<ByteArray>,
     ): Result {
-        val fileId = FileId.createOrThrow(randomProvider.randomHash(FileId.SIZE))
+        val fileId = FileId.createOrThrowInternally(randomProvider.randomHash(FileId.SIZE))
 
         // saving compressed variants, if exception occurs, we remove all already
         // saved variants

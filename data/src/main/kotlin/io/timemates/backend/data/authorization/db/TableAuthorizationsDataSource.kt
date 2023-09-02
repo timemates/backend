@@ -72,7 +72,7 @@ class TableAuthorizationsDataSource(
         expiresAt: Long,
         createdAt: Long,
         metaClientName: String,
-        metaClientVersion: String,
+        metaClientVersion: Double,
         metaClientIpAddress: String,
     ): Int = suspendedTransaction(database) {
         AuthorizationsTable.insert {

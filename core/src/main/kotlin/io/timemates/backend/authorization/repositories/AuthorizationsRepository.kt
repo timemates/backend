@@ -6,6 +6,7 @@ import io.timemates.backend.authorization.types.metadata.ClientMetadata
 import io.timemates.backend.authorization.types.value.AccessHash
 import io.timemates.backend.authorization.types.value.AuthorizationId
 import io.timemates.backend.authorization.types.value.RefreshHash
+import io.timemates.backend.common.markers.Repository
 import io.timemates.backend.pagination.Page
 import io.timemates.backend.pagination.PageToken
 import io.timemates.backend.users.types.value.UserId
@@ -13,7 +14,7 @@ import io.timemates.backend.users.types.value.UserId
 /**
  * An interface that provides methods to manage user authorizations.
  */
-interface AuthorizationsRepository {
+interface AuthorizationsRepository : Repository {
 
     /**
      * Creates a new authorization for a user with the specified [userId], [accessToken], [refreshToken],

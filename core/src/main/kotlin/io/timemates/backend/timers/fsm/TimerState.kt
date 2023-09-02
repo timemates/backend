@@ -9,7 +9,9 @@ import io.timemates.backend.timers.types.value.TimerId
 
 /**
  * Base timer state with common-needed providers and repositories.
+ * @see <a href="https://github.com/timemates/sdk/blob/master/sdk/src/commonMain/kotlin/io/timemates/sdk/timers/types/Timer.kt#L27">SDK Source</a>
  */
+// TODO: separate logic and entity
 sealed class TimerState : State<TimerEvent>() {
     abstract val timerId: TimerId
     protected abstract val timersRepository: TimersRepository

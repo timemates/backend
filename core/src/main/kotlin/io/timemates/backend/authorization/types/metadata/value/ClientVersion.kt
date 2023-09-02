@@ -6,14 +6,14 @@ import com.timemates.backend.validation.ValidationFailureHandler
 import com.timemates.backend.validation.reflection.wrapperTypeName
 
 @JvmInline
-value class ClientVersion private constructor(val string: String) {
-    companion object : SafeConstructor<ClientVersion, String>() {
+value class ClientVersion private constructor(val double: Double) {
+    companion object : SafeConstructor<ClientVersion, Double>() {
         override val displayName: String by wrapperTypeName()
 
         context(ValidationFailureHandler)
-        override fun create(value: String): ClientVersion {
-            return when (value.length) {
-                0 -> onFail(FailureMessage.ofBlank())
+        override fun create(value: Double): ClientVersion {
+            return when {
+                value < 1 -> onFail(FailureMessage.ofMin(1))
                 else -> ClientVersion(value)
             }
         }

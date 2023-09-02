@@ -1,7 +1,7 @@
 package io.timemates.backend.data.authorization
 
 import com.timemates.backend.time.UnixTime
-import com.timemates.backend.validation.createOrThrow
+import com.timemates.backend.validation.createOrThrowInternally
 import io.timemates.backend.authorization.repositories.VerificationsRepository
 import io.timemates.backend.authorization.types.Verification
 import io.timemates.backend.authorization.types.metadata.ClientMetadata
@@ -32,7 +32,7 @@ class PostgresqlVerificationsRepository(
             time.inMilliseconds,
             attempts.int,
             clientMetadata.clientName.string,
-            clientMetadata.clientVersion.string,
+            clientMetadata.clientVersion.double,
             clientMetadata.clientIpAddress.string
         )
     }
@@ -51,12 +51,12 @@ class PostgresqlVerificationsRepository(
 
     override suspend fun getNumberOfAttempts(emailAddress: EmailAddress, after: UnixTime): Count {
         return dbVerifications.getAttempts(emailAddress.string, after.inMilliseconds)
-            .let { Count.createOrThrow(it) }
+            .let { Count.createOrThrowInternally(it) }
     }
 
     override suspend fun getNumberOfSessions(emailAddress: EmailAddress, after: UnixTime): Count {
         return dbVerifications.getSessionsCount(emailAddress.string, after.inMilliseconds)
-            .let { Count.createOrThrow(it) }
+            .let { Count.createOrThrowInternally(it) }
     }
 
     override suspend fun markConfirmed(verificationToken: VerificationHash) {

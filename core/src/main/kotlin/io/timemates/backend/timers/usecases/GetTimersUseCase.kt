@@ -1,5 +1,6 @@
 package io.timemates.backend.timers.usecases
 
+import io.timemates.backend.common.markers.UseCase
 import io.timemates.backend.features.authorization.AuthorizedContext
 import io.timemates.backend.fsm.getCurrentState
 import io.timemates.backend.pagination.Page
@@ -16,7 +17,7 @@ import io.timemates.backend.users.types.value.userId
 class GetTimersUseCase(
     private val timers: TimersRepository,
     private val sessionsRepository: TimerSessionRepository,
-) {
+) : UseCase {
     context(AuthorizedContext<TimersScope.Read>)
     suspend fun execute(
         nextPageToken: PageToken?,

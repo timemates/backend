@@ -13,7 +13,6 @@ import io.timemates.api.authorizations.requests.StartAuthorizationRequestOuterCl
 import io.timemates.api.users.requests.CreateProfileRequestKt
 import io.timemates.api.users.requests.CreateProfileRequestOuterClass.CreateProfileRequest
 import io.timemates.backend.authorization.types.metadata.ClientMetadata
-import io.timemates.backend.authorization.types.metadata.value.ClientIpAddress
 import io.timemates.backend.authorization.types.metadata.value.ClientName
 import io.timemates.backend.authorization.types.metadata.value.ClientVersion
 import io.timemates.backend.authorization.types.value.AccessHash
@@ -23,8 +22,8 @@ import io.timemates.backend.authorization.usecases.*
 import io.timemates.backend.pagination.PageToken
 import io.timemates.backend.services.authorization.context.provideAuthorizationContext
 import io.timemates.backend.services.authorization.interceptor.AuthorizationContext
-import io.timemates.backend.services.authorization.interceptor.IpAddressInterceptor
 import io.timemates.backend.services.authorization.interceptor.SessionContext
+import io.timemates.backend.services.common.markers.GrpcService
 import io.timemates.backend.services.common.validation.createOrStatus
 import io.timemates.backend.users.types.value.EmailAddress
 import io.timemates.backend.users.types.value.UserDescription
@@ -39,7 +38,7 @@ class AuthorizationsService(
     private val verifyAuthorizationUseCase: VerifyAuthorizationUseCase,
     private val getAuthorizationsUseCase: GetAuthorizationsUseCase,
     private val mapper: GrpcAuthorizationsMapper,
-) : AuthorizationServiceCoroutineImplBase() {
+) : AuthorizationServiceCoroutineImplBase(), GrpcService {
 
     override suspend fun startAuthorization(
         request: StartAuthorizationRequest,
