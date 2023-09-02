@@ -18,6 +18,7 @@ import io.timemates.backend.cli.getNamedIntOrNull
 import io.timemates.backend.data.common.repositories.MailerSendEmailsRepository
 import io.timemates.backend.services.authorization.AuthorizationsService
 import io.timemates.backend.services.authorization.interceptor.AuthorizationInterceptor
+import io.timemates.backend.services.authorization.interceptor.IpAddressInterceptor
 import io.timemates.backend.services.authorization.provider.AuthorizationProvider
 import io.timemates.backend.services.files.FilesService
 import io.timemates.backend.services.timers.TimersService
@@ -153,6 +154,7 @@ fun main(args: Array<String>) {
         .addService(koin.get<TimerSessionsService>() as BindableService)
         .addService(ProtoReflectionService.newInstance())
         .intercept(AuthorizationInterceptor(koin.get()) as ServerInterceptor)
+        .intercept(IpAddressInterceptor() as ServerInterceptor)
         .build()
 
 
