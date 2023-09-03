@@ -11,6 +11,7 @@ import io.timemates.backend.files.repositories.FilesRepository
 import io.timemates.backend.files.types.FileType
 import io.timemates.backend.files.types.value.FileId
 import io.timemates.backend.testing.auth.testAuthContext
+import io.timemates.backend.testing.validation.createOrAssert
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.BeforeAll
@@ -37,7 +38,7 @@ class UploadFileUseCaseTest {
 
     private val inputStream = mockk<Flow<ByteArray>>()
 
-    private val fileId = mockk<FileId>()
+    private val fileId = FileId.createOrAssert("123")
 
     private val exception = mockk<Exception>()
 
@@ -66,7 +67,7 @@ class UploadFileUseCaseTest {
         // GIVEN
         coEvery { FileId.createOrThrow(randomProvider.randomHash(FileId.SIZE)) } returns fileId
         coEvery { filesRepository.remove(fileId) } returns Unit
-        coEvery { exception.printStackTrace() }
+        coEvery { exception.printStackTrace() } throws exception
 
         // WHEN
         val result = testAuthContext { useCase.execute(fileType, inputStream) }
