@@ -1,9 +1,9 @@
 package io.timemates.backend.authorization.types.value
 
-import com.timemates.backend.validation.FailureMessage
-import com.timemates.backend.validation.SafeConstructor
-import com.timemates.backend.validation.ValidationFailureHandler
-import com.timemates.backend.validation.reflection.wrapperTypeName
+import io.timemates.backend.validation.FailureMessage
+import io.timemates.backend.validation.SafeConstructor
+import io.timemates.backend.validation.ValidationFailureHandler
+import io.timemates.backend.validation.reflection.wrapperTypeName
 
 @JvmInline
 value class RefreshHash private constructor(val string: String) {
@@ -14,9 +14,9 @@ value class RefreshHash private constructor(val string: String) {
         context(ValidationFailureHandler)
         override fun create(value: String): RefreshHash {
             return when (value.length) {
-                0 -> onFail(FailureMessage.ofBlank())
+                0 -> onFail(io.timemates.backend.validation.FailureMessage.ofBlank())
                 SIZE -> RefreshHash(value)
-                else -> onFail(FailureMessage.ofSize(SIZE))
+                else -> onFail(io.timemates.backend.validation.FailureMessage.ofSize(SIZE))
             }
         }
     }

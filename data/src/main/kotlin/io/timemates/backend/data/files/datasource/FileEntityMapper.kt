@@ -1,6 +1,6 @@
 package io.timemates.backend.data.files.datasource
 
-import com.timemates.backend.validation.createOrThrowInternally
+import io.timemates.backend.validation.createOrThrowInternally
 import io.timemates.backend.data.common.markers.Mapper
 import io.timemates.backend.data.files.datasource.PostgresqlFilesDataSource.FileType
 import io.timemates.backend.files.types.value.FileId

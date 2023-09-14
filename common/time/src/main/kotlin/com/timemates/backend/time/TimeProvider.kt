@@ -1,6 +1,6 @@
 package com.timemates.backend.time
 
-import com.timemates.backend.validation.markers.InternalThrowAbility
+import io.timemates.backend.validation.markers.InternalThrowAbility
 
 public interface TimeProvider : InternalThrowAbility {
     /**

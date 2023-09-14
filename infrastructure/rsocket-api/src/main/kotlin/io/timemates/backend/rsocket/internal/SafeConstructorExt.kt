@@ -1,7 +1,7 @@
 package io.timemates.backend.rsocket.internal
 
-import com.timemates.backend.validation.SafeConstructor
-import com.timemates.backend.validation.ValidationFailureHandler
+import io.timemates.backend.validation.SafeConstructor
+import io.timemates.backend.validation.ValidationFailureHandler
 import io.rsocket.kotlin.RSocketError
 import io.timemates.backend.rsocket.internal.markers.RSocketMarker
 

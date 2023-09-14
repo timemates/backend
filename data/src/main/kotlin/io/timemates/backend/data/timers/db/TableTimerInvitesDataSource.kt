@@ -30,7 +30,7 @@ class TableTimerInvitesDataSource(
         timerId: Long,
         nextPageToken: PageToken?,
     ): Page<DbInvite> = suspendedTransaction(database) {
-        val currentPage: InvitesPageToken? = nextPageToken?.decoded()?.let(json::decodeFromString)
+        val currentPage: InvitesPageToken? = nextPageToken?.forInternal()?.let(json::decodeFromString)
 
         val offset = currentPage?.offset ?: 0
 
@@ -40,7 +40,7 @@ class TableTimerInvitesDataSource(
 
         return@suspendedTransaction Page(
             value = result,
-            nextPageToken = PageToken.withBase64(json.encodeToString(InvitesPageToken(offset + 21))),
+            nextPageToken = PageToken.toGive(json.encodeToString(InvitesPageToken(offset + 21))),
             ordering = Ordering.ASCENDING,
         )
     }

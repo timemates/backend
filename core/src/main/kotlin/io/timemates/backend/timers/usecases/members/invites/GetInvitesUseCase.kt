@@ -28,7 +28,7 @@ class GetInvitesUseCase(
 
     sealed interface Result {
         @JvmInline
-        value class Success(val list: Page<Invite>) : Result
+        value class Success(val page: Page<Invite>) : Result
         data object NoAccess : Result
     }
 }

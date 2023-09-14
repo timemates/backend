@@ -1,7 +1,7 @@
 package io.timemates.backend.services.common.validation
 
-import com.timemates.backend.validation.SafeConstructor
-import com.timemates.backend.validation.ValidationFailureHandler
+import io.timemates.backend.validation.SafeConstructor
+import io.timemates.backend.validation.ValidationFailureHandler
 import io.grpc.Status
 import io.grpc.StatusException
 import io.timemates.backend.services.common.markers.GrpcContext

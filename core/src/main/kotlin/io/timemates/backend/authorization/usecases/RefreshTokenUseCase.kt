@@ -1,7 +1,7 @@
 package io.timemates.backend.authorization.usecases
 
 import com.timemates.backend.time.TimeProvider
-import com.timemates.backend.validation.createOrThrowInternally
+import io.timemates.backend.validation.createOrThrowInternally
 import com.timemates.random.RandomProvider
 import io.timemates.backend.authorization.repositories.AuthorizationsRepository
 import io.timemates.backend.authorization.types.value.AccessHash

@@ -110,12 +110,12 @@ class AuthorizationsService(
         val pageToken = request.pageToken
             .takeIf { request.hasPageToken() }
             ?.takeIf { it.isNotBlank() }
-            ?.let { PageToken.raw(it) }
+            ?.let { PageToken.accept(it) }
 
         when (val result = getAuthorizationsUseCase.execute(pageToken)) {
             is GetAuthorizationsUseCase.Result.Success -> GetAuthorizationsRequestKt.response {
                 authorizations.addAll(result.list.map(mapper::toGrpcAuthorization))
-                result.nextPageToken?.let { nextPageToken = it.encoded() }
+                result.nextPageToken?.let { nextPageToken = it.forPublic() }
             }
         }
     }

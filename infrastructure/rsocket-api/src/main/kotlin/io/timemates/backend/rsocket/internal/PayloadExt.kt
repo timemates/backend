@@ -1,23 +1,20 @@
 package io.timemates.backend.rsocket.internal
 
 import io.rsocket.kotlin.ExperimentalMetadataApi
+import io.rsocket.kotlin.RSocket
+import io.rsocket.kotlin.RSocketError
+import io.rsocket.kotlin.metadata.CompositeMetadata
+import io.rsocket.kotlin.metadata.Metadata
 import io.rsocket.kotlin.metadata.RoutingMetadata
 import io.rsocket.kotlin.metadata.read
 import io.rsocket.kotlin.payload.Payload
 import io.rsocket.kotlin.payload.buildPayload
 import io.rsocket.kotlin.payload.data
+import io.timemates.backend.rsocket.features.authorization.providers.AuthorizationContextElement
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-
-/**
- * Extracts the routing information from the payload's metadata.
- *
- * @return The route extracted from the metadata, or an error if no route is provided.
- */
-@OptIn(ExperimentalMetadataApi::class)
-internal fun Payload.route(): String = metadata?.read(RoutingMetadata)?.tags?.first()
-    ?: error("No route provided")
 
 internal val json = Json {
     encodeDefaults = true
@@ -41,14 +38,13 @@ internal inline fun <reified T> Payload.decoding(block: (T) -> Payload): Payload
     return block(decodeFromJson())
 }
 
-
 /**
  * Builds a payload containing JSON-encoded data of type [T] to be used in RSocket responses.
  *
  * @param data The data to be JSON-encoded and included in the payload.
  * @return A payload containing the JSON-encoded [data].
  */
-internal inline fun <reified T> respondWith(data: T): Payload = buildPayload {
+private inline fun <reified T> respondWith(data: T): Payload = buildPayload {
     data(Json.encodeToString(data))
 }
 

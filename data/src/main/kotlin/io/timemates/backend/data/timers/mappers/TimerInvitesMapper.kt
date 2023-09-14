@@ -1,7 +1,7 @@
 package io.timemates.backend.data.timers.mappers
 
 import com.timemates.backend.time.UnixTime
-import com.timemates.backend.validation.createOrThrowInternally
+import io.timemates.backend.validation.createOrThrowInternally
 import io.timemates.backend.common.types.value.Count
 import io.timemates.backend.data.common.markers.Mapper
 import io.timemates.backend.data.timers.db.entities.DbInvite

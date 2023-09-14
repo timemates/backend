@@ -1,9 +1,9 @@
 package io.timemates.backend.timers.types.value
 
-import com.timemates.backend.validation.FailureMessage
-import com.timemates.backend.validation.SafeConstructor
-import com.timemates.backend.validation.ValidationFailureHandler
-import com.timemates.backend.validation.reflection.wrapperTypeName
+import io.timemates.backend.validation.FailureMessage
+import io.timemates.backend.validation.SafeConstructor
+import io.timemates.backend.validation.ValidationFailureHandler
+import io.timemates.backend.validation.reflection.wrapperTypeName
 
 @JvmInline
 value class TimerName private constructor(val string: String) {
@@ -14,9 +14,9 @@ value class TimerName private constructor(val string: String) {
         context(ValidationFailureHandler)
         override fun create(value: String): TimerName {
             return when (value.length) {
-                0 -> onFail(FailureMessage.ofBlank())
+                0 -> onFail(io.timemates.backend.validation.FailureMessage.ofBlank())
                 in LENGTH_RANGE -> TimerName(value)
-                else -> onFail(FailureMessage.ofSize(LENGTH_RANGE))
+                else -> onFail(io.timemates.backend.validation.FailureMessage.ofSize(LENGTH_RANGE))
             }
         }
     }

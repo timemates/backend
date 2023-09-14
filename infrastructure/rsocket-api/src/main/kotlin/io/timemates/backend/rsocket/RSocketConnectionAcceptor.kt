@@ -4,31 +4,22 @@ import io.rsocket.kotlin.ConnectionAcceptor
 import io.rsocket.kotlin.RSocket
 import io.rsocket.kotlin.RSocketError
 import io.rsocket.kotlin.RSocketRequestHandler
-import io.rsocket.kotlin.payload.Payload
-import io.timemates.api.users.requests.EditUserRequestOuterClass.EditUserRequest
-import io.timemates.backend.rsocket.authorization.RSocketAuthorizationsService
-import io.timemates.backend.rsocket.authorization.types.requests.ConfigureAccountRequest
-import io.timemates.backend.rsocket.authorization.types.requests.ConfirmAuthorizationRequest
-import io.timemates.backend.rsocket.authorization.types.requests.GetAuthorizationsRequest
-import io.timemates.backend.rsocket.authorization.types.requests.StartAuthorizationRequest
-import io.timemates.backend.rsocket.common.RSocketFailureCode
-import io.timemates.backend.rsocket.internal.asPayload
-import io.timemates.backend.rsocket.internal.decoding
-import io.timemates.backend.rsocket.internal.route
-import io.timemates.backend.rsocket.timers.members.invites.requests.CreateInviteRequest
-import io.timemates.backend.rsocket.timers.members.invites.requests.GetInvitesListRequest
-import io.timemates.backend.rsocket.timers.members.invites.requests.JoinTimerByCodeRequest
-import io.timemates.backend.rsocket.timers.members.invites.requests.RemoveInviteRequest
-import io.timemates.backend.rsocket.timers.members.requests.GetMembersListRequest
-import io.timemates.backend.rsocket.timers.members.requests.KickMemberRequest
-import io.timemates.backend.rsocket.timers.sessions.requests.ConfirmSessionRequest
-import io.timemates.backend.rsocket.timers.sessions.requests.JoinSessionRequest
-import io.timemates.backend.rsocket.timers.sessions.requests.StartSessionRequest
-import io.timemates.backend.rsocket.timers.sessions.requests.StopSessionRequest
-import io.timemates.backend.rsocket.timers.types.requests.*
-import io.timemates.backend.rsocket.users.requests.EditEmailRequest
-import io.timemates.backend.rsocket.users.requests.GetUsersRequest
-import kotlinx.coroutines.flow.flowOf
+import io.timemates.backend.rsocket.features.authorization.RSocketAuthorizationsService
+import io.timemates.backend.rsocket.features.authorization.authorizations
+import io.timemates.backend.rsocket.features.common.RSocketFailureCode
+import io.timemates.backend.rsocket.router.builders.routing
+import io.timemates.backend.rsocket.features.timers.RSocketTimersService
+import io.timemates.backend.rsocket.features.timers.members.RSocketTimerMembersService
+import io.timemates.backend.rsocket.features.timers.members.invites.RSocketTimerInvitesService
+import io.timemates.backend.rsocket.features.timers.sessions.RSocketTimerSessionsService
+import io.timemates.backend.rsocket.features.timers.timers
+import io.timemates.backend.rsocket.features.users.RSocketUsersService
+import io.timemates.backend.rsocket.features.users.users
+import io.timemates.backend.rsocket.interceptors.AuthorizableRouteContext
+import io.timemates.backend.rsocket.interceptors.AuthorizableRoutedRequesterInterceptor
+import io.timemates.backend.rsocket.router.annotations.ExperimentalRouterApi
+import io.timemates.backend.rsocket.router.router
+import kotlin.coroutines.coroutineContext
 
 /**
  * Creates a ConnectionAcceptor for RSocket connections.
@@ -36,77 +27,40 @@ import kotlinx.coroutines.flow.flowOf
  * @param auth The AuthorizationsService for handling authorization-related requests.
  * @return A ConnectionAcceptor instance.
  */
+@OptIn(ExperimentalRouterApi::class)
 @Suppress("FunctionName")
 internal fun RSocketConnectionAcceptor(
     auth: RSocketAuthorizationsService,
+    users: RSocketUsersService,
+    timers: RSocketTimersService,
+    timerMembers: RSocketTimerMembersService,
+    timerInvites: RSocketTimerInvitesService,
+    timerSessions: RSocketTimerSessionsService,
+    requestInterceptor: AuthorizableRoutedRequesterInterceptor
 ): ConnectionAcceptor {
     return ConnectionAcceptor {
         RSocketRequestHandler {
-            requestResponse { payload ->
-                when (val route = payload.route()) {
-                    "auth.email.start" ->
-                        payload.decoding<StartAuthorizationRequest> { auth.startAuthorizationViaEmail(it).asPayload() }
-
-                    "auth.email.confirm" ->
-                        payload.decoding<ConfirmAuthorizationRequest> { auth.confirmAuthorization(it).asPayload() }
-
-                    "auth.account.configure" ->
-                        payload.decoding<ConfigureAccountRequest> { auth.configureNewAccount(it).asPayload() }
-
-                    "auth.get.list" ->
-                        payload.decoding<GetAuthorizationsRequest> { auth.getAuthorizations(it).asPayload() }
-
-                    "users.email.edit" -> payload.decoding<EditEmailRequest> { TODO() }
-                    "users.profile.edit" -> payload.decoding<EditUserRequest> { TODO() }
-                    "users.get.list" -> payload.decoding<GetUsersRequest> { TODO() }
-
-                    "timers.create" -> payload.decoding<CreateTimerRequest> { TODO() }
-                    "timers.get" -> payload.decoding<GetTimerRequest> { TODO() }
-                    "timers.edit" -> payload.decoding<EditTimerRequest> { TODO() }
-                    "timers.delete" -> payload.decoding<DeleteTimerRequest> { TODO() }
-                    "timers.me.list" -> payload.decoding<GetUserTimersRequest> { TODO() }
-
-                    "timers.members.list" -> payload.decoding<GetMembersListRequest> { TODO() }
-                    "timers.members.kick" -> payload.decoding<KickMemberRequest> { TODO() }
-
-                    "timers.members.invites.create" -> payload.decoding<CreateInviteRequest> { TODO() }
-                    "timers.members.invites.join" -> payload.decoding<JoinTimerByCodeRequest> { TODO() }
-                    "timers.members.invites.list" -> payload.decoding<GetInvitesListRequest> { TODO() }
-                    "timers.members.invites.remove" -> payload.decoding<RemoveInviteRequest> { TODO() }
-
-                    "timers.session.start" -> payload.decoding<StartSessionRequest> { TODO() }
-                    "timers.session.stop" -> payload.decoding<StopSessionRequest> { TODO() }
-                    "timers.session.join" -> payload.decoding<JoinSessionRequest> { TODO() }
-                    "timers.session.leave" -> payload.decoding<JoinSessionRequest> { TODO() }
-                    "timers.session.attendance.confirm" -> payload.decoding<ConfirmSessionRequest> { TODO() }
-
-                    else -> failRoute(route)
+            router {
+                preprocessors {
+                    forCoroutineContext(requestInterceptor)
                 }
-            }
 
-            fireAndForget {
-                when (val route = it.route()) {
-                    "timers.session.ping" -> TODO()
-
-                    else -> failRoute(route)
+                routeProvider { _ ->
+                    coroutineContext[AuthorizableRouteContext]?.route
+                        ?: error("Interceptor does not properly works.")
                 }
-            }
 
-            requestStream { payload ->
-                when (val route = payload.route()) {
-                    "files.upload" -> flowOf(Payload.Empty) // todo
-
-                    else -> failRoute(route)
+                routing {
+                    authorizations(auth)
+                    users(users)
+                    timers(
+                        timers = timers,
+                        members = timerMembers,
+                        invites = timerInvites,
+                        sessions = timerSessions,
+                    )
                 }
             }
         }
     }
-}
-
-context (RSocket)
-private fun failRoute(route: String): Nothing {
-    throw RSocketError.Custom(
-        errorCode = RSocketFailureCode.NOT_FOUND.code,
-        message = if (route.isBlank()) "Route cannot be empty or blank." else "Route '$route' is invalid."
-    )
 }

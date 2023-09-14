@@ -1,7 +1,7 @@
 package io.timemates.backend.data.users
 
 import com.timemates.backend.time.UnixTime
-import com.timemates.backend.validation.createOrThrowInternally
+import io.timemates.backend.validation.createOrThrowInternally
 import io.timemates.backend.data.users.datasource.CachedUsersDataSource
 import io.timemates.backend.data.users.datasource.PostgresqlUsersDataSource
 import io.timemates.backend.users.types.User

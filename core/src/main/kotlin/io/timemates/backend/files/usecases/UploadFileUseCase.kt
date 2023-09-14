@@ -1,7 +1,7 @@
 package io.timemates.backend.files.usecases
 
 import com.timemates.backend.time.TimeProvider
-import com.timemates.backend.validation.createOrThrowInternally
+import io.timemates.backend.validation.createOrThrowInternally
 import com.timemates.random.RandomProvider
 import io.timemates.backend.common.markers.UseCase
 import io.timemates.backend.features.authorization.AuthorizedContext

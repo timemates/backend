@@ -1,6 +1,6 @@
 package io.timemates.backend.data.authorization.cache.mapper
 
-import com.timemates.backend.validation.createOrThrowInternally
+import io.timemates.backend.validation.createOrThrowInternally
 import io.timemates.backend.authorization.types.metadata.ClientMetadata
 import io.timemates.backend.authorization.types.metadata.value.ClientIpAddress
 import io.timemates.backend.authorization.types.metadata.value.ClientName

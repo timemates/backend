@@ -1,9 +1,9 @@
 package io.timemates.backend.common.types.value
 
-import com.timemates.backend.validation.FailureMessage
-import com.timemates.backend.validation.SafeConstructor
-import com.timemates.backend.validation.ValidationFailureHandler
-import com.timemates.backend.validation.reflection.wrapperTypeName
+import io.timemates.backend.validation.FailureMessage
+import io.timemates.backend.validation.SafeConstructor
+import io.timemates.backend.validation.ValidationFailureHandler
+import io.timemates.backend.validation.reflection.wrapperTypeName
 
 @JvmInline
 value class Offset private constructor(val long: Long) {
@@ -14,7 +14,7 @@ value class Offset private constructor(val long: Long) {
         override fun create(value: Long): Offset {
             return when {
                 value > 0 -> Offset(value)
-                else -> onFail(FailureMessage.ofNegative())
+                else -> onFail(io.timemates.backend.validation.FailureMessage.ofNegative())
             }
         }
     }

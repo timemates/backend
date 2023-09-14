@@ -42,7 +42,7 @@ class GetTimersUseCase(
 
     sealed interface Result {
         data class Success(
-            val list: Page<Timer>,
+            val page: Page<Timer>,
         ) : Result
     }
 }

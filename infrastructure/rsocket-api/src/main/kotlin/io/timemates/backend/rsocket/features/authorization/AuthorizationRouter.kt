@@ -1,0 +1,44 @@
+package io.timemates.backend.rsocket.features.authorization
+
+import io.timemates.backend.rsocket.features.authorization.requests.*
+import io.timemates.backend.rsocket.internal.asPayload
+import io.timemates.backend.rsocket.internal.decoding
+import io.timemates.backend.rsocket.router.annotations.ExperimentalRouterApi
+import io.timemates.backend.rsocket.router.builders.RoutingBuilder
+import io.timemates.backend.rsocket.router.builders.requestResponse
+
+/**
+ * Sets up the route handlers for authorizations.
+ *
+ * @param auth The RSocketAuthorizationsService instance used to handle authorization requests.
+ */
+@OptIn(ExperimentalRouterApi::class)
+fun RoutingBuilder.authorizations(
+    auth: RSocketAuthorizationsService,
+): Unit = route("authorizations") {
+    route("email") {
+        requestResponse("start") { payload ->
+            payload.decoding<StartAuthorizationRequest> { auth.startAuthorizationViaEmail(it).asPayload() }
+        }
+
+        requestResponse("confirm") { payload ->
+            payload.decoding<ConfirmAuthorizationRequest> { auth.confirmAuthorization(it).asPayload() }
+        }
+    }
+
+    router.routes
+
+    route("account") {
+        requestResponse("configure") { payload ->
+            payload.decoding<ConfigureAccountRequest> { auth.configureNewAccount(it).asPayload() }
+        }
+    }
+
+    requestResponse("list") { payload ->
+        payload.decoding<GetAuthorizationsRequest> { auth.getAuthorizations(it).asPayload() }
+    }
+
+    requestResponse("renew") { payload ->
+        payload.decoding<RenewAuthorizationRequest> { auth.renewAuthorization(it).asPayload() }
+    }
+}

@@ -1,7 +1,7 @@
 package io.timemates.backend.testing.validation
 
-import com.timemates.backend.validation.SafeConstructor
-import com.timemates.backend.validation.ValidationFailureHandler
+import io.timemates.backend.validation.SafeConstructor
+import io.timemates.backend.validation.ValidationFailureHandler
 import org.jetbrains.annotations.TestOnly
 
 val ValidationFailureHandler.Companion.THROWS_ASSERTION_ERROR by lazy {

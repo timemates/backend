@@ -28,7 +28,7 @@ class TableTimerParticipantsDataSource(
         timerId: Long,
         pageToken: PageToken?,
     ): Page<Long> = suspendedTransaction(database) {
-        val pageInfo: TimerParticipantPageToken? = pageToken?.decoded()?.let(json::decodeFromString)
+        val pageInfo: TimerParticipantPageToken? = pageToken?.forInternal()?.let(json::decodeFromString)
 
         val result = TimersParticipantsTable.select {
             (TimersParticipantsTable.TIMER_ID eq timerId)
@@ -40,7 +40,7 @@ class TableTimerParticipantsDataSource(
         val lastId = result.lastOrNull()
 
         val nextPageToken = if (lastId != null)
-            PageToken.withBase64(json.encodeToString(TimerParticipantPageToken(lastId)))
+            PageToken.toGive(json.encodeToString(TimerParticipantPageToken(lastId)))
         else pageToken
 
         return@suspendedTransaction Page(

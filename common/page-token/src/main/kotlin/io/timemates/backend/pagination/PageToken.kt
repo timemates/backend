@@ -15,16 +15,31 @@ import kotlin.io.encoding.ExperimentalEncodingApi
 @JvmInline
 public value class PageToken private constructor(private val string: String) {
 
-    public fun decoded(): String = Base64.decode(string).decodeToString()
+    @OptIn(ExperimentalEncodingApi::class)
+    public fun forInternal(): String = Base64.decode(string).decodeToString()
 
-    public fun encoded(): String = string
+    public fun forPublic(): String = string
 
     public companion object {
-        public fun withBase64(value: String): PageToken {
+
+        /**
+         * Converts the given value to a PageToken to be given to the consumer.
+         *
+         * @param value The value to convert.
+         * @return The converted PageToken.
+         */
+        @OptIn(ExperimentalEncodingApi::class)
+        public fun toGive(value: String): PageToken {
             return PageToken(Base64.encode(value.encodeToByteArray()))
         }
 
-        public fun raw(value: String): PageToken {
+        /**
+         * Accepts raw access token as encoded one (like from request).
+         *
+         * @param value The page token to be accepted.
+         * @return The created PageToken object.
+         */
+        public fun accept(value: String): PageToken {
             return PageToken(value)
         }
     }

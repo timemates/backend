@@ -1,6 +1,6 @@
 package io.timemates.backend.data.users
 
-import com.timemates.backend.validation.createOrThrowInternally
+import io.timemates.backend.validation.createOrThrowInternally
 import io.timemates.backend.data.common.markers.Mapper
 import io.timemates.backend.data.users.datasource.CachedUsersDataSource
 import io.timemates.backend.data.users.datasource.PostgresqlUsersDataSource

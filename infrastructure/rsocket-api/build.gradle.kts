@@ -5,9 +5,12 @@ plugins {
 
 dependencies {
     implementation(projects.core)
+    implementation(projects.core.serializableTypes)
 
     implementation(libs.rsocket.server)
     implementation(libs.rsocket.server.websockets)
+
+    implementation(projects.common.rsocketRouting)
 
     implementation(libs.kotlinx.serialization)
 

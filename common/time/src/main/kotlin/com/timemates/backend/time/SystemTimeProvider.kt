@@ -1,6 +1,6 @@
 package com.timemates.backend.time
 
-import com.timemates.backend.validation.createOrThrowInternally
+import io.timemates.backend.validation.createOrThrowInternally
 import java.time.Clock
 import java.time.Instant
 import java.time.ZoneId

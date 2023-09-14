@@ -17,14 +17,13 @@ class JoinByInviteUseCase(
 ) : UseCase {
     context(AuthorizedContext<TimersScope.Write>)
     suspend fun execute(
-        timerId: TimerId,
         code: InviteCode,
     ): Result {
         val invite = invites.getInvite(code) ?: return Result.NotFound
         timers.addMember(userId, invite.timerId, time.provide(), code)
 
-        if (invite.limit.int >= timers.getMembersCountOfInvite(timerId, invite.code).int)
-            invites.removeInvite(timerId, invite.code)
+        if (invite.limit.int >= timers.getMembersCountOfInvite(invite.timerId, invite.code).int)
+            invites.removeInvite(invite.timerId, invite.code)
 
         return Result.Success(invite.timerId)
     }

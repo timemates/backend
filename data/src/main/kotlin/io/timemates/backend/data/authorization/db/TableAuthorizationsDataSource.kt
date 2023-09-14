@@ -29,7 +29,7 @@ class TableAuthorizationsDataSource(
 
     suspend fun getAuthorizations(userId: Long, pageToken: PageToken?): Page<DbAuthorization> =
         suspendedTransaction(database) {
-            val pageInfo: AuthorizationPageToken? = pageToken?.decoded()?.let(json::decodeFromString)
+            val pageInfo: AuthorizationPageToken? = pageToken?.forInternal()?.let(json::decodeFromString)
 
             val result = AuthorizationsTable.select {
                 AuthorizationsTable.USER_ID eq userId and (
@@ -40,7 +40,7 @@ class TableAuthorizationsDataSource(
 
             val lastId = result.lastOrNull()?.authorizationId
             val nextPageToken = if (lastId != null)
-                PageToken.withBase64(json.encodeToString(AuthorizationPageToken(lastId)))
+                PageToken.toGive(json.encodeToString(AuthorizationPageToken(lastId)))
             else pageToken
 
             return@suspendedTransaction Page(

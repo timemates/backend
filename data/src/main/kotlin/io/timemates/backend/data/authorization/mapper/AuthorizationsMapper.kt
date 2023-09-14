@@ -1,7 +1,7 @@
 package io.timemates.backend.data.authorization.mapper
 
 import com.timemates.backend.time.UnixTime
-import com.timemates.backend.validation.createOrThrowInternally
+import io.timemates.backend.validation.createOrThrowInternally
 import io.timemates.backend.authorization.types.Authorization
 import io.timemates.backend.authorization.types.AuthorizationsScope
 import io.timemates.backend.authorization.types.metadata.ClientMetadata

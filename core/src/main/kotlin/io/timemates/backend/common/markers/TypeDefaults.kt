@@ -1,6 +1,6 @@
 package io.timemates.backend.common.markers
 
-import com.timemates.backend.validation.markers.InternalThrowAbility
+import io.timemates.backend.validation.markers.InternalThrowAbility
 
 /**
  * Interface-marker for companions that have default variant of type (entity). This interface

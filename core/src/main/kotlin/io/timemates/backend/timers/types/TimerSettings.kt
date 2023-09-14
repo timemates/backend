@@ -1,6 +1,6 @@
 package io.timemates.backend.timers.types
 
-import com.timemates.backend.validation.createOrThrowInternally
+import io.timemates.backend.validation.createOrThrowInternally
 import io.timemates.backend.common.markers.TypeDefaults
 import io.timemates.backend.common.types.value.Count
 import kotlin.time.Duration

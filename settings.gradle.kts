@@ -34,9 +34,12 @@ include(
     ":common:smtp-mailer",
     ":common:cli-arguments",
     ":common:hashing",
+    ":common:rsocket-routing",
 )
 
-include(":core", ":data")
+include(":core", ":core:serializable-types")
+
+include(":data")
 
 include(
     ":infrastructure:grpc-api",

@@ -1,9 +1,9 @@
 package io.timemates.backend.users.types.value
 
-import com.timemates.backend.validation.FailureMessage
-import com.timemates.backend.validation.SafeConstructor
-import com.timemates.backend.validation.ValidationFailureHandler
-import com.timemates.backend.validation.reflection.wrapperTypeName
+import io.timemates.backend.validation.FailureMessage
+import io.timemates.backend.validation.SafeConstructor
+import io.timemates.backend.validation.ValidationFailureHandler
+import io.timemates.backend.validation.reflection.wrapperTypeName
 
 @JvmInline
 value class EmailAddress private constructor(val string: String) {
@@ -23,9 +23,9 @@ value class EmailAddress private constructor(val string: String) {
         context(ValidationFailureHandler)
         override fun create(value: String): EmailAddress {
             return when {
-                value.isEmpty() -> onFail(FailureMessage.ofBlank())
-                value.length !in SIZE -> onFail(FailureMessage.ofSize(SIZE))
-                !emailPattern.matches(value) -> onFail(FailureMessage.ofPattern(emailPattern))
+                value.isEmpty() -> onFail(io.timemates.backend.validation.FailureMessage.ofBlank())
+                value.length !in SIZE -> onFail(io.timemates.backend.validation.FailureMessage.ofSize(SIZE))
+                !emailPattern.matches(value) -> onFail(io.timemates.backend.validation.FailureMessage.ofPattern(emailPattern))
                 else -> EmailAddress(value)
             }
         }

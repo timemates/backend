@@ -102,7 +102,7 @@ class TableTimersDataSource(
         userId: Long,
         pageToken: PageToken?,
     ): Page<DbTimer> = suspendedTransaction(database) {
-        val decodedPageToken: TimersPageToken? = pageToken?.decoded()?.let { json.decodeFromString(it) }
+        val decodedPageToken: TimersPageToken? = pageToken?.forInternal()?.let { json.decodeFromString(it) }
 
         val result = TimersTable.select {
             TimersTable.ID greater (decodedPageToken?.nextRetrievedTimerId ?: 0) and
@@ -111,7 +111,7 @@ class TableTimersDataSource(
 
         val lastId = result.lastOrNull()?.id
         val nextPageToken = if (lastId != null)
-            PageToken.withBase64(json.encodeToString(TimersPageToken(lastId)))
+            PageToken.toGive(json.encodeToString(TimersPageToken(lastId)))
         else pageToken
 
         return@suspendedTransaction Page(
