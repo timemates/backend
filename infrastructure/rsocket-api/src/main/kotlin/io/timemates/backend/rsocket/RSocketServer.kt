@@ -8,6 +8,7 @@ import io.ktor.server.websocket.*
 import io.rsocket.kotlin.ktor.server.RSocketSupport
 import io.rsocket.kotlin.ktor.server.rSocket
 import io.timemates.backend.rsocket.features.authorization.RSocketAuthorizationsService
+import io.timemates.backend.rsocket.features.files.RSocketFilesService
 import io.timemates.backend.rsocket.features.timers.RSocketTimersService
 import io.timemates.backend.rsocket.features.timers.members.RSocketTimerMembersService
 import io.timemates.backend.rsocket.features.timers.members.invites.RSocketTimerInvitesService
@@ -16,7 +17,6 @@ import io.timemates.backend.rsocket.features.users.RSocketUsersService
 import io.timemates.backend.rsocket.interceptors.AuthorizableRoutedRequesterInterceptor
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 /**
  * Starts an RSocket server using Ktor.
@@ -31,6 +31,7 @@ suspend fun startRSocket(
     timerMembersService: RSocketTimerMembersService,
     timerInvitesService: RSocketTimerInvitesService,
     timerSessionsService: RSocketTimerSessionsService,
+    filesService: RSocketFilesService,
     requestsInterceptor: AuthorizableRoutedRequesterInterceptor,
 ): Unit = suspendCancellableCoroutine { continuation ->
     embeddedServer(Netty, port = port) {
@@ -41,6 +42,7 @@ suspend fun startRSocket(
             timerMembersService = timerMembersService,
             timerInvitesService = timerInvitesService,
             timerSessionsService = timerSessionsService,
+            filesService = filesService,
             requestsInterceptor,
         )
     }.also { engine ->
@@ -59,15 +61,13 @@ private fun Application.configureServer(
     timerMembersService: RSocketTimerMembersService,
     timerInvitesService: RSocketTimerInvitesService,
     timerSessionsService: RSocketTimerSessionsService,
+    filesService: RSocketFilesService,
     requestsInterceptor: AuthorizableRoutedRequesterInterceptor,
 ) {
     install(WebSockets)
     install(RSocketSupport) {
         server {
             maxFragmentSize = 1024
-            interceptors {
-
-            }
         }
     }
 
@@ -81,6 +81,7 @@ private fun Application.configureServer(
                 timerMembers = timerMembersService,
                 timerInvites = timerInvitesService,
                 timerSessions = timerSessionsService,
+                files = filesService,
                 requestInterceptor = requestsInterceptor,
             ),
         )

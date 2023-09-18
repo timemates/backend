@@ -4,13 +4,13 @@ import io.timemates.backend.common.types.value.Count
 import io.timemates.backend.pagination.PageToken
 import io.timemates.backend.rsocket.features.authorization.providers.provideAuthorizationContext
 import io.timemates.backend.rsocket.features.common.RSocketFailureCode
-import io.timemates.backend.rsocket.internal.createOrFail
-import io.timemates.backend.rsocket.internal.failRequest
-import io.timemates.backend.rsocket.internal.markers.RSocketService
 import io.timemates.backend.rsocket.features.timers.members.invites.requests.CreateInviteRequest
 import io.timemates.backend.rsocket.features.timers.members.invites.requests.GetInvitesListRequest
 import io.timemates.backend.rsocket.features.timers.members.invites.requests.JoinTimerByCodeRequest
 import io.timemates.backend.rsocket.features.timers.members.invites.requests.RemoveInviteRequest
+import io.timemates.backend.rsocket.internal.createOrFail
+import io.timemates.backend.rsocket.internal.failRequest
+import io.timemates.backend.rsocket.internal.markers.RSocketService
 import io.timemates.backend.serializable.types.timers.members.invites.serializable
 import io.timemates.backend.timers.types.value.InviteCode
 import io.timemates.backend.timers.types.value.TimerId
@@ -48,7 +48,7 @@ class RSocketTimerInvitesService(
     }
 
     suspend fun getInvites(
-        request: GetInvitesListRequest
+        request: GetInvitesListRequest,
     ): GetInvitesListRequest.Result = provideAuthorizationContext {
         val result = getInvitesUseCase.execute(
             timerId = TimerId.createOrFail(request.timerId),
@@ -60,6 +60,7 @@ class RSocketTimerInvitesService(
                 invites = result.page.value.map { it.serializable() },
                 nextPageToken = result.page.nextPageToken?.forPublic(),
             )
+
             is GetInvitesUseCase.Result.NoAccess -> failRequest(
                 failureCode = RSocketFailureCode.FORBIDDEN,
                 message = "You have no access to invites.",
@@ -68,7 +69,7 @@ class RSocketTimerInvitesService(
     }
 
     suspend fun joinTimerByCode(
-        request: JoinTimerByCodeRequest
+        request: JoinTimerByCodeRequest,
     ): JoinTimerByCodeRequest.Result = provideAuthorizationContext {
         val result = joinByInviteUseCase.execute(
             code = InviteCode.createOrFail(request.code)
@@ -78,6 +79,7 @@ class RSocketTimerInvitesService(
             is JoinByInviteUseCase.Result.Success -> JoinTimerByCodeRequest.Result(
                 timerId = result.timerId.long,
             )
+
             is JoinByInviteUseCase.Result.NotFound -> failRequest(
                 failureCode = RSocketFailureCode.NOT_FOUND,
                 message = "Invite code is invalid.",
@@ -99,6 +101,7 @@ class RSocketTimerInvitesService(
                 failureCode = RSocketFailureCode.FORBIDDEN,
                 message = "No permission to remove invites",
             )
+
             is RemoveInviteUseCase.Result.NotFound -> failRequest(
                 failureCode = RSocketFailureCode.NOT_FOUND,
                 message = "Invite not found",

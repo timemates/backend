@@ -10,7 +10,9 @@ dependencies {
     implementation(libs.rsocket.server)
     implementation(libs.rsocket.server.websockets)
 
-    implementation(projects.common.rsocketRouting)
+    implementation(projects.common.coroutinesUtils)
+
+    implementation(libs.y9vad9.rsocket.router)
 
     implementation(libs.kotlinx.serialization)
 

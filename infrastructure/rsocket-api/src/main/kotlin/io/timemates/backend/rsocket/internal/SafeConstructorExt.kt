@@ -1,9 +1,9 @@
 package io.timemates.backend.rsocket.internal
 
-import io.timemates.backend.validation.SafeConstructor
-import io.timemates.backend.validation.ValidationFailureHandler
 import io.rsocket.kotlin.RSocketError
 import io.timemates.backend.rsocket.internal.markers.RSocketMarker
+import io.timemates.backend.validation.SafeConstructor
+import io.timemates.backend.validation.ValidationFailureHandler
 
 /**
  * @throws [RSocketError.Invalid] on service-mapping operations to propagate type-safe

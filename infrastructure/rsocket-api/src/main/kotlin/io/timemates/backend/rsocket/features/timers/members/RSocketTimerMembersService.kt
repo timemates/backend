@@ -3,11 +3,11 @@ package io.timemates.backend.rsocket.features.timers.members
 import io.timemates.backend.pagination.PageToken
 import io.timemates.backend.rsocket.features.authorization.providers.provideAuthorizationContext
 import io.timemates.backend.rsocket.features.common.RSocketFailureCode
+import io.timemates.backend.rsocket.features.timers.members.requests.GetMembersListRequest
+import io.timemates.backend.rsocket.features.timers.members.requests.KickMemberRequest
 import io.timemates.backend.rsocket.internal.createOrFail
 import io.timemates.backend.rsocket.internal.failRequest
 import io.timemates.backend.rsocket.internal.markers.RSocketService
-import io.timemates.backend.rsocket.features.timers.members.requests.GetMembersListRequest
-import io.timemates.backend.rsocket.features.timers.members.requests.KickMemberRequest
 import io.timemates.backend.serializable.types.users.serializable
 import io.timemates.backend.timers.types.value.TimerId
 import io.timemates.backend.timers.usecases.members.GetMembersUseCase
@@ -20,7 +20,7 @@ class RSocketTimerMembersService(
     private val kickTimerUserUseCase: KickTimerUserUseCase,
 ) : RSocketService {
     suspend fun getMembers(
-        request: GetMembersListRequest
+        request: GetMembersListRequest,
     ): GetMembersListRequest.Result = provideAuthorizationContext {
         val result = getMembersUseCase.execute(
             timerId = TimerId.createOrFail(request.timerId),
@@ -32,6 +32,7 @@ class RSocketTimerMembersService(
                 list = result.list.map(User::serializable),
                 nextPageToken = result.nextPageToken?.forPublic()
             )
+
             is GetMembersUseCase.Result.NoAccess ->
                 failRequest(RSocketFailureCode.NOT_FOUND, "Timer not found.")
         }

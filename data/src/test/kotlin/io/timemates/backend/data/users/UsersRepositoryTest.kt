@@ -92,7 +92,7 @@ class UsersRepositoryTest {
         coJustRun { cachedUsers.invalidateUser(any()) }
 
         // WHEN
-        postgresqlUsersRepository.edit(userId, User.Patch(userName, description))
+        postgresqlUsersRepository.edit(userId, User.Patch(userName, description, null))
 
         // THEN
         coVerify {

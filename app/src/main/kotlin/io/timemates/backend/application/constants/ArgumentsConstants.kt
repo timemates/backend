@@ -1,7 +1,8 @@
 package io.timemates.backend.application.constants
 
 internal object ArgumentsConstants {
-    const val PORT = "port"
+    const val GRPC_PORT = "grpcPort"
+    const val RSOCKET_PORT = "rSocketPort"
     const val DATABASE_URL = "databaseUrl"
     const val DATABASE_USER = "databaseUser"
     const val DATABASE_USER_PASSWORD = "databaseUserPassword"

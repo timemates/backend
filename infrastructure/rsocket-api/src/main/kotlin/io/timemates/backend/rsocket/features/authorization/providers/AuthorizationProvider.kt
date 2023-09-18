@@ -13,7 +13,6 @@ import io.timemates.backend.rsocket.interceptors.AuthorizableRouteContext
 import io.timemates.backend.rsocket.internal.createOrFail
 import io.timemates.backend.rsocket.internal.failRequest
 import io.timemates.backend.rsocket.internal.markers.RSocketService
-import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.coroutineContext
 
 /**

@@ -1,5 +1,7 @@
 package io.timemates.backend.rsocket.interceptors
 
+import com.y9vad9.rsocket.router.annotations.ExperimentalRouterApi
+import com.y9vad9.rsocket.router.interceptors.Preprocessor
 import io.rsocket.kotlin.ExperimentalMetadataApi
 import io.rsocket.kotlin.RSocketError
 import io.rsocket.kotlin.metadata.CompositeMetadata
@@ -8,10 +10,7 @@ import io.rsocket.kotlin.metadata.read
 import io.rsocket.kotlin.payload.Payload
 import io.timemates.backend.rsocket.features.common.providers.AuthorizationProvider
 import io.timemates.backend.rsocket.internal.AuthorizationMetadata
-import io.timemates.backend.rsocket.router.annotations.ExperimentalRouterApi
-import io.timemates.backend.rsocket.router.interceptors.Preprocessor
 import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.coroutineContext
 
 data class AuthorizableRouteContext(
     val route: String,
@@ -35,9 +34,7 @@ class AuthorizableRoutedRequesterInterceptor(
     private val authorizationProvider: AuthorizationProvider,
 ) : Preprocessor.CoroutineContext {
 
-    override suspend fun intercept(
-        input: Payload,
-    ): CoroutineContext = with(input) {
+    override fun intercept(coroutineContext: CoroutineContext, input: Payload): CoroutineContext = with(input) {
         val entries = metadata?.read(CompositeMetadata)?.entries
         val route = entries?.firstOrNull().route()
         val accessHash = entries?.getOrNull(1)?.accessHash()

@@ -1,13 +1,13 @@
 package io.timemates.backend.rsocket
 
+import com.y9vad9.rsocket.router.annotations.ExperimentalRouterApi
+import com.y9vad9.rsocket.router.router
 import io.rsocket.kotlin.ConnectionAcceptor
-import io.rsocket.kotlin.RSocket
-import io.rsocket.kotlin.RSocketError
 import io.rsocket.kotlin.RSocketRequestHandler
 import io.timemates.backend.rsocket.features.authorization.RSocketAuthorizationsService
 import io.timemates.backend.rsocket.features.authorization.authorizations
-import io.timemates.backend.rsocket.features.common.RSocketFailureCode
-import io.timemates.backend.rsocket.router.builders.routing
+import io.timemates.backend.rsocket.features.files.RSocketFilesService
+import io.timemates.backend.rsocket.features.files.files
 import io.timemates.backend.rsocket.features.timers.RSocketTimersService
 import io.timemates.backend.rsocket.features.timers.members.RSocketTimerMembersService
 import io.timemates.backend.rsocket.features.timers.members.invites.RSocketTimerInvitesService
@@ -17,8 +17,6 @@ import io.timemates.backend.rsocket.features.users.RSocketUsersService
 import io.timemates.backend.rsocket.features.users.users
 import io.timemates.backend.rsocket.interceptors.AuthorizableRouteContext
 import io.timemates.backend.rsocket.interceptors.AuthorizableRoutedRequesterInterceptor
-import io.timemates.backend.rsocket.router.annotations.ExperimentalRouterApi
-import io.timemates.backend.rsocket.router.router
 import kotlin.coroutines.coroutineContext
 
 /**
@@ -36,7 +34,8 @@ internal fun RSocketConnectionAcceptor(
     timerMembers: RSocketTimerMembersService,
     timerInvites: RSocketTimerInvitesService,
     timerSessions: RSocketTimerSessionsService,
-    requestInterceptor: AuthorizableRoutedRequesterInterceptor
+    files: RSocketFilesService,
+    requestInterceptor: AuthorizableRoutedRequesterInterceptor,
 ): ConnectionAcceptor {
     return ConnectionAcceptor {
         RSocketRequestHandler {
@@ -47,12 +46,13 @@ internal fun RSocketConnectionAcceptor(
 
                 routeProvider { _ ->
                     coroutineContext[AuthorizableRouteContext]?.route
-                        ?: error("Interceptor does not properly works.")
+                        ?: error("Interceptor did not properly work.")
                 }
 
                 routing {
                     authorizations(auth)
                     users(users)
+                    files(files)
                     timers(
                         timers = timers,
                         members = timerMembers,

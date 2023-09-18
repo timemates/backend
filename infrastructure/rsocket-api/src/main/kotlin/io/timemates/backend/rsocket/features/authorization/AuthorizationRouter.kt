@@ -1,11 +1,11 @@
 package io.timemates.backend.rsocket.features.authorization
 
+import com.y9vad9.rsocket.router.annotations.ExperimentalRouterApi
+import com.y9vad9.rsocket.router.builders.RoutingBuilder
+import com.y9vad9.rsocket.router.builders.requestResponse
 import io.timemates.backend.rsocket.features.authorization.requests.*
 import io.timemates.backend.rsocket.internal.asPayload
 import io.timemates.backend.rsocket.internal.decoding
-import io.timemates.backend.rsocket.router.annotations.ExperimentalRouterApi
-import io.timemates.backend.rsocket.router.builders.RoutingBuilder
-import io.timemates.backend.rsocket.router.builders.requestResponse
 
 /**
  * Sets up the route handlers for authorizations.
@@ -25,8 +25,6 @@ fun RoutingBuilder.authorizations(
             payload.decoding<ConfirmAuthorizationRequest> { auth.confirmAuthorization(it).asPayload() }
         }
     }
-
-    router.routes
 
     route("account") {
         requestResponse("configure") { payload ->

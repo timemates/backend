@@ -76,13 +76,12 @@ class UserEntitiesMapperTest {
         val userPatch = User.Patch(
             name = UserName.createOrAssert("John"),
             description = UserDescription.createOrAssert("This is a short bio"),
-            avatarId = null
+            avatar = null,
         )
 
         val expected = PostgresqlUsersDataSource.User.Patch(
             userPatch.name?.string,
             userPatch.description?.string,
-            userPatch.avatarId?.string
         )
         val actual = mapper.toPostgresqlUserPatch(userPatch)
 

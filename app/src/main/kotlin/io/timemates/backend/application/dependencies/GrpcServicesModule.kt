@@ -9,7 +9,7 @@ import io.timemates.backend.services.users.UsersService
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
-val ServicesModule = module {
+val GrpcServicesModule = module {
     singleOf(::GrpcUsersMapper)
 
     singleOf(::GrpcTimersMapper)

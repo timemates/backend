@@ -1,17 +1,9 @@
 package io.timemates.backend.rsocket.internal
 
-import io.rsocket.kotlin.ExperimentalMetadataApi
-import io.rsocket.kotlin.RSocket
-import io.rsocket.kotlin.RSocketError
-import io.rsocket.kotlin.metadata.CompositeMetadata
-import io.rsocket.kotlin.metadata.Metadata
-import io.rsocket.kotlin.metadata.RoutingMetadata
-import io.rsocket.kotlin.metadata.read
 import io.rsocket.kotlin.payload.Payload
 import io.rsocket.kotlin.payload.buildPayload
 import io.rsocket.kotlin.payload.data
-import io.timemates.backend.rsocket.features.authorization.providers.AuthorizationContextElement
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.Flow
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -35,6 +27,16 @@ internal inline fun <reified T> Payload.decodeFromJson(): T = json.decodeFromStr
  * @return An empty payload after the block execution.
  */
 internal inline fun <reified T> Payload.decoding(block: (T) -> Payload): Payload {
+    return block(decodeFromJson())
+}
+
+/**
+ * Decodes the payload's JSON data into [T] and executes the provided [block].
+ *
+ * @param block The action to be performed with the decoded data.
+ * @return An empty payload after the block execution.
+ */
+internal inline fun <reified T> Payload.decodingForFlow(block: (T) -> Flow<Payload>): Flow<Payload> {
     return block(decodeFromJson())
 }
 

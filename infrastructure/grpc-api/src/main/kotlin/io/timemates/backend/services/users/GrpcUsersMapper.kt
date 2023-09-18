@@ -33,10 +33,9 @@ class GrpcUsersMapper : GrpcMapper {
                 ?.let { UserName.createOrStatus(it) },
             description = patch.description.takeIf { patch.hasDescription() }
                 ?.let { UserDescription.createOrStatus(it) },
-            avatarId = patch.avatarId.takeIf { patch.hasAvatarId() }
-                ?.let { FileId.createOrStatus(it) },
-            gravatarId = patch.gravatarId.takeIf { patch.hasGravatarId() }
-                ?.let { EmailAddress.createOrStatus(it) },
+            avatar = if(patch.hasAvatarId())
+                Avatar.FileId.createOrStatus(patch.avatarId)
+            else Avatar.GravatarId.createOrStatus(patch.gravatarId)
         )
     }
 }

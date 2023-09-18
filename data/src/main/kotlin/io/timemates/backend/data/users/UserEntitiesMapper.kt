@@ -28,7 +28,12 @@ class UserEntitiesMapper : Mapper {
     }
 
     fun toPostgresqlUserPatch(patch: User.Patch) = with(patch) {
-        PostgresqlUsersDataSource.User.Patch(name?.string, description?.string, avatarId?.string, gravatarId?.string)
+        PostgresqlUsersDataSource.User.Patch(
+            userName = name?.string,
+            userShortDesc = description?.string,
+            userAvatarFileId = (avatar as? Avatar.FileId)?.string,
+            userGravatarId = (avatar as? Avatar.GravatarId)?.string
+        )
     }
 
     fun toCachedUser(user: User) = with(user) {

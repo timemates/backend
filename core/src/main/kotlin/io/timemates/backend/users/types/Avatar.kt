@@ -15,9 +15,9 @@ sealed interface Avatar {
             context(ValidationFailureHandler)
             override fun create(value: String): GravatarId {
                 return when (value.length) {
-                    0 -> onFail(io.timemates.backend.validation.FailureMessage.ofBlank())
+                    0 -> onFail(FailureMessage.ofBlank())
                     SIZE -> GravatarId(value)
-                    else -> onFail(io.timemates.backend.validation.FailureMessage.ofSize(SIZE))
+                    else -> onFail(FailureMessage.ofSize(SIZE))
                 }
             }
         }
@@ -32,9 +32,9 @@ sealed interface Avatar {
             context(ValidationFailureHandler)
             override fun create(value: String): FileId {
                 return when (value.length) {
-                    0 -> onFail(io.timemates.backend.validation.FailureMessage.ofBlank())
+                    0 -> onFail(FailureMessage.ofBlank())
                     SIZE -> FileId(value)
-                    else -> onFail(io.timemates.backend.validation.FailureMessage.ofSize(SIZE))
+                    else -> onFail(FailureMessage.ofSize(SIZE))
                 }
             }
         }

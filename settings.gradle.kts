@@ -25,7 +25,6 @@ include(
     ":common:random",
     ":common:authorization",
     ":common:time",
-    ":common:scheduler",
     ":common:exposed-utils",
     ":common:test-utils",
     ":common:state-machine",
@@ -34,7 +33,6 @@ include(
     ":common:smtp-mailer",
     ":common:cli-arguments",
     ":common:hashing",
-    ":common:rsocket-routing",
 )
 
 include(":core", ":core:serializable-types")

@@ -5,7 +5,6 @@ import io.timemates.backend.authorization.types.value.VerificationCode
 import io.timemates.backend.authorization.types.value.VerificationHash
 import io.timemates.backend.authorization.usecases.*
 import io.timemates.backend.pagination.PageToken
-import io.timemates.backend.rsocket.features.authorization.providers.provideAuthorizationContext
 import io.timemates.backend.rsocket.features.authorization.requests.*
 import io.timemates.backend.rsocket.features.common.RSocketFailureCode
 import io.timemates.backend.rsocket.features.common.providers.authorizedContext
@@ -39,7 +38,7 @@ class RSocketAuthorizationsService(
 ) : RSocketService {
 
     suspend fun startAuthorizationViaEmail(
-        request: StartAuthorizationRequest
+        request: StartAuthorizationRequest,
     ): StartAuthorizationRequest.Result {
         val result = authByEmailUseCase.execute(
             emailAddress = EmailAddress.createOrFail(request.email),
@@ -59,6 +58,7 @@ class RSocketAuthorizationsService(
                 failureCode = RSocketFailureCode.TOO_MANY_REQUESTS,
                 message = "Attempts for authorization is exceed.",
             )
+
             AuthByEmailUseCase.Result.SendFailed -> failRequest(
                 failureCode = RSocketFailureCode.INTERNAL_SERVER_ERROR,
                 message = "Unable to send confirmation email.",
@@ -98,7 +98,7 @@ class RSocketAuthorizationsService(
     }
 
     suspend fun configureNewAccount(
-        request: ConfigureAccountRequest
+        request: ConfigureAccountRequest,
     ): ConfigureAccountRequest.Result {
         val result = configureNewAccountUseCase.execute(
             verificationToken = VerificationHash.createOrFail(request.verificationHash),
@@ -111,6 +111,7 @@ class RSocketAuthorizationsService(
                 failureCode = RSocketFailureCode.UNAUTHORIZED,
                 message = "Verification hash is invalid or expired.",
             )
+
             is ConfigureNewAccountUseCase.Result.Success -> ConfigureAccountRequest.Result(
                 authorization = result.authorization.serializable(),
             )
@@ -129,7 +130,7 @@ class RSocketAuthorizationsService(
     }
 
     suspend fun renewAuthorization(
-        request: RenewAuthorizationRequest
+        request: RenewAuthorizationRequest,
     ): RenewAuthorizationRequest.Result {
         val result = refreshTokenUseCase.execute(RefreshHash.createOrFail(request.refreshHash))
 
@@ -138,6 +139,7 @@ class RSocketAuthorizationsService(
                 failureCode = RSocketFailureCode.NOT_FOUND,
                 message = "Invalid refresh hash.",
             )
+
             is RefreshTokenUseCase.Result.Success -> RenewAuthorizationRequest.Result(
                 accessHash = result.accessToken.string,
             )

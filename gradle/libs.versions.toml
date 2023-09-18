@@ -16,6 +16,7 @@ grpc-netty = "1.55.1"
 grpc-services = "1.55.1"
 koin = "3.4.0"
 rsocket = "0.15.4"
+rsocket-router = "1.1.0"
 
 [libraries]
 kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
@@ -69,6 +70,9 @@ protobuf-kotlin = { module = "com.google.protobuf:protobuf-kotlin", version.ref 
 protobuf-java = { module = "com.google.protobuf:protobuf-java", version.ref = "protobuf" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 postgresql-driver = { module = "org.postgresql:postgresql", version.require = "42.6.0" }
+
+y9vad9-rsocket-router = { module = "com.y9vad9.rsocket.router:router-core", version.ref = "rsocket-router" }
+y9vad9-rsocket-router-test = { module = "com.y9vad9.rsocket.router:router-test", version.ref = "rsocket-router" }
 
 [plugins]
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
