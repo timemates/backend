@@ -37,7 +37,8 @@ import java.net.URI
  * Application entry-point. Next environment variables should be provided:
  *
  * **Environment variables**:
- * - **APPLICATION_PORT**: The port for the server to listen on. If not provided, defaults to 8080.
+ * - **TIMEMATES_GRPC_PORT**: The port for the gRPC server to listen on. If not provided, defaults to 8080.
+ * - **TIMEMATES_RSOCKET_PORT** – The port on which RSocket instance will run (default: `8081`)
  * - **TIMEMATES_DATABASE_URL**: The URL of the database.
  * - **TIMEMATES_DATABASE_USER**: The username for the database connection.
  * - **TIMEMATES_DATABASE_USER_PASSWORD**: The password for the database connection.
@@ -54,7 +55,7 @@ import java.net.URI
  *
  * **Program arguments**:
  *
- * Also, values above can be provided by arguments `port`, `databaseUrl`, `databaseUser`
+ * Also, values above can be provided by arguments `grpcPort`, `rsocketPort`, `databaseUrl`, `databaseUser`
  * `databaseUserPassword` and `filesPath`.
  * For example: `java -jar timemates.jar -port 8080 -databaseUrl http..`
  *

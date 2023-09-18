@@ -4,8 +4,8 @@ internal object EnvironmentConstants {
     private const val TIME_MATES_PREFIX = "TIMEMATES"
     private const val MAILERSEND_PREFIX = "MAILERSEND"
 
-    const val GRPC_PORT = "GRPC_PORT"
-    const val RSOCKET_PORT = "RSOCKET_PORT"
+    const val GRPC_PORT = "${TIME_MATES_PREFIX}_GRPC_PORT"
+    const val RSOCKET_PORT = "${TIME_MATES_PREFIX}_RSOCKET_PORT"
 
     // Database
     const val DATABASE_URL = "${TIME_MATES_PREFIX}_DATABASE_URL"
