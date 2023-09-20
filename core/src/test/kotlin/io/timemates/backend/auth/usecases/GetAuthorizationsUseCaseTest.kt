@@ -21,7 +21,7 @@ class GetAuthorizationsUseCaseTest {
     private val randomProvider = SecureRandomProvider()
 
 //    @MockK
-    lateinit var authorizationsRepository: AuthorizationsRepository
+private lateinit var authorizationsRepository: AuthorizationsRepository
 
     // @BeforeEach
     fun before() {

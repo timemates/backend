@@ -18,6 +18,6 @@ class GetUserIdByAccessTokenUseCase(
     sealed interface Result {
         @JvmInline
         value class Success(val userId: UserId) : Result
-        object NotFound : Result
+        data object NotFound : Result
     }
 }

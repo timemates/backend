@@ -19,7 +19,8 @@ ARG JAR_DOWNLOAD_URL=https://github.com/timemates/backend/releases/download/${JA
 RUN wget --quiet --show-progress --no-cache --progress=bar: ${JAR_DOWNLOAD_URL} -O application.jar 
 
 # Expose the port on which your application will run
-EXPOSE $SERVER_PORT
+EXPOSE $TIMEMATES_GRPC_PORT
+EXPOSE $TIMEMATES_RSOCKET_PORT
 
 # Set the command to run application
 # Refer to the documentation what environment variables should be set to run application

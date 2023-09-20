@@ -54,7 +54,7 @@ public abstract class SafeConstructor<Type, WrappedType> {
 context (InternalThrowAbility)
 @Throws(InternalValidationFailure::class)
 public fun <T, W> SafeConstructor<T, W>.createOrThrowInternally(value: W): T {
-    return with(io.timemates.backend.validation.ValidationFailureHandler.THROWS_INTERNAL) {
+    return with(ValidationFailureHandler.THROWS_INTERNAL) {
         create(value)
     }
 }

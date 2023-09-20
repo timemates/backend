@@ -41,7 +41,7 @@ class ConfigureNewAccountUseCaseTest {
 
     private val randomProvider = SecureRandomProvider()
 
-    lateinit var useCase: ConfigureNewAccountUseCase
+    private lateinit var useCase: ConfigureNewAccountUseCase
 
     @BeforeAll
     fun before() {

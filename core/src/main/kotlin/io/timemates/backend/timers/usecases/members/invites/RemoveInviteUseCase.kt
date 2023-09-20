@@ -27,8 +27,8 @@ class RemoveInviteUseCase(
     }
 
     sealed interface Result {
-        object Success : Result
-        object NoAccess : Result
-        object NotFound : Result
+        data object Success : Result
+        data object NoAccess : Result
+        data object NotFound : Result
     }
 }

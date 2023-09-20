@@ -16,7 +16,7 @@ class RemoveAccessTokenUseCase(
     }
 
     sealed interface Result {
-        object Success : Result
-        object AuthorizationNotFound : Result
+        data object Success : Result
+        data object AuthorizationNotFound : Result
     }
 }

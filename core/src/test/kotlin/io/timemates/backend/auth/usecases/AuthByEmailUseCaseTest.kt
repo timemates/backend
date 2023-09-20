@@ -42,7 +42,7 @@ class AuthByEmailUseCaseTest {
 
     private val randomProvider: RandomProvider = SecureRandomProvider()
 
-    lateinit var useCase: AuthByEmailUseCase
+    private lateinit var useCase: AuthByEmailUseCase
 
     private val email = EmailAddress.createOrAssert("test@email.com")
 

@@ -13,8 +13,6 @@ It's module with the set of libraries that used in this project.
 
 - **[random](random)**: Provides an abstraction for generating random values and random strings.
 
-- **[scheduler](scheduler)**: Implements a coroutine-based scheduler for task scheduling and execution.
-
 - **[smtp-mailer](smtp-mailer)**: Provides a simple interface to send emails using the Simple Mail Transfer Protocol (SMTP).
 
 - **[test-utils](test-utils)**: Offers test-specific functions and utilities for unit testing.
