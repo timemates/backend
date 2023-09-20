@@ -1,6 +1,7 @@
 package io.timemates.backend.timers.repositories
 
 import com.timemates.backend.time.UnixTime
+import io.timemates.backend.common.markers.Repository
 import io.timemates.backend.common.types.value.Count
 import io.timemates.backend.fsm.getCurrentState
 import io.timemates.backend.pagination.Page
@@ -12,7 +13,7 @@ import io.timemates.backend.timers.fsm.TimersStateMachine
 import io.timemates.backend.timers.types.value.TimerId
 import io.timemates.backend.users.types.value.UserId
 
-interface TimerSessionRepository : TimersStateMachine {
+interface TimerSessionRepository : TimersStateMachine, Repository {
     /**
      * Adds user to the session of a timer.
      *

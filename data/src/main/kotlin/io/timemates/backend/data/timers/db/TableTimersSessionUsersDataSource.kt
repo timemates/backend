@@ -43,7 +43,7 @@ class TableTimersSessionUsersDataSource(
         pageToken: PageToken?,
         afterTime: Long,
     ): Page<DbSessionUser> = suspendedTransaction(database) {
-        val currentPage: TimerParticipantPageToken? = pageToken?.decoded()?.let(json::decodeFromString)
+        val currentPage: TimerParticipantPageToken? = pageToken?.forInternal()?.let(json::decodeFromString)
 
         // TODO join and sort by name
         val result = TimersSessionUsersTable.select {
@@ -57,7 +57,7 @@ class TableTimersSessionUsersDataSource(
         val nextPageToken = result.lastOrNull()?.userId?.let {
             TimerParticipantPageToken(it)
                 .let(json::encodeToString)
-                .let(PageToken.Companion::withBase64)
+                .let(PageToken.Companion::toGive)
         } ?: pageToken
 
         return@suspendedTransaction Page(

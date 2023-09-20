@@ -3,8 +3,9 @@
 package io.timemates.backend.data.timers.mappers
 
 import com.timemates.backend.time.TimeProvider
-import com.timemates.backend.validation.createOrThrow
+import io.timemates.backend.validation.createOrThrowInternally
 import io.timemates.backend.common.types.value.Count
+import io.timemates.backend.data.common.markers.Mapper
 import io.timemates.backend.data.timers.db.entities.DbTimer
 import io.timemates.backend.data.timers.db.tables.TimersStateTable
 import io.timemates.backend.data.timers.db.tables.TimersTable
@@ -19,7 +20,7 @@ import io.timemates.backend.users.types.value.UserId
 import org.jetbrains.exposed.sql.ResultRow
 import kotlin.time.Duration.Companion.minutes
 
-class TimersMapper(private val sessionMapper: TimerSessionMapper) {
+class TimersMapper(private val sessionMapper: TimerSessionMapper) : Mapper {
     fun resultRowToDbTimer(resultRow: ResultRow) = with(resultRow) {
         return@with DbTimer(
             get(TimersTable.ID),
@@ -60,12 +61,12 @@ class TimersMapper(private val sessionMapper: TimerSessionMapper) {
         timerSessionRepository: TimerSessionRepository,
     ): Timer {
         return Timer(
-            id = TimerId.createOrThrow(dbTimer.id),
-            name = TimerName.createOrThrow(dbTimer.name),
-            description = TimerDescription.createOrThrow(dbTimer.description),
-            ownerId = UserId.createOrThrow(dbTimer.ownerId),
+            id = TimerId.createOrThrowInternally(dbTimer.id),
+            name = TimerName.createOrThrowInternally(dbTimer.name),
+            description = TimerDescription.createOrThrowInternally(dbTimer.description),
+            ownerId = UserId.createOrThrowInternally(dbTimer.ownerId),
             settings = dbSettingsToDomainSettings(dbTimer.settings),
-            membersCount = Count.createOrThrow(membersCount),
+            membersCount = Count.createOrThrowInternally(membersCount),
             state = sessionMapper.dbStateToFsmState(
                 dbState = state,
                 timeProvider = timeProvider,
@@ -83,8 +84,9 @@ class TimersMapper(private val sessionMapper: TimerSessionMapper) {
             restTime = restTime.minutes,
             bigRestTime = bigRestTime.minutes,
             bigRestEnabled = bigRestEnabled,
-            bigRestPer = Count.createOrThrow(bigRestPer),
+            bigRestPer = Count.createOrThrowInternally(bigRestPer),
             isEveryoneCanPause = isEveryoneCanPause,
+            isConfirmationRequired = isConfirmationRequired,
         )
     }
 
@@ -117,12 +119,12 @@ class TimersMapper(private val sessionMapper: TimerSessionMapper) {
         membersCount: Int,
     ): TimersRepository.TimerInformation = with(dbTimer) {
         return@with TimersRepository.TimerInformation(
-            id = TimerId.createOrThrow(id),
-            name = TimerName.createOrThrow(name),
-            description = TimerDescription.createOrThrow(description),
-            ownerId = UserId.createOrThrow(ownerId),
+            id = TimerId.createOrThrowInternally(id),
+            name = TimerName.createOrThrowInternally(name),
+            description = TimerDescription.createOrThrowInternally(description),
+            ownerId = UserId.createOrThrowInternally(ownerId),
             settings = dbSettingsToDomainSettings(settings),
-            membersCount = Count.createOrThrow(membersCount),
+            membersCount = Count.createOrThrowInternally(membersCount),
         )
     }
 }

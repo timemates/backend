@@ -1,19 +1,32 @@
 package io.timemates.backend.timers.types
 
-import com.timemates.backend.validation.createOrThrow
+import io.timemates.backend.validation.createOrThrowInternally
+import io.timemates.backend.common.markers.TypeDefaults
 import io.timemates.backend.common.types.value.Count
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
 
 data class TimerSettings(
-    val workTime: Duration = 25.minutes,
-    val restTime: Duration = 5.minutes,
-    val bigRestTime: Duration = 10.minutes,
-    val bigRestEnabled: Boolean = true,
-    val bigRestPer: Count = Count.createOrThrow(4),
-    val isEveryoneCanPause: Boolean = false,
-    val isConfirmationRequired: Boolean = false,
+    val workTime: Duration,
+    val restTime: Duration,
+    val bigRestTime: Duration,
+    val bigRestEnabled: Boolean,
+    val bigRestPer: Count,
+    val isEveryoneCanPause: Boolean,
+    val isConfirmationRequired: Boolean,
 ) {
+    companion object : TypeDefaults {
+        val Default = TimerSettings(
+            workTime = 25.minutes,
+            restTime = 5.minutes,
+            bigRestTime = 10.minutes,
+            bigRestEnabled = true,
+            bigRestPer = Count.createOrThrowInternally(4),
+            isEveryoneCanPause = false,
+            isConfirmationRequired = false,
+        )
+    }
+
     class Patch(
         val workTime: Duration? = null,
         val restTime: Duration? = null,

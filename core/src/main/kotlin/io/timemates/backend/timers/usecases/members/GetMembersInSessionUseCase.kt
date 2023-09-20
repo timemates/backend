@@ -1,6 +1,7 @@
 package io.timemates.backend.timers.usecases.members
 
 import com.timemates.backend.time.SystemTimeProvider
+import io.timemates.backend.common.markers.UseCase
 import io.timemates.backend.features.authorization.AuthorizedContext
 import io.timemates.backend.pagination.PageToken
 import io.timemates.backend.timers.repositories.TimerSessionRepository
@@ -17,7 +18,7 @@ class GetMembersInSessionUseCase(
     private val sessionsRepository: TimerSessionRepository,
     private val usersRepository: UsersRepository,
     private val timeProvider: SystemTimeProvider,
-) {
+) : UseCase {
     context(AuthorizedContext<TimersScope.Read>)
     suspend fun execute(
         timerId: TimerId,

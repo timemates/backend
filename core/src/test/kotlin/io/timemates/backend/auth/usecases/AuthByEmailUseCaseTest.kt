@@ -22,7 +22,6 @@ import io.timemates.backend.testing.validation.createOrAssert
 import io.timemates.backend.users.types.value.EmailAddress
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.platform.commons.annotation.Testable
@@ -43,7 +42,7 @@ class AuthByEmailUseCaseTest {
 
     private val randomProvider: RandomProvider = SecureRandomProvider()
 
-    lateinit var useCase: AuthByEmailUseCase
+    private lateinit var useCase: AuthByEmailUseCase
 
     private val email = EmailAddress.createOrAssert("test@email.com")
 
@@ -83,7 +82,7 @@ class AuthByEmailUseCaseTest {
         // GIVEN
         val clientMetadata = ClientMetadata(
             clientName = ClientName.createOrAssert("name"),
-            clientVersion = ClientVersion.createOrAssert("version"),
+            clientVersion = ClientVersion.createOrAssert(1.0),
             clientIpAddress = ClientIpAddress.createOrAssert("ip_address"),
         )
         coEvery { verificationsRepository.getNumberOfAttempts(any(), any()) } returns Count.createOrAssert(0)

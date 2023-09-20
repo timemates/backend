@@ -1,7 +1,7 @@
 package io.timemates.backend.data.users
 
 import com.timemates.backend.time.UnixTime
-import com.timemates.backend.validation.createOrThrow
+import io.timemates.backend.validation.createOrThrowInternally
 import io.timemates.backend.data.users.datasource.CachedUsersDataSource
 import io.timemates.backend.data.users.datasource.PostgresqlUsersDataSource
 import io.timemates.backend.users.types.User
@@ -29,7 +29,7 @@ class PostgresqlUsersRepository(
             userName.string,
             shortBio?.string,
             creationTime.inMilliseconds
-        ).let { UserId.createOrThrow(it) }
+        ).let { UserId.createOrThrowInternally(it) }
     }
 
     override suspend fun isUserExists(userId: UserId): Boolean {
@@ -41,7 +41,7 @@ class PostgresqlUsersRepository(
 
     override suspend fun getUserIdByEmail(emailAddress: EmailAddress): UserId? {
         return postgresqlUsers.getUserByEmail(emailAddress.string)?.id
-            ?.let { UserId.createOrThrow(it) }
+            ?.let { UserId.createOrThrowInternally(it) }
     }
 
     override suspend fun getUser(id: UserId): User? {

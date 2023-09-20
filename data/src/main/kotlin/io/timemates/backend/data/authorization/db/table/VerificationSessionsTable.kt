@@ -15,6 +15,6 @@ object VerificationSessionsTable : Table("verification_sessions") {
     val ATTEMPTS = integer("attempts")
     val INIT_TIME = long("init_time")
     val META_CLIENT_NAME = varchar("meta_client_name", 128)
-    val META_CLIENT_VERSION = varchar("meta_client_version", 128)
+    val META_CLIENT_VERSION = double("meta_client_version")
     val META_CLIENT_IP_ADDRESS = varchar("meta_client_ip_address", 128)
 }

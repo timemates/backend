@@ -1,5 +1,6 @@
 package io.timemates.backend.timers.usecases
 
+import io.timemates.backend.common.markers.UseCase
 import io.timemates.backend.features.authorization.AuthorizedContext
 import io.timemates.backend.fsm.getCurrentState
 import io.timemates.backend.timers.repositories.TimerSessionRepository
@@ -13,7 +14,7 @@ import io.timemates.backend.users.types.value.userId
 class GetTimerUseCase(
     private val timers: TimersRepository,
     private val sessions: TimerSessionRepository,
-) {
+) : UseCase {
     context(AuthorizedContext<TimersScope.Read>)
     suspend fun execute(
         timerId: TimerId,

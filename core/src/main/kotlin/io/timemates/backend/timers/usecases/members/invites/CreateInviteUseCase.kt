@@ -1,8 +1,9 @@
 package io.timemates.backend.timers.usecases.members.invites
 
 import com.timemates.backend.time.TimeProvider
-import com.timemates.backend.validation.createOrThrow
+import io.timemates.backend.validation.createOrThrowInternally
 import com.timemates.random.RandomProvider
+import io.timemates.backend.common.markers.UseCase
 import io.timemates.backend.common.types.value.Count
 import io.timemates.backend.features.authorization.AuthorizedContext
 import io.timemates.backend.timers.repositories.TimerInvitesRepository
@@ -18,7 +19,7 @@ class CreateInviteUseCase(
     private val timers: TimersRepository,
     private val randomProvider: RandomProvider,
     private val timeProvider: TimeProvider,
-) {
+) : UseCase {
     context(AuthorizedContext<TimersScope.Write>)
     suspend fun execute(
         timerId: TimerId,
@@ -30,7 +31,7 @@ class CreateInviteUseCase(
         if (invites.getInvitesCount(timerId, timeProvider.provide() + 30.minutes).int > 10)
             return Result.TooManyCreation
 
-        val code = InviteCode.createOrThrow(randomProvider.randomHash(InviteCode.SIZE))
+        val code = InviteCode.createOrThrowInternally(randomProvider.randomHash(InviteCode.SIZE))
         invites.createInvite(timerId, userId, code, timeProvider.provide(), limit)
         return Result.Success(code)
     }

@@ -8,6 +8,6 @@ data class DbVerification(
     val time: Long,
     val isConfirmed: Boolean,
     val metaClientName: String,
-    val metaClientVersion: String,
+    val metaClientVersion: Double,
     val metaClientIpAddress: String,
 )

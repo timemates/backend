@@ -1,5 +1,5 @@
 [versions]
-kotlin = "1.8.21"
+kotlin = "1.9.20-Beta"
 kotlinx-coroutines = "1.6.4"
 kotlinx-serialization = "1.4.1"
 ktor = "2.3.0"
@@ -15,6 +15,8 @@ sqldelight = "2.0.0-alpha05"
 grpc-netty = "1.55.1"
 grpc-services = "1.55.1"
 koin = "3.4.0"
+rsocket = "0.15.4"
+rsocket-router = "1.0.0"
 
 [libraries]
 kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
@@ -51,6 +53,9 @@ commons-io = { module = "commons-io:commons-io", version.require = "2.11.0" }
 exposed-core = { module = "org.jetbrains.exposed:exposed-core", version.ref = "exposed" }
 exposed-jdbc = { module = "org.jetbrains.exposed:exposed-jdbc", version.ref = "exposed" }
 
+rsocket-server = { module = "io.rsocket.kotlin:rsocket-ktor-server", version.ref = "rsocket" }
+rsocket-server-websockets = { module = "io.rsocket.kotlin:rsocket-transport-ktor-websocket-server", version.ref = "rsocket" }
+
 simple-java-mail = { module = "org.simplejavamail:simple-java-mail", version.require = "7.6.0" }
 
 cache4k = { module = "io.github.reactivecircus.cache4k:cache4k", version.require = "0.9.0" }
@@ -65,6 +70,9 @@ protobuf-kotlin = { module = "com.google.protobuf:protobuf-kotlin", version.ref 
 protobuf-java = { module = "com.google.protobuf:protobuf-java", version.ref = "protobuf" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 postgresql-driver = { module = "org.postgresql:postgresql", version.require = "42.6.0" }
+
+y9vad9-rsocket-router = { module = "com.y9vad9.rsocket.router:router-core", version.ref = "rsocket-router" }
+y9vad9-rsocket-router-test = { module = "com.y9vad9.rsocket.router:router-test", version.ref = "rsocket-router" }
 
 [plugins]
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

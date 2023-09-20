@@ -33,7 +33,7 @@ class GetCurrentTimerSessionUseCaseTest {
     @MockK
     lateinit var timers: TimersRepository
 
-    lateinit var useCase: GetCurrentTimerSessionUseCase
+    private lateinit var useCase: GetCurrentTimerSessionUseCase
 
     private val userId = UserId.createOrAssert(0)
 

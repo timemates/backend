@@ -1,5 +1,6 @@
 package io.timemates.backend.timers.usecases.members.invites
 
+import io.timemates.backend.common.markers.UseCase
 import io.timemates.backend.features.authorization.AuthorizedContext
 import io.timemates.backend.timers.repositories.TimerInvitesRepository
 import io.timemates.backend.timers.repositories.TimersRepository
@@ -11,7 +12,7 @@ import io.timemates.backend.users.types.value.userId
 class RemoveInviteUseCase(
     private val invites: TimerInvitesRepository,
     private val timers: TimersRepository,
-) {
+) : UseCase {
     context(AuthorizedContext<TimersScope.Write>)
     suspend fun execute(
         timerId: TimerId,
@@ -26,8 +27,8 @@ class RemoveInviteUseCase(
     }
 
     sealed interface Result {
-        object Success : Result
-        object NoAccess : Result
-        object NotFound : Result
+        data object Success : Result
+        data object NoAccess : Result
+        data object NotFound : Result
     }
 }

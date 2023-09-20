@@ -32,4 +32,4 @@ value class Arguments(private val array: Array<String>) {
 fun Arguments.getNamedIntOrNull(name: String): Int? =
     getNamedOrNull(name)?.toInt()
 
-fun Array<String>.asArguments(): Arguments = Arguments(this)
+fun Array<String>.parseArguments(): Arguments = Arguments(this)

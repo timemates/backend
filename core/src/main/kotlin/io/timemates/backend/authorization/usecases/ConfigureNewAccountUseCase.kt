@@ -1,7 +1,7 @@
 package io.timemates.backend.authorization.usecases
 
 import com.timemates.backend.time.TimeProvider
-import com.timemates.backend.validation.createOrThrow
+import io.timemates.backend.validation.createOrThrowInternally
 import com.timemates.random.RandomProvider
 import io.timemates.backend.authorization.repositories.AuthorizationsRepository
 import io.timemates.backend.authorization.repositories.VerificationsRepository
@@ -9,6 +9,7 @@ import io.timemates.backend.authorization.types.Authorization
 import io.timemates.backend.authorization.types.value.AccessHash
 import io.timemates.backend.authorization.types.value.RefreshHash
 import io.timemates.backend.authorization.types.value.VerificationHash
+import io.timemates.backend.common.markers.UseCase
 import io.timemates.backend.features.authorization.Scope
 import io.timemates.backend.users.repositories.UsersRepository
 import io.timemates.backend.users.types.value.UserDescription
@@ -21,7 +22,7 @@ class ConfigureNewAccountUseCase(
     private val verifications: VerificationsRepository,
     private val timeProvider: TimeProvider,
     private val randomProvider: RandomProvider,
-) {
+) : UseCase {
     suspend fun execute(
         verificationToken: VerificationHash,
         userName: UserName,
@@ -33,8 +34,8 @@ class ConfigureNewAccountUseCase(
 
         val currentTime = timeProvider.provide()
 
-        val accessHash = AccessHash.createOrThrow(randomProvider.randomHash(AccessHash.SIZE))
-        val refreshHash = RefreshHash.createOrThrow(randomProvider.randomHash(RefreshHash.SIZE))
+        val accessHash = AccessHash.createOrThrowInternally(randomProvider.randomHash(AccessHash.SIZE))
+        val refreshHash = RefreshHash.createOrThrowInternally(randomProvider.randomHash(RefreshHash.SIZE))
         val expiresAt = currentTime + 30.days
         val metadata = verification.clientMetadata
 
@@ -65,6 +66,6 @@ class ConfigureNewAccountUseCase(
 
     sealed class Result {
         data object NotFound : Result()
-        class Success(val authorization: Authorization) : Result()
+        data class Success(val authorization: Authorization) : Result()
     }
 }

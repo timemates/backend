@@ -13,9 +13,10 @@ import io.timemates.backend.application.dependencies.AppModule
 import io.timemates.backend.application.dependencies.configuration.DatabaseConfig
 import io.timemates.backend.application.dependencies.configuration.MailerConfiguration
 import io.timemates.backend.application.dependencies.filesPathName
-import io.timemates.backend.cli.asArguments
 import io.timemates.backend.cli.getNamedIntOrNull
+import io.timemates.backend.cli.parseArguments
 import io.timemates.backend.data.common.repositories.MailerSendEmailsRepository
+import io.timemates.backend.rsocket.startRSocket
 import io.timemates.backend.services.authorization.AuthorizationsService
 import io.timemates.backend.services.authorization.interceptor.AuthorizationInterceptor
 import io.timemates.backend.services.authorization.interceptor.IpAddressInterceptor
@@ -24,6 +25,8 @@ import io.timemates.backend.services.files.FilesService
 import io.timemates.backend.services.timers.TimersService
 import io.timemates.backend.services.timers.sessions.TimerSessionsService
 import io.timemates.backend.services.users.UsersService
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.core.module.dsl.singleOf
@@ -34,7 +37,8 @@ import java.net.URI
  * Application entry-point. Next environment variables should be provided:
  *
  * **Environment variables**:
- * - **APPLICATION_PORT**: The port for the server to listen on. If not provided, defaults to 8080.
+ * - **TIMEMATES_GRPC_PORT**: The port for the gRPC server to listen on. If not provided, defaults to 8080.
+ * - **TIMEMATES_RSOCKET_PORT** – The port on which RSocket instance will run (default: `8081`)
  * - **TIMEMATES_DATABASE_URL**: The URL of the database.
  * - **TIMEMATES_DATABASE_USER**: The username for the database connection.
  * - **TIMEMATES_DATABASE_USER_PASSWORD**: The password for the database connection.
@@ -51,7 +55,7 @@ import java.net.URI
  *
  * **Program arguments**:
  *
- * Also, values above can be provided by arguments `port`, `databaseUrl`, `databaseUser`
+ * Also, values above can be provided by arguments `grpcPort`, `rsocketPort`, `databaseUrl`, `databaseUser`
  * `databaseUserPassword` and `filesPath`.
  * For example: `java -jar timemates.jar -port 8080 -databaseUrl http..`
  *
@@ -59,12 +63,16 @@ import java.net.URI
  * @see ArgumentsConstants
  * @see EnvironmentConstants
  */
-fun main(args: Array<String>) {
-    val arguments = args.asArguments()
+suspend fun main(args: Array<String>): Unit = coroutineScope {
+    val arguments = args.parseArguments()
 
-    val port = arguments.getNamedIntOrNull(ArgumentsConstants.PORT)
-        ?: System.getenv(EnvironmentConstants.APPLICATION_PORT)?.toIntOrNull()
+    val grpcPort = arguments.getNamedIntOrNull(ArgumentsConstants.GRPC_PORT)
+        ?: System.getenv(EnvironmentConstants.GRPC_PORT)?.toIntOrNull()
         ?: 8080
+
+    val rSocketPort = arguments.getNamedIntOrNull(ArgumentsConstants.RSOCKET_PORT)
+        ?: System.getenv(EnvironmentConstants.RSOCKET_PORT)?.toIntOrNull()
+        ?: 8081
 
     val databaseUrl = arguments.getNamedOrNull(ArgumentsConstants.DATABASE_URL)
         ?: System.getenv(EnvironmentConstants.DATABASE_URL)
@@ -146,7 +154,7 @@ fun main(args: Array<String>) {
         modules(AppModule + dynamicModule)
     }.koin
 
-    val server = ServerBuilder.forPort(port)
+    val server = ServerBuilder.forPort(grpcPort)
         .addService(koin.get<UsersService>() as BindableService)
         .addService(koin.get<FilesService>() as BindableService)
         .addService(koin.get<TimersService>() as BindableService)
@@ -157,14 +165,28 @@ fun main(args: Array<String>) {
         .intercept(IpAddressInterceptor() as ServerInterceptor)
         .build()
 
-
+    val rSocketServerJob = launch {
+        startRSocket(
+            port = rSocketPort,
+            authService = koin.get(),
+            usersService = koin.get(),
+            timersService = koin.get(),
+            timerSessionsService = koin.get(),
+            timerMembersService = koin.get(),
+            timerInvitesService = koin.get(),
+            filesService = koin.get(),
+            requestsInterceptor = koin.get(),
+        )
+    }
 
     server.start()
 
     Runtime.getRuntime().addShutdownHook(Thread {
         server.shutdown()
+        rSocketServerJob.cancel()
         stopKoin()
     })
 
     server.awaitTermination()
+    rSocketServerJob.join()
 }

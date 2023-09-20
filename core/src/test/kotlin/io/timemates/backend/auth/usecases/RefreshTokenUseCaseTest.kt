@@ -5,7 +5,6 @@ import com.timemates.backend.time.UnixTime
 import com.timemates.random.SecureRandomProvider
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
-import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.mockk
 import io.timemates.backend.authorization.repositories.AuthorizationsRepository
 import io.timemates.backend.authorization.types.Authorization
@@ -20,13 +19,10 @@ import io.timemates.backend.testing.validation.createOrAssert
 import io.timemates.backend.users.types.value.UserId
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.platform.commons.annotation.Testable
-import java.lang.ClassCastException
 import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
 
 @Testable
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -63,7 +59,7 @@ class RefreshTokenUseCaseTest {
             expiresAt = UnixTime.createOrAssert(12323235),
             clientMetadata = ClientMetadata(
                 clientName = ClientName.createOrAssert("Xiaomi"),
-                clientVersion = ClientVersion.createOrAssert("11"),
+                clientVersion = ClientVersion.createOrAssert(1.0),
                 clientIpAddress = ClientIpAddress.createOrAssert("127.0.0.1"),
             )
         )

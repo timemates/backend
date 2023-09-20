@@ -2,7 +2,8 @@ package io.timemates.backend.data.timers.mappers
 
 import com.timemates.backend.time.TimeProvider
 import com.timemates.backend.time.UnixTime
-import com.timemates.backend.validation.createOrThrow
+import io.timemates.backend.validation.createOrThrowInternally
+import io.timemates.backend.data.common.markers.Mapper
 import io.timemates.backend.data.timers.db.entities.DbSessionUser
 import io.timemates.backend.data.timers.db.entities.DbTimer
 import io.timemates.backend.data.timers.db.tables.TimersSessionUsersTable
@@ -13,7 +14,7 @@ import io.timemates.backend.timers.types.value.TimerId
 import org.jetbrains.exposed.sql.ResultRow
 import kotlin.time.Duration.Companion.milliseconds
 
-class TimerSessionMapper {
+class TimerSessionMapper : Mapper {
     fun resultRowToSessionUser(resultRow: ResultRow): DbSessionUser = with(resultRow) {
         return DbSessionUser(
             timerId = get(TimersSessionUsersTable.TIMER_ID),
@@ -28,8 +29,8 @@ class TimerSessionMapper {
         timersRepository: TimersRepository,
         timersSessionRepository: TimerSessionRepository,
     ): TimerState = with(dbState) {
-        val timerId = TimerId.createOrThrow(timerId)
-        val publishTime = UnixTime.createOrThrow(creationTime)
+        val timerId = TimerId.createOrThrowInternally(timerId)
+        val publishTime = UnixTime.createOrThrowInternally(creationTime)
         val alive = (endsAt?.let { (creationTime - it) } ?: Long.MAX_VALUE).milliseconds
 
         val state = when (phase) {
@@ -53,7 +54,7 @@ class TimerSessionMapper {
             DbTimer.State.Phase.PAUSED ->
                 PauseState(
                     timerId = timerId,
-                    publishTime = UnixTime.createOrThrow(creationTime),
+                    publishTime = UnixTime.createOrThrowInternally(creationTime),
                     timersRepository = timersRepository,
                     timeProvider = timeProvider,
                     timerSessionRepository = timersSessionRepository,

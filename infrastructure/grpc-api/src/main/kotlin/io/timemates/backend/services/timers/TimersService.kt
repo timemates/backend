@@ -15,6 +15,7 @@ import io.timemates.backend.common.types.value.Count
 import io.timemates.backend.pagination.PageToken
 import io.timemates.backend.pagination.map
 import io.timemates.backend.services.authorization.context.provideAuthorizationContext
+import io.timemates.backend.services.common.markers.GrpcService
 import io.timemates.backend.services.common.validation.createOrStatus
 import io.timemates.backend.services.users.GrpcUsersMapper
 import io.timemates.backend.timers.types.value.InviteCode
@@ -43,7 +44,7 @@ class TimersService(
     private val getTimerUseCase: GetTimerUseCase,
     private val mapper: GrpcTimersMapper,
     private val usersMapper: GrpcUsersMapper,
-) : TimersServiceCoroutineImplBase() {
+) : TimersServiceCoroutineImplBase(), GrpcService {
     override suspend fun createInvite(
         request: CreateInviteRequest.InviteMemberRequest,
     ): CreateInviteRequest.InviteMemberRequest.Response = provideAuthorizationContext {
@@ -84,13 +85,13 @@ class TimersService(
     ): GetInvitesRequestOuterClass.GetInvitesRequest.Response = provideAuthorizationContext {
         val timerId = TimerId.createOrStatus(request.timerId)
         val pageToken = request.nextPageToken.takeIf { request.hasNextPageToken() }
-            ?.let(PageToken::raw)
+            ?.let(PageToken::accept)
 
         when (val result = getInvitesUseCase.execute(timerId, pageToken)) {
             GetInvitesUseCase.Result.NoAccess -> throw StatusException(Status.PERMISSION_DENIED)
             is GetInvitesUseCase.Result.Success -> GetInvitesRequestKt.response {
-                invites.addAll(result.list.map(mapper::toGrpcInvite).value)
-                result.list.nextPageToken?.encoded()?.let { nextPageToken = it }
+                invites.addAll(result.page.map(mapper::toGrpcInvite).value)
+                result.page.nextPageToken?.forPublic()?.let { nextPageToken = it }
             }
         }
     }
@@ -101,13 +102,13 @@ class TimersService(
         val timerId = TimerId.createOrStatus(request.timerId)
         val pageToken = request.nextPageToken
             .takeIf { request.hasNextPageToken() }
-            ?.let { PageToken.raw(it) }
+            ?.let { PageToken.accept(it) }
 
         when (val result = getMembersUseCase.execute(timerId, pageToken)) {
             GetMembersUseCase.Result.NoAccess -> throw StatusException(Status.PERMISSION_DENIED)
             is GetMembersUseCase.Result.Success -> GetMembersRequestKt.response {
                 users.addAll(result.list.map(usersMapper::toGrpcUser))
-                result.nextPageToken?.let { nextPageToken = it.encoded() }
+                result.nextPageToken?.let { nextPageToken = it.forPublic() }
             }
         }
     }
@@ -127,12 +128,12 @@ class TimersService(
         request: GetTimersRequestOuterClass.GetTimersRequest,
     ): GetTimersRequestOuterClass.GetTimersRequest.Response = provideAuthorizationContext {
         val pageToken = request.nextPageToken.takeIf { request.hasNextPageToken() }
-            ?.let(PageToken::raw)
+            ?.let(PageToken::accept)
 
         when (val result = getTimersUseCase.execute(pageToken)) {
             is GetTimersUseCase.Result.Success -> GetTimersRequestKt.response {
-                timers.addAll(result.list.map(mapper::toGrpcTimer).value)
-                result.list.nextPageToken?.let { nextPageToken = it.encoded() }
+                timers.addAll(result.page.map(mapper::toGrpcTimer).value)
+                result.page.nextPageToken?.let { nextPageToken = it.forPublic() }
             }
         }
     }

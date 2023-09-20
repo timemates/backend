@@ -25,7 +25,6 @@ include(
     ":common:random",
     ":common:authorization",
     ":common:time",
-    ":common:scheduler",
     ":common:exposed-utils",
     ":common:test-utils",
     ":common:state-machine",
@@ -36,8 +35,13 @@ include(
     ":common:hashing",
 )
 
-include(":core", ":data")
+include(":core", ":core:serializable-types")
 
-include(":infrastructure:grpc-api")
+include(":data")
+
+include(
+    ":infrastructure:grpc-api",
+    ":infrastructure:rsocket-api",
+)
 
 include(":app")

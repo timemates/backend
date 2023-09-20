@@ -11,6 +11,7 @@ import io.timemates.api.timers.sessions.requests.StopTimerSessionRequest
 import io.timemates.api.timers.sessions.types.TimerStateOuterClass
 import io.timemates.api.timers.types.TimerOuterClass
 import io.timemates.backend.services.authorization.context.provideAuthorizationContext
+import io.timemates.backend.services.common.markers.GrpcService
 import io.timemates.backend.services.common.validation.createOrStatus
 import io.timemates.backend.services.timers.GrpcTimersMapper
 import io.timemates.backend.timers.types.value.TimerId
@@ -30,7 +31,7 @@ class TimerSessionsService(
     private val confirmStartUseCase: ConfirmStartUseCase,
     private val pingSessionUseCase: PingSessionUseCase,
     private val mapper: GrpcTimersMapper,
-) : TimerSessionsServiceGrpcKt.TimerSessionsServiceCoroutineImplBase() {
+) : TimerSessionsServiceGrpcKt.TimerSessionsServiceCoroutineImplBase(), GrpcService {
     override suspend fun startTimer(
         request: StartTimerSessionRequest.StartTimerRequest,
     ): Empty = provideAuthorizationContext {

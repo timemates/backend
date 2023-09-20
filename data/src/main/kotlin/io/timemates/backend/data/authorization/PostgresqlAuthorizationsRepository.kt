@@ -1,7 +1,7 @@
 package io.timemates.backend.data.authorization
 
 import com.timemates.backend.time.UnixTime
-import com.timemates.backend.validation.createOrThrow
+import io.timemates.backend.validation.createOrThrowInternally
 import io.timemates.backend.authorization.repositories.AuthorizationsRepository
 import io.timemates.backend.authorization.types.Authorization
 import io.timemates.backend.authorization.types.metadata.ClientMetadata
@@ -39,7 +39,7 @@ class PostgresqlAuthorizationsRepository(
             expiresAt = expiresAt.inMilliseconds,
             createdAt = creationTime.inMilliseconds,
             metaClientName = clientMetadata.clientName.string,
-            metaClientVersion = clientMetadata.clientVersion.string,
+            metaClientVersion = clientMetadata.clientVersion.double,
             metaClientIpAddress = clientMetadata.clientIpAddress.string,
         )
 
@@ -60,7 +60,7 @@ class PostgresqlAuthorizationsRepository(
             )
         )
 
-        return AuthorizationId.createOrThrow(id)
+        return AuthorizationId.createOrThrowInternally(id)
     }
 
     override suspend fun remove(accessToken: AccessHash): Boolean {

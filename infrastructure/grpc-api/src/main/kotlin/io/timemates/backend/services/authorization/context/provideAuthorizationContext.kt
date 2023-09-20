@@ -9,6 +9,7 @@ import io.timemates.backend.features.authorization.Scope
 import io.timemates.backend.features.authorization.authorizationProvider
 import io.timemates.backend.features.authorization.types.AuthorizedId
 import io.timemates.backend.services.authorization.interceptor.AuthorizationContext
+import io.timemates.backend.services.common.markers.GrpcService
 import io.timemates.backend.services.common.validation.createOrStatus
 import kotlin.coroutines.coroutineContext
 
@@ -21,6 +22,7 @@ import kotlin.coroutines.coroutineContext
  * @param block a suspend function that provides an authorized context.
  * @throws StatusException if the user is not authenticated or does not have the necessary scopes.
  */
+context (GrpcService)
 @Throws(StatusException::class)
 suspend inline fun <reified T : Scope, R> provideAuthorizationContext(
     constraint: (List<Scope>) -> Boolean = { scopes -> scopes.any { it is T || it is Scope.All } },

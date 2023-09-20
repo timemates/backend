@@ -10,10 +10,12 @@ plugins {
 dependencies {
     implementation(projects.data)
     implementation(projects.core)
-    implementation(projects.infrastructure.grpcApi)
     implementation(projects.common.smtpMailer)
     implementation(projects.common.cliArguments)
     implementation(projects.common.hashing)
+
+    implementation(projects.infrastructure.grpcApi)
+    implementation(projects.infrastructure.rsocketApi)
 
     implementation(libs.kotlinx.serialization)
     implementation(libs.kotlinx.coroutines)

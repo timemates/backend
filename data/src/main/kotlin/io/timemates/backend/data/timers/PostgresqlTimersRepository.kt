@@ -1,7 +1,7 @@
 package io.timemates.backend.data.timers
 
 import com.timemates.backend.time.UnixTime
-import com.timemates.backend.validation.createOrThrow
+import io.timemates.backend.validation.createOrThrowInternally
 import io.timemates.backend.common.types.value.Count
 import io.timemates.backend.data.timers.cache.CacheTimersDataSource
 import io.timemates.backend.data.timers.db.TableTimerParticipantsDataSource
@@ -42,7 +42,7 @@ class PostgresqlTimersRepository(
             settings = settings.let(timersMapper::domainSettingsToDbSettingsPatchable)
         )
 
-        return TimerId.createOrThrow(id)
+        return TimerId.createOrThrowInternally(id)
     }
 
     override suspend fun getTimerInformation(timerId: TimerId): TimersRepository.TimerInformation? {
@@ -92,12 +92,12 @@ class PostgresqlTimersRepository(
     override suspend fun getMembers(timerId: TimerId, pageToken: PageToken?): Page<UserId> {
         return tableTimerParticipants.getParticipants(
             timerId.long, pageToken,
-        ).map { id -> UserId.createOrThrow(id) }
+        ).map { id -> UserId.createOrThrowInternally(id) }
     }
 
     override suspend fun getMembersCountOfInvite(timerId: TimerId, inviteCode: InviteCode): Count {
         return tableTimerParticipants.getParticipantsCountOfInvite(timerId.long, inviteCode.string)
-            .let { Count.createOrThrow(it) }
+            .let { Count.createOrThrowInternally(it) }
     }
 
     override suspend fun isMemberOf(userId: UserId, timerId: TimerId): Boolean {

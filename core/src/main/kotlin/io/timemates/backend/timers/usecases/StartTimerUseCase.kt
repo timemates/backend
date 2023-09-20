@@ -1,6 +1,7 @@
 package io.timemates.backend.timers.usecases
 
 import com.timemates.backend.time.TimeProvider
+import io.timemates.backend.common.markers.UseCase
 import io.timemates.backend.features.authorization.AuthorizedContext
 import io.timemates.backend.timers.repositories.TimerSessionRepository
 import io.timemates.backend.timers.repositories.TimersRepository
@@ -14,7 +15,7 @@ class StartTimerUseCase(
     private val timers: TimersRepository,
     private val time: TimeProvider,
     private val sessions: TimerSessionRepository,
-) {
+) : UseCase {
 
     context(AuthorizedContext<TimersScope.Write>)
     suspend fun execute(timerId: TimerId): Result {

@@ -1,6 +1,7 @@
 package io.timemates.backend.timers.repositories
 
 import com.timemates.backend.time.UnixTime
+import io.timemates.backend.common.markers.Repository
 import io.timemates.backend.common.types.value.Count
 import io.timemates.backend.pagination.Page
 import io.timemates.backend.pagination.PageToken
@@ -11,7 +12,7 @@ import io.timemates.backend.timers.types.value.TimerId
 import io.timemates.backend.timers.types.value.TimerName
 import io.timemates.backend.users.types.value.UserId
 
-interface TimersRepository {
+interface TimersRepository : Repository {
     suspend fun createTimer(
         name: TimerName,
         description: TimerDescription,

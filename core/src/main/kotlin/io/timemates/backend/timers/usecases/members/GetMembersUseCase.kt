@@ -1,5 +1,6 @@
 package io.timemates.backend.timers.usecases.members
 
+import io.timemates.backend.common.markers.UseCase
 import io.timemates.backend.features.authorization.AuthorizedContext
 import io.timemates.backend.pagination.PageToken
 import io.timemates.backend.timers.repositories.TimersRepository
@@ -12,7 +13,7 @@ import io.timemates.backend.users.types.value.userId
 class GetMembersUseCase(
     private val timersRepository: TimersRepository,
     private val usersRepository: UsersRepository,
-) {
+) : UseCase {
     context(AuthorizedContext<TimersScope.Read>)
     suspend fun execute(
         timerId: TimerId,

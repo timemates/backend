@@ -12,8 +12,7 @@ data class User(
 ) {
     data class Patch(
         val name: UserName? = null,
-        val shortBio: UserDescription? = null,
-        val avatarId: FileId? = null,
-        val gravatarId: EmailAddress? = null
+        val description: UserDescription? = null,
+        val avatar: Avatar?,
     )
 }

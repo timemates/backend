@@ -5,7 +5,6 @@ plugins {
 
 dependencies {
     implementation(projects.core)
-    implementation(projects.common.scheduler)
     implementation(projects.common.exposedUtils)
     implementation(projects.common.stateMachine)
     implementation(projects.common.pageToken)
