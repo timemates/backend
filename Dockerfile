@@ -1,5 +1,5 @@
 # Use a base image with Java and PostgreSQL
-FROM openjdk:11
+FROM openjdk:17-oracle
 
 # Set the working directory inside the container
 WORKDIR /app
