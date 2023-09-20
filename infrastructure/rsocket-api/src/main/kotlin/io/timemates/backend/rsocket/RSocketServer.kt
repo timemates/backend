@@ -14,7 +14,7 @@ import io.timemates.backend.rsocket.features.timers.members.RSocketTimerMembersS
 import io.timemates.backend.rsocket.features.timers.members.invites.RSocketTimerInvitesService
 import io.timemates.backend.rsocket.features.timers.sessions.RSocketTimerSessionsService
 import io.timemates.backend.rsocket.features.users.RSocketUsersService
-import io.timemates.backend.rsocket.interceptors.AuthorizableRoutedRequesterInterceptor
+import io.timemates.backend.rsocket.interceptors.AuthorizableRoutePreprocessor
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
@@ -32,7 +32,7 @@ suspend fun startRSocket(
     timerInvitesService: RSocketTimerInvitesService,
     timerSessionsService: RSocketTimerSessionsService,
     filesService: RSocketFilesService,
-    requestsInterceptor: AuthorizableRoutedRequesterInterceptor,
+    requestsInterceptor: AuthorizableRoutePreprocessor,
 ): Unit = suspendCancellableCoroutine { continuation ->
     embeddedServer(Netty, port = port) {
         configureServer(
@@ -62,7 +62,7 @@ private fun Application.configureServer(
     timerInvitesService: RSocketTimerInvitesService,
     timerSessionsService: RSocketTimerSessionsService,
     filesService: RSocketFilesService,
-    requestsInterceptor: AuthorizableRoutedRequesterInterceptor,
+    requestsInterceptor: AuthorizableRoutePreprocessor,
 ) {
     install(WebSockets)
     install(RSocketSupport) {

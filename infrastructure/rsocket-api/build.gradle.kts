@@ -19,4 +19,8 @@ dependencies {
     implementation(libs.ktor.server.core)
     implementation(libs.ktor.server.netty)
     implementation(libs.ktor.server.websockets)
+
+    testImplementation(libs.y9vad9.rsocket.router.test)
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlin.test)
 }

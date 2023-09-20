@@ -1,5 +1,6 @@
 package io.timemates.backend.rsocket.interceptors
 
+import com.y9vad9.rsocket.router.annotations.ExperimentalInterceptorsApi
 import com.y9vad9.rsocket.router.annotations.ExperimentalRouterApi
 import com.y9vad9.rsocket.router.interceptors.Preprocessor
 import io.rsocket.kotlin.ExperimentalMetadataApi
@@ -29,8 +30,8 @@ data class AuthorizableRouteContext(
  *
  * @param authorizationProvider The provider responsible for authorization checks.
  */
-@OptIn(ExperimentalMetadataApi::class, ExperimentalRouterApi::class)
-class AuthorizableRoutedRequesterInterceptor(
+@OptIn(ExperimentalMetadataApi::class, ExperimentalRouterApi::class, ExperimentalInterceptorsApi::class)
+class AuthorizableRoutePreprocessor(
     private val authorizationProvider: AuthorizationProvider,
 ) : Preprocessor.CoroutineContext {
 
