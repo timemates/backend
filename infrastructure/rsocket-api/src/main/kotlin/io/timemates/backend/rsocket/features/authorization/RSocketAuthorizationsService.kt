@@ -1,21 +1,23 @@
 package io.timemates.backend.rsocket.features.authorization
 
+import io.timemates.backend.authorization.types.value.AccessHash
 import io.timemates.backend.authorization.types.value.RefreshHash
 import io.timemates.backend.authorization.types.value.VerificationCode
 import io.timemates.backend.authorization.types.value.VerificationHash
 import io.timemates.backend.authorization.usecases.*
 import io.timemates.backend.pagination.PageToken
+import io.timemates.backend.rsocket.features.authorization.providers.provideAuthorizationContext
 import io.timemates.backend.rsocket.features.authorization.requests.*
 import io.timemates.backend.rsocket.features.common.RSocketFailureCode
-import io.timemates.backend.rsocket.features.common.providers.authorizedContext
+import io.timemates.backend.rsocket.interceptors.AuthorizableRouteContext
 import io.timemates.backend.rsocket.internal.createOrFail
 import io.timemates.backend.rsocket.internal.failRequest
 import io.timemates.backend.rsocket.internal.markers.RSocketService
-import io.timemates.backend.serializable.types.authorization.SerializableAuthorization
 import io.timemates.backend.serializable.types.authorization.serializable
 import io.timemates.backend.users.types.value.EmailAddress
 import io.timemates.backend.users.types.value.UserDescription
 import io.timemates.backend.users.types.value.UserName
+import kotlin.coroutines.coroutineContext
 
 /**
  * Service class responsible for handling authorization-related operations.
@@ -120,12 +122,31 @@ class RSocketAuthorizationsService(
 
     suspend fun getAuthorizations(
         request: GetAuthorizationsRequest,
-    ): List<SerializableAuthorization> = authorizedContext {
+    ): GetAuthorizationsRequest.Result = provideAuthorizationContext {
         val result = getAuthorizationsUseCase.execute(request.pageToken?.let { PageToken.accept(it) })
 
         return when (result) {
             is GetAuthorizationsUseCase.Result.Success ->
-                result.list.map(mapper::fromDomainSerializableAuthorization)
+                GetAuthorizationsRequest.Result(
+                    list = result.list.map(mapper::fromDomainSerializableAuthorization),
+                    nextPageToken = result.nextPageToken?.forPublic(),
+                )
+        }
+    }
+
+    suspend fun terminateAuthorization(
+        request: TerminateAuthorizationRequest,
+    ) {
+        if (request is TerminateAuthorizationRequest.Current) {
+            removeAccessTokenUseCase.execute(
+                AccessHash.createOrFail(
+                    coroutineContext[AuthorizableRouteContext]?.accessHash
+                        ?: failRequest(
+                            failureCode = RSocketFailureCode.UNAUTHORIZED,
+                            message = "There's no access hash present to terminate.",
+                        )
+                )
+            )
         }
     }
 

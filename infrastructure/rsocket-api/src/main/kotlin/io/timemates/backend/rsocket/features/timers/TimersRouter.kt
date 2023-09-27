@@ -30,7 +30,7 @@ fun RoutingBuilder.timers(
         payload.decoding<GetTimerRequest> { timers.getTimer(it).asPayload() }
     }
 
-    requestResponse("timers.edit") { payload ->
+    requestResponse("edit") { payload ->
         payload.decoding<EditTimerRequest> { timers.editTimer(it).asPayload() }
     }
 

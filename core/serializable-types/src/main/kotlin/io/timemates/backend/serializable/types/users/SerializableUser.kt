@@ -14,9 +14,9 @@ data class SerializableUser(
 
 fun User.serializable(): SerializableUser {
     return SerializableUser(
-        id.long,
-        name.string,
-        emailAddress?.string,
+        id = id.long,
+        name = name.string,
+        emailAddress = emailAddress?.string,
         description = description?.string,
         avatar = avatar?.serializable(),
     )
