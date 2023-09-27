@@ -13,7 +13,6 @@ data class GetFileRequest(
             val fileType: SerializableFileType,
         ) : Response
 
-        @Suppress("ArrayInDataClass")
         @JvmInline
         value class Chunk(val bytes: ByteArray) : Response
     }

@@ -36,6 +36,12 @@ fun RoutingBuilder.authorizations(
         payload.decoding<GetAuthorizationsRequest> { auth.getAuthorizations(it).asPayload() }
     }
 
+    requestResponse("terminate") { payload ->
+        payload.decoding<TerminateAuthorizationRequest> {
+            auth.terminateAuthorization(TerminateAuthorizationRequest.Current).asPayload()
+        }
+    }
+
     requestResponse("renew") { payload ->
         payload.decoding<RenewAuthorizationRequest> { auth.renewAuthorization(it).asPayload() }
     }

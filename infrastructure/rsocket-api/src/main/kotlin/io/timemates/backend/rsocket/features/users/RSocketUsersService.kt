@@ -1,9 +1,9 @@
 package io.timemates.backend.rsocket.features.users
 
 import io.timemates.backend.rsocket.features.authorization.providers.provideAuthorizationContext
+import io.timemates.backend.rsocket.features.users.requests.GetUsersRequest
 import io.timemates.backend.rsocket.internal.createOrFail
 import io.timemates.backend.rsocket.internal.markers.RSocketService
-import io.timemates.backend.serializable.types.users.SerializableUser
 import io.timemates.backend.serializable.types.users.SerializableUserPatch
 import io.timemates.backend.serializable.types.users.serializable
 import io.timemates.backend.users.types.User
@@ -16,11 +16,14 @@ class RSocketUsersService(
     private val getUsersUseCase: GetUsersUseCase,
     private val mapper: RSocketUsersMapper,
 ) : RSocketService {
-    suspend fun getUsers(ids: List<Long>): List<SerializableUser> {
+    suspend fun getUsers(ids: List<Long>): GetUsersRequest.Result {
         val result = getUsersUseCase.execute(ids.map { id -> UserId.createOrFail(id) })
 
         return when (result) {
-            is GetUsersUseCase.Result.Success -> result.collection.map(User::serializable)
+            is GetUsersUseCase.Result.Success ->
+                GetUsersRequest.Result(
+                    list = result.collection.map(User::serializable),
+                )
         }
     }
 

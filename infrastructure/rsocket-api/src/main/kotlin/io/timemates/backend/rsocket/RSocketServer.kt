@@ -73,7 +73,7 @@ private fun Application.configureServer(
 
     routing {
         rSocket(
-            path = "rsocket",
+            path = "v0/rsocket",
             acceptor = RSocketConnectionAcceptor(
                 auth = authService,
                 users = usersService,
