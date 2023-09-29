@@ -1,5 +1,9 @@
 FROM amazoncorretto:19
 
+# Copy files
+WORKDIR /app
+COPY . /app
+
 # Build backend jar from `:app` module
 CMD ["./gradlew", ":app:shadowJar"]
 
