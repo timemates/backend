@@ -1,10 +1,8 @@
-name: test
+name: Run Tests on PR
 
 on:
   pull_request:
     branches: [ "master" ]
-  release:
-    types: [ published ]
   workflow_dispatch:
 jobs:
   build:
@@ -15,6 +13,6 @@ jobs:
       - uses: actions/setup-java@v3
         with:
           distribution: 'corretto'
-          java-version: '17'
+          java-version: '19'
           cache: 'gradle'
       - run: ./gradlew test --no-daemon
