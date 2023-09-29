@@ -14,4 +14,4 @@ EXPOSE $TIMEMATES_RSOCKET_PORT
 
 # Set the command to run application
 # Refer to the documentation what environment variables should be set to run application
-CMD ["java", "-jar", "app/build/libs/application.jar"]
+CMD ["java", "-jar", "./app/build/libs/application.jar"]
