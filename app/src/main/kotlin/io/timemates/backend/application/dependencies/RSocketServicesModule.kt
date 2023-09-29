@@ -2,7 +2,7 @@ package io.timemates.backend.application.dependencies
 
 import io.timemates.backend.rsocket.features.authorization.RSocketAuthMapper
 import io.timemates.backend.rsocket.features.authorization.RSocketAuthorizationsService
-import io.timemates.backend.rsocket.features.authorization.providers.AuthorizationProvider
+import io.timemates.backend.rsocket.features.common.providers.AuthorizationProvider
 import io.timemates.backend.rsocket.features.files.RSocketFilesService
 import io.timemates.backend.rsocket.features.timers.RSocketTimersMapper
 import io.timemates.backend.rsocket.features.timers.RSocketTimersService

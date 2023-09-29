@@ -6,8 +6,8 @@ import io.timemates.backend.files.types.FileType
 import io.timemates.backend.files.types.value.FileId
 import io.timemates.backend.files.usecases.GetImageUseCase
 import io.timemates.backend.files.usecases.UploadFileUseCase
-import io.timemates.backend.rsocket.features.authorization.providers.provideAuthorizationContext
 import io.timemates.backend.rsocket.features.common.RSocketFailureCode
+import io.timemates.backend.rsocket.features.common.providers.provideAuthorizationContext
 import io.timemates.backend.rsocket.features.files.requests.GetFileRequest
 import io.timemates.backend.rsocket.features.files.requests.UploadFileRequest
 import io.timemates.backend.rsocket.internal.createOrFail

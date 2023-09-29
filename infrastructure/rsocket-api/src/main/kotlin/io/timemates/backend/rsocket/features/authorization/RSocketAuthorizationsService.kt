@@ -6,9 +6,9 @@ import io.timemates.backend.authorization.types.value.VerificationCode
 import io.timemates.backend.authorization.types.value.VerificationHash
 import io.timemates.backend.authorization.usecases.*
 import io.timemates.backend.pagination.PageToken
-import io.timemates.backend.rsocket.features.authorization.providers.provideAuthorizationContext
 import io.timemates.backend.rsocket.features.authorization.requests.*
 import io.timemates.backend.rsocket.features.common.RSocketFailureCode
+import io.timemates.backend.rsocket.features.common.providers.provideAuthorizationContext
 import io.timemates.backend.rsocket.interceptors.AuthorizableRouteContext
 import io.timemates.backend.rsocket.internal.createOrFail
 import io.timemates.backend.rsocket.internal.failRequest

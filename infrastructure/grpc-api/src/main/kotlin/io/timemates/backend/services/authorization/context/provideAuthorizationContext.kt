@@ -26,7 +26,7 @@ context (GrpcService)
 @Throws(StatusException::class)
 suspend inline fun <reified T : Scope, R> provideAuthorizationContext(
     constraint: (List<Scope>) -> Boolean = { scopes -> scopes.any { it is T || it is Scope.All } },
-    block: context(AuthorizedContext<T>) () -> R,
+    block: AuthorizedContext<T>.() -> R,
 ): R {
     val authorizationContext = coroutineContext[AuthorizationContext]!!
     val accessHash =

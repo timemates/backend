@@ -14,9 +14,9 @@ import io.timemates.backend.timers.usecases.members.GetMembersUseCase
 import io.timemates.backend.timers.usecases.members.KickTimerUserUseCase
 import io.timemates.backend.timers.usecases.members.invites.CreateInviteUseCase
 import io.timemates.backend.timers.usecases.members.invites.GetInvitesUseCase
+import io.timemates.backend.timers.usecases.members.invites.JoinByInviteUseCase
 import io.timemates.backend.timers.usecases.members.invites.RemoveInviteUseCase
 import org.koin.core.module.dsl.singleOf
-import org.koin.core.scope.get
 import org.koin.dsl.module
 
 val TimersModule = module {
@@ -32,6 +32,7 @@ val TimersModule = module {
     single<TimersRepository> {
         PostgresqlTimersRepository(get(), get(), get(), get())
     }
+    singleOf(::JoinByInviteUseCase)
     singleOf(::TimerSessionMapper)
     singleOf(::TimersMapper)
     singleOf(::GetTimersUseCase)

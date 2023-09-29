@@ -1,6 +1,6 @@
 package io.timemates.backend.rsocket.features.users
 
-import io.timemates.backend.rsocket.features.authorization.providers.provideAuthorizationContext
+import io.timemates.backend.rsocket.features.common.providers.provideAuthorizationContext
 import io.timemates.backend.rsocket.features.users.requests.GetUsersRequest
 import io.timemates.backend.rsocket.internal.createOrFail
 import io.timemates.backend.rsocket.internal.markers.RSocketService

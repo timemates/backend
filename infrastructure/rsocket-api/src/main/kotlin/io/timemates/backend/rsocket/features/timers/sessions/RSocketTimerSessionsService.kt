@@ -1,7 +1,7 @@
 package io.timemates.backend.rsocket.features.timers.sessions
 
-import io.timemates.backend.rsocket.features.authorization.providers.provideAuthorizationContext
 import io.timemates.backend.rsocket.features.common.RSocketFailureCode
+import io.timemates.backend.rsocket.features.common.providers.provideAuthorizationContext
 import io.timemates.backend.rsocket.features.timers.RSocketTimersMapper
 import io.timemates.backend.rsocket.features.timers.sessions.requests.*
 import io.timemates.backend.rsocket.internal.createOrFail

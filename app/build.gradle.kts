@@ -17,6 +17,8 @@ dependencies {
     implementation(projects.infrastructure.grpcApi)
     implementation(projects.infrastructure.rsocketApi)
 
+    implementation(libs.ktor.client.core)
+
     implementation(libs.kotlinx.serialization)
     implementation(libs.kotlinx.coroutines)
 
@@ -25,6 +27,9 @@ dependencies {
 
     implementation(libs.postgresql.driver)
     implementation(libs.h2.database)
+
+    implementation(libs.y9vad9.rsocket.router)
+    implementation(libs.grpc.kotlin.stub)
 
     implementation(libs.grpc.netty)
     implementation(libs.grpc.services)
