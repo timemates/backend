@@ -1,13 +1,10 @@
 # Use a base image with Java and PostgreSQL
-FROM openjdk:11
+FROM amazoncorretto:21
 
 # Set the working directory inside the container
 WORKDIR /app
 
 ENV DOCKER_IMAGE_PORT = 8080
-
-# Install wget utility for downloading files
-RUN apt-get update && apt-get install -y wget && apt-get install -y default-jre
 
 # Set the desired version of your backend JAR file
 ARG JAR_VERSION=v1.0.0-M5
