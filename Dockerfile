@@ -3,6 +3,9 @@ FROM ubuntu AS DownloadStage
 
 ARG APPLICATION_VERSION
 
+# Install wget
+RUN apt-get update && apt-get install -y wget
+
 # Download JAR file from the specified URL
 ARG JAR_DOWNLOAD_URL=https://github.com/timemates/backend/releases/download/$APPLICATION_VERSION/application.jar
 RUN wget --quiet --show-progress --no-cache --progress=bar: ${JAR_DOWNLOAD_URL} -O /downloaded.jar
