@@ -12,6 +12,8 @@ ENV TIMEMATES_RSOCKET_PORT=8282
 EXPOSE $TIMEMATES_GRPC_PORT
 EXPOSE $TIMEMATES_RSOCKET_PORT
 
+COPY build/libs/application.jar /application.jar
+
 # Set the command to run application
 # Refer to the documentation what environment variables should be set to run application
-CMD ["java", "-jar", "./app/build/libs/application.jar"]
+CMD ["java", "-jar", "application.jar"]
