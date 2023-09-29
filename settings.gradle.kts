@@ -20,6 +20,8 @@ pluginManagement {
 
 rootProject.name = "timemates-backend"
 
+includeBuild("build-conventions")
+
 include(
     ":common:validation",
     ":common:random",

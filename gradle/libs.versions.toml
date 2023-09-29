@@ -74,9 +74,12 @@ postgresql-driver = { module = "org.postgresql:postgresql", version.require = "4
 y9vad9-rsocket-router = { module = "com.y9vad9.rsocket.router:router-core", version.ref = "rsocket-router" }
 y9vad9-rsocket-router-test = { module = "com.y9vad9.rsocket.router:router-test", version.ref = "rsocket-router" }
 
+kotlin-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+
 [plugins]
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 google-protobuf = { id = "com.google.protobuf", version.ref = "protobuf-plugin" }
 cashapp-sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
 shadow-jar = { id = "com.github.johnrengelman.shadow", version.require = "8.1.1" }
+jvm-module-convention = { id = "jvm-module-convention", version.require = "UNSPECIFIED" }

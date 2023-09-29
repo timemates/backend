@@ -1,7 +1,7 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 plugins {
-    alias(libs.plugins.kotlin.jvm)
+    id(libs.plugins.jvm.module.convention.get().pluginId)
     alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.shadow.jar)
     application

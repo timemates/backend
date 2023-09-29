@@ -1,3 +1,3 @@
 plugins {
-    alias(libs.plugins.kotlin.jvm)
+    id(libs.plugins.jvm.module.convention.get().pluginId)
 }
