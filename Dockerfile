@@ -4,9 +4,6 @@ FROM amazoncorretto:19
 WORKDIR /app
 COPY . /app
 
-# Build backend jar from `:app` module
-CMD ["app/gradlew", ":app:shadowJar"]
-
 # Define ENVs that we will use
 ENV DOCKER_IMAGE_PORT=8080
 ENV TIMEMATES_GRPC_PORT=8181
@@ -18,4 +15,4 @@ EXPOSE $TIMEMATES_RSOCKET_PORT
 
 # Set the command to run application
 # Refer to the documentation what environment variables should be set to run application
-CMD ["java", "-jar", "app/app/build/libs/application.jar"]
+CMD ["./gradlew", ":app:shadowJar", "&&", "java", "-jar", "app/app/build/libs/application.jar"]
