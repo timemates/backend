@@ -2,6 +2,8 @@ package io.timemates.backend.rsocket
 
 import com.y9vad9.rsocket.router.annotations.ExperimentalInterceptorsApi
 import com.y9vad9.rsocket.router.router
+import com.y9vad9.rsocket.router.serialization.json.JsonContentSerializer
+import com.y9vad9.rsocket.router.serialization.preprocessor.serialization
 import io.timemates.backend.rsocket.features.authorization.RSocketAuthorizationsService
 import io.timemates.backend.rsocket.features.authorization.authorizations
 import io.timemates.backend.rsocket.features.files.RSocketFilesService
@@ -35,6 +37,10 @@ fun timeMatesRouter(
     routeProvider { _ ->
         coroutineContext[AuthorizableRouteContext]?.route
             ?: error("Interceptor did not properly work.")
+    }
+
+    serialization { _, _ ->
+        JsonContentSerializer()
     }
 
     routing {

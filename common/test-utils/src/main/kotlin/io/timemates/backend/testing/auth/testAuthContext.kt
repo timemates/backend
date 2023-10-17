@@ -12,7 +12,7 @@ import io.timemates.backend.users.types.value.UserId
  */
 inline fun <T : Scope, R> testAuthContext(
     userId: UserId = UserId.createOrAssert(0),
-    block: context(AuthorizedContext<T>) () -> R,
+    block: AuthorizedContext<T>.() -> R,
 ): R {
     val context = object : AuthorizedContext<T> {
         override val authorization: Authorized = Authorized(

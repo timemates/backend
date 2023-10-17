@@ -9,9 +9,10 @@ repositories {
 }
 
 kotlin {
-    jvmToolchain(19)
+    jvmToolchain(11)
 }
 
 dependencies {
     api(libs.kotlin.plugin)
+    api(libs.vanniktech.maven.publish)
 }

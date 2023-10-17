@@ -1,5 +1,8 @@
 package io.timemates.backend.rsocket.features.authorization
 
+import io.timemates.api.rsocket.serializable.types.authorization.SerializableAuthorization
+import io.timemates.api.rsocket.serializable.types.authorization.SerializableAuthorizationScope
+import io.timemates.api.rsocket.serializable.types.authorization.SerializableClientMetadata
 import io.timemates.backend.authorization.types.Authorization
 import io.timemates.backend.authorization.types.AuthorizationsScope
 import io.timemates.backend.authorization.types.metadata.ClientMetadata
@@ -10,9 +13,6 @@ import io.timemates.backend.features.authorization.Scope
 import io.timemates.backend.files.types.FilesScope
 import io.timemates.backend.rsocket.internal.createOrFail
 import io.timemates.backend.rsocket.internal.markers.RSocketMapper
-import io.timemates.backend.serializable.types.authorization.SerializableAuthorization
-import io.timemates.backend.serializable.types.authorization.SerializableAuthorizationScope
-import io.timemates.backend.serializable.types.authorization.SerializableClientMetadata
 import io.timemates.backend.timers.types.TimersScope
 import io.timemates.backend.users.types.UsersScope
 

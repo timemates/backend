@@ -2,10 +2,8 @@ package io.timemates.backend.rsocket.features.authorization
 
 import com.y9vad9.rsocket.router.annotations.ExperimentalRouterApi
 import com.y9vad9.rsocket.router.builders.RoutingBuilder
-import com.y9vad9.rsocket.router.builders.requestResponse
-import io.timemates.backend.rsocket.features.authorization.requests.*
-import io.timemates.backend.rsocket.internal.asPayload
-import io.timemates.backend.rsocket.internal.decoding
+import com.y9vad9.rsocket.router.serialization.requestResponse
+import io.timemates.api.rsocket.serializable.requests.authorizations.*
 
 /**
  * Sets up the route handlers for authorizations.
@@ -17,32 +15,30 @@ fun RoutingBuilder.authorizations(
     auth: RSocketAuthorizationsService,
 ): Unit = route("authorizations") {
     route("email") {
-        requestResponse("start") { payload ->
-            payload.decoding<StartAuthorizationRequest> { auth.startAuthorizationViaEmail(it).asPayload() }
+        requestResponse("start") { data: StartAuthorizationRequest ->
+            auth.startAuthorizationViaEmail(data)
         }
 
-        requestResponse("confirm") { payload ->
-            payload.decoding<ConfirmAuthorizationRequest> { auth.confirmAuthorization(it).asPayload() }
+        requestResponse("confirm") { data: ConfirmAuthorizationRequest ->
+            auth.confirmAuthorization(data)
         }
     }
 
     route("account") {
-        requestResponse("configure") { payload ->
-            payload.decoding<ConfigureAccountRequest> { auth.configureNewAccount(it).asPayload() }
+        requestResponse("configure") { data: ConfigureAccountRequest ->
+            auth.configureNewAccount(data)
         }
     }
 
-    requestResponse("list") { payload ->
-        payload.decoding<GetAuthorizationsRequest> { auth.getAuthorizations(it).asPayload() }
+    requestResponse("list") { data: GetAuthorizationsRequest ->
+        auth.getAuthorizations(data)
     }
 
-    requestResponse("terminate") { payload ->
-        payload.decoding<TerminateAuthorizationRequest> {
-            auth.terminateAuthorization(TerminateAuthorizationRequest.Current).asPayload()
-        }
+    requestResponse("terminate") { data: TerminateAuthorizationRequest<*> ->
+        auth.terminateAuthorization(data)
     }
 
-    requestResponse("renew") { payload ->
-        payload.decoding<RenewAuthorizationRequest> { auth.renewAuthorization(it).asPayload() }
+    requestResponse("renew") { data: RenewAuthorizationRequest ->
+        auth.renewAuthorization(data)
     }
 }

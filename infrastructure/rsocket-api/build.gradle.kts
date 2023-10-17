@@ -5,7 +5,9 @@ plugins {
 
 dependencies {
     implementation(projects.core)
-    implementation(projects.core.serializableTypes)
+    implementation(projects.infrastructure.rsocketApi.serializableRequests)
+    implementation(projects.infrastructure.rsocketApi.serializableTypes)
+    implementation(projects.core.serializableAdapter)
 
     implementation(libs.rsocket.server)
     implementation(libs.rsocket.server.websockets)
@@ -13,8 +15,12 @@ dependencies {
     implementation(projects.common.coroutinesUtils)
 
     implementation(libs.y9vad9.rsocket.router)
+    implementation(libs.y9vad9.rsocket.router.serialization.core)
+    implementation(libs.y9vad9.rsocket.router.serialization.json)
 
-    implementation(libs.kotlinx.serialization)
+    implementation(libs.kotlinx.serialization.json)
+
+    implementation(libs.y9vad9.rsocket.router.versioning.core)
 
     implementation(libs.ktor.server.core)
     implementation(libs.ktor.server.netty)

@@ -1,12 +1,12 @@
 package io.timemates.backend.rsocket.features.authorization
 
+import io.timemates.api.rsocket.serializable.requests.authorizations.*
 import io.timemates.backend.authorization.types.value.AccessHash
 import io.timemates.backend.authorization.types.value.RefreshHash
 import io.timemates.backend.authorization.types.value.VerificationCode
 import io.timemates.backend.authorization.types.value.VerificationHash
 import io.timemates.backend.authorization.usecases.*
 import io.timemates.backend.pagination.PageToken
-import io.timemates.backend.rsocket.features.authorization.requests.*
 import io.timemates.backend.rsocket.features.common.RSocketFailureCode
 import io.timemates.backend.rsocket.features.common.providers.provideAuthorizationContext
 import io.timemates.backend.rsocket.interceptors.AuthorizableRouteContext
@@ -68,14 +68,14 @@ class RSocketAuthorizationsService(
         }
     }
 
-    suspend fun confirmAuthorization(request: ConfirmAuthorizationRequest): ConfirmAuthorizationRequest.Response {
+    suspend fun confirmAuthorization(request: ConfirmAuthorizationRequest): ConfirmAuthorizationRequest.Result {
         val result = verifyAuthorizationUseCase.execute(
             verificationToken = VerificationHash.createOrFail(request.verificationHash),
             code = VerificationCode.createOrFail(request.confirmationCode),
         )
 
         return when (result) {
-            is VerifyAuthorizationUseCase.Result.Success -> ConfirmAuthorizationRequest.Response(
+            is VerifyAuthorizationUseCase.Result.Success -> ConfirmAuthorizationRequest.Result(
                 isNewAccount = result is VerifyAuthorizationUseCase.Result.Success.NewAccount,
                 authorization = (result as? VerifyAuthorizationUseCase.Result.Success.ExistsAccount)
                     ?.authorization?.let(mapper::fromDomainSerializableAuthorization),
@@ -135,7 +135,7 @@ class RSocketAuthorizationsService(
     }
 
     suspend fun terminateAuthorization(
-        request: TerminateAuthorizationRequest,
+        request: TerminateAuthorizationRequest<*>,
     ) {
         if (request is TerminateAuthorizationRequest.Current) {
             removeAccessTokenUseCase.execute(

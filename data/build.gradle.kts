@@ -19,7 +19,7 @@ dependencies {
 
     implementation(projects.common.smtpMailer)
 
-    implementation(libs.kotlinx.serialization)
+    implementation(libs.kotlinx.serialization.json)
 
     implementation(libs.exposed.core)
     implementation(libs.exposed.jdbc)

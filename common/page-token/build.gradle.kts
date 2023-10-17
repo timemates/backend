@@ -4,7 +4,7 @@ plugins {
 }
 
 dependencies {
-    implementation(libs.kotlinx.serialization)
+    implementation(libs.kotlinx.serialization.json)
 }
 
 kotlin {

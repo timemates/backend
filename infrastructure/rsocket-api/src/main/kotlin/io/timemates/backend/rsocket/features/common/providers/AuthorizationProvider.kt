@@ -44,7 +44,7 @@ internal suspend inline fun <reified T : Scope, R> provideAuthorizationContext(
     constraint: (List<Scope>) -> Boolean = { scopes -> scopes.any { it is T || it is Scope.All } },
     block: AuthorizedContext<T>.() -> R,
 ): R {
-    val (_, accessHash, provider) = coroutineContext[AuthorizableRouteContext]!!
+    val (_, _, accessHash, provider) = coroutineContext[AuthorizableRouteContext]!!
 
     return authorizationProvider(
         provider = {

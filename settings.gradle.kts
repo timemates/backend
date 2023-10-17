@@ -37,13 +37,15 @@ include(
     ":common:hashing",
 )
 
-include(":core", ":core:serializable-types")
+include(":core", ":core:serializable-adapter")
 
 include(":data")
 
 include(
     ":infrastructure:grpc-api",
     ":infrastructure:rsocket-api",
+    ":infrastructure:rsocket-api:serializable-types",
+    ":infrastructure:rsocket-api:serializable-requests",
 )
 
 include(":app")

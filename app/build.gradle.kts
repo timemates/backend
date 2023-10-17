@@ -19,7 +19,7 @@ dependencies {
 
     implementation(libs.ktor.client.core)
 
-    implementation(libs.kotlinx.serialization)
+    implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlinx.coroutines)
 
     implementation(libs.exposed.core)
