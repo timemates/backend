@@ -34,7 +34,7 @@ fun RoutingBuilder.authorizations(
         auth.getAuthorizations(data)
     }
 
-    requestResponse("terminate") { data: TerminateAuthorizationRequest ->
+    requestResponse("terminate") { data: TerminateAuthorizationRequest<*> ->
         auth.terminateAuthorization(data)
     }
 

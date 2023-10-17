@@ -135,7 +135,7 @@ class RSocketAuthorizationsService(
     }
 
     suspend fun terminateAuthorization(
-        request: TerminateAuthorizationRequest,
+        request: TerminateAuthorizationRequest<*>,
     ) {
         if (request is TerminateAuthorizationRequest.Current) {
             removeAccessTokenUseCase.execute(

@@ -1,5 +1,6 @@
 package io.timemates.backend.rsocket.test
 
+import com.y9vad9.rsocket.router.versioning.Version
 import io.ktor.utils.io.core.*
 import io.mockk.mockk
 import io.rsocket.kotlin.ExperimentalMetadataApi
@@ -10,6 +11,7 @@ import io.rsocket.kotlin.payload.buildPayload
 import io.timemates.backend.rsocket.interceptors.AuthorizableRouteContext
 import io.timemates.backend.rsocket.interceptors.AuthorizableRoutePreprocessor
 import io.timemates.backend.rsocket.internal.AuthorizationMetadata
+import io.timemates.backend.rsocket.internal.VersionMetadata
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
@@ -25,6 +27,7 @@ class AuthorizableRoutePreprocessorTest {
         val payload = buildPayload {
             metadata(
                 CompositeMetadata(
+                    VersionMetadata(Version(1, 2, 0)),
                     RoutingMetadata("authorizations"),
                     AuthorizationMetadata("..."),
                 )
@@ -36,6 +39,7 @@ class AuthorizableRoutePreprocessorTest {
 
         val element = output[AuthorizableRouteContext]
         assertNotNull(element)
+        assertEquals(element.version, Version(1, 2, 0))
         assertEquals(element.route, "authorizations")
         assertEquals(element.accessHash, "...")
     }
