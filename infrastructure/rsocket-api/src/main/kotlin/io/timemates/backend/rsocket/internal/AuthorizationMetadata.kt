@@ -10,10 +10,10 @@ import io.rsocket.kotlin.metadata.Metadata
 import io.rsocket.kotlin.metadata.MetadataReader
 
 @ExperimentalMetadataApi
-public fun AuthorizationMetadata(vararg tags: String): AuthorizationMetadata = AuthorizationMetadata(tags.toList())
+fun AuthorizationMetadata(vararg tags: String): AuthorizationMetadata = AuthorizationMetadata(tags.toList())
 
 @ExperimentalMetadataApi
-public class AuthorizationMetadata(public val tags: List<String>) : Metadata {
+class AuthorizationMetadata(val tags: List<String>) : Metadata {
     init {
         tags.forEach {
             require(it.length in 1..255) { "Tag length must be in range 1..255 but was '${it.length}'" }
@@ -32,7 +32,7 @@ public class AuthorizationMetadata(public val tags: List<String>) : Metadata {
 
     override fun close(): Unit = Unit
 
-    public companion object Reader : MetadataReader<AuthorizationMetadata> {
+    companion object Reader : MetadataReader<AuthorizationMetadata> {
         override val mimeType: MimeType get() = WellKnownMimeType.MessageRSocketRouting
         override fun ByteReadPacket.read(pool: ObjectPool<ChunkBuffer>): AuthorizationMetadata {
             val list = mutableListOf<String>()

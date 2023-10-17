@@ -1,41 +1,39 @@
 package io.timemates.backend.rsocket.features.timers.sessions
 
 import com.y9vad9.rsocket.router.builders.DeclarableRoutingBuilder
-import com.y9vad9.rsocket.router.builders.fireAndForget
-import com.y9vad9.rsocket.router.builders.requestResponse
-import io.timemates.backend.rsocket.features.timers.sessions.requests.ConfirmSessionRequest
-import io.timemates.backend.rsocket.features.timers.sessions.requests.JoinSessionRequest
-import io.timemates.backend.rsocket.features.timers.sessions.requests.PingCurrentSessionRequest
-import io.timemates.backend.rsocket.features.timers.sessions.requests.StartSessionRequest
-import io.timemates.backend.rsocket.internal.asPayload
-import io.timemates.backend.rsocket.internal.decoding
+import com.y9vad9.rsocket.router.serialization.fireAndForget
+import com.y9vad9.rsocket.router.serialization.requestResponse
+import io.timemates.api.rsocket.serializable.requests.timers.sessions.ConfirmSessionRequest
+import io.timemates.api.rsocket.serializable.requests.timers.sessions.JoinSessionRequest
+import io.timemates.api.rsocket.serializable.requests.timers.sessions.PingCurrentSessionRequest
+import io.timemates.api.rsocket.serializable.requests.timers.sessions.StartSessionRequest
 
 fun DeclarableRoutingBuilder.timerSessions(
     sessions: RSocketTimerSessionsService,
 ): Unit = route("sessions") {
-    requestResponse("start") { payload ->
-        payload.decoding<StartSessionRequest> { sessions.startTimer(it).asPayload() }
+    requestResponse("start") { data: StartSessionRequest ->
+        sessions.startTimer(data)
     }
 
-    requestResponse("stop") { payload ->
-        payload.decoding<StartSessionRequest> { sessions.startTimer(it).asPayload() }
+    requestResponse("stop") { data: StartSessionRequest ->
+        sessions.startTimer(data)
     }
 
-    requestResponse("join") { payload ->
-        payload.decoding<JoinSessionRequest> { sessions.joinSession(it).asPayload() }
+    requestResponse("join") { data: JoinSessionRequest ->
+        sessions.joinSession(data)
     }
 
-    requestResponse("leave") { payload ->
-        payload.decoding<JoinSessionRequest> { sessions.joinSession(it).asPayload() }
+    requestResponse("leave") { data: JoinSessionRequest ->
+        sessions.joinSession(data)
     }
 
     route("attendance") {
-        requestResponse("confirm") { payload ->
-            payload.decoding<ConfirmSessionRequest> { sessions.confirmRound(it).asPayload() }
+        requestResponse("confirm") { data: ConfirmSessionRequest ->
+            sessions.confirmRound(data)
         }
     }
 
-    fireAndForget("ping") { payload ->
-        payload.decoding<PingCurrentSessionRequest> { sessions.pingSession(it).asPayload() }
+    fireAndForget("ping") { data: PingCurrentSessionRequest ->
+        sessions.pingSession(data)
     }
 }

@@ -1,10 +1,10 @@
 package io.timemates.backend.rsocket.features.timers
 
+import io.timemates.api.rsocket.serializable.types.timers.SerializableTimerSettings
+import io.timemates.api.rsocket.serializable.types.timers.SerializableTimerSettingsPatch
 import io.timemates.backend.common.types.value.Count
 import io.timemates.backend.rsocket.internal.createOrFail
 import io.timemates.backend.rsocket.internal.markers.RSocketMapper
-import io.timemates.backend.serializable.types.timers.SerializableTimerSettings
-import io.timemates.backend.serializable.types.timers.SerializableTimerSettingsPatch
 import io.timemates.backend.timers.types.TimerSettings
 
 class RSocketTimersMapper : RSocketMapper {

@@ -1,10 +1,10 @@
 package io.timemates.backend.rsocket.features.timers.members
 
+import io.timemates.api.rsocket.serializable.requests.timers.members.GetMembersListRequest
+import io.timemates.api.rsocket.serializable.requests.timers.members.KickMemberRequest
 import io.timemates.backend.pagination.PageToken
 import io.timemates.backend.rsocket.features.common.RSocketFailureCode
 import io.timemates.backend.rsocket.features.common.providers.provideAuthorizationContext
-import io.timemates.backend.rsocket.features.timers.members.requests.GetMembersListRequest
-import io.timemates.backend.rsocket.features.timers.members.requests.KickMemberRequest
 import io.timemates.backend.rsocket.internal.createOrFail
 import io.timemates.backend.rsocket.internal.failRequest
 import io.timemates.backend.rsocket.internal.markers.RSocketService

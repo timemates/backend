@@ -1,30 +1,28 @@
 package io.timemates.backend.rsocket.features.timers.members.invites
 
 import com.y9vad9.rsocket.router.builders.DeclarableRoutingBuilder
-import com.y9vad9.rsocket.router.builders.requestResponse
-import io.timemates.backend.rsocket.features.timers.members.invites.requests.CreateInviteRequest
-import io.timemates.backend.rsocket.features.timers.members.invites.requests.GetInvitesListRequest
-import io.timemates.backend.rsocket.features.timers.members.invites.requests.JoinTimerByCodeRequest
-import io.timemates.backend.rsocket.features.timers.members.invites.requests.RemoveInviteRequest
-import io.timemates.backend.rsocket.internal.asPayload
-import io.timemates.backend.rsocket.internal.decoding
+import com.y9vad9.rsocket.router.serialization.requestResponse
+import io.timemates.api.rsocket.serializable.requests.timers.members.invites.CreateInviteRequest
+import io.timemates.api.rsocket.serializable.requests.timers.members.invites.GetInvitesListRequest
+import io.timemates.api.rsocket.serializable.requests.timers.members.invites.JoinTimerByCodeRequest
+import io.timemates.api.rsocket.serializable.requests.timers.members.invites.RemoveInviteRequest
 
 fun DeclarableRoutingBuilder.timerInvites(
     invites: RSocketTimerInvitesService,
 ): Unit = route("invites") {
-    requestResponse("create") { payload ->
-        payload.decoding<CreateInviteRequest> { invites.createInvite(it).asPayload() }
+    requestResponse("create") { data: CreateInviteRequest ->
+        invites.createInvite(data)
     }
 
-    requestResponse("join") { payload ->
-        payload.decoding<JoinTimerByCodeRequest> { invites.joinTimerByCode(it).asPayload() }
+    requestResponse("join") { data: JoinTimerByCodeRequest ->
+        invites.joinTimerByCode(data)
     }
 
-    requestResponse("list") { payload ->
-        payload.decoding<GetInvitesListRequest> { invites.getInvites(it).asPayload() }
+    requestResponse("list") { data: GetInvitesListRequest ->
+        invites.getInvites(data)
     }
 
-    requestResponse("remove") { payload ->
-        payload.decoding<RemoveInviteRequest> { invites.removeInvite(it).asPayload() }
+    requestResponse("remove") { data: RemoveInviteRequest ->
+        invites.removeInvite(data)
     }
 }

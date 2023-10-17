@@ -2,15 +2,13 @@ package io.timemates.backend.rsocket.features.timers
 
 import com.y9vad9.rsocket.router.annotations.ExperimentalRouterApi
 import com.y9vad9.rsocket.router.builders.RoutingBuilder
-import com.y9vad9.rsocket.router.builders.requestResponse
+import com.y9vad9.rsocket.router.serialization.requestResponse
+import io.timemates.api.rsocket.serializable.requests.timers.*
 import io.timemates.backend.rsocket.features.timers.members.RSocketTimerMembersService
 import io.timemates.backend.rsocket.features.timers.members.invites.RSocketTimerInvitesService
 import io.timemates.backend.rsocket.features.timers.members.timerMembers
-import io.timemates.backend.rsocket.features.timers.requests.*
 import io.timemates.backend.rsocket.features.timers.sessions.RSocketTimerSessionsService
 import io.timemates.backend.rsocket.features.timers.sessions.timerSessions
-import io.timemates.backend.rsocket.internal.asPayload
-import io.timemates.backend.rsocket.internal.decoding
 
 @OptIn(ExperimentalRouterApi::class)
 fun RoutingBuilder.timers(
@@ -22,23 +20,23 @@ fun RoutingBuilder.timers(
     timerSessions(sessions)
     timerMembers(members, invites)
 
-    requestResponse("create") { payload ->
-        payload.decoding<CreateTimerRequest> { timers.createTimer(it).asPayload() }
+    requestResponse("create") { data: CreateTimerRequest ->
+        timers.createTimer(data)
     }
 
-    requestResponse("get") { payload ->
-        payload.decoding<GetTimerRequest> { timers.getTimer(it).asPayload() }
+    requestResponse("get") { data: GetTimerRequest ->
+        timers.getTimer(data)
     }
 
-    requestResponse("edit") { payload ->
-        payload.decoding<EditTimerRequest> { timers.editTimer(it).asPayload() }
+    requestResponse("edit") { data: EditTimerRequest ->
+        timers.editTimer(data)
     }
 
-    requestResponse("delete") { payload ->
-        payload.decoding<DeleteTimerRequest> { timers.deleteTimer(it).asPayload() }
+    requestResponse("delete") { data: DeleteTimerRequest ->
+        timers.deleteTimer(data)
     }
 
-    requestResponse("user.list") { payload ->
-        payload.decoding<GetUserTimersRequest> { timers.getUserTimers(it).asPayload() }
+    requestResponse("user.list") { data: GetUserTimersRequest ->
+        timers.getUserTimers(data)
     }
 }

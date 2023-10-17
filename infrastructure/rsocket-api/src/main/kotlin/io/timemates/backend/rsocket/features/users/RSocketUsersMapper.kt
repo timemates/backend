@@ -1,9 +1,9 @@
 package io.timemates.backend.rsocket.features.users
 
+import io.timemates.api.rsocket.serializable.types.users.SerializableAvatar
+import io.timemates.api.rsocket.serializable.types.users.SerializableUserPatch
 import io.timemates.backend.rsocket.internal.createOrFail
 import io.timemates.backend.rsocket.internal.markers.RSocketMapper
-import io.timemates.backend.serializable.types.users.SerializableAvatar
-import io.timemates.backend.serializable.types.users.SerializableUserPatch
 import io.timemates.backend.users.types.value.UserDescription
 import io.timemates.backend.users.types.value.UserName
 import io.timemates.backend.users.types.Avatar as DomainAvatar
