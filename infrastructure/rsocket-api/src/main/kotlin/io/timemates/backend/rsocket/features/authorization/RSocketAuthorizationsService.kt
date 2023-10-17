@@ -68,14 +68,14 @@ class RSocketAuthorizationsService(
         }
     }
 
-    suspend fun confirmAuthorization(request: ConfirmAuthorizationRequest): ConfirmAuthorizationRequest.Response {
+    suspend fun confirmAuthorization(request: ConfirmAuthorizationRequest): ConfirmAuthorizationRequest.Result {
         val result = verifyAuthorizationUseCase.execute(
             verificationToken = VerificationHash.createOrFail(request.verificationHash),
             code = VerificationCode.createOrFail(request.confirmationCode),
         )
 
         return when (result) {
-            is VerifyAuthorizationUseCase.Result.Success -> ConfirmAuthorizationRequest.Response(
+            is VerifyAuthorizationUseCase.Result.Success -> ConfirmAuthorizationRequest.Result(
                 isNewAccount = result is VerifyAuthorizationUseCase.Result.Success.NewAccount,
                 authorization = (result as? VerifyAuthorizationUseCase.Result.Success.ExistsAccount)
                     ?.authorization?.let(mapper::fromDomainSerializableAuthorization),

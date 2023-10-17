@@ -1,5 +1,6 @@
 package io.timemates.api.rsocket.serializable.requests.authorizations
 
+import io.timemates.api.rsocket.serializable.requests.common.RSocketRequest
 import io.timemates.api.rsocket.serializable.types.authorization.SerializableClientMetadata
 import kotlinx.serialization.Serializable
 
@@ -7,7 +8,12 @@ import kotlinx.serialization.Serializable
 data class StartAuthorizationRequest(
     val email: String,
     val clientMetadata: SerializableClientMetadata,
-) {
+) : RSocketRequest<StartAuthorizationRequest.Result> {
+    companion object Key : RSocketRequest.Key<StartAuthorizationRequest>
+
+    override val key: RSocketRequest.Key<*>
+        get() = Key
+
     @Serializable
     data class Result(
         val verificationHash: String,
