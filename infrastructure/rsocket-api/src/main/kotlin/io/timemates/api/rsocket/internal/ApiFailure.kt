@@ -22,6 +22,9 @@ internal fun alreadyExists(): Nothing = throw ApiFailure.AlreadyExists
 context(RSocketService)
 internal fun noAccess(): Nothing = throw ApiFailure.NoAccess
 
+context(RSocketService)
+internal fun unauthorized(): Nothing = throw ApiFailure.Unauthorized
+
 internal object ApiFailure {
     /**
      * Variable for custom RSocket error when the number of attempts exceeds a limit.
@@ -68,4 +71,10 @@ internal object ApiFailure {
      */
     val NoAccess: RSocketError.Custom
         get() = RSocketError.Custom(HttpStatusCode.Forbidden.value, "No access to given resource or operation.")
+
+    /**
+     * Represents unauthorized failure in requests.
+     */
+    val Unauthorized: RSocketError.Custom
+        get() = RSocketError.Custom(HttpStatusCode.Unauthorized.value, "Unauthorized.")
 }

@@ -115,7 +115,7 @@ class AuthorizationService(
     }
 
     override suspend fun terminateAuthorization(request: Empty): Empty {
-        removeAccessTokenUseCase.execute(AccessHash.createOrFail(Request.userAccessHash()))
+        removeAccessTokenUseCase.execute(AccessHash.createOrFail(Request.userAccessHash() ?: unauthorized()))
         return Empty.Default
     }
 }
