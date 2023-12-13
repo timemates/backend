@@ -40,12 +40,11 @@ include(
     ":common:hashing",
 )
 
-include(":core", ":core:serializable-adapter")
+include(":core")
 
 include(":data")
 
 include(
-    //":infrastructure:grpc-api",
     ":infrastructure:rsocket-api",
 )
 
