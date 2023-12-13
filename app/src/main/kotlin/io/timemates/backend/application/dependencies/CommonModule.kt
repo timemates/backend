@@ -9,16 +9,13 @@ import io.timemates.backend.common.repositories.EmailsRepository
 import io.timemates.backend.data.common.repositories.MailerSendEmailsRepository
 import io.timemates.backend.data.common.repositories.SMTPEmailsRepository
 import io.timemates.backend.mailer.SMTPMailer
-import io.timemates.backend.services.timers.GrpcTimersMapper
 import kotlinx.serialization.json.Json
-import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import timemates.backend.hashing.HashingRepository
-import timemates.backend.hashing.repository.HashingRepository as HashingRepositoryContract
 import java.time.ZoneId
+import timemates.backend.hashing.repository.HashingRepository as HashingRepositoryContract
 
 val CommonModule = module {
-    singleOf(::GrpcTimersMapper)
     single<TimeProvider> {
         SystemTimeProvider(ZoneId.of("UTC"))
     }

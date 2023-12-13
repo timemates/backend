@@ -1,7 +1,6 @@
 package io.timemates.backend.application.dependencies
 
 import io.timemates.backend.data.timers.CoPostgresqlTimerSessionRepository
-import io.timemates.backend.services.timers.sessions.TimerSessionsService
 import io.timemates.backend.timers.repositories.TimerSessionRepository
 import io.timemates.backend.timers.usecases.sessions.*
 import kotlinx.coroutines.CoroutineScope
@@ -27,6 +26,4 @@ val TimerSessionsModule = module {
     singleOf(::ConfirmStartUseCase)
     singleOf(::GetStateUpdatesUseCase)
     singleOf(::GetCurrentTimerSessionUseCase)
-
-    singleOf(::TimerSessionsService)
 }

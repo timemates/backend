@@ -1,32 +1,46 @@
 plugins {
     id(libs.plugins.jvm.module.convention.get().pluginId)
     alias(libs.plugins.kotlinx.serialization)
+    alias(libs.plugins.timemates.rsproto)
+}
+
+sourceSets {
+    getByName("main") {
+        kotlin.srcDirs(
+            "src/main/kotlin",
+            "build/generated/rsproto/kotlin",
+        )
+    }
 }
 
 dependencies {
     implementation(projects.core)
-    implementation(projects.infrastructure.rsocketApi.serializableRequests)
-    implementation(projects.infrastructure.rsocketApi.serializableTypes)
-    implementation(projects.core.serializableAdapter)
 
     implementation(libs.rsocket.server)
     implementation(libs.rsocket.server.websockets)
 
+    api(libs.timemates.rsproto.server)
+    api(libs.timemates.rsproto.client)
+    api(libs.timemates.rsproto.common)
+
     implementation(projects.common.coroutinesUtils)
 
-    implementation(libs.y9vad9.rsocket.router)
-    implementation(libs.y9vad9.rsocket.router.serialization.core)
-    implementation(libs.y9vad9.rsocket.router.serialization.json)
-
     implementation(libs.kotlinx.serialization.json)
-
-    implementation(libs.y9vad9.rsocket.router.versioning.core)
 
     implementation(libs.ktor.server.core)
     implementation(libs.ktor.server.netty)
     implementation(libs.ktor.server.websockets)
 
-    testImplementation(libs.y9vad9.rsocket.router.test)
+    implementation(libs.kotlinx.serialization.protobuf)
+
     testImplementation(libs.mockk)
     testImplementation(libs.kotlin.test)
+}
+
+rsproto {
+    protoSourcePath = "src/main/proto/"
+    generationOutputPath = "generated/rsproto/kotlin"
+
+    clientGeneration = true
+    serverGeneration = true
 }

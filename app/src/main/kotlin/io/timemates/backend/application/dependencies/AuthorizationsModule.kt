@@ -12,7 +12,6 @@ import io.timemates.backend.data.authorization.db.mapper.DbAuthorizationsMapper
 import io.timemates.backend.data.authorization.db.mapper.DbVerificationsMapper
 import io.timemates.backend.data.authorization.mapper.AuthorizationsMapper
 import io.timemates.backend.data.authorization.mapper.VerificationsMapper
-import io.timemates.backend.services.authorization.GrpcAuthorizationsMapper
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import kotlin.time.Duration.Companion.minutes
@@ -31,7 +30,6 @@ val AuthorizationsModule = module {
     }
     singleOf(::AuthorizationsMapper)
     singleOf(::GetAuthorizationUseCase)
-    singleOf(::GrpcAuthorizationsMapper)
     singleOf(::GetAuthorizationsUseCase)
 
     // Use cases
@@ -41,4 +39,5 @@ val AuthorizationsModule = module {
     singleOf(::RemoveAccessTokenUseCase)
     singleOf(::VerifyAuthorizationUseCase)
     singleOf(::GetAuthorizationUseCase)
+    singleOf(::GetUserIdByAccessTokenUseCase)
 }

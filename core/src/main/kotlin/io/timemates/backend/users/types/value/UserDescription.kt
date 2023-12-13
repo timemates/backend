@@ -18,7 +18,7 @@ value class UserDescription private constructor(val string: String) {
         context(ValidationFailureHandler)
         override fun create(value: String): UserDescription {
             return when (value.length) {
-                !in SIZE -> onFail(io.timemates.backend.validation.FailureMessage.ofSize(SIZE))
+                !in SIZE -> onFail(FailureMessage.ofSize(SIZE))
                 else -> UserDescription(value)
             }
         }

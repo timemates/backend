@@ -8,6 +8,5 @@ val AppModule = listOf(
     TimerSessionsModule,
     FilesModule,
     AuthorizationsModule,
-    GrpcServicesModule,
     RSocketServicesModule,
 )
