@@ -14,7 +14,7 @@ dependencies {
     implementation(projects.common.cliArguments)
     implementation(projects.common.hashing)
 
-    implementation(projects.infrastructure.grpcApi)
+    //implementation(projects.infrastructure.grpcApi)
     implementation(projects.infrastructure.rsocketApi)
 
     implementation(libs.ktor.client.core)

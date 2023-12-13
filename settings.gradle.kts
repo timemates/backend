@@ -7,6 +7,7 @@ dependencyResolutionManagement {
         mavenCentral()
         maven("https://jitpack.io")
         maven("https://maven.y9vad9.com")
+        maven("https://maven.timemates.io")
     }
 }
 
@@ -15,6 +16,8 @@ pluginManagement {
         gradlePluginPortal()
         mavenCentral()
         google()
+        maven("https://maven.y9vad9.com")
+        maven("https://maven.timemates.io")
     }
 }
 
@@ -42,10 +45,8 @@ include(":core", ":core:serializable-adapter")
 include(":data")
 
 include(
-    ":infrastructure:grpc-api",
+    //":infrastructure:grpc-api",
     ":infrastructure:rsocket-api",
-    ":infrastructure:rsocket-api:serializable-types",
-    ":infrastructure:rsocket-api:serializable-requests",
 )
 
 include(":app")

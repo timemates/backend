@@ -17,6 +17,7 @@ grpc-services = "1.55.1"
 koin = "3.4.0"
 rsocket = "0.15.4"
 rsocket-router = "1.2.0"
+rsproto = "0.3.2"
 
 [libraries]
 kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
@@ -82,6 +83,10 @@ vanniktech-maven-publish = { module = "com.vanniktech.maven.publish:com.vannikte
 
 kotlin-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 
+timemates-rsproto-server = { module = "io.timemates.rsproto:server-core", version.ref = "rsproto" }
+timemates-rsproto-client = { module = "io.timemates.rsproto:client-core", version.ref = "rsproto" }
+timemates-rsproto-common = { module = "io.timemates.rsproto:common-core", version.ref = "rsproto" }
+
 [plugins]
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
@@ -90,3 +95,4 @@ cashapp-sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
 shadow-jar = { id = "com.github.johnrengelman.shadow", version.require = "8.1.1" }
 jvm-module-convention = { id = "jvm-module-convention", version.require = "SNAPSHOT" }
 conventions-multiplatform-library = { id = "multiplatform-library-convention", version.require = "SNAPSHOT" }
+timemates-rsproto = { id = "io.timemates.rsproto", version.ref = "rsproto" }

@@ -30,7 +30,7 @@ import io.timemates.backend.users.types.value.UserDescription
 import io.timemates.backend.users.types.value.UserName
 import kotlin.coroutines.coroutineContext
 
-class AuthorizationsService(
+class cAuthorizationsService(
     private val authByEmailUseCase: AuthByEmailUseCase,
     private val configureNewAccountUseCase: ConfigureNewAccountUseCase,
     private val refreshTokenUseCase: RefreshTokenUseCase,
