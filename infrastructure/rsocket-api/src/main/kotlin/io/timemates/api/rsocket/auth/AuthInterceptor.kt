@@ -1,7 +1,7 @@
 package io.timemates.api.rsocket.auth
 
 import io.rsocket.kotlin.payload.Payload
-import io.timemates.backend.authorization.usecases.GetUserIdByAccessTokenUseCase
+import io.timemates.backend.authorization.usecases.GetAuthorizationUseCase
 import io.timemates.rsproto.metadata.ExtraMetadata
 import io.timemates.rsproto.server.annotations.ExperimentalInterceptorsApi
 import io.timemates.rsproto.server.interceptors.Interceptor
@@ -14,9 +14,9 @@ import kotlin.coroutines.CoroutineContext
  */
 @OptIn(ExperimentalInterceptorsApi::class)
 class AuthInterceptor(
-    private val getUserIdByAccessTokenUseCase: GetUserIdByAccessTokenUseCase,
+    private val getAuthorizationUseCase: GetAuthorizationUseCase,
 ) : Interceptor() {
-    data class Data(val accessHash: String?, val userIdProvider: GetUserIdByAccessTokenUseCase) : CoroutineContext.Element {
+    data class Data(val accessHash: String?, val authorizationProvider: GetAuthorizationUseCase) : CoroutineContext.Element {
         override val key get() = Key
 
         companion object Key : CoroutineContext.Key<Data>
@@ -24,7 +24,7 @@ class AuthInterceptor(
 
     override fun intercept(coroutineContext: CoroutineContext, incoming: Payload): CoroutineContext {
         val accessHash = coroutineContext[ExtraMetadata]?.extra?.get("access_hash")?.decodeToString()
-        return coroutineContext + Data(accessHash, getUserIdByAccessTokenUseCase)
+        return coroutineContext + Data(accessHash, getAuthorizationUseCase)
     }
 }
 

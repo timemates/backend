@@ -1,9 +1,11 @@
 package io.timemates.api.rsocket.internal
 
 import io.rsocket.kotlin.RSocketError
+import io.timemates.api.rsocket.auth.AuthInterceptor
 import io.timemates.backend.validation.SafeConstructor
 import io.timemates.backend.validation.ValidationFailureHandler
 import io.timemates.rsproto.server.RSocketService
+import kotlinx.coroutines.currentCoroutineContext
 
 /**
  * Used as a handler for validation inside RSocket requests.
@@ -35,5 +37,5 @@ internal fun <T, W> SafeConstructor<T, W>.createOrFail(value: W): T {
 
 object Request {
     context(RSocketService)
-    internal fun userAccessHash(): String = TODO()
+    internal suspend fun userAccessHash(): String? = currentCoroutineContext()[AuthInterceptor.Data]?.accessHash
 }
