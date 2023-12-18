@@ -1,5 +1,6 @@
 package io.timemates.api.rsocket.auth
 
+import RenewAuthorizationRequest
 import com.google.protobuf.Empty
 import io.rsocket.kotlin.RSocketError
 import io.timemates.api.authorizations.requests.ConfirmAuthorizationRequest
@@ -8,6 +9,7 @@ import io.timemates.api.authorizations.requests.StartAuthorizationRequest
 import io.timemates.api.rsocket.internal.*
 import io.timemates.api.users.requests.CreateProfileRequest
 import io.timemates.backend.authorization.types.value.AccessHash
+import io.timemates.backend.authorization.types.value.RefreshHash
 import io.timemates.backend.authorization.types.value.VerificationCode
 import io.timemates.backend.authorization.types.value.VerificationHash
 import io.timemates.backend.authorization.usecases.*
@@ -83,6 +85,17 @@ class AuthorizationService(
             VerifyAuthorizationUseCase.Result.Success.NewAccount -> ConfirmAuthorizationRequest.Response(
                 isNewAccount = true,
             )
+        }
+    }
+
+    override suspend fun renewAuthorization(request: RenewAuthorizationRequest): RenewAuthorizationRequest.Response {
+        val result = refreshTokenUseCase.execute(RefreshHash.createOrFail(request.refreshHash))
+
+        return when (result) {
+            RefreshTokenUseCase.Result.InvalidAuthorization -> unauthorized()
+            is RefreshTokenUseCase.Result.Success -> RenewAuthorizationRequest.Response.create {
+                authorization = result.auth.rs()
+            }
         }
     }
 

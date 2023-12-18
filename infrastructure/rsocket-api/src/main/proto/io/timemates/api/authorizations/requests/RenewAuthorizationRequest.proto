@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+import "io/timemates/api/authorizations/types/Authorization.proto";
+
+message RenewAuthorizationRequest {
+  string refreshHash = 1;
+
+  message Response {
+    Authorization authorization = 1;
+  }
+}

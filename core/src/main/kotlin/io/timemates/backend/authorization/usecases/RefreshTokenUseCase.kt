@@ -1,12 +1,13 @@
 package io.timemates.backend.authorization.usecases
 
 import com.timemates.backend.time.TimeProvider
-import io.timemates.backend.validation.createOrThrowInternally
 import com.timemates.random.RandomProvider
 import io.timemates.backend.authorization.repositories.AuthorizationsRepository
+import io.timemates.backend.authorization.types.Authorization
 import io.timemates.backend.authorization.types.value.AccessHash
 import io.timemates.backend.authorization.types.value.RefreshHash
 import io.timemates.backend.common.markers.UseCase
+import io.timemates.backend.validation.createOrThrowInternally
 import kotlin.time.Duration.Companion.days
 
 class RefreshTokenUseCase(
@@ -22,7 +23,7 @@ class RefreshTokenUseCase(
                 refreshToken,
                 AccessHash.createOrThrowInternally(randomProvider.randomHash(AccessHash.SIZE)),
                 time.provide() + 30.days
-            )?.accessHash ?: return Result.InvalidAuthorization
+            ) ?: return Result.InvalidAuthorization
         )
     }
 
@@ -30,7 +31,7 @@ class RefreshTokenUseCase(
         data object InvalidAuthorization : Result
 
         @JvmInline
-        value class Success(val accessToken: AccessHash) :
+        value class Success(val auth: Authorization) :
             Result
     }
 }
