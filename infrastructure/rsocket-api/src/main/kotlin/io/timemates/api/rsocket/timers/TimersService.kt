@@ -23,6 +23,7 @@ import io.timemates.backend.timers.usecases.members.GetMembersUseCase
 import io.timemates.backend.timers.usecases.members.KickTimerUserUseCase
 import io.timemates.backend.timers.usecases.members.invites.CreateInviteUseCase
 import io.timemates.backend.timers.usecases.members.invites.GetInvitesUseCase
+import io.timemates.backend.timers.usecases.members.invites.JoinByInviteUseCase
 import io.timemates.backend.timers.usecases.members.invites.RemoveInviteUseCase
 import io.timemates.backend.users.types.value.UserId
 import kotlin.time.Duration.Companion.milliseconds
@@ -46,6 +47,7 @@ class TimersService(
     private val kickTimerUserUseCase: KickTimerUserUseCase,
     private val removeInviteUseCase: RemoveInviteUseCase,
     private val getTimerUseCase: GetTimerUseCase,
+    private val joinTimerByInvite: JoinByInviteUseCase,
 ) : RSTimersService() {
     /**
      * Creates a timer with the provided request parameters.
@@ -242,6 +244,19 @@ class TimersService(
             RemoveInviteUseCase.Result.NoAccess -> noAccess()
             RemoveInviteUseCase.Result.NotFound -> notFound()
             RemoveInviteUseCase.Result.Success -> Empty.Default
+        }
+    }
+
+    override suspend fun joinByInvite(
+        request: JoinTimerByInviteCodeRequest,
+    ): JoinTimerByInviteCodeRequest.Response = authorized {
+        val result = joinTimerByInvite.execute(InviteCode.createOrFail(request.inviteCode))
+
+        when (result) {
+            JoinByInviteUseCase.Result.NotFound -> notFound()
+            is JoinByInviteUseCase.Result.Success -> JoinTimerByInviteCodeRequest.Response.create {
+                timer = result.timer.rs()
+            }
         }
     }
 
