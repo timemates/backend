@@ -1,10 +1,10 @@
 package io.timemates.api.rsocket.auth
 
-import RenewAuthorizationRequest
 import com.google.protobuf.Empty
 import io.rsocket.kotlin.RSocketError
 import io.timemates.api.authorizations.requests.ConfirmAuthorizationRequest
 import io.timemates.api.authorizations.requests.GetAuthorizationsRequest
+import io.timemates.api.authorizations.requests.RenewAuthorizationRequest
 import io.timemates.api.authorizations.requests.StartAuthorizationRequest
 import io.timemates.api.rsocket.internal.*
 import io.timemates.api.users.requests.CreateProfileRequest
