@@ -11,11 +11,15 @@ import io.timemates.api.rsocket.auth.AuthorizationService
 import io.timemates.api.rsocket.timers.TimersService
 import io.timemates.api.rsocket.timers.sessions.TimerSessionsService
 import io.timemates.api.rsocket.users.UsersService
+import io.timemates.rsproto.server.annotations.ExperimentalInstancesApi
 import io.timemates.rsproto.server.annotations.ExperimentalInterceptorsApi
+import io.timemates.rsproto.server.instances.protobuf
 import io.timemates.rsproto.server.rSocketServer
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.protobuf.ProtoBuf
 import java.time.Duration
 
-@OptIn(ExperimentalInterceptorsApi::class)
+@OptIn(ExperimentalInterceptorsApi::class, ExperimentalInstancesApi::class, ExperimentalSerializationApi::class)
 fun startRSocketApi(
     port: Int,
     authorizationService: AuthorizationService,
@@ -28,8 +32,7 @@ fun startRSocketApi(
         install(WebSockets) {
             pingPeriod = Duration.ofSeconds(15)
             timeout = Duration.ofSeconds(30)
-            maxFrameSize = Long.MAX_VALUE
-            masking = false
+            maxFrameSize = 1024
         }
 
         install(RSocketSupport) {
@@ -41,6 +44,10 @@ fun startRSocketApi(
         routing {
             rSocketServer("rsocket") {
                 interceptor(authInterceptor)
+
+                instances {
+                    protobuf(ProtoBuf)
+                }
 
                 service(authorizationService)
                 service(usersService)
