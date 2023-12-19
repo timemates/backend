@@ -23,9 +23,7 @@ If you want to host the application yourself, follow the instructions below:
 ### Environment
 
 To run this application on your own host, you need to provide the following environment variables:
-
-- `TIMEMATES_GRPC_PORT` – The port on which the grpc server will run (default: `8080`)
-- `TIMEMATES_RSOCKET_PORT` – The port on which rsocket instance will run (default: `8081`)
+- `TIMEMATES_RSOCKET_PORT` – The port on which rsocket instance will run (default: `8080`)
 - `TIMEMATES_DATABASE_URL` – The URL to the PostgreSQL database
 - `TIMEMATES_DATABASE_USER` – The username for the PostgreSQL database
 - `TIMEMATES_DATABASE_USER_PASSWORD` – The password for the PostgreSQL user
@@ -35,9 +33,6 @@ To run this application on your own host, you need to provide the following envi
 - `TIMEMATES_SMTP_USER` – The SMTP user of the mailer
 - `TIMEMATES_SMTP_USER_PASSWORD` – The password for the SMTP user
 - `TIMEMATES_SMTP_SENDER` – The email address of the SMTP mailer
-
-> **Warning** <br>
-> gRPC is going to be deprecated soon, we're moving to rSocket as main transport protocol.
 
 > **Note** <br>
 > There are two mailer implementations available: SMTP and MailerSend. Depending on your choice, you need to provide the
