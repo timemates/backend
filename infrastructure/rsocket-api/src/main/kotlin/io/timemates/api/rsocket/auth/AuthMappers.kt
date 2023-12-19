@@ -25,6 +25,7 @@ internal fun CoreAuthorization.rs(): Authorization = Authorization(
     refreshHash = Authorization.Hash(value = refreshAccessHash.string, expiresAt = expiresAt.inMilliseconds),
     generationTime = createdAt.inMilliseconds,
     metadata = clientMetadata.rs(),
+    userId = userId.long,
 )
 
 internal fun ClientMetadata.rs(): Metadata = Metadata.create {
