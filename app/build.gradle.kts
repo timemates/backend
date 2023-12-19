@@ -27,7 +27,6 @@ dependencies {
     implementation(libs.postgresql.driver)
     implementation(libs.h2.database)
 
-    implementation(libs.y9vad9.rsocket.router)
     implementation(libs.grpc.kotlin.stub)
 
     implementation(libs.grpc.netty)

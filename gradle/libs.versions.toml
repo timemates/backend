@@ -1,8 +1,8 @@
 [versions]
-kotlin = "1.9.20-Beta"
+kotlin = "1.9.21"
 kotlinx-coroutines = "1.6.4"
 kotlinx-serialization = "1.4.1"
-ktor = "2.3.0"
+ktor = "2.3.7"
 kafka = "3.3.1"
 jupiter = "5.4.0"
 exposed = "0.41.1"
@@ -16,7 +16,6 @@ grpc-netty = "1.55.1"
 grpc-services = "1.55.1"
 koin = "3.4.0"
 rsocket = "0.15.4"
-rsocket-router = "1.2.0"
 rsproto = "0.3.2"
 
 [libraries]
@@ -73,12 +72,6 @@ protobuf-java = { module = "com.google.protobuf:protobuf-java", version.ref = "p
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 postgresql-driver = { module = "org.postgresql:postgresql", version.require = "42.6.0" }
 
-y9vad9-rsocket-router = { module = "com.y9vad9.rsocket.router:router-core", version.ref = "rsocket-router" }
-y9vad9-rsocket-router-test = { module = "com.y9vad9.rsocket.router:router-test", version.ref = "rsocket-router" }
-y9vad9-rsocket-router-serialization-core = { module = "com.y9vad9.rsocket.router:router-serialization-core", version.ref = "rsocket-router" }
-y9vad9-rsocket-router-serialization-json = { module = "com.y9vad9.rsocket.router:router-serialization-json", version.ref = "rsocket-router" }
-y9vad9-rsocket-router-versioning-core = { module = "com.y9vad9.rsocket.router:router-versioning-core", version.ref = "rsocket-router" }
-y9vad9-rsocket-router-versioning-serialization = { module = "com.y9vad9.rsocket.router:router-versioning-serialization", version.ref = "rsocket-router" }
 vanniktech-maven-publish = { module = "com.vanniktech.maven.publish:com.vanniktech.maven.publish.gradle.plugin", version.require = "0.25.3" }
 
 kotlin-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
