@@ -36,7 +36,7 @@ internal object ApiFailure {
      * @see HttpStatusCode.TooManyRequests
      */
     val TooManyRequests: RSocketError.Custom
-        get() = RSocketError.Custom(HttpStatusCode.TooManyRequests.value, "Too many requests.")
+        get() = RSocketError.Custom(1001, "Too many requests.")
 
     /**
      * Represents an Internal Server Error.
@@ -47,7 +47,7 @@ internal object ApiFailure {
      * @see RSocketError.Custom
      */
     val InternalServerError: RSocketError.Custom
-        get() = RSocketError.Custom(HttpStatusCode.InternalServerError.value, "Internal server error.")
+        get() = RSocketError.Custom(1002, "Internal server error.")
 
     /**
      * Represents the "Not Found" error.
@@ -56,13 +56,13 @@ internal object ApiFailure {
      * of a custom RSocket error with a status code of 404 (Not Found) and a default message of "Not found.".
      */
     val NotFound: RSocketError.Custom
-        get() = RSocketError.Custom(HttpStatusCode.NotFound.value, "Not found.")
+        get() = RSocketError.Custom(1003, "Not found.")
 
     /**
      * Custom RSocketError used for signaling that a conflict has occurred and the resource already exists.
      */
     val AlreadyExists: RSocketError.Custom
-        get() = RSocketError.Custom(HttpStatusCode.Conflict.value, "Already exists.")
+        get() = RSocketError.Custom(1004, "Already exists.")
 
     /**
      * Represents a custom RSocket error indicating that there is no access to a given resource or operation.
@@ -70,11 +70,11 @@ internal object ApiFailure {
      * This error is returned with the HTTP status code 403 (Forbidden).
      */
     val NoAccess: RSocketError.Custom
-        get() = RSocketError.Custom(HttpStatusCode.Forbidden.value, "No access to given resource or operation.")
+        get() = RSocketError.Custom(1005, "No access to given resource or operation.")
 
     /**
      * Represents unauthorized failure in requests.
      */
     val Unauthorized: RSocketError.Custom
-        get() = RSocketError.Custom(HttpStatusCode.Unauthorized.value, "Unauthorized.")
+        get() = RSocketError.Custom(1006, "Unauthorized.")
 }
