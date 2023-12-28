@@ -67,7 +67,7 @@ class RefreshTokenUseCaseTest {
         // WHEN
         val result = useCase.execute(refreshHash)
         // THEN
-        assertEquals(RefreshTokenUseCase.Result.Success(accessHash), result)
+        assertEquals(RefreshTokenUseCase.Result.Success(authorization), result)
     }
 
     @Test

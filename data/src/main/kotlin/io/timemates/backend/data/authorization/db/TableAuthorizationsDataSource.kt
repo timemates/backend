@@ -9,7 +9,6 @@ import io.timemates.backend.exposed.update
 import io.timemates.backend.pagination.Ordering
 import io.timemates.backend.pagination.Page
 import io.timemates.backend.pagination.PageToken
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.jetbrains.exposed.sql.*
@@ -56,7 +55,7 @@ class TableAuthorizationsDataSource(
     ): DbAuthorization? = suspendedTransaction(database) {
         AuthorizationsTable.select {
             AuthorizationsTable.ACCESS_TOKEN eq accessHash and
-                (AuthorizationsTable.EXPIRES_AT less currentTime)
+                (AuthorizationsTable.EXPIRES_AT greater currentTime)
         }.singleOrNull()?.let(mapper::resultRowToDbAuthorization)
     }
 

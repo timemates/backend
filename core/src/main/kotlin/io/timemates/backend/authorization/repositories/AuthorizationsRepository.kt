@@ -56,7 +56,7 @@ interface AuthorizationsRepository : Repository {
      */
     suspend fun get(
         accessToken: AccessHash,
-        afterTime: UnixTime,
+        currentTime: UnixTime,
     ): Authorization?
 
     /**
