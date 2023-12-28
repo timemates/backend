@@ -1,16 +1,14 @@
 package io.timemates.api.rsocket.auth
 
-import io.rsocket.kotlin.payload.Payload
 import io.timemates.backend.authorization.usecases.GetAuthorizationUseCase
-import io.timemates.rsproto.metadata.ExtraMetadata
+import io.timemates.rsproto.metadata.Metadata
 import io.timemates.rsproto.server.annotations.ExperimentalInterceptorsApi
 import io.timemates.rsproto.server.interceptors.Interceptor
+import io.timemates.rsproto.server.interceptors.InterceptorScope
 import kotlin.coroutines.CoroutineContext
 
 /**
  * Interceptor class that handles authentication for RSocket requests.
- *
- * @param getUserIdByAccessTokenUseCase The use case responsible for retrieving user ID by access token.
  */
 @OptIn(ExperimentalInterceptorsApi::class)
 class AuthInterceptor(
@@ -22,8 +20,8 @@ class AuthInterceptor(
         companion object Key : CoroutineContext.Key<Data>
     }
 
-    override fun intercept(coroutineContext: CoroutineContext, incoming: Payload): CoroutineContext {
-        val accessHash = coroutineContext[ExtraMetadata]?.extra?.get("access_hash")?.decodeToString()
+    override fun InterceptorScope.intercept(coroutineContext: CoroutineContext, metadata: Metadata): CoroutineContext {
+        val accessHash = metadata.extra["access_hash"]?.decodeToString()
         return coroutineContext + Data(accessHash, getAuthorizationUseCase)
     }
 }
