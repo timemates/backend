@@ -67,7 +67,7 @@ public value class UnixTime private constructor(private val long: Long) {
         context(ValidationFailureHandler)
         override fun create(value: Long): UnixTime {
             return when {
-                value < 0 -> onFail(io.timemates.backend.validation.FailureMessage.ofNegative())
+                value < 0 -> onFail(FailureMessage.ofNegative())
                 else -> UnixTime(long = value)
             }
         }

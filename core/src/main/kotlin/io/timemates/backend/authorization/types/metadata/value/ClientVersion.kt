@@ -13,7 +13,7 @@ value class ClientVersion private constructor(val double: Double) {
         context(ValidationFailureHandler)
         override fun create(value: Double): ClientVersion {
             return when {
-                value < 1 -> onFail(io.timemates.backend.validation.FailureMessage.ofMin(1))
+                value < 1 -> onFail(FailureMessage.ofMin(1))
                 else -> ClientVersion(value)
             }
         }
