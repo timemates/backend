@@ -117,7 +117,7 @@ class AuthorizationService(
     override suspend fun getAuthorizations(
         request: GetAuthorizationsRequest,
     ): GetAuthorizationsRequest.Response = authorized {
-        val result = getAuthorizationsUseCase.execute(PageToken.accept(request.pageToken))
+        val result = getAuthorizationsUseCase.execute(request.pageToken.nullIfEmpty()?.let { PageToken.accept(it) })
 
         when (result) {
             is GetAuthorizationsUseCase.Result.Success -> GetAuthorizationsRequest.Response.create {

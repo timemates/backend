@@ -99,7 +99,7 @@ class TimersService(
     override suspend fun getTimers(
         request: GetTimersRequest,
     ): GetTimersRequest.Response = authorized {
-        val result = getTimersUseCase.execute(PageToken.accept(request.nextPageToken))
+        val result = getTimersUseCase.execute(request.nextPageToken.nullIfEmpty()?.let { PageToken.accept(it) })
 
         when (result) {
             is GetTimersUseCase.Result.Success -> GetTimersRequest.Response.create {
