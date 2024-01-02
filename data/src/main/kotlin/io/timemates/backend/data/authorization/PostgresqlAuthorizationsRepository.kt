@@ -1,7 +1,6 @@
 package io.timemates.backend.data.authorization
 
 import com.timemates.backend.time.UnixTime
-import io.timemates.backend.validation.createOrThrowInternally
 import io.timemates.backend.authorization.repositories.AuthorizationsRepository
 import io.timemates.backend.authorization.types.Authorization
 import io.timemates.backend.authorization.types.metadata.ClientMetadata
@@ -17,6 +16,7 @@ import io.timemates.backend.pagination.Page
 import io.timemates.backend.pagination.PageToken
 import io.timemates.backend.pagination.map
 import io.timemates.backend.users.types.value.UserId
+import io.timemates.backend.validation.createOrThrowInternally
 
 class PostgresqlAuthorizationsRepository(
     private val tableAuthorizationsDataSource: TableAuthorizationsDataSource,
@@ -68,11 +68,11 @@ class PostgresqlAuthorizationsRepository(
         return tableAuthorizationsDataSource.removeAuthorization(accessToken.string)
     }
 
-    override suspend fun get(accessToken: AccessHash, afterTime: UnixTime): Authorization? {
+    override suspend fun get(accessToken: AccessHash, currentTime: UnixTime): Authorization? {
         cacheAuthorizations.getAuthorization(accessToken.string)
             ?.let { return mapper.cacheAuthToDomainAuth(it) }
 
-        return tableAuthorizationsDataSource.getAuthorization(accessToken.string, afterTime.inMilliseconds)
+        return tableAuthorizationsDataSource.getAuthorization(accessToken.string, currentTime.inMilliseconds)
             ?.also { cacheAuthorizations.saveAuthorization(accessToken.string, mapper.dbAuthToCacheAuth(it)) }
             ?.let(mapper::dbAuthToDomainAuth)
     }

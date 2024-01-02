@@ -9,9 +9,9 @@ import io.timemates.backend.exposed.update
 import io.timemates.backend.pagination.Ordering
 import io.timemates.backend.pagination.Page
 import io.timemates.backend.pagination.PageToken
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import org.jetbrains.annotations.TestOnly
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -31,11 +31,13 @@ class TableTimersDataSource(
         name: String,
         description: String? = null,
         ownerId: Long,
+        creationTime: Long,
     ): Long = suspendedTransaction(database) {
         TimersTable.insert {
             it[NAME] = name
-            it[DESCRIPTION] = description ?: ""
+            it[DESCRIPTION] = description.orEmpty()
             it[OWNER_ID] = ownerId
+            it[CREATION_TIME] = creationTime
         }[TimersTable.ID]
     }
 
@@ -105,14 +107,17 @@ class TableTimersDataSource(
         val decodedPageToken: TimersPageToken? = pageToken?.forInternal()?.let { json.decodeFromString(it) }
 
         val result = TimersTable.select {
-            TimersTable.ID greater (decodedPageToken?.nextRetrievedTimerId ?: 0) and
+            TimersTable.CREATION_TIME less (decodedPageToken?.beforeTime ?: Long.MAX_VALUE) and
+                (TimersTable.ID less (decodedPageToken?.prevReceivedId ?: Long.MAX_VALUE)) and
                 (TimersTable.OWNER_ID eq userId)
-        }.orderBy(TimersTable.CREATION_TIME, SortOrder.DESC).map(timersMapper::resultRowToDbTimer)
+        }.orderBy(
+            order = arrayOf(TimersTable.CREATION_TIME to SortOrder.DESC, TimersTable.ID to SortOrder.DESC)
+        ).limit(20).map(timersMapper::resultRowToDbTimer)
 
         val lastId = result.lastOrNull()?.id
         val nextPageToken = if (lastId != null)
-            PageToken.toGive(json.encodeToString(TimersPageToken(lastId)))
-        else pageToken
+            PageToken.toGive(json.encodeToString(TimersPageToken(lastId, result.lastOrNull()!!.creationTime)))
+        else null
 
         return@suspendedTransaction Page(
             value = result,
@@ -125,5 +130,10 @@ class TableTimersDataSource(
         TimersTable.select { TimersTable.ID inList (ids) }
             .singleOrNull()
             ?.let(timersMapper::resultRowToDbTimer)
+    }
+
+    @TestOnly
+    suspend fun clear(): Unit = suspendedTransaction(database) {
+        TimersTable.deleteAll()
     }
 }

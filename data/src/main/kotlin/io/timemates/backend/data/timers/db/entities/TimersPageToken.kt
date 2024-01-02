@@ -4,5 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class TimersPageToken(
-    val nextRetrievedTimerId: Long,
+    val prevReceivedId: Long,
+    val beforeTime: Long,
 )

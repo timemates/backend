@@ -6,8 +6,9 @@ data class DbTimer(
     val description: String,
     val ownerId: Long,
     val settings: Settings,
+    val creationTime: Long,
 ) {
-    class Settings(
+    data class Settings(
         val workTime: Long,
         val restTime: Long,
         val bigRestTime: Long,

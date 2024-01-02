@@ -3,7 +3,6 @@
 package io.timemates.backend.data.timers.mappers
 
 import com.timemates.backend.time.TimeProvider
-import io.timemates.backend.validation.createOrThrowInternally
 import io.timemates.backend.common.types.value.Count
 import io.timemates.backend.data.common.markers.Mapper
 import io.timemates.backend.data.timers.db.entities.DbTimer
@@ -17,6 +16,7 @@ import io.timemates.backend.timers.types.value.TimerDescription
 import io.timemates.backend.timers.types.value.TimerId
 import io.timemates.backend.timers.types.value.TimerName
 import io.timemates.backend.users.types.value.UserId
+import io.timemates.backend.validation.createOrThrowInternally
 import org.jetbrains.exposed.sql.ResultRow
 import kotlin.time.Duration.Companion.minutes
 
@@ -28,6 +28,7 @@ class TimersMapper(private val sessionMapper: TimerSessionMapper) : Mapper {
             get(TimersTable.DESCRIPTION),
             get(TimersTable.OWNER_ID),
             resultRowToTimerSettings(resultRow),
+            get(TimersTable.CREATION_TIME),
         )
     }
 
