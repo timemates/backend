@@ -1,7 +1,6 @@
 package io.timemates.backend.data.timers
 
 import com.timemates.backend.time.UnixTime
-import io.timemates.backend.validation.createOrThrowInternally
 import io.timemates.backend.common.types.value.Count
 import io.timemates.backend.data.timers.cache.CacheTimersDataSource
 import io.timemates.backend.data.timers.db.TableTimerParticipantsDataSource
@@ -17,6 +16,7 @@ import io.timemates.backend.timers.types.value.TimerDescription
 import io.timemates.backend.timers.types.value.TimerId
 import io.timemates.backend.timers.types.value.TimerName
 import io.timemates.backend.users.types.value.UserId
+import io.timemates.backend.validation.createOrThrowInternally
 
 class PostgresqlTimersRepository(
     private val tableTimers: TableTimersDataSource,
@@ -35,6 +35,7 @@ class PostgresqlTimersRepository(
             name = name.string,
             description = null,
             ownerId = ownerId.long,
+            creationTime = creationTime.inMilliseconds,
         )
 
         tableTimers.setSettings(
