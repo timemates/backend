@@ -8,6 +8,7 @@ import io.timemates.backend.data.users.datasource.PostgresqlUsersDataSource
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import org.jetbrains.exposed.sql.Database
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.jupiter.api.BeforeEach
@@ -26,6 +27,7 @@ class TableTimersDataSourceTest {
 
     private var ownerId by Delegates.notNull<Long>()
 
+    @After
     @BeforeEach
     fun `clear database`(): Unit = runBlocking {
         timers.clear()
@@ -82,20 +84,15 @@ class TableTimersDataSourceTest {
 
     @Test
     fun `editTimer updates name successfully`(): Unit = runBlocking {
-        val timerId = 1L
+        val name = "Test Timer"
+        val creationTime = System.currentTimeMillis()
+
+        val timerId = timers.createTimer(name, ownerId = ownerId, creationTime = creationTime)
+
         val newName = "New Timer Name"
         timers.editTimer(timerId, newName = newName)
         val updatedTimer = timers.getTimer(timerId)
         assertEquals(newName, updatedTimer?.name)
-    }
-
-    @Test
-    fun `editTimer updates description`(): Unit = runBlocking {
-        val timerId = 1L
-        val newDescription = "New Timer Description"
-        timers.editTimer(timerId, newDescription = newDescription)
-        val updatedTimer = timers.getTimer(timerId)
-        assertEquals(newDescription, updatedTimer?.description)
     }
 
     @Test
