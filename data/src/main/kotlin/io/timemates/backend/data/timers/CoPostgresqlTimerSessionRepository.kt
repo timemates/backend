@@ -2,7 +2,6 @@ package io.timemates.backend.data.timers
 
 import com.timemates.backend.time.TimeProvider
 import com.timemates.backend.time.UnixTime
-import io.timemates.backend.validation.createOrThrowInternally
 import io.timemates.backend.common.types.value.Count
 import io.timemates.backend.data.timers.db.PostgresqlStateStorageRepository
 import io.timemates.backend.data.timers.db.TableTimersSessionUsersDataSource
@@ -12,6 +11,7 @@ import io.timemates.backend.fsm.CoroutinesStateMachine
 import io.timemates.backend.pagination.Page
 import io.timemates.backend.pagination.PageToken
 import io.timemates.backend.pagination.map
+import io.timemates.backend.timers.fsm.InactiveState
 import io.timemates.backend.timers.fsm.TimerState
 import io.timemates.backend.timers.fsm.TimersStateMachine
 import io.timemates.backend.timers.repositories.TimerSessionRepository
@@ -19,19 +19,21 @@ import io.timemates.backend.timers.repositories.TimersRepository
 import io.timemates.backend.timers.types.TimerEvent
 import io.timemates.backend.timers.types.value.TimerId
 import io.timemates.backend.users.types.value.UserId
+import io.timemates.backend.validation.createOrThrowInternally
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 
 class CoPostgresqlTimerSessionRepository(
     coroutineScope: CoroutineScope =
         CoroutineScope(Dispatchers.Default + SupervisorJob()),
     private val tableTimersSessionUsers: TableTimersSessionUsersDataSource,
-    tableTimersStateDataSource: TableTimersStateDataSource,
-    sessionsMapper: TimerSessionMapper,
-    timeProvider: TimeProvider,
-    timersRepository: TimersRepository,
+    private val tableTimersStateDataSource: TableTimersStateDataSource,
+    private val sessionsMapper: TimerSessionMapper,
+    private val timeProvider: TimeProvider,
+    private val timersRepository: TimersRepository,
 ) : TimerSessionRepository, TimersStateMachine {
     private val coStateMachine: TimersStateMachine =
         CoroutinesStateMachine(
@@ -120,7 +122,14 @@ class CoPostgresqlTimerSessionRepository(
         return coStateMachine.sendEvent(key, event)
     }
 
-    override suspend fun getState(key: TimerId): Flow<TimerState>? {
-        return coStateMachine.getState(key)
+    override suspend fun getState(key: TimerId): Flow<TimerState> {
+        return coStateMachine.getState(key) ?: flowOf(
+            tableTimersStateDataSource.getTimerState(key.long)
+                ?.let {
+                    sessionsMapper.dbStateToFsmState(
+                        it, timeProvider, timersRepository, this
+                    )
+                } ?: InactiveState(key, UnixTime.ZERO, timersRepository, this, timeProvider),
+        )
     }
 }

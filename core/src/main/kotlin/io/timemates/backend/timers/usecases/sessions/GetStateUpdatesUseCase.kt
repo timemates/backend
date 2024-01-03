@@ -1,5 +1,6 @@
 package io.timemates.backend.timers.usecases.sessions
 
+import com.timemates.backend.time.TimeProvider
 import io.timemates.backend.common.markers.UseCase
 import io.timemates.backend.features.authorization.AuthorizedContext
 import io.timemates.backend.timers.fsm.TimerState
@@ -13,6 +14,7 @@ import kotlinx.coroutines.flow.Flow
 class GetStateUpdatesUseCase(
     private val timersRepository: TimersRepository,
     private val sessionRepository: TimerSessionRepository,
+    private val timeProvider: TimeProvider,
 ) : UseCase {
     context(AuthorizedContext<TimersScope.Read>)
     suspend fun execute(timerId: TimerId): Result {
