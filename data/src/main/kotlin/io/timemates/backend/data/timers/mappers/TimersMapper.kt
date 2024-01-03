@@ -64,7 +64,8 @@ class TimersMapper(private val sessionMapper: TimerSessionMapper) : Mapper {
         return Timer(
             id = TimerId.createOrThrowInternally(dbTimer.id),
             name = TimerName.createOrThrowInternally(dbTimer.name),
-            description = TimerDescription.createOrThrowInternally(dbTimer.description),
+            description = dbTimer.description.takeUnless { it.isBlank() }
+                ?.let { TimerDescription.createOrThrowInternally(it) },
             ownerId = UserId.createOrThrowInternally(dbTimer.ownerId),
             settings = dbSettingsToDomainSettings(dbTimer.settings),
             membersCount = Count.createOrThrowInternally(membersCount),

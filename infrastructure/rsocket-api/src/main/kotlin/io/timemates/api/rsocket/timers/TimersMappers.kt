@@ -42,7 +42,7 @@ internal fun TimerSettings.rs(): Timer.Settings {
 internal fun CoreTimer.rs(): Timer {
     return Timer.create {
         name = this@rs.name.string
-        description = this@rs.description.string
+        description = this@rs.description?.string.orEmpty()
         ownerId = this@rs.ownerId.long
         settings = this@rs.settings.rs()
         membersCount = this@rs.membersCount.int

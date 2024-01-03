@@ -11,7 +11,7 @@ import io.timemates.backend.users.types.value.UserId
 data class Timer(
     val id: TimerId,
     val name: TimerName,
-    val description: TimerDescription,
+    val description: TimerDescription?,
     val ownerId: UserId,
     val settings: TimerSettings,
     val membersCount: Count,

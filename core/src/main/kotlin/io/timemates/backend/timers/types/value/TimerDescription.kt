@@ -1,6 +1,5 @@
 package io.timemates.backend.timers.types.value
 
-import io.timemates.backend.validation.FailureMessage
 import io.timemates.backend.validation.SafeConstructor
 import io.timemates.backend.validation.ValidationFailureHandler
 import io.timemates.backend.validation.reflection.wrapperTypeName
@@ -9,7 +8,7 @@ import io.timemates.backend.validation.reflection.wrapperTypeName
 value class TimerDescription private constructor(val string: String) {
     companion object : SafeConstructor<TimerDescription, String>() {
         override val displayName: String by wrapperTypeName()
-        private val LENGTH_RANGE = 3..200
+        private val LENGTH_RANGE = 0..200
 
         context(ValidationFailureHandler)
         override fun create(value: String): TimerDescription {
