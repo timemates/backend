@@ -25,8 +25,6 @@ dependencies {
 
     implementation(projects.common.coroutinesUtils)
 
-    implementation(libs.kotlinx.serialization.json)
-
     implementation(libs.ktor.server.core)
     implementation(libs.ktor.server.netty)
     implementation(libs.ktor.server.websockets)
@@ -38,9 +36,9 @@ dependencies {
 }
 
 rsproto {
-    protoSourcePath = "src/main/proto/"
-    generationOutputPath = "generated/rsproto/kotlin"
+    protoSourcePath.set("src/main/proto/")
+    generationOutputPath.set("build/generated/rsproto/kotlin")
 
-    clientGeneration = true
-    serverGeneration = true
+    clientGeneration.set(true)
+    serverGeneration.set(true)
 }

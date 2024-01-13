@@ -36,7 +36,7 @@ class UsersService(
     override suspend fun getUsers(request: GetUsersRequest): Users {
         val result = getUsersUseCase.execute(request.userId.map { UserId.createOrFail(it) })
 
-        return Users.create {
+        return Users {
             users = when (result) {
                 is GetUsersUseCase.Result.Success -> result.collection.map { it.rs() }
             }

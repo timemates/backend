@@ -65,7 +65,7 @@ class TimersService(
         )
 
         when (result) {
-            is CreateTimerUseCase.Result.Success -> CreateTimerRequest.Response.create {
+            is CreateTimerUseCase.Result.Success -> CreateTimerRequest.Response {
                 timerId = result.timerId.long
             }
 
@@ -102,7 +102,7 @@ class TimersService(
         val result = getTimersUseCase.execute(request.nextPageToken.nullIfEmpty()?.let { PageToken.accept(it) })
 
         when (result) {
-            is GetTimersUseCase.Result.Success -> GetTimersRequest.Response.create {
+            is GetTimersUseCase.Result.Success -> GetTimersRequest.Response {
                 timers = result.page.value.map { it.rs() }
                 nextPageToken = result.page.nextPageToken?.forPublic().orEmpty()
             }
@@ -174,7 +174,7 @@ class TimersService(
 
         when (result) {
             GetMembersUseCase.Result.NoAccess -> noAccess()
-            is GetMembersUseCase.Result.Success -> GetMembersRequest.Response.create {
+            is GetMembersUseCase.Result.Success -> GetMembersRequest.Response {
                 users = result.list.map { it.rs() }
                 nextPageToken = result.nextPageToken?.forPublic().orEmpty()
             }
@@ -198,7 +198,7 @@ class TimersService(
         when (result) {
             CreateInviteUseCase.Result.NoAccess -> noAccess()
             CreateInviteUseCase.Result.TooManyCreation -> tooManyRequests()
-            is CreateInviteUseCase.Result.Success -> InviteMemberRequest.Response.create {
+            is CreateInviteUseCase.Result.Success -> InviteMemberRequest.Response {
                 inviteCode = result.code.string
             }
         }
@@ -220,7 +220,7 @@ class TimersService(
 
         when (result) {
             GetInvitesUseCase.Result.NoAccess -> noAccess()
-            is GetInvitesUseCase.Result.Success -> GetInvitesRequest.Response.create {
+            is GetInvitesUseCase.Result.Success -> GetInvitesRequest.Response {
                 invites = result.page.value.map { it.rs() }
             }
         }
@@ -254,7 +254,7 @@ class TimersService(
 
         when (result) {
             JoinByInviteUseCase.Result.NotFound -> notFound()
-            is JoinByInviteUseCase.Result.Success -> JoinTimerByInviteCodeRequest.Response.create {
+            is JoinByInviteUseCase.Result.Success -> JoinTimerByInviteCodeRequest.Response {
                 timer = result.timer.rs()
             }
         }

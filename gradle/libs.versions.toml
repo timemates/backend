@@ -16,7 +16,7 @@ grpc-netty = "1.55.1"
 grpc-services = "1.55.1"
 koin = "3.4.0"
 rsocket = "0.15.4"
-rsproto = "0.3.4"
+rsproto = "0.5.2"
 
 [libraries]
 kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
@@ -88,4 +88,4 @@ cashapp-sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
 shadow-jar = { id = "com.github.johnrengelman.shadow", version.require = "8.1.1" }
 jvm-module-convention = { id = "jvm-module-convention", version.require = "SNAPSHOT" }
 conventions-multiplatform-library = { id = "multiplatform-library-convention", version.require = "SNAPSHOT" }
-timemates-rsproto = { id = "io.timemates.rsproto", version.require = "0.3.2" }
+timemates-rsproto = { id = "io.timemates.rsproto", version.ref = "rsproto" }

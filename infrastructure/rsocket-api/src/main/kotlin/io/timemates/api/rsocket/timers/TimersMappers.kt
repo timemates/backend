@@ -28,7 +28,7 @@ internal fun Timer.Settings.core(): TimerSettings {
 }
 
 internal fun TimerSettings.rs(): Timer.Settings {
-    return Timer.Settings.create {
+    return Timer.Settings {
         workTime = this@rs.workTime.toInt(DurationUnit.SECONDS)
         restTime = this@rs.restTime.toInt(DurationUnit.SECONDS)
         bigRestTime = this@rs.bigRestTime.toInt(DurationUnit.SECONDS)
@@ -40,7 +40,7 @@ internal fun TimerSettings.rs(): Timer.Settings {
 }
 
 internal fun CoreTimer.rs(): Timer {
-    return Timer.create {
+    return Timer {
         name = this@rs.name.string
         description = this@rs.description?.string.orEmpty()
         ownerId = this@rs.ownerId.long
@@ -55,33 +55,31 @@ internal fun CoreTimerState.rs(): TimerState {
 
     val phase = when (this) {
         is ConfirmationState -> TimerState.PhaseOneOf.ConfirmationWaiting(
-            TimerState.ConfirmationWaiting.create {
+            TimerState.ConfirmationWaiting {
                 endsAt = endsTime
             }
         )
 
         is InactiveState -> TimerState.PhaseOneOf.Inactive(TimerState.Inactive.Default)
         is PauseState -> TimerState.PhaseOneOf.Paused(TimerState.Paused.Default)
-        is RestState -> TimerState.PhaseOneOf.Rest(
-            TimerState.Rest.create {
-                endsAt = endsTime
-            }
-        )
+        is RestState -> TimerState.PhaseOneOf.Rest {
+            endsAt = endsTime
+        }
 
         is RunningState -> TimerState.PhaseOneOf.Running(
-            TimerState.Running.create {
+            TimerState.Running {
                 endsAt = endsTime
             }
         )
     }
 
-    return TimerState.create {
+    return TimerState {
         this.phase = phase
         publishTime = this@rs.publishTime.inMilliseconds
     }
 }
 
-internal fun Invite.rs(): RSInvite = RSInvite.create {
+internal fun Invite.rs(): RSInvite = RSInvite {
     code = this@rs.code.string
     limit = this@rs.limit.int
     creationTime = this@rs.creationTime.inMilliseconds

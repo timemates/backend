@@ -20,15 +20,22 @@ internal fun Metadata.core(): ClientMetadata {
     )
 }
 
-internal fun CoreAuthorization.rs(): Authorization = Authorization(
-    accessHash = Authorization.Hash(value = accessHash.string, expiresAt = expiresAt.inMilliseconds),
-    refreshHash = Authorization.Hash(value = refreshAccessHash.string, expiresAt = expiresAt.inMilliseconds),
-    generationTime = createdAt.inMilliseconds,
-    metadata = clientMetadata.rs(),
-    userId = userId.long,
-)
+internal fun CoreAuthorization.rs(): Authorization = Authorization {
+    accessHash = Authorization.Hash {
+        value = this@rs.accessHash.string
+        expiresAt = this@rs.expiresAt.inMilliseconds
+    }
 
-internal fun ClientMetadata.rs(): Metadata = Metadata.create {
+    refreshHash = Authorization.Hash {
+        value = this@rs.refreshAccessHash.string
+        expiresAt = this@rs.expiresAt.inMilliseconds
+    }
+    generationTime = this@rs.createdAt.inMilliseconds
+    metadata = this@rs.clientMetadata.rs()
+    userId = this@rs.userId.long
+}
+
+internal fun ClientMetadata.rs(): Metadata = Metadata {
     clientName = this@rs.clientName.string
     clientVersion = this@rs.clientVersion.double
 }

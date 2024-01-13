@@ -5,7 +5,7 @@ import io.timemates.backend.users.types.User
 import io.timemates.api.users.types.User as RSUser
 
 internal fun User.rs(): RSUser {
-    return RSUser.create {
+    return RSUser {
         id = this@rs.id.long
         name = this@rs.name.string
         this@rs.description?.string?.let { description = it }

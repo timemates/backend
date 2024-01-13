@@ -52,7 +52,7 @@ class AuthorizationService(
         return when (result) {
             AuthByEmailUseCase.Result.AttemptsExceed -> attemptsExceeded()
             AuthByEmailUseCase.Result.SendFailed -> internalFailure()
-            is AuthByEmailUseCase.Result.Success -> StartAuthorizationRequest.Result.create {
+            is AuthByEmailUseCase.Result.Success -> StartAuthorizationRequest.Result {
                 verificationHash = result.verificationHash.string
                 expiresAt = result.expiresAt.inMilliseconds
                 attempts = result.attempts.int
@@ -77,14 +77,14 @@ class AuthorizationService(
             VerifyAuthorizationUseCase.Result.AttemptFailed -> throw RSocketError.Invalid("Invalid confirmation code.")
             VerifyAuthorizationUseCase.Result.AttemptsExceed -> attemptsExceeded()
             VerifyAuthorizationUseCase.Result.NotFound -> notFound()
-            is VerifyAuthorizationUseCase.Result.Success.ExistsAccount -> return ConfirmAuthorizationRequest.Response(
-                isNewAccount = false,
-                authorization = result.authorization.rs(),
-            )
+            is VerifyAuthorizationUseCase.Result.Success.ExistsAccount -> return ConfirmAuthorizationRequest.Response {
+                isNewAccount = false
+                authorization = result.authorization.rs()
+            }
 
-            VerifyAuthorizationUseCase.Result.Success.NewAccount -> ConfirmAuthorizationRequest.Response(
-                isNewAccount = true,
-            )
+            VerifyAuthorizationUseCase.Result.Success.NewAccount -> ConfirmAuthorizationRequest.Response {
+                isNewAccount = true
+            }
         }
     }
 
@@ -93,7 +93,7 @@ class AuthorizationService(
 
         return when (result) {
             RefreshTokenUseCase.Result.InvalidAuthorization -> unauthorized()
-            is RefreshTokenUseCase.Result.Success -> RenewAuthorizationRequest.Response.create {
+            is RefreshTokenUseCase.Result.Success -> RenewAuthorizationRequest.Response {
                 authorization = result.auth.rs()
             }
         }
@@ -108,7 +108,7 @@ class AuthorizationService(
 
         return when (result) {
             ConfigureNewAccountUseCase.Result.NotFound -> notFound()
-            is ConfigureNewAccountUseCase.Result.Success -> CreateProfileRequest.Response.create {
+            is ConfigureNewAccountUseCase.Result.Success -> CreateProfileRequest.Response {
                 authorization = result.authorization.rs()
             }
         }
@@ -120,7 +120,7 @@ class AuthorizationService(
         val result = getAuthorizationsUseCase.execute(request.pageToken.nullIfEmpty()?.let { PageToken.accept(it) })
 
         when (result) {
-            is GetAuthorizationsUseCase.Result.Success -> GetAuthorizationsRequest.Response.create {
+            is GetAuthorizationsUseCase.Result.Success -> GetAuthorizationsRequest.Response {
                 authorizations = result.list.map { it.rs() }
                 nextPageToken = result.nextPageToken?.forPublic().orEmpty()
             }
