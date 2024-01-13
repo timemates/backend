@@ -54,23 +54,19 @@ internal fun CoreTimerState.rs(): TimerState {
     val endsTime = (publishTime + alive).inMilliseconds
 
     val phase = when (this) {
-        is ConfirmationState -> TimerState.PhaseOneOf.ConfirmationWaiting(
-            TimerState.ConfirmationWaiting {
-                endsAt = endsTime
-            }
-        )
+        is ConfirmationState -> TimerState.PhaseOneOf.ConfirmationWaiting {
+            endsAt = endsTime
+        }
 
-        is InactiveState -> TimerState.PhaseOneOf.Inactive(TimerState.Inactive.Default)
-        is PauseState -> TimerState.PhaseOneOf.Paused(TimerState.Paused.Default)
+        is InactiveState -> TimerState.PhaseOneOf.Inactive.Default
+        is PauseState -> TimerState.PhaseOneOf.Paused.Default
         is RestState -> TimerState.PhaseOneOf.Rest {
             endsAt = endsTime
         }
 
-        is RunningState -> TimerState.PhaseOneOf.Running(
-            TimerState.Running {
-                endsAt = endsTime
-            }
-        )
+        is RunningState -> TimerState.PhaseOneOf.Running {
+            endsAt = endsTime
+        }
     }
 
     return TimerState {
