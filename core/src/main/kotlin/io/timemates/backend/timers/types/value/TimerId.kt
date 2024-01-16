@@ -14,7 +14,7 @@ value class TimerId private constructor(val long: Long) {
         override fun create(value: Long): TimerId {
             return when {
                 value > 0 -> TimerId(value)
-                else -> onFail(io.timemates.backend.validation.FailureMessage.ofNegative())
+                else -> onFail(FailureMessage.ofNegative())
             }
         }
     }

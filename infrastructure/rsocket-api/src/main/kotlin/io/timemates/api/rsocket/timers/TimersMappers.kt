@@ -41,6 +41,7 @@ internal fun TimerSettings.rs(): Timer.Settings {
 
 internal fun CoreTimer.rs(): Timer {
     return Timer {
+        id = this@rs.id.long
         name = this@rs.name.string
         description = this@rs.description?.string.orEmpty()
         ownerId = this@rs.ownerId.long
