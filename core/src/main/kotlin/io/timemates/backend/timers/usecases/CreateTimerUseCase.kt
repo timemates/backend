@@ -22,13 +22,18 @@ class CreateTimerUseCase(
         description: TimerDescription,
         settings: TimerSettings,
     ): Result {
+        val currentTime = time.provide()
         return if (
             timers.getOwnedTimersCount(
-                userId, after = time.provide() - 30.minutes
+                userId, after = currentTime - 30.minutes
             ) > 20
         ) {
             Result.TooManyCreations
-        } else Result.Success(timers.createTimer(name, description, settings, userId, time.provide()))
+        } else {
+            val timerId = timers.createTimer(name, description, settings, userId, time.provide())
+            timers.addMember(userId, timerId, currentTime, null)
+            Result.Success(timerId)
+        }
     }
 
     sealed interface Result {

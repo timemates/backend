@@ -35,7 +35,7 @@ interface TimersRepository : Repository {
         userId: UserId,
         timerId: TimerId,
         joinTime: UnixTime,
-        inviteCode: InviteCode,
+        inviteCode: InviteCode?,
     )
 
     suspend fun removeMember(userId: UserId, timerId: TimerId)

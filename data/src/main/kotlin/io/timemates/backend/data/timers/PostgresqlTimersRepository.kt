@@ -77,12 +77,12 @@ class PostgresqlTimersRepository(
         )
     }
 
-    override suspend fun addMember(userId: UserId, timerId: TimerId, joinTime: UnixTime, inviteCode: InviteCode) {
+    override suspend fun addMember(userId: UserId, timerId: TimerId, joinTime: UnixTime, inviteCode: InviteCode?) {
         tableTimerParticipants.addParticipant(
             timerId = timerId.long,
             userId = userId.long,
             joinTime = joinTime.inMilliseconds,
-            inviteCode = inviteCode.string,
+            inviteCode = inviteCode?.string,
         )
     }
 
