@@ -5,7 +5,7 @@ import io.timemates.backend.common.markers.UseCase
 import io.timemates.backend.features.authorization.AuthorizedContext
 import io.timemates.backend.timers.repositories.TimerSessionRepository
 import io.timemates.backend.timers.repositories.TimersRepository
-import io.timemates.backend.timers.repositories.isPauseState
+import io.timemates.backend.timers.repositories.canStart
 import io.timemates.backend.timers.types.TimerEvent
 import io.timemates.backend.timers.types.TimersScope
 import io.timemates.backend.timers.types.value.TimerId
@@ -25,7 +25,7 @@ class StartTimerUseCase(
             (timer.ownerId == userId)
             || (settings.isEveryoneCanPause && timers.isMemberOf(userId, timerId))
         ) {
-            if (sessions.isPauseState(timerId)) {
+            if (sessions.canStart(timerId)) {
                 sessions.sendEvent(timerId, TimerEvent.Start)
                 Result.Success
             } else Result.WrongState

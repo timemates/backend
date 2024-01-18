@@ -114,6 +114,11 @@ suspend fun TimerSessionRepository.isConfirmationState(timerId: TimerId): Boolea
 suspend fun TimerSessionRepository.isRunningState(timerId: TimerId): Boolean =
     getCurrentState(timerId) is RunningState
 
+suspend fun TimerSessionRepository.canStart(timerId: TimerId): Boolean {
+    val state = getCurrentState(timerId)
+    return state !is RunningState && state !is ConfirmationState
+}
+
 suspend fun TimerSessionRepository.isPauseState(timerId: TimerId): Boolean =
     getCurrentState(timerId) is PauseState
 
