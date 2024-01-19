@@ -41,8 +41,8 @@ fun <T : Table> T.upsert(
     val exists = !select(condition).empty()
 
     return if (exists) {
-        insert { statement(it, false) }
-    } else {
         update(condition) { statement(it, true) }
+    } else {
+        insert { statement(it, false) }
     }
 }
