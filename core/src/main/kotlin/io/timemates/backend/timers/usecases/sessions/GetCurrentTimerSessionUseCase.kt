@@ -10,6 +10,7 @@ import io.timemates.backend.timers.types.Timer
 import io.timemates.backend.timers.types.TimersScope
 import io.timemates.backend.timers.types.toTimer
 import io.timemates.backend.users.types.value.userId
+import kotlin.time.Duration.Companion.minutes
 
 class GetCurrentTimerSessionUseCase(
     private val sessionsRepository: TimerSessionRepository,
@@ -18,7 +19,7 @@ class GetCurrentTimerSessionUseCase(
 ) : UseCase {
     context(AuthorizedContext<TimersScope.Write>)
     suspend fun execute(): Result {
-        return when (val id = sessionsRepository.getTimerIdOfCurrentSession(userId, time.provide())) {
+        return when (val id = sessionsRepository.getTimerIdOfCurrentSession(userId, time.provide() - 15.minutes)) {
             null -> Result.NotFound
 
             else -> {
