@@ -1,10 +1,7 @@
 package io.timemates.backend.exposed
 
-import org.jetbrains.exposed.sql.Op
-import org.jetbrains.exposed.sql.Table
-import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.statements.UpdateBuilder
-import org.jetbrains.exposed.sql.update
 
 fun <T : Table> T.update(
     where: Op<Boolean>,
@@ -19,9 +16,7 @@ fun <T : Table> T.update(
 fun <T : Table> T.insert(
     statement: T.(UpdateBuilder<Int>) -> Unit,
 ): Int {
-    return insert {
-        statement(it)
-    }
+    return insert(body = { statement(it) }).insertedCount
 }
 
 /**
