@@ -23,7 +23,7 @@ dependencies {
     api(libs.timemates.rsproto.client)
     api(libs.timemates.rsproto.common)
 
-    implementation(projects.common.coroutinesUtils)
+    implementation(projects.foundation.coroutinesUtils)
 
     implementation(libs.ktor.server.core)
     implementation(libs.ktor.server.netty)

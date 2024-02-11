@@ -26,26 +26,51 @@ rootProject.name = "timemates-backend"
 includeBuild("build-conventions")
 
 include(
-    ":common:validation",
-    ":common:random",
-    ":common:authorization",
-    ":common:time",
-    ":common:exposed-utils",
-    ":common:test-utils",
-    ":common:state-machine",
-    ":common:coroutines-utils",
-    ":common:page-token",
-    ":common:smtp-mailer",
-    ":common:cli-arguments",
-    ":common:hashing",
+    ":foundation:validation",
+    ":foundation:validation:tests-integration",
+    ":foundation:random",
+    ":foundation:authorization",
+    ":foundation:time",
+    ":foundation:exposed-utils",
+    ":foundation:state-machine",
+    ":foundation:coroutines-utils",
+    ":foundation:page-token",
+    ":foundation:smtp-mailer",
+    ":foundation:cli-arguments",
+    ":foundation:hashing",
 )
 
-include(":core")
+//include(":core")
+//
+//include(":data")
 
-include(":data")
+//include(
+//    ":infrastructure:rsocket-api",
+//)
+//
+//include(":app")
 
 include(
-    ":infrastructure:rsocket-api",
+    ":core:types",
+    ":core:types:auth-integration"
 )
 
-include(":app")
+include(
+    ":features:auth:domain",
+    ":features:auth:data",
+    ":features:auth:dependencies",
+    ":features:auth:adapters",
+)
+
+include(
+    ":features:users:domain",
+    ":features:users:data",
+    ":features:users:dependencies",
+)
+
+
+include(
+    ":features:timers:domain",
+    ":features:timers:data",
+    ":features:timers:dependencies",
+)

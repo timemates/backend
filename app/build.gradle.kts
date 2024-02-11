@@ -10,9 +10,9 @@ plugins {
 dependencies {
     implementation(projects.data)
     implementation(projects.core)
-    implementation(projects.common.smtpMailer)
-    implementation(projects.common.cliArguments)
-    implementation(projects.common.hashing)
+    implementation(projects.foundation.smtpMailer)
+    implementation(projects.foundation.cliArguments)
+    implementation(projects.foundation.hashing)
 
     implementation(projects.infrastructure.rsocketApi)
 
