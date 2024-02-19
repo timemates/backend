@@ -13,4 +13,13 @@ dependencies {
 
     implementation(libs.exposed.core)
     implementation(libs.cache4k)
+
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlin.test)
+    testImplementation(libs.kotlinx.coroutines.test)
+
+    testImplementation(libs.exposed.jdbc)
+    testImplementation(libs.h2.database)
+
+    testImplementation(projects.foundation.validation.testsIntegration)
 }

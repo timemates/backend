@@ -40,19 +40,15 @@ include(
     ":foundation:hashing",
 )
 
-//include(":core")
-//
-//include(":data")
+include(
+    ":infrastructure:rsocket-api",
+)
 
-//include(
-//    ":infrastructure:rsocket-api",
-//)
-//
-//include(":app")
+include(":app")
 
 include(
     ":core:types",
-    ":core:types:auth-integration"
+    ":core:types:auth-integration",
 )
 
 include(
@@ -73,4 +69,5 @@ include(
     ":features:timers:domain",
     ":features:timers:data",
     ":features:timers:dependencies",
+    ":features:timers:adapters",
 )

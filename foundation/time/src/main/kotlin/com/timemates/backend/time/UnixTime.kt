@@ -1,8 +1,8 @@
 package com.timemates.backend.time
 
-import io.timemates.backend.validation.CreationFailure
-import io.timemates.backend.validation.SafeConstructor
-import io.timemates.backend.validation.reflection.wrapperTypeName
+import org.timemates.backend.validation.CreationFailure
+import org.timemates.backend.validation.SafeConstructor
+import org.timemates.backend.validation.reflection.wrapperTypeName
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 

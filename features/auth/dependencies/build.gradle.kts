@@ -8,7 +8,12 @@ dependencies {
     implementation(projects.features.auth.data)
     implementation(projects.features.auth.adapters)
 
+    implementation(projects.features.users.domain)
+
     implementation(projects.foundation.random)
+
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.ktor.client.core)
 
     implementation(libs.exposed.core)
     implementation(libs.koin.core)

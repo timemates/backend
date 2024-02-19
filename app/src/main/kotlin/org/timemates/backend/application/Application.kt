@@ -44,7 +44,7 @@ import kotlin.time.Duration.Companion.seconds
  *
  * @param args An array of program arguments.
  */
-suspend fun main(args: Array<String>): Unit = runBlocking {
+fun main(args: Array<String>): Unit = runBlocking {
     val arguments = args.parseArguments()
 
     val rSocketPort = arguments.getNamedIntOrNull("rsocketPort")
@@ -76,10 +76,10 @@ suspend fun main(args: Array<String>): Unit = runBlocking {
         mailerSendSender = mailerSendSender,
         mailerSendSupportEmail = mailerSendSupportEmail,
         mailerSendConfirmationTemplateId = mailerSendConfirmationTemplateId,
-        timersCacheSize = getEnvOrThrow("timers_cache_size").toLongOrNull() ?: 100L,
-        usersCacheSize = getEnvOrThrow("users_cache_size").toLongOrNull() ?: 100L,
-        authMaxCacheEntities = getEnvOrThrow("auth_cache_size").toLongOrNull() ?: 100L,
-        authMaxAliveTime = getEnvOrThrow("auth_cache_alive").toLongOrNull()?.seconds ?: 5.minutes,
+        timersCacheSize = System.getenv("timers_cache_size")?.toLongOrNull() ?: 100L,
+        usersCacheSize = System.getenv("users_cache_size")?.toLongOrNull() ?: 100L,
+        authMaxCacheEntities = System.getenv("auth_cache_size")?.toLongOrNull() ?: 100L,
+        authMaxAliveTime = System.getenv("auth_cache_alive")?.toLongOrNull()?.seconds ?: 5.minutes,
         isDebug = arguments.isPresent("debug"),
     )
 

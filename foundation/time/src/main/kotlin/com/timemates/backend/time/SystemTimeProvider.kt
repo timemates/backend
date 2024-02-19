@@ -1,13 +1,13 @@
 package com.timemates.backend.time
 
-import io.timemates.backend.validation.annotations.ValidationDelicateApi
-import io.timemates.backend.validation.createUnsafe
+import org.timemates.backend.validation.annotations.ValidationDelicateApi
+import org.timemates.backend.validation.createUnsafe
 import java.time.Clock
 import java.time.Instant
 import java.time.ZoneId
 
 public class SystemTimeProvider(
-    private val timeZone: ZoneId = ZoneId.systemDefault(),
+    timeZone: ZoneId = ZoneId.systemDefault(),
 ) : TimeProvider {
     private val clock = Clock.system(timeZone)
 

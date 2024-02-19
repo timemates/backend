@@ -62,9 +62,12 @@ override suspend fun setUser(request: EditUserRequestOuterClass.EditUserRequest)
     }
 }
 ```
-In this example, the `EditUserUseCase` requires the `UsersScope.Write` authorization context, indicating that the use case 
-can only be executed by users with write access to user-related operations. The `provideAuthorizationContext` 
-[(source)](/../../infrastructure/grpc-api/src/main/kotlin/io/timemates/backend/services/authorization/context/provideAuthorizationContext.kt) function ensures that the authorization context is available when executing the use case.
+
+In this example, the `EditUserUseCase` requires the `UsersScope.Write` authorization context, indicating that the use
+case
+can only be executed by users with write access to user-related operations. The `provideAuthorizationContext`
+[(source)](/../../infrastructure/grpc-api/src/main/kotlin/org.timemates.backend/services/authorization/context/provideAuthorizationContext.kt)
+function ensures that the authorization context is available when executing the use case.
 
 By using the 'authorization' library, you can have clear and explicit authorization requirements in your use cases,
 enhancing the security and control of your application.

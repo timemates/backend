@@ -5,6 +5,8 @@ plugins {
 
 dependencies {
     implementation(projects.features.auth.domain)
+    implementation(projects.features.users.domain)
+
     implementation(projects.foundation.random)
     implementation(projects.foundation.smtpMailer)
     implementation(libs.ktor.client.content.negotiation)

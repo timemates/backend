@@ -11,8 +11,7 @@ dependencies {
     implementation(projects.core.types.authIntegration)
     api(projects.core.types)
 
-
-    implementation(projects.foundation.stateMachine)
+    api(projects.foundation.stateMachine)
 }
 
 tasks.withType<Test> {
