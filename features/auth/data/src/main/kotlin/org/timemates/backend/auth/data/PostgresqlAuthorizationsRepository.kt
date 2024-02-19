@@ -84,13 +84,19 @@ class PostgresqlAuthorizationsRepository(
             .map(mapper::dbAuthToDomainAuth)
     }
 
-    override suspend fun renew(refreshToken: RefreshHash, newAccessHash: AccessHash, expiresAt: UnixTime): Authorization? {
+    override suspend fun renew(
+        refreshToken: RefreshHash,
+        newAccessHash: AccessHash,
+        newRefreshHash: RefreshHash,
+        expiresAt: UnixTime,
+    ): Authorization? {
         tableAuthorizationsDataSource.renewAccessHash(
             refreshHash = refreshToken.string,
             newAccessHash = newAccessHash.string,
+            newRefreshHash = newRefreshHash.string,
             expiresAt = expiresAt.inMilliseconds,
         )
 
-        return get(newAccessHash, UnixTime.ZERO)
+        return get(newAccessHash, UnixTime.ZERO)?.copy(refreshAccessHash = newRefreshHash)
     }
 }

@@ -27,7 +27,7 @@ internal fun CoreAuthorization.rs(): Authorization = Authorization {
     }
 
     refreshHash = Authorization.Hash {
-        value = this@rs.refreshAccessHash.string
+        this@rs.refreshAccessHash?.string?.let { value = it }
         expiresAt = this@rs.expiresAt.inMilliseconds
     }
     generationTime = this@rs.createdAt.inMilliseconds

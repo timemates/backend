@@ -83,10 +83,11 @@ class TableAuthorizationsDataSourceTest {
         )
 
         val newAccessHash = "new-access-hash"
-        datasource.renewAccessHash(initial.refreshAccessHash, newAccessHash, Long.MAX_VALUE)
+        val newRefreshHash = "new-refresh-hash"
+        datasource.renewAccessHash(initial.refreshAccessHash, newAccessHash, newRefreshHash, Long.MAX_VALUE)
 
         assertEquals(
-            expected = initial.copy(authorizationId = id, accessHash = newAccessHash, expiresAt = Long.MAX_VALUE),
+            expected = initial.copy(authorizationId = id, accessHash = newAccessHash, refreshAccessHash = newRefreshHash, expiresAt = Long.MAX_VALUE),
             actual = datasource.getAuthorizations(0, null)
                 .value.firstOrNull(),
         )
