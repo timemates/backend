@@ -46,3 +46,11 @@ tasks.withType<ShadowJar> {
     archiveBaseName.set("application")
     archiveClassifier.set("")
 }
+
+tasks.distZip {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+tasks.distTar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
