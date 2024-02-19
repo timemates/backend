@@ -95,9 +95,11 @@ class TableAuthorizationsDataSource(
     suspend fun renewAccessHash(
         refreshHash: String,
         newAccessHash: String,
+        newRefreshHash: String,
         expiresAt: Long,
     ): Unit = suspendedTransaction(database) {
         AuthorizationsTable.update(AuthorizationsTable.REFRESH_TOKEN eq refreshHash) {
+            it[REFRESH_TOKEN] = newRefreshHash
             it[ACCESS_TOKEN] = newAccessHash
             it[EXPIRES_AT] = expiresAt
         } > 0

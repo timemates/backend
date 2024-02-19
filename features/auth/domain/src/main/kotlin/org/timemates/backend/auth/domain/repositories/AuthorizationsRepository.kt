@@ -80,6 +80,7 @@ interface AuthorizationsRepository {
     suspend fun renew(
         refreshToken: RefreshHash,
         newAccessHash: AccessHash,
+        newRefreshHash: RefreshHash,
         expiresAt: UnixTime,
     ): Authorization?
 }

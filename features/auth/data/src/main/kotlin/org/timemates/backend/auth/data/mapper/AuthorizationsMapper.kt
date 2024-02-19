@@ -26,7 +26,7 @@ class AuthorizationsMapper {
         return Authorization(
             userId = UserId.createUnsafe(auth.userId),
             accessHash = AccessHash.createUnsafe(auth.accessHash),
-            refreshAccessHash = RefreshHash.createUnsafe(auth.refreshAccessHash),
+            refreshAccessHash = null, // intended: we don't return refresh hash to public
             scopes = dbPermissionsToDomain(permissions),
             expiresAt = UnixTime.createUnsafe(expiresAt),
             createdAt = UnixTime.createUnsafe(createdAt),

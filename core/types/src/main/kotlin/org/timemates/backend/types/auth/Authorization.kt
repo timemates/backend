@@ -10,7 +10,7 @@ import org.timemates.backend.types.users.value.UserId
 data class Authorization(
     val userId: UserId,
     val accessHash: AccessHash,
-    val refreshAccessHash: RefreshHash,
+    val refreshAccessHash: RefreshHash?,
     val scopes: List<Scope>,
     val expiresAt: UnixTime,
     val createdAt: UnixTime,

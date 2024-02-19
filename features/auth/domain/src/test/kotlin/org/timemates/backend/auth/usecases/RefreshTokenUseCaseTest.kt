@@ -62,7 +62,7 @@ class RefreshTokenUseCaseTest {
                 clientIpAddress = ClientIpAddress.createOrAssert("127.0.0.1"),
             )
         )
-        coEvery { authorizationsRepository.renew(any(), any(), any()) }.returns(authorization)
+        coEvery { authorizationsRepository.renew(any(), any(), any(), any()) }.returns(authorization)
         // WHEN
         val result = useCase.execute(refreshHash)
         // THEN
@@ -74,7 +74,7 @@ class RefreshTokenUseCaseTest {
         // GIVEN
         val refreshHash = RefreshHash.createOrAssert(randomProvider.randomHash(
             AccessHash.SIZE))
-        coEvery { authorizationsRepository.renew(any(), any(), any()) }.returns(null)
+        coEvery { authorizationsRepository.renew(any(), any(), any(), any()) }.returns(null)
         // WHEN
         val result = useCase.execute(refreshHash)
         // THEN

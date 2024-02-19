@@ -21,9 +21,10 @@ class RefreshAccessTokenUseCase(
     ): Result {
         return Result.Success(
             authorizations.renew(
-                refreshToken,
-                AccessHash.createUnsafe(randomProvider.randomHash(AccessHash.SIZE)),
-                time.provide() + 30.days,
+                refreshToken = refreshToken,
+                newAccessHash = AccessHash.createUnsafe(randomProvider.randomHash(AccessHash.SIZE)),
+                newRefreshHash = RefreshHash.createUnsafe(randomProvider.randomHash(RefreshHash.SIZE)),
+                expiresAt = time.provide() + 30.days,
             ) ?: return Result.InvalidAuthorization
         )
     }
