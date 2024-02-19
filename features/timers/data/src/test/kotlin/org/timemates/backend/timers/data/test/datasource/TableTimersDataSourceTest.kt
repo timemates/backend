@@ -145,7 +145,7 @@ class TableTimersDataSourceTest {
 
     @Test
     fun `check get timers with page token returns correct page`(): Unit = runTest {
-        List(50) { index ->
+        repeat(50) { index ->
             timers.createTimer("Test ${index + 1}", null, ownerId, creationTime = index.toLong())
         }
 
