@@ -1,0 +1,6 @@
+package org.timemates.backend.timers.data.db.entities
+
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class InvitesPageToken(val offset: Long)

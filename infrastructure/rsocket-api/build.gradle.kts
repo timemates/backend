@@ -1,6 +1,7 @@
 plugins {
     id(libs.plugins.jvm.module.convention.get().pluginId)
     alias(libs.plugins.kotlinx.serialization)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.timemates.rsproto)
 }
 
@@ -14,16 +15,23 @@ sourceSets {
 }
 
 dependencies {
-    implementation(projects.core)
+    implementation(projects.features.auth.domain)
+    implementation(projects.features.users.domain)
+    implementation(projects.features.timers.domain)
+    implementation(projects.foundation.pageToken)
 
     implementation(libs.rsocket.server)
     implementation(libs.rsocket.server.websockets)
+
+    implementation(libs.koin.core)
+    implementation(libs.koin.annotations)
+    ksp(libs.koin.ksp.compiler)
 
     api(libs.timemates.rsproto.server)
     api(libs.timemates.rsproto.client)
     api(libs.timemates.rsproto.common)
 
-    implementation(projects.common.coroutinesUtils)
+    implementation(projects.foundation.coroutinesUtils)
 
     implementation(libs.ktor.server.core)
     implementation(libs.ktor.server.netty)

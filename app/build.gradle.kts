@@ -8,17 +8,23 @@ plugins {
 }
 
 dependencies {
-    implementation(projects.data)
-    implementation(projects.core)
-    implementation(projects.common.smtpMailer)
-    implementation(projects.common.cliArguments)
-    implementation(projects.common.hashing)
+    implementation(projects.features.auth.domain)
+    implementation(projects.features.auth.dependencies)
+
+    implementation(projects.features.users.domain)
+    implementation(projects.features.users.dependencies)
+
+    implementation(projects.features.timers.domain)
+    implementation(projects.features.timers.dependencies)
+
+    implementation(projects.core.types)
+
+
+    implementation(projects.foundation.time)
+    implementation(projects.foundation.random)
+    implementation(projects.foundation.cliArguments)
 
     implementation(projects.infrastructure.rsocketApi)
-
-    implementation(libs.ktor.client.core)
-
-    implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlinx.coroutines)
 
     implementation(libs.exposed.core)
@@ -27,18 +33,12 @@ dependencies {
     implementation(libs.postgresql.driver)
     implementation(libs.h2.database)
 
-    implementation(libs.grpc.kotlin.stub)
-
-    implementation(libs.grpc.netty)
-    implementation(libs.grpc.services)
-
     implementation(libs.koin.core)
-
     implementation(libs.logback.classic)
 }
 
 application {
-    mainClass.set("io.timemates.backend.application.ApplicationKt")
+    mainClass.set("org.timemates.backend.application.ApplicationKt")
 }
 
 

@@ -23,33 +23,27 @@ If you want to host the application yourself, follow the instructions below:
 ### Environment
 
 To run this application on your own host, you need to provide the following environment variables:
-- `TIMEMATES_RSOCKET_PORT` – The port on which rsocket instance will run (default: `8080`)
-- `TIMEMATES_DATABASE_URL` – The URL to the PostgreSQL database
-- `TIMEMATES_DATABASE_USER` – The username for the PostgreSQL database
-- `TIMEMATES_DATABASE_USER_PASSWORD` – The password for the PostgreSQL user
-- `TIMEMATES_FILES_PATH` – The path to the directory where uploaded files will be stored
-- `TIMEMATES_SMTP_HOST` – The SMTP host of the mailer
-- `TIMEMATES_SMTP_PORT` – The SMTP port of the mailer
-- `TIMEMATES_SMTP_USER` – The SMTP user of the mailer
-- `TIMEMATES_SMTP_USER_PASSWORD` – The password for the SMTP user
-- `TIMEMATES_SMTP_SENDER` – The email address of the SMTP mailer
 
-> **Note** <br>
-> There are two mailer implementations available: SMTP and MailerSend. Depending on your choice, you need to provide the
-> corresponding environment variables.
->
-> If using the SMTP mailer implementation, make sure to set
-> the `TIMEMATES_SMTP_HOST`, `TIMEMATES_SMTP_PORT`, `TIMEMATES_SMTP_USER`, `TIMEMATES_SMTP_USER_PASSWORD` and
-> `TIMEMATES_SMTP_SENDER` variables.
->
-> If using the MailerSend implementation, you should set the `MAILERSEND_API_KEY`, `MAILERSEND_SENDER`, `MAILERSEND_CONFIRMATION_TEMPLATE` and `MAILERSEND_SUPPORT_EMAIL` variables.
->
-> Refer to the code documentation for more details on configuring the mailer implementation.
+- `timemates_rsocket_port` – The port on which the rsocket instance will run (default: `8080`)
+- `timemates_database_url` – The URL to the PostgreSQL database
+- `timemates_database_user` – The username for the PostgreSQL database
+- `timemates_database_password` – The password for the PostgreSQL user
+- `mailersend_api_key` – MailerSend API key
+- `mailersend_sender` – MailerSend sender
+- `mailersend_confirmation_template` – MailerSend template for authentication confirmation
+- `mailersend_support_email` – Support email for MailerSend
+- `timemates_timers_cache_size` – Cache size for timers (default: `100`)
+- `timemates_users_cache_size` – Cache size for users (default: `100`)
+- `timemates_auth_cache_size` – Cache size for authentication entities (default: `100`)
+- `timemates_auth_cache_alive` – Maximum alive time for authentication cache in seconds (default: `300` seconds, or 5
+  minutes)
+- `timemates_debug` – Enable debug mode (present or not, acts as a flag)
 
 > **Note** <br>
 > You can also use Java arguments to set up the application. Refer to
 > the [source code](/app/src/main/kotlin/io/timemates/backend/application/Application.kt) for more
 > information.
+>
 
 ## Docker image
 
