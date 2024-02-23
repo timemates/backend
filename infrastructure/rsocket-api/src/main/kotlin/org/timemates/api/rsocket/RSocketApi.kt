@@ -6,10 +6,10 @@ import io.ktor.server.netty.*
 import io.ktor.server.routing.*
 import io.ktor.server.websocket.*
 import io.rsocket.kotlin.ktor.server.RSocketSupport
-import io.timemates.rsproto.server.annotations.ExperimentalInstancesApi
-import io.timemates.rsproto.server.annotations.ExperimentalInterceptorsApi
-import io.timemates.rsproto.server.instances.protobuf
-import io.timemates.rsproto.server.rSocketServer
+import org.timemates.rsproto.server.annotations.ExperimentalInstancesApi
+import org.timemates.rsproto.server.annotations.ExperimentalInterceptorsApi
+import org.timemates.rsproto.server.instances.protobuf
+import org.timemates.rsproto.server.rSocketServer
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.protobuf.ProtoBuf
 import org.timemates.api.rsocket.auth.AuthInterceptor

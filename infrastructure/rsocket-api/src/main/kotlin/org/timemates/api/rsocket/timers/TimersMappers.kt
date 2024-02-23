@@ -1,6 +1,6 @@
 package org.timemates.api.rsocket.timers
 
-import io.timemates.rsproto.server.RSocketService
+import org.timemates.rsproto.server.RSocketService
 import org.timemates.api.rsocket.internal.createOrFail
 import org.timemates.api.timers.sessions.types.TimerState
 import org.timemates.api.timers.types.Timer

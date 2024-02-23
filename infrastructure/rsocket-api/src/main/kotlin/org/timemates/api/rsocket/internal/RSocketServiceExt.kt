@@ -1,7 +1,7 @@
 package org.timemates.api.rsocket.internal
 
 import io.rsocket.kotlin.RSocketError
-import io.timemates.rsproto.server.RSocketService
+import org.timemates.rsproto.server.RSocketService
 import kotlinx.coroutines.currentCoroutineContext
 import org.timemates.api.rsocket.auth.AuthInterceptor
 import org.timemates.backend.validation.SafeConstructor

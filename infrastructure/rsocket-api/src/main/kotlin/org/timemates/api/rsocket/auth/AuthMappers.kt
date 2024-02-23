@@ -1,6 +1,6 @@
 package org.timemates.api.rsocket.auth
 
-import io.timemates.rsproto.server.RSocketService
+import org.timemates.rsproto.server.RSocketService
 import org.timemates.api.authorizations.types.Authorization
 import org.timemates.api.authorizations.types.Metadata
 import org.timemates.api.rsocket.internal.createOrFail

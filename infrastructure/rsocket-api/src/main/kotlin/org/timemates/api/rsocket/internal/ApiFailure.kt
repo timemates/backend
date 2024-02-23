@@ -2,7 +2,7 @@ package org.timemates.api.rsocket.internal
 
 import io.ktor.http.*
 import io.rsocket.kotlin.RSocketError
-import io.timemates.rsproto.server.RSocketService
+import org.timemates.rsproto.server.RSocketService
 
 context(RSocketService)
 internal fun attemptsExceeded(): Nothing = throw ApiFailure.TooManyRequests

@@ -1,7 +1,7 @@
 package org.timemates.api.rsocket.internal
 
 import io.rsocket.kotlin.RSocketError
-import io.timemates.rsproto.server.RSocketService
+import org.timemates.rsproto.server.RSocketService
 
 /**
  * Checks if the given value is not null. If the value is null, it throws a RSocketError.Invalid exception with the message "One of the parameters is null, but should be not null."

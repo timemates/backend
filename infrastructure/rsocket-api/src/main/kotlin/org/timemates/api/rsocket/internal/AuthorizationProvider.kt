@@ -1,6 +1,6 @@
 package org.timemates.api.rsocket.internal
 
-import io.timemates.rsproto.server.RSocketService
+import org.timemates.rsproto.server.RSocketService
 import kotlinx.coroutines.currentCoroutineContext
 import org.timemates.api.rsocket.auth.AuthInterceptor
 import org.timemates.backend.auth.domain.usecases.GetAuthorizationUseCase

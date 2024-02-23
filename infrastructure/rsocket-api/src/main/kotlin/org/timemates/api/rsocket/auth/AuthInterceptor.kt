@@ -1,9 +1,9 @@
 package org.timemates.api.rsocket.auth
 
-import io.timemates.rsproto.metadata.Metadata
-import io.timemates.rsproto.server.annotations.ExperimentalInterceptorsApi
-import io.timemates.rsproto.server.interceptors.Interceptor
-import io.timemates.rsproto.server.interceptors.InterceptorScope
+import org.timemates.rsproto.metadata.Metadata
+import org.timemates.rsproto.server.annotations.ExperimentalInterceptorsApi
+import org.timemates.rsproto.server.interceptors.Interceptor
+import org.timemates.rsproto.server.interceptors.InterceptorScope
 import org.timemates.backend.auth.domain.usecases.GetAuthorizationUseCase
 import kotlin.coroutines.CoroutineContext
 
