@@ -27,7 +27,12 @@ public value class UnixTime private constructor(private val long: Long) {
      * @return [UnixTime] + [Duration]
      */
     public operator fun plus(duration: Duration): UnixTime {
-        val result = long + duration.inWholeMilliseconds
+        val result = try {
+            Math.addExact(long, duration.inWholeMilliseconds)
+        } catch (_: Throwable) {
+            INFINITE.long
+        }
+
         require(result >= 0) { "Unix time cannot be negative" }
 
         return UnixTime(result)
