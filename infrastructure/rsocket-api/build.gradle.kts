@@ -1,8 +1,11 @@
+import com.google.devtools.ksp.gradle.KspTask
+import com.google.devtools.ksp.gradle.KspTaskJvm
+
 plugins {
     id(libs.plugins.jvm.module.convention.get().pluginId)
     alias(libs.plugins.kotlinx.serialization)
-    alias(libs.plugins.ksp)
     alias(libs.plugins.timemates.rsproto)
+    alias(libs.plugins.ksp)
 }
 
 sourceSets {
@@ -44,9 +47,13 @@ dependencies {
 }
 
 rsproto {
-    protoSourcePath.set("src/main/proto/")
-    generationOutputPath.set("build/generated/rsproto/kotlin")
+    protoSourcePath.set("src/main/proto")
+    generationOutputPath.set("generated/rsproto/kotlin")
 
     clientGeneration.set(true)
     serverGeneration.set(true)
+}
+
+tasks.withType<KspTaskJvm> {
+    inputs.files(tasks.named("generateProto").get().outputs.files)
 }

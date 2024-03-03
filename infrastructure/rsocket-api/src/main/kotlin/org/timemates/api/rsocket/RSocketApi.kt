@@ -1,3 +1,5 @@
+@file:Suppress("ExtractKtorModule")
+
 package org.timemates.api.rsocket
 
 import io.ktor.server.application.*
@@ -6,10 +8,6 @@ import io.ktor.server.netty.*
 import io.ktor.server.routing.*
 import io.ktor.server.websocket.*
 import io.rsocket.kotlin.ktor.server.RSocketSupport
-import org.timemates.rsproto.server.annotations.ExperimentalInstancesApi
-import org.timemates.rsproto.server.annotations.ExperimentalInterceptorsApi
-import org.timemates.rsproto.server.instances.protobuf
-import org.timemates.rsproto.server.rSocketServer
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.protobuf.ProtoBuf
 import org.timemates.api.rsocket.auth.AuthInterceptor
@@ -17,6 +15,10 @@ import org.timemates.api.rsocket.auth.AuthorizationService
 import org.timemates.api.rsocket.timers.TimersService
 import org.timemates.api.rsocket.timers.sessions.TimerSessionsService
 import org.timemates.api.rsocket.users.UsersService
+import org.timemates.rsproto.server.annotations.ExperimentalInstancesApi
+import org.timemates.rsproto.server.annotations.ExperimentalInterceptorsApi
+import org.timemates.rsproto.server.instances.protobuf
+import org.timemates.rsproto.server.rSocketServer
 import java.time.Duration
 
 @OptIn(

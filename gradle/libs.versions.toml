@@ -16,7 +16,7 @@ grpc-netty = "1.55.1"
 grpc-services = "1.55.1"
 koin = "3.4.0"
 rsocket = "0.15.4"
-rsproto = "0.6.3"
+rsproto = "0.6.10"
 ksp = "1.9.21-1.0.16"
 koin-annotations = "1.3.0"
 

@@ -7,7 +7,7 @@ dependencyResolutionManagement {
         mavenCentral()
         maven("https://jitpack.io")
         maven("https://maven.y9vad9.com")
-        maven("https://maven.timemates.org")
+        maven("https://maven.timemates.org/releases")
     }
 }
 
@@ -17,7 +17,7 @@ pluginManagement {
         mavenCentral()
         google()
         maven("https://maven.y9vad9.com")
-        maven("https://maven.timemates.org")
+        maven("https://maven.timemates.org/releases")
     }
 }
 
