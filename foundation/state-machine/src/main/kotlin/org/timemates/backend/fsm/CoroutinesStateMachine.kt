@@ -46,8 +46,8 @@ public class CoroutinesStateMachine<IdType : Any, EventType : Any, StateType : S
     override suspend fun getState(id: IdType): SharedFlow<StateType> {
         return states.getOrPut(id) {
             channelFlow {
-                val initial = controller.initial?.invoke(id)
-                    ?: storage?.load(id)
+                val initial = storage?.load(id)
+                    ?: controller.initial?.invoke(id)
                     ?: error("Couldn't get initial state – initial and storage are not implemented")
 
                 val currentState = MutableStateFlow(initial)

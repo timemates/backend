@@ -38,6 +38,6 @@ public suspend fun <KT : Any, ET : Any, ST : State<ET>> StateMachine<KT, ET, ST>
 
 public suspend fun <KT : Any, ET : Any, ST : State<ET>> StateMachine<KT, ET, ST>.getCurrentState(
     keys: List<KT>,
-): Map<KT, ST?> = coroutineScope {
+): Map<KT, ST> = coroutineScope {
     keys.associateWith { getCurrentState(it) }
 }

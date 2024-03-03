@@ -24,6 +24,8 @@ class TimersStateMachine(
     timeProvider: TimeProvider,
     coroutineScope: CoroutineScope,
 ) : StateMachine<TimerId, TimerEvent, TimerState> by stateMachineController({
+    initial { TimerState.Inactive(timeProvider.provide()) }
+
     state(TimerState.Inactive, TimerState.Paused, TimerState.Rest) {
         onEvent { timerId, state, event ->
             when (event) {
