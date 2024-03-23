@@ -6,12 +6,13 @@ import com.timemates.random.RandomProvider
 import com.timemates.random.SecureRandomProvider
 import org.jetbrains.exposed.sql.Database
 import org.koin.core.Koin
-import org.koin.core.context.startKoin
 import org.koin.core.qualifier.StringQualifier
+import org.koin.dsl.koinApplication
 import org.koin.dsl.module
 import org.koin.ksp.generated.module
 import org.timemates.api.rsocket.RSProtoServicesModule
 import org.timemates.backend.auth.deps.AuthorizationsModule
+import org.timemates.backend.auth.deps.repositories.mailer.MailerModule
 import org.timemates.backend.timers.deps.TimersModule
 import org.timemates.backend.users.deps.UsersModule
 import kotlin.time.Duration
@@ -20,17 +21,14 @@ fun initDeps(
     databaseUser: String,
     databasePassword: String,
     databaseUrl: String,
-    mailerSendApiKey: String,
-    mailerSendSender: String,
-    mailerSendConfirmationTemplateId: String,
-    mailerSendSupportEmail: String,
+    mailerImplementation: MailerModule.MailerImplementation,
     timersCacheSize: Long,
     usersCacheSize: Long,
     authMaxCacheEntities: Long,
     authMaxAliveTime: Duration,
     isDebug: Boolean,
 ): Koin {
-    return startKoin {
+    return koinApplication {
         val databaseModule = module {
             single<Database> {
                 return@single Database.connect(
@@ -41,12 +39,8 @@ fun initDeps(
             }
         }
 
-        val mailersendModule = module {
-            single(StringQualifier("mailersend.apiKey")) { mailerSendApiKey }
-            single(StringQualifier("mailersend.supportEmail")) { mailerSendSupportEmail }
-            single(StringQualifier("mailersend.sender")) { mailerSendSender }
-            single(StringQualifier("mailersend.apiKey")) { mailerSendApiKey }
-            single(StringQualifier("mailersend.templates.confirmation")) { mailerSendConfirmationTemplateId }
+        val mailerModule = module {
+            single { mailerImplementation }
         }
 
         val applicationModule = module {
@@ -67,7 +61,7 @@ fun initDeps(
 
         modules(
             databaseModule,
-            mailersendModule,
+            mailerModule,
             applicationModule,
             cacheModule,
             foundationModule,

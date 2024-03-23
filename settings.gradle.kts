@@ -35,7 +35,10 @@ include(
     ":foundation:state-machine",
     ":foundation:coroutines-utils",
     ":foundation:page-token",
-    ":foundation:smtp-mailer",
+    ":foundation:mailer",
+    ":foundation:mailer:smtp",
+    ":foundation:mailer:mailersend",
+    ":foundation:mailer:logging",
     ":foundation:cli-arguments",
     ":foundation:hashing",
 )

@@ -8,12 +8,7 @@ dependencies {
     implementation(projects.features.users.domain)
 
     implementation(projects.foundation.random)
-    implementation(projects.foundation.smtpMailer)
-    implementation(libs.ktor.client.content.negotiation)
-    implementation(libs.ktor.client.logging)
-    implementation(libs.ktor.json)
-
-    implementation(libs.kotlinx.serialization.json)
-    implementation(libs.ktor.client.core)
-    implementation(libs.ktor.client.cio)
+    implementation(projects.foundation.mailer.smtp)
+    implementation(projects.foundation.mailer.mailersend)
+    implementation(projects.foundation.mailer.logging)
 }

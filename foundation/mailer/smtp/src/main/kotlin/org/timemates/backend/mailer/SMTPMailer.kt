@@ -11,7 +11,6 @@ class SMTPMailer(
     port: Int,
     user: String,
     password: String?,
-    private val sender: String,
 ) {
     private val mailer = MailerBuilder
         .withSMTPServer(host, port, user, password)
@@ -19,6 +18,7 @@ class SMTPMailer(
 
     suspend fun send(
         address: String,
+        sender: String,
         subject: String,
         body: String,
     ): Boolean = suspendCoroutine { continuation ->

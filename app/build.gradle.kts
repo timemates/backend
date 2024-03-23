@@ -35,6 +35,8 @@ dependencies {
 
     implementation(libs.koin.core)
     implementation(libs.logback.classic)
+
+    implementation(projects.features.auth.adapters)
 }
 
 application {

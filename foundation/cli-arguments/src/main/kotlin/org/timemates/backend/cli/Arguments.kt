@@ -15,10 +15,10 @@ value class Arguments(private val array: Array<String>) {
     fun getNamedOrNull(name: String): String? {
         val index = array.indexOfFirst { it.startsWith("-$name") }
             .takeIf { it >= 0 }
+            ?: return null
 
-        return if (index != null) {
-            array[index + 1]
-        } else null
+        return array[index]
+            .substringAfter("=")
     }
 
     fun getNamedList(name: String): List<String> {
