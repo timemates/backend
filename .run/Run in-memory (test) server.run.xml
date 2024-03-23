@@ -1,0 +1,17 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Run in-memory (test) server" type="JetRunConfigurationType">
+    <envs>
+      <env name="application_database_password" value="Y+s2Sg&amp;&gt;*Mr=nktD" />
+      <env name="application_database_url" value="jdbc:h2:mem:regular;DB_CLOSE_DELAY=-1;" />
+      <env name="application_database_user" value="timemates" />
+      <env name="application_infrastructure_rsocket_port" value="8282" />
+    </envs>
+    <option name="MAIN_CLASS_NAME" value="org.timemates.backend.application.ApplicationKt" />
+    <module name="timemates-backend.app.main" />
+    <option name="PROGRAM_PARAMETERS" value="-mailer=logging -debug" />
+    <shortenClasspath name="NONE" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
