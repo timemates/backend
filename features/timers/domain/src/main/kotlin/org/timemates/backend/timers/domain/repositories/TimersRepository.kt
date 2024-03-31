@@ -4,6 +4,7 @@ import com.timemates.backend.time.UnixTime
 import org.timemates.backend.pagination.Page
 import org.timemates.backend.pagination.PageToken
 import org.timemates.backend.types.common.value.Count
+import org.timemates.backend.types.common.value.PageSize
 import org.timemates.backend.types.timers.Timer
 import org.timemates.backend.types.timers.TimerSettings
 import org.timemates.backend.types.timers.TimerState
@@ -44,6 +45,7 @@ interface TimersRepository {
     suspend fun getMembers(
         timerId: TimerId,
         pageToken: PageToken?,
+        pageSize: PageSize,
     ): Page<UserId>
 
     suspend fun getMembersCountOfInvite(timerId: TimerId, inviteCode: InviteCode): Count
@@ -56,6 +58,7 @@ interface TimersRepository {
     suspend fun getTimersInformation(
         userId: UserId,
         pageToken: PageToken?,
+        pageSize: PageSize,
     ): Page<TimerInformation>
 
     suspend fun setTimerInformation(timerId: TimerId, information: TimerInformation.Patch)

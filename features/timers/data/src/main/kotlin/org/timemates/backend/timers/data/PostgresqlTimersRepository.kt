@@ -10,6 +10,7 @@ import org.timemates.backend.timers.data.db.TableTimersDataSource
 import org.timemates.backend.timers.data.mappers.TimersMapper
 import org.timemates.backend.timers.domain.repositories.TimersRepository
 import org.timemates.backend.types.common.value.Count
+import org.timemates.backend.types.common.value.PageSize
 import org.timemates.backend.types.timers.TimerSettings
 import org.timemates.backend.types.timers.value.InviteCode
 import org.timemates.backend.types.timers.value.TimerDescription
@@ -92,9 +93,9 @@ class PostgresqlTimersRepository(
         tableTimerParticipants.removeParticipant(timerId.long, userId.long)
     }
 
-    override suspend fun getMembers(timerId: TimerId, pageToken: PageToken?): Page<UserId> {
+    override suspend fun getMembers(timerId: TimerId, pageToken: PageToken?, pageSize: PageSize): Page<UserId> {
         return tableTimerParticipants.getParticipants(
-            timerId.long, pageToken,
+            timerId.long, pageToken, pageSize.int,
         ).map { id -> UserId.createUnsafe(id) }
     }
 
@@ -107,8 +108,8 @@ class PostgresqlTimersRepository(
         return tableTimerParticipants.isMember(timerId.long, userId.long)
     }
 
-    override suspend fun getTimersInformation(userId: UserId, pageToken: PageToken?): Page<TimersRepository.TimerInformation> {
-        return tableTimers.getTimers(userId.long, pageToken).map {
+    override suspend fun getTimersInformation(userId: UserId, pageToken: PageToken?, pageSize: PageSize): Page<TimersRepository.TimerInformation> {
+        return tableTimers.getTimers(userId.long, pageToken, pageSize.int).map {
             timersMapper.dbTimerToDomainTimerInformation(
                 dbTimer = it,
                 membersCount = tableTimerParticipants.getParticipantsCount(it.id, 0).toInt(),

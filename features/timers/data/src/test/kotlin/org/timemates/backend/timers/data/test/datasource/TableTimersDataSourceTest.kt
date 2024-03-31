@@ -127,7 +127,7 @@ class TableTimersDataSourceTest {
     fun `check get timers should return empty list if no timers`(): Unit = runTest {
         timers.createTimer("Test", null, anotherUser, System.currentTimeMillis())
 
-        assert(timers.getTimers(ownerId, pageToken = null).value.isEmpty())
+        assert(timers.getTimers(ownerId, pageToken = null, 20).value.isEmpty())
     }
 
     @Test
@@ -140,7 +140,7 @@ class TableTimersDataSourceTest {
 
         val expected = ids.map { timers.getTimer(it) }
 
-        assertContentEquals(timers.getTimers(anotherUser, pageToken = null).value, expected)
+        assertContentEquals(timers.getTimers(anotherUser, pageToken = null, 20).value, expected)
     }
 
     @Test
@@ -149,9 +149,9 @@ class TableTimersDataSourceTest {
             timers.createTimer("Test ${index + 1}", null, ownerId, creationTime = index.toLong())
         }
 
-        val first = timers.getTimers(ownerId, null)
-        val second = timers.getTimers(ownerId, first.nextPageToken!!)
-        val third = timers.getTimers(ownerId, second.nextPageToken!!)
+        val first = timers.getTimers(ownerId, null, 20)
+        val second = timers.getTimers(ownerId, first.nextPageToken!!, 20)
+        val third = timers.getTimers(ownerId, second.nextPageToken!!, 20)
 
         assertEquals(actual = first.value.first().name, expected = "Test 50")
         assertEquals(actual = first.value.last().name, expected = "Test 31")

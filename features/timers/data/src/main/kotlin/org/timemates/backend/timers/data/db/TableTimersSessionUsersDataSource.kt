@@ -42,6 +42,7 @@ class TableTimersSessionUsersDataSource(
         timerId: Long,
         pageToken: PageToken?,
         afterTime: Long,
+        pageSize: Int,
     ): Page<DbSessionUser> = suspendedTransaction(database) {
         val currentPage: TimerParticipantPageToken? = pageToken?.forInternal()?.let(json::decodeFromString)
 
@@ -51,7 +52,7 @@ class TableTimersSessionUsersDataSource(
                 (TimersSessionUsersTable.LAST_ACTIVITY_TIME greater afterTime) and
                 (TimersSessionUsersTable.USER_ID greater (currentPage?.lastReceivedUserId ?: 0))
         }.orderBy(TimersSessionUsersTable.USER_ID, SortOrder.ASC)
-            .limit(20)
+            .limit(pageSize)
             .map(timerSessionMapper::resultRowToSessionUser)
 
         val nextPageToken = result.lastOrNull()?.userId?.let {

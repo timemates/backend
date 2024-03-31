@@ -4,6 +4,7 @@ import com.timemates.backend.time.UnixTime
 import org.timemates.backend.pagination.Page
 import org.timemates.backend.pagination.PageToken
 import org.timemates.backend.types.common.value.Count
+import org.timemates.backend.types.common.value.PageSize
 import org.timemates.backend.types.timers.value.TimerId
 import org.timemates.backend.types.users.value.UserId
 
@@ -45,6 +46,7 @@ interface TimerSessionRepository {
     suspend fun getMembers(
         timerId: TimerId,
         pageToken: PageToken?,
+        pageSize: PageSize,
         lastActiveTime: UnixTime,
     ): Page<UserId>
 

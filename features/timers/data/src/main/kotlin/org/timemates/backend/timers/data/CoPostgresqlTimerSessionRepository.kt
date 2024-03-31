@@ -10,6 +10,7 @@ import org.timemates.backend.pagination.map
 import org.timemates.backend.timers.data.db.TableTimersSessionUsersDataSource
 import org.timemates.backend.timers.domain.repositories.TimerSessionRepository
 import org.timemates.backend.types.common.value.Count
+import org.timemates.backend.types.common.value.PageSize
 import org.timemates.backend.types.timers.value.TimerId
 import org.timemates.backend.types.users.value.UserId
 import org.timemates.backend.validation.annotations.ValidationDelicateApi
@@ -43,12 +44,14 @@ class PostgresqlTimerSessionRepository(
     override suspend fun getMembers(
         timerId: TimerId,
         pageToken: PageToken?,
+        pageSize: PageSize,
         lastActiveTime: UnixTime,
     ): Page<UserId> {
         return tableTimersSessionUsers.getUsers(
             timerId.long,
             pageToken,
             lastActiveTime.inMilliseconds,
+            pageSize.int,
         ).map { sessionUser -> UserId.createUnsafe(sessionUser.userId) }
     }
 

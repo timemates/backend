@@ -20,6 +20,7 @@ import org.timemates.backend.timers.domain.usecases.members.invites.GetInvitesUs
 import org.timemates.backend.timers.domain.usecases.members.invites.JoinByInviteUseCase
 import org.timemates.backend.timers.domain.usecases.members.invites.RemoveInviteUseCase
 import org.timemates.backend.types.common.value.Count
+import org.timemates.backend.types.common.value.PageSize
 import org.timemates.backend.types.timers.TimerSettings
 import org.timemates.backend.types.timers.value.InviteCode
 import org.timemates.backend.types.timers.value.TimerDescription
@@ -98,7 +99,8 @@ class TimersService(
     ): GetTimersRequest.Response {
         val result = getTimersUseCase.execute(
             auth = getAuthorization(),
-            nextPageToken = request.nextPageToken.nullIfEmpty()?.let { PageToken.accept(it) },
+            pageToken = request.pageToken.nullIfEmpty()?.let { PageToken.accept(it) },
+            pageSize = request.pageSize.takeIf { it > 0 }?.let { PageSize.createOrFail(it) } ?: PageSize.DEFAULT,
         )
 
         return when (result) {
@@ -172,7 +174,8 @@ class TimersService(
         val result = getMembersUseCase.execute(
             auth = getAuthorization(),
             timerId = TimerId.createOrFail(request.timerId),
-            pageToken = request.nextPageToken.nullIfEmpty()?.let { PageToken.accept(it) },
+            pageToken = request.pageToken.nullIfEmpty()?.let { PageToken.accept(it) },
+            pageSize = request.pageSize.takeIf { it > 0 }?.let { PageSize.createOrFail(it) } ?: PageSize.DEFAULT,
         )
 
         return when (result) {
@@ -220,7 +223,8 @@ class TimersService(
         val result = getInvitesUseCase.execute(
             auth = getAuthorization(),
             timerId = TimerId.createOrFail(request.timerId),
-            pageToken = request.nextPageToken.nullIfEmpty()?.let { PageToken.accept(it) },
+            pageToken = request.pageToken.nullIfEmpty()?.let { PageToken.accept(it) },
+            pageSize = request.pageSize.takeIf { it > 0 }?.let { PageSize.createOrFail(it) } ?: PageSize.DEFAULT,
         )
 
         return when (result) {

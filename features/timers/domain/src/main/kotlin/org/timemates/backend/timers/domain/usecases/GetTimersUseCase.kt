@@ -10,6 +10,7 @@ import org.timemates.backend.timers.domain.fsm.TimersStateMachine
 import org.timemates.backend.timers.domain.fsm.getCurrentState
 import org.timemates.backend.timers.domain.repositories.TimersRepository
 import org.timemates.backend.timers.domain.repositories.toTimer
+import org.timemates.backend.types.common.value.PageSize
 import org.timemates.backend.types.timers.Timer
 import org.timemates.backend.types.timers.TimersScope
 
@@ -20,10 +21,11 @@ class GetTimersUseCase(
 
     suspend fun execute(
         auth: Authorized<TimersScope.Read>,
-        nextPageToken: PageToken?,
+        pageToken: PageToken?,
+        pageSize: PageSize,
     ): Result {
         val infos = timers.getTimersInformation(
-            auth.userId, nextPageToken,
+            auth.userId, pageToken, pageSize,
         )
 
         val ids = infos.map(TimersRepository.TimerInformation::id)

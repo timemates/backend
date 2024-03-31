@@ -7,6 +7,7 @@ import org.timemates.backend.pagination.PageToken
 import org.timemates.backend.timers.domain.repositories.TimerSessionRepository
 import org.timemates.backend.timers.domain.repositories.TimersRepository
 import org.timemates.backend.timers.domain.repositories.UsersRepository
+import org.timemates.backend.types.common.value.PageSize
 import org.timemates.backend.types.timers.TimersScope
 import org.timemates.backend.types.timers.value.TimerId
 import org.timemates.backend.types.users.User
@@ -22,6 +23,7 @@ class GetMembersInSessionUseCase(
         auth: Authorized<TimersScope.Read>,
         timerId: TimerId,
         pageToken: PageToken?,
+        pageSize: PageSize,
     ): Result {
         if (!timersRepository.isMemberOf(auth.userId, timerId))
             return Result.NoAccess
@@ -30,6 +32,7 @@ class GetMembersInSessionUseCase(
             timerId = timerId,
             pageToken = pageToken,
             lastActiveTime = timeProvider.provide() - 15.minutes,
+            pageSize = pageSize,
         )
         val users = usersRepository.getUsers(userIds.value)
 
