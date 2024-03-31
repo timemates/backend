@@ -5,7 +5,8 @@ option java_package = "org.timemates.api.timers.members.requests";
 
 message GetMembersRequest {
   int64 timerId = 1;
-  optional string nextPageToken = 2;
+  optional string pageToken = 2;
+  optional int32 pageSize = 3;
 
   message Response {
     repeated User users = 1;

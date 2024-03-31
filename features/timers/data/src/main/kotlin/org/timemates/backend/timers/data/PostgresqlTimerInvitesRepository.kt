@@ -9,6 +9,7 @@ import org.timemates.backend.timers.data.db.TableTimerParticipantsDataSource
 import org.timemates.backend.timers.data.mappers.TimerInvitesMapper
 import org.timemates.backend.timers.domain.repositories.TimerInvitesRepository
 import org.timemates.backend.types.common.value.Count
+import org.timemates.backend.types.common.value.PageSize
 import org.timemates.backend.types.timers.Invite
 import org.timemates.backend.types.timers.value.InviteCode
 import org.timemates.backend.types.timers.value.TimerId
@@ -21,8 +22,8 @@ class PostgresqlTimerInvitesRepository(
     private val participantsDataSource: TableTimerParticipantsDataSource,
     private val invitesMapper: TimerInvitesMapper,
 ) : TimerInvitesRepository {
-    override suspend fun getInvites(timerId: TimerId, nextPageToken: PageToken?): Page<Invite> {
-        return tableTimerInvitesDataSource.getInvites(timerId.long, nextPageToken)
+    override suspend fun getInvites(timerId: TimerId, pageToken: PageToken?, pageSize: PageSize): Page<Invite> {
+        return tableTimerInvitesDataSource.getInvites(timerId.long, pageToken, pageSize.int)
             .map(invitesMapper::dbInviteToDomainInvite)
     }
 

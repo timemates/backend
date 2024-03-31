@@ -27,6 +27,7 @@ class TableTimerParticipantsDataSource(
     suspend fun getParticipants(
         timerId: Long,
         pageToken: PageToken?,
+        pageSize: Int,
     ): Page<Long> = suspendedTransaction(database) {
         val pageInfo: TimerParticipantPageToken? = pageToken?.forInternal()?.let(json::decodeFromString)
 
@@ -34,7 +35,7 @@ class TableTimerParticipantsDataSource(
             (TimersParticipantsTable.TIMER_ID eq timerId)
                 .and(TimersParticipantsTable.USER_ID greater (pageInfo?.lastReceivedUserId ?: Long.MAX_VALUE))
         }.orderBy(TimersParticipantsTable.TIMER_ID, order = SortOrder.ASC)
-            .limit(20)
+            .limit(pageSize)
             .map { it[TimersParticipantsTable.TIMER_ID] }
 
         val lastId = result.lastOrNull()

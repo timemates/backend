@@ -104,6 +104,7 @@ class TableTimersDataSource(
     suspend fun getTimers(
         userId: Long,
         pageToken: PageToken?,
+        pageSize: Int,
     ): Page<DbTimer> = suspendedTransaction(database) {
         val decodedPageToken: TimersPageToken? = pageToken?.forInternal()?.let(json::decodeFromString)
 
@@ -113,7 +114,7 @@ class TableTimersDataSource(
                 (TimersTable.OWNER_ID eq userId)
         }.orderBy(
             order = arrayOf(TimersTable.CREATION_TIME to SortOrder.DESC, TimersTable.ID to SortOrder.DESC)
-        ).limit(20).map(timersMapper::resultRowToDbTimer)
+        ).limit(pageSize).map(timersMapper::resultRowToDbTimer)
 
         val lastId = result.lastOrNull()?.id
         val nextPageToken = if (lastId != null)

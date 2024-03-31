@@ -29,6 +29,7 @@ class TableTimerInvitesDataSource(
     suspend fun getInvites(
         timerId: Long,
         nextPageToken: PageToken?,
+        pageSize: Int,
     ): Page<DbInvite> = suspendedTransaction(database) {
         val currentPage: InvitesPageToken? = nextPageToken?.forInternal()?.let(json::decodeFromString)
 
@@ -36,7 +37,7 @@ class TableTimerInvitesDataSource(
 
         val result = TimersInvitesTable.select {
             TimersInvitesTable.TIMER_ID eq timerId
-        }.limit(20, offset).map(invitesMapper::resultRowToDbInvite)
+        }.limit(pageSize, offset).map(invitesMapper::resultRowToDbInvite)
 
         return@suspendedTransaction Page(
             value = result,

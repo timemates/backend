@@ -6,6 +6,7 @@ import org.timemates.backend.pagination.Page
 import org.timemates.backend.pagination.PageToken
 import org.timemates.backend.timers.domain.repositories.TimerInvitesRepository
 import org.timemates.backend.timers.domain.repositories.TimersRepository
+import org.timemates.backend.types.common.value.PageSize
 import org.timemates.backend.types.timers.Invite
 import org.timemates.backend.types.timers.TimersScope
 import org.timemates.backend.types.timers.value.TimerId
@@ -19,11 +20,12 @@ class GetInvitesUseCase(
         auth: Authorized<TimersScope.Read>,
         timerId: TimerId,
         pageToken: PageToken?,
+        pageSize: PageSize,
     ): Result {
         if (timers.getTimerInformation(timerId)?.ownerId != auth.userId)
             return Result.NoAccess
 
-        return Result.Success(invites.getInvites(timerId, pageToken))
+        return Result.Success(invites.getInvites(timerId, pageToken, pageSize))
     }
 
     sealed interface Result {
