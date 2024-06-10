@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-import "org/timemates/api/timers/types/Timer.proto";
-
-option java_package = "org.timemates.api.timers.requests";
-
-message RemoveTimerRequest {
-  int64 timerId = 1;
-}

@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+option java_package = "org.timemates.api.auth.telegram";
+
+message CompleteTgAuthRequest {
+  string botSecretKey = 1;
+  string temporalHash = 2;
+}

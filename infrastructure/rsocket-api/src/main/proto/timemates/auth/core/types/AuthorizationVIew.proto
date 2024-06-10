@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+import "/timemates/auth/core/types/Metadata.proto";
+import "/timemates/auth/core/types/Authorization.proto";
+
+option java_package = "org.timemates.api.auth.core.types";
+
+message AuthorizationView {
+  // Denotes unique identifier of authorization.
+  int64 authorizationId = 1;
+
+  // When authorization was created.
+  int64 generationTime = 2;
+
+  // Additional information about authorization.
+  optional Metadata metadata = 3;
+
+  // Denotes method that was used to create authorization.
+  Authorization.Method method = 4;
+}

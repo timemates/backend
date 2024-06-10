@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+import "/timemates/auth/core/types/Authorization.proto";
+
+option java_package = "org.timemates.api.auth.requests";
+
+message RenewAuthorizationRequest {
+  string refreshHash = 1;
+
+  message Response {
+    Authorization authorization = 1;
+  }
+}

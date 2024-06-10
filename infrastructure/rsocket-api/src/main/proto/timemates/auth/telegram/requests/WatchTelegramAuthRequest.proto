@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+message WatchTelegramAuthRequest {
+  string verificationHash = 1;
+
+  message Response {
+    Status status = 1;
+
+    enum Status {
+      SUCCESS = 0;
+      REQUIRES_PROFILE_SETUP = 1;
+    }
+  }
+}

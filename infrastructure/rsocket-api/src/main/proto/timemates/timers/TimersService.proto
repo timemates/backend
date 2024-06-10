@@ -1,0 +1,74 @@
+syntax = "proto3";
+
+import "/timemates/timers/requests/CreateTimerRequest.proto";
+import "/timemates/timers/requests/EditTimerInfoRequest.proto";
+import "/timemates/timers/requests/RemoveTimerRequest.proto";
+import "/timemates/timers/requests/GetTimerRequest.proto";
+import "/timemates/timers/requests/GetTimersRequest.proto";
+import "/timemates/timers/members/requests/KickMemberRequest.proto";
+import "/timemates/timers/members/requests/GetMembersRequest.proto";
+import "/timemates/timers/members/invites/requests/CreateInviteRequest.proto";
+import "/timemates/timers/members/invites/requests/GetInvitesRequest.proto";
+import "/timemates/timers/members/invites/requests/RemoveInviteRequest.proto";
+import "/timemates/timers/members/invites/requests/JoinTimerByInviteCodeRequest.proto";
+import "/timemates/timers/types/Timer.proto";
+import "google/protobuf/empty.proto";
+
+option java_package = "org.timemates.api.timers";
+
+service TimersService {
+  /**
+   * Creates timer.
+   */
+  rpc CreateTimer(CreateTimerRequest) returns (CreateTimerRequest.Response);
+
+  /**
+   * Gets timer by id.
+   */
+  rpc GetTimer(GetTimerRequest) returns (Timer);
+
+  /*
+   * Gets timers by page token.
+   */
+  rpc GetTimers(GetTimersRequest) returns (GetTimersRequest.Response);
+
+  /**
+   * Edits timer information & settings (name, description).
+   */
+  rpc EditTimer(EditTimerRequest) returns (google.protobuf.Empty);
+
+  /**
+   * Kicks member out of timer.
+   */
+  rpc KickMember(KickMemberRequest) returns (google.protobuf.Empty);
+
+  /*
+   * Gets members of a timer.
+   */
+  rpc GetMembers(GetMembersRequest) returns (GetMembersRequest.Response);
+
+  /*
+   * Creates invite for joining a timer.
+   */
+  rpc CreateInvite(InviteMemberRequest) returns (InviteMemberRequest.Response);
+
+  /**
+   * Gets invites of a timer.
+   */
+  rpc GetInvites(GetInvitesRequest) returns (GetInvitesRequest.Response);
+
+  /**
+   * Gets invites of a timer.
+   */
+  rpc RemoveInvite(RemoveInviteRequest) returns (google.protobuf.Empty);
+
+  /**
+   * Joins timer by invite code.
+   */
+  rpc JoinByInvite(JoinTimerByInviteCodeRequest) returns (JoinTimerByInviteCodeRequest.Response);
+
+  /**
+   * Removes timer.
+   */
+  rpc RemoveTimer(RemoveTimerRequest) returns (google.protobuf.Empty);
+}

@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+option java_package = "org.timemates.api.auth.email.requests";
+
+message SendAuthCodeRequest {
+  string emailAddress = 1;
+
+  message Response {
+    string verificationHash = 1;
+  }
+}

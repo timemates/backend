@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+option java_package = "org.timemates.api.auth.core";
+
+import "/timemates/auth/core/types/Authorization.proto";
+
+message ObtainAuthRequest {
+  string verificationHash = 1;
+
+  message Response {
+    oneof status {
+      Unfinished unfinished = 1;
+      Authorized authorized = 2;
+      Expired expired = 3;
+    }
+
+    message Unfinished {}
+    message Authorized {
+      bool hasAccount = 1;
+      // Authorization is present if [hasAccount] is true.
+      // Otherwise, client should proceed to profile configuration to obtain authorization.
+      Authorization authorization = 2;
+    }
+    message Expired {}
+  }
+}
