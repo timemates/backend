@@ -1,0 +1,71 @@
+syntax = "proto3";
+
+import "/timemates/timers/sessions/requests/StartTimerSessionRequest.proto";
+import "/timemates/timers/sessions/requests/StopTimerSessionRequest.proto";
+import "/timemates/timers/sessions/requests/JoinTimerSessionRequest.proto";
+import "/timemates/timers/sessions/requests/ConfirmTimerSessionRequest.proto";
+import "/timemates/timers/sessions/requests/GetTimerStateRequest.proto";
+import "/timemates/timers/sessions/types/TimerState.proto";
+import "google/protobuf/empty.proto";
+import "/timemates/timers/sessions/requests/GetCurrentTimerSessionRequest.proto";
+import "/timemates/timers/types/Timer.proto";
+
+option java_package = "org.timemates.api.timers";
+
+/**
+ * The TimerSessionsService provides operations related to timer sessions.
+ */
+service TimerSessionsService {
+
+  /**
+   * Starts the timer session.
+   * This RPC method starts the timer session.
+   */
+  rpc StartTimer(StartTimerRequest) returns (google.protobuf.Empty);
+
+  /**
+   * Stops the timer session.
+   * This RPC method stops the timer session.
+   */
+  rpc StopTimer(StopTimerRequest) returns (google.protobuf.Empty);
+
+  /**
+   * Joins the timer session.
+   * This RPC method allows a user to join the timer session.
+   */
+  rpc JoinSession(JoinTimerSessionRequest) returns (google.protobuf.Empty);
+
+  /**
+   * Leaves the timer session.
+   * This RPC method allows a user to leave the timer session.
+   */
+  rpc LeaveSession(google.protobuf.Empty) returns (google.protobuf.Empty);
+
+  /**
+   * Confirms the user's attendance of the next round.
+   * This RPC method confirms the user's attendance of the next round.
+   * This is needed if the corresponding setting is enabled, usually you should
+   * just await for [TimerState.ConfirmationWaiting] state.
+   *
+   * Server will automatically determine your session.
+   */
+  rpc ConfirmRound(google.protobuf.Empty) returns (google.protobuf.Empty);
+
+  /**
+   * Sends a ping request that says that client currently online and active.
+   * Client should send such request once per 5 minutes.
+   */
+  rpc PingSession(google.protobuf.Empty) returns (google.protobuf.Empty);
+
+  /**
+   * Retrieves the current state of the timer.
+   * This RPC method always returns the current state of the timer and then updates of it.
+   * The state is returned as a stream of TimerState messages.
+   */
+  rpc GetState(GetTimerStateRequest) returns (stream TimerState);
+
+  /**
+  * Gets current timer session
+  */
+  rpc GetCurrentTimerSession(google.protobuf.Empty) returns (Timer);
+}

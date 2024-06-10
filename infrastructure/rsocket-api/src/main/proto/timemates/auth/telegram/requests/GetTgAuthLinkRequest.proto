@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+message GetTelegramAuthLinkRequest {
+  message Response {
+    string verificationHash = 1;
+    string telegramLink = 2;
+  }
+}

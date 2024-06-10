@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+import "/timemates/auth/core/types/Metadata.proto";
+
+option java_package = "org.timemates.api.auth.core.types";
+
+message Authorization {
+  /**
+   * Hash that used to identify user.
+   *
+   * Has null if it's not new authorization.
+   */
+  Hash accessHash = 2;
+
+  /**
+   * Hash that used to identify user.
+   *
+   * Has null if it's not new authorization.
+   */
+  Hash refreshHash = 3;
+
+  /**
+   * Denotes when authorization was generated.
+   */
+  int64 generationTime = 4;
+
+  /**
+   * Additional information about authorization.
+   */
+  optional Metadata metadata = 5;
+
+  Method method = 6;
+
+  /**
+   * Owner's id.
+   */
+  int64 userId = 7;
+
+  message Hash {
+    string value = 1;
+    int64 expiresAt = 2;
+  }
+
+  enum Method {
+    EMAIL = 0;
+    TELEGRAM = 1;
+  }
+}

@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+option java_package = "org.timemates.api.auth.telegram";
+
+import "google/protobuf/empty.proto";
+import "timemates/auth/telegram/requests/GetTgAuthLinkRequest.proto";
+import "timemates/auth/telegram/requests/WatchTelegramAuthRequest.proto";
+import "timemates/auth/telegram/requests/CompleteTgAuthRequest.proto";
+import "timemates/auth/telegram/requests/LinkTelegramAuthRequest.proto";
+
+
+// Service responsible for handling Telegram authentication.
+service TelegramAuthService {
+  // Retrieves the authentication link for Telegram. Can be used both for linking an account
+  // and authentication.
+  rpc Authorize(google.protobuf.Empty) returns (GetTelegramAuthLinkRequest.Response);
+
+  // Watches for authentication status on Telegram.
+  //
+  // This method watches for the authentication status of a user on Telegram
+  // by continuously checking if the user has completed the authentication process.
+  rpc Watch(WatchTelegramAuthRequest) returns (stream WatchTelegramAuthRequest.Response);
+
+  // Internal Auth API that is used by bot.
+  rpc Complete(CompleteTgAuthRequest) returns (google.protobuf.Empty);
+}

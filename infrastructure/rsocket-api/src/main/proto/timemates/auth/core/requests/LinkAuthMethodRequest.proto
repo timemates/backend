@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+import "/timemates/auth/core/types/Authorization.proto";
+
+option java_package = "org.timemates.api.auth.core.requests";
+
+message LinkAuthMethodRequest {
+  // Verification hash obtained in the corresponding service (TelegramAuthService, EmailAuthService)
+  string verificationHash = 1;
+  // Access hash of the authorized user that wants to link an auth method
+  string accessHash = 2;
+
+  message Response {
+    Status status = 1;
+
+    enum Status {
+      // Linking is successful, a new auth method is added or is replaced with.
+      SUCCESSFULLY_LINKED = 0;
+      // Linking is failed: given auth method is already linked to the another account.
+      ALREADY_LINKED = 1;
+      // Linking is failed: given auth method is
+      AUTH_IS_NOT_FINISHED = 2;
+    }
+  }
+}

@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+option java_package = "org.timemates.api.auth.email";
+
+import "/timemates/auth/email/requests/SendAuthCodeRequest.proto";
+import "/timemates/auth/email/requests/ConfirmAuthRequest.proto";
+import "/timemates/auth/email/requests/LinkEmailRequest.proto";
+
+
+// Service responsible for handling email-based authentication.
+service EmailAuthService {
+  // Sends authentication code to the user's email.
+  // This method sends an authentication code to the user's email address
+  // for the purpose of authentication.
+  rpc Authorize(SendAuthCodeRequest) returns (SendAuthCodeRequest.Response);
+
+  // Confirms authentication or method linking using the provided code.
+  // This method confirms the authentication using the code received by the user
+  // through email and returns the authentication result.
+  rpc Confirm(ConfirmAuthRequest) returns (ConfirmAuthRequest.Response);
+}
